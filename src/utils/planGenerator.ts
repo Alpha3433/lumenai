@@ -1,5 +1,5 @@
-
 import { toast } from "sonner";
+import { callOpenAI } from "./openaiService";
 
 interface BusinessFormData {
   businessName: string;
@@ -24,28 +24,97 @@ interface BusinessPlanData {
 }
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
-  // This is a mock implementation. In a real app, you would call the OpenAI API here
-  return new Promise((resolve) => {
-    toast.success("Generating your business plan...");
+  toast.success("Generating your business plan...");
+  
+  try {
+    // Generate each section using OpenAI
+    const [
+      executiveSummary,
+      marketAnalysis,
+      businessModel,
+      marketingPlan,
+      financialProjections,
+      riskAssessment,
+      implementationTimeline,
+      swotAnalysis
+    ] = await Promise.all([
+      generateSection('executive summary', formData),
+      generateSection('market analysis', formData),
+      generateSection('business model', formData),
+      generateSection('marketing plan', formData),
+      generateSection('financial projections', formData),
+      generateSection('risk assessment', formData),
+      generateSection('implementation timeline', formData),
+      generateSection('swot analysis', formData)
+    ]);
     
-    // Simulate API call delay
-    setTimeout(() => {
-      const plan: BusinessPlanData = {
-        executiveSummary: generateExecutiveSummary(formData),
-        marketAnalysis: generateMarketAnalysis(formData),
-        businessModel: generateBusinessModel(formData),
-        marketingPlan: generateMarketingPlan(formData),
-        financialProjections: generateFinancialProjections(formData),
-        riskAssessment: generateRiskAssessment(formData),
-        implementationTimeline: generateImplementationTimeline(formData),
-        swotAnalysis: generateSwotAnalysis(formData)
-      };
-      
-      toast.success("Business plan generated successfully!");
-      resolve(plan);
-    }, 2000);
-  });
+    const plan: BusinessPlanData = {
+      executiveSummary,
+      marketAnalysis,
+      businessModel,
+      marketingPlan,
+      financialProjections,
+      riskAssessment,
+      implementationTimeline,
+      swotAnalysis
+    };
+    
+    toast.success("Business plan generated successfully!");
+    return plan;
+  } catch (error) {
+    console.error("Error generating business plan:", error);
+    toast.error("Failed to generate business plan. Please try again.");
+    
+    // Fallback to mock data if OpenAI fails
+    return {
+      executiveSummary: generateExecutiveSummary(formData),
+      marketAnalysis: generateMarketAnalysis(formData),
+      businessModel: generateBusinessModel(formData),
+      marketingPlan: generateMarketingPlan(formData),
+      financialProjections: generateFinancialProjections(formData),
+      riskAssessment: generateRiskAssessment(formData),
+      implementationTimeline: generateImplementationTimeline(formData),
+      swotAnalysis: generateSwotAnalysis(formData)
+    };
+  }
 };
+
+// Generate a section of the business plan using OpenAI
+async function generateSection(section: string, formData: BusinessFormData): Promise<string> {
+  const prompt = createPromptForSection(section, formData);
+  
+  const response = await callOpenAI({
+    prompt,
+    model: "text-davinci-003", // You can use a different model if preferred
+    temperature: 0.7,
+    maxTokens: 500
+  });
+  
+  if (!response.success) {
+    console.error(`Error generating ${section}:`, response.error);
+    throw new Error(`Failed to generate ${section}`);
+  }
+  
+  return response.text;
+}
+
+// Create a specific prompt for each section
+function createPromptForSection(section: string, formData: BusinessFormData): string {
+  const basePrompt = `Create a detailed ${section} for a business plan with the following information:
+  
+Business Name: ${formData.businessName}
+Business Description: ${formData.businessDescription}
+Industry: ${formData.industry}
+Target Market: ${formData.targetMarket}
+Business Goals: ${formData.businessGoals || "Not specified"}
+Competitor Information: ${formData.competitorInfo || "Not specified"}
+Expected Revenue: ${formData.revenue || "Not specified"}
+Time Period: ${formData.timePeriod || "1-year"}
+
+The ${section} should be professional, detailed, and realistic.`;
+
+  return basePrompt;
+}
 
 // Mock generators for each section
 function generateExecutiveSummary(formData: BusinessFormData): string {

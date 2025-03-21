@@ -1,6 +1,10 @@
 
-// Note: In a real implementation, this would contain actual API calls to OpenAI
-// This is a mock implementation for demonstration purposes
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize the Supabase client
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 interface OpenAIRequestParams {
   prompt: string;
@@ -16,18 +20,25 @@ interface OpenAIResponse {
 }
 
 export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIResponse> => {
-  // In a real implementation, this would make an API call to OpenAI
-  console.log('Mock OpenAI API call with params:', params);
-  
   try {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    console.log('Calling OpenAI with params:', params);
     
-    // Return mock response
-    return {
-      text: generateMockResponse(params.prompt),
-      success: true
-    };
+    // Call the Supabase Edge Function
+    const { data, error } = await supabase.functions.invoke('openai', {
+      body: params
+    });
+    
+    if (error) {
+      console.error('Error calling OpenAI edge function:', error);
+      return {
+        text: '',
+        success: false,
+        error: error.message || 'Failed to generate content. Please try again.'
+      };
+    }
+    
+    console.log('OpenAI response:', data);
+    return data as OpenAIResponse;
   } catch (error) {
     console.error('Error calling OpenAI:', error);
     return {
@@ -38,7 +49,7 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   }
 };
 
-// Generate a mock response based on the prompt
+// This function is kept for fallback in case the edge function fails
 function generateMockResponse(prompt: string): string {
   // In a real implementation, this would be the response from OpenAI
   if (prompt.includes('executive summary')) {

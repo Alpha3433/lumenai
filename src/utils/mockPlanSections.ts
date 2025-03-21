@@ -1,29 +1,60 @@
 
 import { BusinessFormData } from "./planGenerator";
 
+// Extract details from business description
+function extractDetails(formData: BusinessFormData) {
+  const { businessDescription } = formData;
+  
+  // Mock extraction of industry (would be done by AI in reality)
+  let industry = "technology";
+  if (businessDescription.toLowerCase().includes("restaurant") || businessDescription.toLowerCase().includes("food")) {
+    industry = "food service";
+  } else if (businessDescription.toLowerCase().includes("retail") || businessDescription.toLowerCase().includes("shop")) {
+    industry = "retail";
+  } else if (businessDescription.toLowerCase().includes("consult")) {
+    industry = "consulting";
+  }
+  
+  // Mock extraction of target market
+  let targetMarket = "general consumers";
+  if (businessDescription.toLowerCase().includes("business") || businessDescription.toLowerCase().includes("b2b")) {
+    targetMarket = "businesses";
+  } else if (businessDescription.toLowerCase().includes("luxury") || businessDescription.toLowerCase().includes("premium")) {
+    targetMarket = "luxury consumers";
+  }
+  
+  return { industry, targetMarket };
+}
+
 // Executive Summary mock generator
 export function generateExecutiveSummary(formData: BusinessFormData): string {
-  return `${formData.businessName} is an innovative ${formData.industry} company that ${formData.businessDescription}. Our mission is to provide exceptional solutions for ${formData.targetMarket}. 
+  const { industry, targetMarket } = extractDetails(formData);
+  
+  return `${formData.businessName} is an innovative ${industry} company that ${formData.businessDescription}. Our mission is to provide exceptional solutions for ${targetMarket}. 
 
-With a clear focus on quality and customer satisfaction, we aim to establish ourselves as a leading provider in the ${formData.industry} sector. 
+With a clear focus on quality and customer satisfaction, we aim to establish ourselves as a leading provider in the ${industry} sector. 
 
 Our key objectives include scaling operations efficiently, developing a strong customer base, and achieving sustainable growth while maintaining high standards of service delivery.`;
 }
 
 // Market Analysis mock generator
 export function generateMarketAnalysis(formData: BusinessFormData): string {
-  return `The ${formData.industry} industry is currently experiencing significant growth, with a projected annual expansion rate of 7.5% over the next five years. Key trends include technological innovation, increased consumer demand for personalized solutions, and a shift towards digital-first approaches.
+  const { industry, targetMarket } = extractDetails(formData);
+  
+  return `The ${industry} industry is currently experiencing significant growth, with a projected annual expansion rate of 7.5% over the next five years. Key trends include technological innovation, increased consumer demand for personalized solutions, and a shift towards digital-first approaches.
 
-Our target market of ${formData.targetMarket} represents a $4.2 billion opportunity, with an expected growth of 12% annually. This demographic shows strong engagement with products similar to ours, with a high willingness to pay for quality and convenience.
+Our target market of ${targetMarket} represents a $4.2 billion opportunity, with an expected growth of 12% annually. This demographic shows strong engagement with products similar to ours, with a high willingness to pay for quality and convenience.
 
-Major competitors in this space include Industry Leader A (35% market share), Rising Competitor B (15% market share), and Traditional Provider C (20% market share). ${formData.competitorInfo ? `Specific competitors mentioned include ${formData.competitorInfo}.` : ''} 
+Major competitors in this space include Industry Leader A (35% market share), Rising Competitor B (15% market share), and Traditional Provider C (20% market share).
 
 Our competitive advantage lies in our innovative approach, superior customer experience, and ability to rapidly adapt to changing market conditions.`;
 }
 
 // Business Model mock generator
 export function generateBusinessModel(formData: BusinessFormData): string {
-  return `${formData.businessName} will operate on a ${formData.revenue ? formData.revenue.includes('subscription') ? 'subscription-based' : 'revenue-based' : 'value-driven'} model, offering premium solutions to ${formData.targetMarket}.
+  const { targetMarket } = extractDetails(formData);
+  
+  return `${formData.businessName} will operate on a value-driven model, offering premium solutions to ${targetMarket}.
 
 Key revenue streams include:
 1. Direct sales of core products/services
@@ -38,7 +69,9 @@ Key partners will include technology providers, distribution channels, and indus
 
 // Marketing Plan mock generator
 export function generateMarketingPlan(formData: BusinessFormData): string {
-  return `Our marketing strategy for ${formData.businessName} is focused on creating a strong brand presence and directly engaging with our target market of ${formData.targetMarket}.
+  const { targetMarket } = extractDetails(formData);
+  
+  return `Our marketing strategy for ${formData.businessName} is focused on creating a strong brand presence and directly engaging with our target market of ${targetMarket}.
 
 Core marketing initiatives include:
 
@@ -60,21 +93,21 @@ export function generateFinancialProjections(formData: BusinessFormData): string
   return `Based on our market analysis and business model, we project the following financial outcomes for ${formData.businessName}:
 
 Year 1:
-- Revenue: ${formData.revenue || '$500,000'}
+- Revenue: $500,000
 - Expenses: $350,000
-- Net Profit: ${formData.revenue ? `$${(parseInt(formData.revenue.replace(/[^0-9]/g, '')) * 0.3).toLocaleString()}` : '$150,000'}
+- Net Profit: $150,000
 - Profit Margin: 30%
 
 Year 2:
-- Revenue: ${formData.revenue ? `$${(parseInt(formData.revenue.replace(/[^0-9]/g, '')) * 2).toLocaleString()}` : '$1,000,000'}
+- Revenue: $1,000,000
 - Expenses: $600,000
-- Net Profit: ${formData.revenue ? `$${(parseInt(formData.revenue.replace(/[^0-9]/g, '')) * 0.4 * 2).toLocaleString()}` : '$400,000'}
+- Net Profit: $400,000
 - Profit Margin: 40%
 
 Year 3:
-- Revenue: ${formData.revenue ? `$${(parseInt(formData.revenue.replace(/[^0-9]/g, '')) * 3.5).toLocaleString()}` : '$1,750,000'}
+- Revenue: $1,750,000
 - Expenses: $875,000
-- Net Profit: ${formData.revenue ? `$${(parseInt(formData.revenue.replace(/[^0-9]/g, '')) * 0.5 * 3.5).toLocaleString()}` : '$875,000'}
+- Net Profit: $875,000
 - Profit Margin: 50%
 
 These projections are based on a conservative growth model that accounts for market expansion, increased customer acquisition efficiency, and economies of scale. Key financial metrics include a projected break-even point at month 18, ROI of 125% by end of year 3, and sustainable cash flow positive operations from month 15.`;
@@ -82,12 +115,14 @@ These projections are based on a conservative growth model that accounts for mar
 
 // Risk Assessment mock generator
 export function generateRiskAssessment(formData: BusinessFormData): string {
+  const { industry, targetMarket } = extractDetails(formData);
+  
   return `Every business venture faces potential risks and challenges. For ${formData.businessName}, we've identified the following key risk factors and mitigation strategies:
 
 1. Market Risks:
-   - Changing consumer preferences in the ${formData.industry} industry
+   - Changing consumer preferences in the ${industry} industry
    - New competitive entrants
-   - Economic downturns affecting ${formData.targetMarket}
+   - Economic downturns affecting ${targetMarket}
    Mitigation: Continuous market research, agile product development, diversified customer base
 
 2. Operational Risks:
@@ -148,12 +183,14 @@ Each phase includes specific milestones, KPIs, and responsible team members to e
 
 // SWOT Analysis mock generator
 export function generateSwotAnalysis(formData: BusinessFormData): string {
+  const { industry, targetMarket } = extractDetails(formData);
+  
   return `SWOT Analysis for ${formData.businessName}:
 
 STRENGTHS:
-- Innovative approach to solving problems in the ${formData.industry} industry
-- Strong understanding of ${formData.targetMarket} needs and preferences
-- ${formData.businessGoals ? `Clear business goals: ${formData.businessGoals}` : 'Focused business vision and mission'}
+- Innovative approach to solving problems in the ${industry} industry
+- Strong understanding of ${targetMarket} needs and preferences
+- Focused business vision and mission
 - Efficient operational model with scalability
 - Talented and experienced founding team
 
@@ -165,9 +202,9 @@ WEAKNESSES:
 - Limited historical data for decision-making
 
 OPPORTUNITIES:
-- Growing market demand in the ${formData.industry} sector
+- Growing market demand in the ${industry} sector
 - Technological advancements enabling new solutions
-- Underserved segments within ${formData.targetMarket}
+- Underserved segments within ${targetMarket}
 - Potential for strategic partnerships and integrations
 - International expansion possibilities
 

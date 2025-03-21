@@ -31,12 +31,8 @@ export function createPromptForSection(section: string, formData: BusinessFormDa
   const baseContext = `
 Business Name: ${formData.businessName}
 Business Description: ${formData.businessDescription}
-Industry: ${formData.industry}
-Target Market: ${formData.targetMarket}
-Business Goals: ${formData.businessGoals || "Not specified"}
-Competitor Information: ${formData.competitorInfo || "Not specified"}
-Expected Revenue: ${formData.revenue || "Not specified"}
-Time Period: ${formData.timePeriod || "1-year"}
+
+Based on the business description, identify the industry, target market, business goals, competitors, and potential revenue model. Then, create a professional and detailed ${section} based on this information.
 `;
 
   const sectionPrompts: Record<string, string> = {
@@ -66,7 +62,7 @@ The risk assessment should identify potential internal and external risks, their
 
     'implementation timeline': `Create a phased implementation timeline for launching and growing this business:${baseContext}
     
-The implementation timeline should outline key milestones, deadlines, and action items for the first ${formData.timePeriod || "year"} of operation. Include pre-launch activities, launch phase, and growth phases.`,
+The implementation timeline should outline key milestones, deadlines, and action items for the first year of operation. Include pre-launch activities, launch phase, and growth phases.`,
 
     'swot analysis': `Conduct a SWOT analysis for a business with these characteristics:${baseContext}
     

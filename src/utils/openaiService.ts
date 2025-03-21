@@ -1,4 +1,6 @@
 
+import { supabase } from './supabaseClient';
+
 interface OpenAIRequestParams {
   prompt: string;
   model: string;
@@ -14,25 +16,46 @@ interface OpenAIResponse {
 
 export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIResponse> => {
   try {
-    console.log('Mock OpenAI call with params:', params);
-    
-    // Since we're removing Supabase and no real API calls will be made,
-    // we'll use the mock response directly
+    // Call Supabase Edge Function for OpenAI
+    const { data, error } = await supabase.functions.invoke('openai-completion', {
+      body: {
+        prompt: params.prompt,
+        model: params.model,
+        temperature: params.temperature || 0.7,
+        max_tokens: params.maxTokens || 500
+      }
+    });
+
+    if (error) {
+      console.error('Error calling OpenAI through Supabase:', error);
+      throw error;
+    }
+
     return {
-      text: generateMockResponse(params.prompt),
+      text: data.text,
       success: true
     };
   } catch (error) {
-    console.error('Error in mock OpenAI call:', error);
+    console.error('Error in OpenAI call:', error);
+    
+    // Fallback to mock response if in development or if there's an error
+    if (import.meta.env.DEV) {
+      console.log('Using mock response in development mode');
+      return {
+        text: generateMockResponse(params.prompt),
+        success: true
+      };
+    }
+    
     return {
       text: 'An error occurred while generating content. Please try again.',
       success: false,
-      error: 'Mock service error'
+      error: error instanceof Error ? error.message : 'Unknown error'
     };
   }
 };
 
-// This function provides mock responses based on prompt keywords
+// This function provides mock responses for development/testing
 function generateMockResponse(prompt: string): string {
   // In a real implementation, this would be the response from OpenAI
   if (prompt.includes('executive summary')) {

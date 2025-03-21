@@ -7,7 +7,7 @@ import PlanTemplate from '@/components/PlanTemplate';
 import Testimonial from '@/components/Testimonial';
 import Footer from '@/components/Footer';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BarChart3, Users, LineChart, FileCheck, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, BarChart3, Users, LineChart, FileCheck, ArrowUpRight, Sparkles, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Index = () => {

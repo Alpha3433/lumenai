@@ -1,12 +1,16 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Download, FileText, CheckCircle, Sparkles } from 'lucide-react';
+import { Loader2, Download, FileText, CheckCircle, Sparkles, BarChart4, FileStack, Clock, Activity } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { generateBusinessPlan } from '@/utils/planGenerator';
+import SwotAnalysis from '@/components/SwotAnalysis';
+import FinancialTable from '@/components/FinancialTable';
+import TimelineChart from '@/components/TimelineChart';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -155,70 +159,124 @@ const PlanCreator = () => {
             <CardContent className="p-6">
               <Tabs defaultValue="executive-summary" value={currentTab} onValueChange={setCurrentTab}>
                 <TabsList className="grid grid-cols-4 md:grid-cols-8 mb-6">
-                  <TabsTrigger value="executive-summary">Summary</TabsTrigger>
-                  <TabsTrigger value="market-analysis">Market</TabsTrigger>
-                  <TabsTrigger value="business-model">Model</TabsTrigger>
-                  <TabsTrigger value="marketing-plan">Marketing</TabsTrigger>
-                  <TabsTrigger value="financial-projections">Financial</TabsTrigger>
-                  <TabsTrigger value="risk-assessment">Risks</TabsTrigger>
-                  <TabsTrigger value="implementation-timeline">Timeline</TabsTrigger>
-                  <TabsTrigger value="swot-analysis">SWOT</TabsTrigger>
+                  <TabsTrigger value="executive-summary" className="flex items-center gap-1">
+                    <FileText className="h-4 w-4" />
+                    <span className="hidden md:inline">Summary</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="market-analysis" className="flex items-center gap-1">
+                    <Activity className="h-4 w-4" />
+                    <span className="hidden md:inline">Market</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="business-model" className="flex items-center gap-1">
+                    <FileStack className="h-4 w-4" />
+                    <span className="hidden md:inline">Model</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="marketing-plan" className="flex items-center gap-1">
+                    <Activity className="h-4 w-4" />
+                    <span className="hidden md:inline">Marketing</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="financial-projections" className="flex items-center gap-1">
+                    <BarChart4 className="h-4 w-4" />
+                    <span className="hidden md:inline">Financial</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="risk-assessment" className="flex items-center gap-1">
+                    <Activity className="h-4 w-4" />
+                    <span className="hidden md:inline">Risks</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="implementation-timeline" className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    <span className="hidden md:inline">Timeline</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="swot-analysis" className="flex items-center gap-1">
+                    <Activity className="h-4 w-4" />
+                    <span className="hidden md:inline">SWOT</span>
+                  </TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="executive-summary" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold">Executive Summary</h2>
-                  <div className="prose dark:prose-invert max-w-none">
-                    <p>{businessPlan.executiveSummary || "Loading..."}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-blue-500" />
+                    Executive Summary
+                  </h2>
+                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+                    <div className="prose dark:prose-invert max-w-none">
+                      <p className="leading-relaxed">{businessPlan.executiveSummary || "Loading..."}</p>
+                    </div>
+                  </Card>
                 </TabsContent>
                 
                 <TabsContent value="market-analysis" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold">Market Analysis</h2>
-                  <div className="prose dark:prose-invert max-w-none">
-                    <p>{businessPlan.marketAnalysis || "Loading..."}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-blue-500" />
+                    Market Analysis
+                  </h2>
+                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+                    <div className="prose dark:prose-invert max-w-none">
+                      <p className="leading-relaxed">{businessPlan.marketAnalysis || "Loading..."}</p>
+                    </div>
+                  </Card>
                 </TabsContent>
                 
                 <TabsContent value="business-model" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold">Business Model</h2>
-                  <div className="prose dark:prose-invert max-w-none">
-                    <p>{businessPlan.businessModel || "Loading..."}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <FileStack className="h-5 w-5 text-blue-500" />
+                    Business Model
+                  </h2>
+                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+                    <div className="prose dark:prose-invert max-w-none">
+                      <p className="leading-relaxed">{businessPlan.businessModel || "Loading..."}</p>
+                    </div>
+                  </Card>
                 </TabsContent>
                 
                 <TabsContent value="marketing-plan" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold">Marketing Plan</h2>
-                  <div className="prose dark:prose-invert max-w-none">
-                    <p>{businessPlan.marketingPlan || "Loading..."}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-blue-500" />
+                    Marketing Plan
+                  </h2>
+                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+                    <div className="prose dark:prose-invert max-w-none">
+                      <p className="leading-relaxed">{businessPlan.marketingPlan || "Loading..."}</p>
+                    </div>
+                  </Card>
                 </TabsContent>
                 
                 <TabsContent value="financial-projections" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold">Financial Projections</h2>
-                  <div className="prose dark:prose-invert max-w-none">
-                    <p>{businessPlan.financialProjections || "Loading..."}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <BarChart4 className="h-5 w-5 text-blue-500" />
+                    Financial Projections
+                  </h2>
+                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+                    <FinancialTable financialText={businessPlan.financialProjections} />
+                  </Card>
                 </TabsContent>
                 
                 <TabsContent value="risk-assessment" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold">Risk Assessment</h2>
-                  <div className="prose dark:prose-invert max-w-none">
-                    <p>{businessPlan.riskAssessment || "Loading..."}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-blue-500" />
+                    Risk Assessment
+                  </h2>
+                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+                    <div className="prose dark:prose-invert max-w-none">
+                      <p className="leading-relaxed">{businessPlan.riskAssessment || "Loading..."}</p>
+                    </div>
+                  </Card>
                 </TabsContent>
                 
                 <TabsContent value="implementation-timeline" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold">Implementation Timeline</h2>
-                  <div className="prose dark:prose-invert max-w-none">
-                    <p>{businessPlan.implementationTimeline || "Loading..."}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-blue-500" />
+                    Implementation Timeline
+                  </h2>
+                  <TimelineChart timelineText={businessPlan.implementationTimeline} />
                 </TabsContent>
                 
                 <TabsContent value="swot-analysis" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold">SWOT Analysis</h2>
-                  <div className="prose dark:prose-invert max-w-none">
-                    <p>{businessPlan.swotAnalysis || "Loading..."}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-blue-500" />
+                    SWOT Analysis
+                  </h2>
+                  <SwotAnalysis swotText={businessPlan.swotAnalysis} />
                 </TabsContent>
               </Tabs>
             </CardContent>

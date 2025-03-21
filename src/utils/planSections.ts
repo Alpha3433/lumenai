@@ -55,7 +55,7 @@ The marketing plan should outline target audience segmentation, positioning stra
 
     'financial projections': `Create realistic financial projections for a business with the following parameters:${baseContext}
     
-The financial projections should include anticipated revenue, startup costs, operational expenses, break-even analysis, and profitability timeline. Be realistic and provide both optimistic and conservative scenarios.`,
+The financial projections should include specific numbers for anticipated revenue, expenses and profits for the first 3 years. Include startup costs, operational expenses, and monthly revenue estimates. Format the information clearly with specific dollar amounts for Year 1, Year 2, and Year 3 revenue, expenses and profit projections.`,
 
     'risk assessment': `Perform a risk assessment for a business with these factors:${baseContext}
     
@@ -63,11 +63,11 @@ The risk assessment should identify potential internal and external risks, their
 
     'implementation timeline': `Create a phased implementation timeline for launching and growing this business:${baseContext}
     
-The implementation timeline should outline key milestones, deadlines, and action items for the first year of operation. Include pre-launch activities, launch phase, and growth phases.`,
+The implementation timeline should outline specific phases (such as Planning Phase, Setup Phase, Launch Phase, and Growth Phase) with key milestones, deadlines, and specific action items for each phase. Include timeframes for each phase (e.g., Months 1-2, Months 3-4, etc.). Structure the response as a clear timeline with phases and bullet points for tasks in each phase.`,
 
     'swot analysis': `Conduct a SWOT analysis for a business with these characteristics:${baseContext}
     
-The SWOT analysis should identify Strengths, Weaknesses, Opportunities, and Threats based on the provided information. Each section should have at least 3-5 well-reasoned points with brief explanations.`
+The SWOT analysis should identify Strengths, Weaknesses, Opportunities, and Threats based on the provided information. Structure the response with clear headings for each SWOT component, and provide at least 3-5 bullet points under each heading. For Strengths, focus on internal advantages. For Weaknesses, identify internal limitations. For Opportunities, highlight external favorable factors. For Threats, list external unfavorable factors.`
   };
 
   return sectionPrompts[section] || 

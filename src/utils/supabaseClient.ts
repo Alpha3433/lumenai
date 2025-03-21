@@ -6,12 +6,12 @@ export interface StoredBusinessPlan {
   id?: string;
   user_id: string;
   business_name: string;
-  form_data: Record<string, any>;
-  plan_data: Record<string, string>;
+  form_data: any; // Changed from Record<string, any> to any to accommodate Json type
+  plan_data: any; // Changed from Record<string, string> to any to accommodate Json type
   created_at?: string;
   updated_at?: string;
-  industry?: string;
-  status?: 'draft' | 'published' | 'archived';
+  industry?: string | null;
+  status?: 'draft' | 'published' | 'archived' | null;
 }
 
 // Helper functions for business plans

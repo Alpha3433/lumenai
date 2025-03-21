@@ -1,20 +1,4 @@
 
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize the Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-// Check if Supabase URL and anon key are available
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase URL or Anon Key is missing. Please set the VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.');
-}
-
-// Create the Supabase client only if the URL and anon key are available
-const supabase = supabaseUrl && supabaseAnonKey 
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
-
 interface OpenAIRequestParams {
   prompt: string;
   model: string;
@@ -30,46 +14,25 @@ interface OpenAIResponse {
 
 export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIResponse> => {
   try {
-    console.log('Calling OpenAI with params:', params);
+    console.log('Mock OpenAI call with params:', params);
     
-    // If Supabase client is not available, use mock response
-    if (!supabase) {
-      console.warn('Supabase client not initialized. Using mock response.');
-      return {
-        text: generateMockResponse(params.prompt),
-        success: true
-      };
-    }
-    
-    // Call the Supabase Edge Function
-    const { data, error } = await supabase.functions.invoke('openai', {
-      body: params
-    });
-    
-    if (error) {
-      console.error('Error calling OpenAI edge function:', error);
-      // Fall back to mock response if the edge function fails
-      return {
-        text: generateMockResponse(params.prompt),
-        success: true,
-        error: error.message || 'Failed to generate content. Using fallback response.'
-      };
-    }
-    
-    console.log('OpenAI response:', data);
-    return data as OpenAIResponse;
-  } catch (error) {
-    console.error('Error calling OpenAI:', error);
-    // Fall back to mock response on any error
+    // Since we're removing Supabase and no real API calls will be made,
+    // we'll use the mock response directly
     return {
       text: generateMockResponse(params.prompt),
-      success: true,
-      error: 'Failed to generate content. Using fallback response.'
+      success: true
+    };
+  } catch (error) {
+    console.error('Error in mock OpenAI call:', error);
+    return {
+      text: 'An error occurred while generating content. Please try again.',
+      success: false,
+      error: 'Mock service error'
     };
   }
 };
 
-// This function is kept for fallback in case the edge function fails
+// This function provides mock responses based on prompt keywords
 function generateMockResponse(prompt: string): string {
   // In a real implementation, this would be the response from OpenAI
   if (prompt.includes('executive summary')) {

@@ -22,7 +22,7 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
         prompt: params.prompt,
         model: params.model,
         temperature: params.temperature || 0.7,
-        max_tokens: params.maxTokens || 500
+        max_tokens: params.maxTokens || 800
       }
     });
 
@@ -38,7 +38,7 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   } catch (error) {
     console.error('Error in OpenAI call:', error);
     
-    // Fallback to mock response if in development or if there's an error
+    // Only use mock response if in development or if there's an error
     if (import.meta.env.DEV) {
       console.log('Using mock response in development mode');
       return {

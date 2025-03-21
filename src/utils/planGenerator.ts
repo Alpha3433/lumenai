@@ -32,7 +32,9 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   toast.success("Generating your business plan...");
   
   try {
-    // Generate each section using OpenAI
+    // Generate each section using OpenAI in parallel
+    console.log("Generating business plan sections with OpenAI...");
+    
     const [
       executiveSummary,
       marketAnalysis,
@@ -68,9 +70,10 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     return plan;
   } catch (error) {
     console.error("Error generating business plan:", error);
-    toast.error("Failed to generate business plan. Please try again.");
+    toast.error("Failed to generate business plan. Using placeholder data.");
     
     // Fallback to mock data if OpenAI fails
+    console.log("Using mock data as fallback");
     return {
       executiveSummary: generateExecutiveSummary(formData),
       marketAnalysis: generateMarketAnalysis(formData),

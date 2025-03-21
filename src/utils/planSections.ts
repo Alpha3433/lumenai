@@ -6,6 +6,7 @@ import { BusinessFormData } from "./planGenerator";
 export async function generateSection(section: string, formData: BusinessFormData): Promise<string> {
   try {
     const prompt = createPromptForSection(section, formData);
+    console.log(`Generating ${section} with prompt...`);
     
     const response = await callOpenAI({
       prompt,

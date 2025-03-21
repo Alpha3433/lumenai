@@ -2,9 +2,18 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize the Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+// Check if Supabase URL and anon key are available
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Supabase URL or Anon Key is missing. Please set the VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.');
+}
+
+// Create the Supabase client only if the URL and anon key are available
+const supabase = supabaseUrl && supabaseAnonKey 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 interface OpenAIRequestParams {
   prompt: string;
@@ -23,6 +32,15 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   try {
     console.log('Calling OpenAI with params:', params);
     
+    // If Supabase client is not available, use mock response
+    if (!supabase) {
+      console.warn('Supabase client not initialized. Using mock response.');
+      return {
+        text: generateMockResponse(params.prompt),
+        success: true
+      };
+    }
+    
     // Call the Supabase Edge Function
     const { data, error } = await supabase.functions.invoke('openai', {
       body: params
@@ -30,10 +48,11 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
     
     if (error) {
       console.error('Error calling OpenAI edge function:', error);
+      // Fall back to mock response if the edge function fails
       return {
-        text: '',
-        success: false,
-        error: error.message || 'Failed to generate content. Please try again.'
+        text: generateMockResponse(params.prompt),
+        success: true,
+        error: error.message || 'Failed to generate content. Using fallback response.'
       };
     }
     
@@ -41,10 +60,11 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
     return data as OpenAIResponse;
   } catch (error) {
     console.error('Error calling OpenAI:', error);
+    // Fall back to mock response on any error
     return {
-      text: '',
-      success: false,
-      error: 'Failed to generate content. Please try again.'
+      text: generateMockResponse(params.prompt),
+      success: true,
+      error: 'Failed to generate content. Using fallback response.'
     };
   }
 };

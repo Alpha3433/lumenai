@@ -1,14 +1,5 @@
 
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase URL or anon key is missing. Authentication and API features will not work.');
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/integrations/supabase/client';
 
 // Types for business plans in the database
 export interface StoredBusinessPlan {
@@ -19,6 +10,8 @@ export interface StoredBusinessPlan {
   plan_data: Record<string, string>;
   created_at?: string;
   updated_at?: string;
+  industry?: string;
+  status?: 'draft' | 'published' | 'archived';
 }
 
 // Helper functions for business plans

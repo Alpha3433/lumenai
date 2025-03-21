@@ -9,7 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      business_plans: {
+        Row: {
+          business_name: string
+          created_at: string
+          form_data: Json
+          id: string
+          industry: string | null
+          plan_data: Json
+          status: Database["public"]["Enums"]["plan_status"] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_name: string
+          created_at?: string
+          form_data: Json
+          id?: string
+          industry?: string | null
+          plan_data: Json
+          status?: Database["public"]["Enums"]["plan_status"] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_name?: string
+          created_at?: string
+          form_data?: Json
+          id?: string
+          industry?: string | null
+          plan_data?: Json
+          status?: Database["public"]["Enums"]["plan_status"] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +53,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      plan_status: "draft" | "published" | "archived"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -1,10 +1,8 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Download, FileText, CheckCircle, Sparkles } from 'lucide-react';
 import { Label } from '@/components/ui/label';
@@ -37,23 +35,13 @@ const PlanCreator = () => {
   const [generating, setGenerating] = useState(false);
   const [formData, setFormData] = useState({
     businessName: '',
-    businessDescription: '',
-    industry: '',
-    targetMarket: '',
-    businessGoals: '',
-    competitorInfo: '',
-    revenue: '',
-    timePeriod: '1-year'
+    businessDescription: ''
   });
   const [businessPlan, setBusinessPlan] = useState<BusinessPlanData>(defaultBusinessPlan);
   const [currentTab, setCurrentTab] = useState('executive-summary');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -96,107 +84,31 @@ const PlanCreator = () => {
           <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden">
             <CardContent className="p-0">
               <form onSubmit={handleSubmit} className="p-6 md:p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="businessName">Business Name</Label>
-                      <Input
-                        id="businessName"
-                        name="businessName"
-                        value={formData.businessName}
-                        onChange={handleInputChange}
-                        placeholder="e.g., Acme Corporation"
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="industry">Industry</Label>
-                      <Select 
-                        value={formData.industry} 
-                        onValueChange={(value) => handleSelectChange('industry', value)}
-                      >
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select industry" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="technology">Technology</SelectItem>
-                          <SelectItem value="healthcare">Healthcare</SelectItem>
-                          <SelectItem value="retail">Retail</SelectItem>
-                          <SelectItem value="food">Food & Beverage</SelectItem>
-                          <SelectItem value="finance">Finance</SelectItem>
-                          <SelectItem value="education">Education</SelectItem>
-                          <SelectItem value="real-estate">Real Estate</SelectItem>
-                          <SelectItem value="manufacturing">Manufacturing</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="targetMarket">Target Market</Label>
-                      <Input
-                        id="targetMarket"
-                        name="targetMarket"
-                        value={formData.targetMarket}
-                        onChange={handleInputChange}
-                        placeholder="e.g., Small businesses, Young professionals"
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="revenue">Expected Revenue (Annual)</Label>
-                      <Input
-                        id="revenue"
-                        name="revenue"
-                        value={formData.revenue}
-                        onChange={handleInputChange}
-                        placeholder="e.g., $100,000"
-                        className="mt-1"
-                      />
-                    </div>
+                <div className="grid grid-cols-1 gap-6">
+                  <div>
+                    <Label htmlFor="businessName">Business Name</Label>
+                    <Input
+                      id="businessName"
+                      name="businessName"
+                      value={formData.businessName}
+                      onChange={handleInputChange}
+                      placeholder="e.g., Acme Corporation"
+                      required
+                      className="mt-1"
+                    />
                   </div>
                   
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="businessDescription">Business Description</Label>
-                      <Textarea
-                        id="businessDescription"
-                        name="businessDescription"
-                        value={formData.businessDescription}
-                        onChange={handleInputChange}
-                        placeholder="Describe your business, product, or service..."
-                        required
-                        className="mt-1 min-h-24"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="businessGoals">Business Goals</Label>
-                      <Textarea
-                        id="businessGoals"
-                        name="businessGoals"
-                        value={formData.businessGoals}
-                        onChange={handleInputChange}
-                        placeholder="What are your short and long-term goals?"
-                        className="mt-1 min-h-24"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="competitorInfo">Competitor Information</Label>
-                      <Textarea
-                        id="competitorInfo"
-                        name="competitorInfo"
-                        value={formData.competitorInfo}
-                        onChange={handleInputChange}
-                        placeholder="Who are your main competitors?"
-                        className="mt-1 min-h-24"
-                      />
-                    </div>
+                  <div>
+                    <Label htmlFor="businessDescription">Business Description</Label>
+                    <Textarea
+                      id="businessDescription"
+                      name="businessDescription"
+                      value={formData.businessDescription}
+                      onChange={handleInputChange}
+                      placeholder="Describe your business, product, or service in detail. Include information about your target market, goals, competitors, and expected revenue."
+                      required
+                      className="mt-1 min-h-40"
+                    />
                   </div>
                 </div>
                 

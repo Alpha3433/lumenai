@@ -15,12 +15,6 @@ import {
 export interface BusinessFormData {
   businessName: string;
   businessDescription: string;
-  industry: string;
-  targetMarket: string;
-  businessGoals: string;
-  competitorInfo: string;
-  revenue: string;
-  timePeriod: string;
 }
 
 export interface BusinessPlanData {

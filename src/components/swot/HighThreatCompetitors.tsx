@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertCircle, CheckCircle, ExternalLink, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { extractCompetitors } from '@/utils/dashboardUtils';
+import { extractCompetitors } from '@/components/dashboard/DashboardUtils';
 
 interface HighThreatCompetitorsProps {
   marketAnalysis: string;

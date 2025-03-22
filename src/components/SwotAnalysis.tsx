@@ -6,12 +6,14 @@ import SwotTable from './swot/SwotTable';
 import SwotCards from './swot/SwotCards';
 import SwotFallback from './swot/SwotFallback';
 import ProblemPriorityMatrix from './swot/ProblemPriorityMatrix';
+import HighThreatCompetitors from './swot/HighThreatCompetitors';
 
 interface SwotAnalysisProps {
   swotText: string;
+  marketAnalysis?: string;
 }
 
-const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
+const SwotAnalysis = ({ swotText, marketAnalysis = '' }: SwotAnalysisProps) => {
   // Extract SWOT components from the text
   const swotData = extractSwotComponents(swotText);
   
@@ -36,6 +38,9 @@ const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
       {hasStructuredData && (swotData.weaknesses.length > 0 || swotData.threats.length > 0) && (
         <ProblemPriorityMatrix swotData={swotData} />
       )}
+      
+      {/* Add the High Threat Competitors section */}
+      {marketAnalysis && <HighThreatCompetitors marketAnalysis={marketAnalysis} />}
     </div>
   );
 };

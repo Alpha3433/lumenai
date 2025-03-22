@@ -71,7 +71,10 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
                 </div>
                 SWOT Analysis
               </h2>
-              <SwotAnalysis swotText={businessPlan.swotAnalysis} />
+              <SwotAnalysis 
+                swotText={businessPlan.swotAnalysis} 
+                marketAnalysis={businessPlan.marketAnalysis}
+              />
             </section>
             
             <Separator className="my-10" />

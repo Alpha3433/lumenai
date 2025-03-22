@@ -1,14 +1,37 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp, Search, CheckCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [currentIndustry, setCurrentIndustry] = useState(0);
+  const industries = [
+    "Business", 
+    "Tech", 
+    "Food", 
+    "Health", 
+    "Finance", 
+    "Travel", 
+    "Fashion",
+    "Sports",
+    "Media",
+    "Education"
+  ];
+  const flipInterval = useRef<number | null>(null);
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Start the flip animation
+    flipInterval.current = window.setInterval(() => {
+      setCurrentIndustry(prev => (prev + 1) % industries.length);
+    }, 2000); // Change every 2 seconds
+    
+    return () => {
+      if (flipInterval.current) clearInterval(flipInterval.current);
+    };
   }, []);
 
   return (
@@ -17,7 +40,24 @@ const Hero = () => {
         <h1 
           className={`text-4xl md:text-5xl lg:text-7xl font-bold leading-tight transition-all duration-700 delay-300 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
-          Discover Profitable <span className="text-primary">Business</span> Niches with AI
+          Discover Profitable 
+          <span className="relative inline-block mx-2">
+            <span className="text-primary flip-container overflow-hidden">
+              {industries.map((industry, index) => (
+                <span 
+                  key={industry} 
+                  className={`flip-item absolute left-0 w-full transition-all duration-500 ${
+                    index === currentIndustry 
+                      ? 'opacity-100 transform-none' 
+                      : 'opacity-0 -translate-y-8'
+                  }`}
+                >
+                  {industry}
+                </span>
+              ))}
+            </span>
+          </span>
+          Niches with AI
         </h1>
         
         <p 

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -51,12 +50,16 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
         <Card className="border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex justify-between items-start">
-              <h3 className="text-sm font-semibold text-muted-foreground">Revenue Projection</h3>
+              <h3 className="text-sm font-semibold text-muted-foreground">Financial Outlook</h3>
               <DollarSign className="h-4 w-4 text-green-500" />
             </div>
             <div className="mt-3">
-              <p className="text-base font-medium">{revenue?.year1 || "Projected Growth"}</p>
-              <p className="text-sm text-muted-foreground mt-1">Year 1 Estimate</p>
+              <p className="text-base font-medium">
+                {revenue?.year1 ? `${revenue.year1}` : "Financial Assessment in Progress"}
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                {revenue?.year1 ? "Projected First-Year Revenue" : "Comprehensive Analysis Pending"}
+              </p>
             </div>
           </CardContent>
         </Card>

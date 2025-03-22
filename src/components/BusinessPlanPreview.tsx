@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -67,22 +66,17 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             {/* Business Validation Score - Replacing Financial Table */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-                <Sparkles className="h-6 w-6 text-emerald-500" />
+                <div className="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
+                  <Sparkles className="h-5 w-5 text-emerald-500" />
+                </div>
                 Business Validation
               </h2>
               
-              <Card className={cn(
-                "border border-gray-200 dark:border-gray-800 shadow-sm",
-                "bg-gradient-to-br from-emerald-50/50 to-transparent dark:from-emerald-950/30 dark:to-transparent"
-              )}>
-                <CardContent className="p-6">
-                  <div className="prose dark:prose-invert max-w-none text-sm mb-6">
-                    <p className="leading-relaxed">{businessPlan.financialProjections}</p>
-                  </div>
-                  
-                  <BusinessValidationScore businessText={businessPlan.financialProjections} />
-                </CardContent>
-              </Card>
+              <div className="prose dark:prose-invert max-w-none text-sm mb-6 bg-emerald-50/50 dark:bg-emerald-950/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900/20">
+                <p className="leading-relaxed">{businessPlan.financialProjections}</p>
+              </div>
+              
+              <BusinessValidationScore businessText={businessPlan.financialProjections} />
             </section>
             
             <Separator className="my-10" />
@@ -90,7 +84,9 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             {/* SWOT Analysis */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-                <CheckCircle className="h-6 w-6 text-purple-500" />
+                <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-full">
+                  <CheckCircle className="h-5 w-5 text-purple-500" />
+                </div>
                 SWOT Analysis
               </h2>
               <SwotAnalysis swotText={businessPlan.swotAnalysis} />

@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ValidationData, getScoreBadge } from '@/utils/businessValidationUtils';
-import { LucideIcon, Users, Coins, Target, Calendar, TrendingUp } from 'lucide-react';
+import { LucideIcon, Users, Coins, Target, Calendar, TrendingUp, CheckCircle } from 'lucide-react';
 
 interface ValidationScoreCardProps {
   validationData: ValidationData;
@@ -44,7 +44,7 @@ const ValidationScoreCard = ({ validationData }: ValidationScoreCardProps) => {
         </div>
         
         {/* Category scores */}
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-4 mb-4">
           {validationData.categories.map((category, index) => {
             // Get the correct icon component
             const IconComponent = iconMap[category.icon] || iconMap.TrendingUp;
@@ -70,6 +70,43 @@ const ValidationScoreCard = ({ validationData }: ValidationScoreCardProps) => {
               </div>
             );
           })}
+        </div>
+
+        {/* Added key metrics section with dot points */}
+        <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg mt-2">
+          <h4 className="font-medium text-sm mb-2">Key Metrics Explained:</h4>
+          <ul className="space-y-1.5">
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">
+                <span className="font-medium">Market Need</span>: Measures the urgency and size of the problem your business solves
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">
+                <span className="font-medium">Profitability</span>: Assesses revenue potential and projected margins
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">
+                <span className="font-medium">Competition</span>: Evaluates the competitive landscape and barriers to entry
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">
+                <span className="font-medium">Time to Market</span>: Indicates how quickly your business can launch
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">
+                <span className="font-medium">Scalability</span>: Measures growth potential and ability to expand
+              </span>
+            </li>
+          </ul>
         </div>
       </CardContent>
     </Card>

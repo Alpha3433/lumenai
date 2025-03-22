@@ -8,7 +8,6 @@ import {
   generateMarketingPlan,
   generateFinancialProjections,
   generateRiskAssessment,
-  generateImplementationTimeline,
   generateSwotAnalysis
 } from "./mockPlanSections";
 
@@ -24,7 +23,6 @@ export interface BusinessPlanData {
   marketingPlan: string;
   financialProjections: string;
   riskAssessment: string;
-  implementationTimeline: string;
   swotAnalysis: string;
 }
 
@@ -32,7 +30,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   toast.success("Generating your business plan...");
   
   try {
-    // Generate each section using OpenAI in parallel
     console.log("Generating business plan sections with OpenAI...");
     
     const [
@@ -42,7 +39,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       marketingPlan,
       financialProjections,
       riskAssessment,
-      implementationTimeline,
       swotAnalysis
     ] = await Promise.all([
       generateSection('executive summary', formData),
@@ -51,7 +47,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       generateSection('marketing plan', formData),
       generateSection('financial projections', formData),
       generateSection('risk assessment', formData),
-      generateSection('implementation timeline', formData),
       generateSection('swot analysis', formData)
     ]);
     
@@ -62,7 +57,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       marketingPlan,
       financialProjections,
       riskAssessment,
-      implementationTimeline,
       swotAnalysis
     };
     
@@ -72,8 +66,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     console.error("Error generating business plan:", error);
     toast.error("Failed to generate business plan. Using placeholder data.");
     
-    // Fallback to mock data if OpenAI fails
-    console.log("Using mock data as fallback");
     return {
       executiveSummary: generateExecutiveSummary(formData),
       marketAnalysis: generateMarketAnalysis(formData),
@@ -81,7 +73,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       marketingPlan: generateMarketingPlan(formData),
       financialProjections: generateFinancialProjections(formData),
       riskAssessment: generateRiskAssessment(formData),
-      implementationTimeline: generateImplementationTimeline(formData),
       swotAnalysis: generateSwotAnalysis(formData)
     };
   }

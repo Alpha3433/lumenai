@@ -1,4 +1,3 @@
-
 import { BusinessFormData } from "./planGenerator";
 
 // Extract details from business description
@@ -144,41 +143,6 @@ export function generateRiskAssessment(formData: BusinessFormData): string {
    Mitigation: Regulatory monitoring system, compliance-first approach, strong IP protection
 
 We will implement a quarterly risk assessment review process to ensure all potential threats are identified early and addressed proactively.`;
-}
-
-// Implementation Timeline mock generator
-export function generateImplementationTimeline(formData: BusinessFormData): string {
-  return `Implementation Roadmap for ${formData.businessName}:
-
-Phase 1: Foundation (Months 1-3)
-- Complete business registration and legal setup
-- Finalize core team hiring
-- Develop minimum viable product/service
-- Establish initial web presence and brand identity
-- Secure seed funding or initial capital deployment
-
-Phase 2: Market Entry (Months 4-6)
-- Launch product/service to early adopters
-- Implement initial marketing campaigns
-- Establish key partnerships and vendor relationships
-- Set up customer feedback and analytics systems
-- Refine offering based on initial market response
-
-Phase 3: Growth Acceleration (Months 7-12)
-- Scale marketing and sales operations
-- Expand product/service offerings
-- Optimize operational efficiency
-- Hire additional team members in key growth areas
-- Implement customer retention and loyalty programs
-
-Phase 4: Expansion (Months 13-24)
-- Consider geographic or market segment expansion
-- Introduce additional revenue streams
-- Evaluate strategic partnerships or acquisition opportunities
-- Implement advanced data analytics for decision-making
-- Review and revise long-term strategic goals
-
-Each phase includes specific milestones, KPIs, and responsible team members to ensure accountability and measurable progress.`;
 }
 
 // SWOT Analysis mock generator

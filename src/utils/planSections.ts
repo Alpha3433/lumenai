@@ -1,4 +1,3 @@
-
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 
@@ -71,10 +70,6 @@ The financial projections should include specific numbers for anticipated revenu
     'risk assessment': `Perform a risk assessment for a business with these factors:${baseContext}
     
 The risk assessment should identify potential internal and external risks, their likelihood and impact, and mitigation strategies. Consider market, operational, financial, and regulatory risks.`,
-
-    'implementation timeline': `Create a phased implementation timeline for launching and growing this business:${baseContext}
-    
-The implementation timeline should outline specific phases (such as Planning Phase, Setup Phase, Launch Phase, and Growth Phase) with key milestones, deadlines, and specific action items for each phase. Include timeframes for each phase (e.g., Months 1-2, Months 3-4, etc.). Structure the response as a clear timeline with phases and bullet points for tasks in each phase.`,
 
     'swot analysis': `Conduct a SWOT analysis for a business with these characteristics:${baseContext}
     

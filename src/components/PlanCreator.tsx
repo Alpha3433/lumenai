@@ -3,11 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Download, FileText, CheckCircle, Sparkles, Activity, FileStack, Clock, Lock, Building } from 'lucide-react';
+import { Loader2, Download, FileText, CheckCircle, Sparkles, Activity, FileStack, Lock, Building } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import SwotAnalysis from '@/components/SwotAnalysis';
-import TimelineChart from '@/components/TimelineChart';
 import MarketAnalysisSection from '@/components/MarketAnalysisSection';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -19,7 +18,6 @@ interface BusinessPlanData {
   marketingPlan: string;
   financialProjections: string;
   riskAssessment: string;
-  implementationTimeline: string;
   swotAnalysis: string;
 }
 
@@ -30,7 +28,6 @@ const defaultBusinessPlan: BusinessPlanData = {
   marketingPlan: '',
   financialProjections: '',
   riskAssessment: '',
-  implementationTimeline: '',
   swotAnalysis: ''
 };
 
@@ -346,17 +343,6 @@ const PlanCreator = () => {
                   </Card>
                 </section>
               </div>
-              
-              <Separator className="my-10" />
-              
-              {/* Implementation Timeline */}
-              <section className="mb-8">
-                <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-                  <Clock className="h-6 w-6 text-amber-500" />
-                  Implementation Timeline
-                </h2>
-                <TimelineChart timelineText={businessPlan.implementationTimeline} />
-              </section>
             </CardContent>
           </Card>
           

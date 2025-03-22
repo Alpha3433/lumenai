@@ -5,6 +5,7 @@ import { extractSwotComponents } from '@/utils/swotUtils';
 import SwotTable from './swot/SwotTable';
 import SwotCards from './swot/SwotCards';
 import SwotFallback from './swot/SwotFallback';
+import ProblemPriorityMatrix from './swot/ProblemPriorityMatrix';
 
 interface SwotAnalysisProps {
   swotText: string;
@@ -25,11 +26,16 @@ const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
                             swotData.opportunities.length > 0 || swotData.threats.length > 0;
 
   return (
-    <div className="space-y-4 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       {hasEnoughDataForTable() && <div className="hidden md:block"><SwotTable swotData={swotData} /></div>}
       <div className={cn(hasEnoughDataForTable() ? "md:hidden" : "")}>
         {hasStructuredData ? <SwotCards swotData={swotData} /> : <SwotFallback swotText={swotText} />}
       </div>
+      
+      {/* Only show the Problem Priority Matrix if we have weaknesses or threats */}
+      {hasStructuredData && (swotData.weaknesses.length > 0 || swotData.threats.length > 0) && (
+        <ProblemPriorityMatrix swotData={swotData} />
+      )}
     </div>
   );
 };

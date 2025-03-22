@@ -4,14 +4,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PieChart } from 'lucide-react';
 
 interface MarketInsightCardProps {
-  demographic?: string;
-  size?: string;
-  className?: string;
+  demographic: string | undefined;
+  size: string | undefined;
 }
 
-const MarketInsightCard: React.FC<MarketInsightCardProps> = ({ demographic, size, className = '' }) => {
+const MarketInsightCard: React.FC<MarketInsightCardProps> = ({ demographic, size }) => {
   return (
-    <Card className={`border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow ${className}`}>
+    <Card className="border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
       <CardContent className="p-4">
         <div className="flex justify-between items-start">
           <h3 className="text-sm font-semibold text-muted-foreground">Market Insights</h3>

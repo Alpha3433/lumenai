@@ -14,7 +14,7 @@ const RiskAssessmentSection: React.FC<RiskAssessmentSectionProps> = ({ riskAsses
   // This is mock data that would be replaced with actual parsed content
   const competitors = [
     {
-      name: "Competitor A",
+      name: "Salesforce",
       marketShare: "34%",
       strength: "Strong brand recognition and customer loyalty",
       weakness: "Limited digital presence, slower to adapt to market changes",
@@ -22,7 +22,7 @@ const RiskAssessmentSection: React.FC<RiskAssessmentSectionProps> = ({ riskAsses
       founded: 2005
     },
     {
-      name: "Competitor B",
+      name: "HubSpot",
       marketShare: "28%",
       strength: "Innovative technology solutions and rapid product development",
       weakness: "Higher price point, smaller customer service team",
@@ -30,7 +30,7 @@ const RiskAssessmentSection: React.FC<RiskAssessmentSectionProps> = ({ riskAsses
       founded: 2010
     },
     {
-      name: "Competitor C",
+      name: "Zoho",
       marketShare: "19%",
       strength: "Extensive distribution network and excellent supply chain",
       weakness: "Product quality inconsistencies, outdated marketing strategies",

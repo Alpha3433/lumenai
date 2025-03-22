@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from '@/components/ui/label';
 import { Loader2, Sparkles } from 'lucide-react';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Progress } from './ui/progress';
 
 interface BusinessPlanFormProps {
   formData: {
@@ -13,6 +15,7 @@ interface BusinessPlanFormProps {
     businessDescription: string;
   };
   generating: boolean;
+  generatingProgress: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
 }
@@ -20,6 +23,7 @@ interface BusinessPlanFormProps {
 const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
   formData,
   generating,
+  generatingProgress,
   onChange,
   onSubmit
 }) => {
@@ -88,6 +92,55 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
           </form>
         </CardContent>
       </Card>
+
+      {/* Interactive Loading Dialog */}
+      <Dialog open={generating} onOpenChange={() => {}}>
+        <DialogContent className="sm:max-w-md" hideCloseButton>
+          <div className="space-y-6 py-6">
+            <div className="text-center space-y-2">
+              <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />
+              <h3 className="text-xl font-semibold">Creating Your Business Plan</h3>
+              <p className="text-sm text-muted-foreground">
+                We're analyzing your business concept and generating a comprehensive plan...
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Progress 
+                value={generatingProgress} 
+                className="h-2 bg-gray-200 dark:bg-gray-700"
+              />
+              <p className="text-sm text-center text-muted-foreground">
+                {generatingProgress < 33 && "Analyzing market opportunity..."}
+                {generatingProgress >= 33 && generatingProgress < 66 && "Building business model..."}
+                {generatingProgress >= 66 && generatingProgress < 99 && "Finalizing your business plan..."}
+                {generatingProgress === 100 && "Complete! Preparing your results..."}
+              </p>
+            </div>
+
+            <div className="bg-muted/50 p-4 rounded-lg space-y-3">
+              <div className="flex items-start space-x-3">
+                <div className="min-w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Step {generatingProgress < 33 ? '1/4' : generatingProgress < 66 ? '2/4' : generatingProgress < 99 ? '3/4' : '4/4'}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {generatingProgress < 33 && "Market analysis and competitive landscape"}
+                    {generatingProgress >= 33 && generatingProgress < 66 && "Financial projections and business model"}
+                    {generatingProgress >= 66 && generatingProgress < 99 && "Risk assessment and SWOT analysis"}
+                    {generatingProgress === 100 && "Finalizing executive summary and recommendations"}
+                  </p>
+                </div>
+              </div>
+              
+              <p className="text-xs italic text-muted-foreground">
+                Our AI is working hard to create a tailored business plan for "{formData.businessName}"
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

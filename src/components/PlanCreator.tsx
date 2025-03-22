@@ -4,7 +4,6 @@ import { generateBusinessPlan } from '@/utils/planGenerator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
 import { toast } from '@/components/ui/use-toast';
-import { Progress } from './ui/progress';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -57,22 +56,47 @@ const PlanCreator = () => {
     setGenerating(true);
     setGeneratingProgress(0);
     
-    // Simulate progress
-    const progressInterval = setInterval(() => {
-      setGeneratingProgress(prev => {
-        if (prev >= 95) {
-          clearInterval(progressInterval);
-          return prev;
-        }
-        return prev + Math.floor(Math.random() * 10);
-      });
-    }, 600);
+    // Simulate more realistic and interactive progress
+    const progressSteps = [
+      { target: 15, time: 1000 }, // Market analysis starts
+      { target: 35, time: 2000 }, // Business model analysis
+      { target: 60, time: 2500 }, // Financial projections
+      { target: 85, time: 2000 }, // Risk assessment
+      { target: 95, time: 1500 }, // Final touches
+    ];
+    
+    let currentStep = 0;
+    const simulateProgress = () => {
+      if (currentStep < progressSteps.length) {
+        const { target, time } = progressSteps[currentStep];
+        
+        const smallStepTime = time / (target - generatingProgress);
+        const stepInterval = setInterval(() => {
+          setGeneratingProgress(prev => {
+            const next = prev + 1;
+            if (next >= target) {
+              clearInterval(stepInterval);
+              currentStep++;
+              setTimeout(simulateProgress, 300); // Slight pause between major steps
+              return target;
+            }
+            return next;
+          });
+        }, smallStepTime);
+      }
+    };
+    
+    simulateProgress();
     
     try {
       const plan = await generateBusinessPlan(formData);
       setBusinessPlan(plan);
-      setStep(2);
       setGeneratingProgress(100);
+      
+      // Small delay to show 100% completion before showing the results
+      setTimeout(() => {
+        setStep(2);
+      }, 800);
     } catch (error) {
       console.error('Error generating business plan:', error);
       toast({
@@ -81,8 +105,9 @@ const PlanCreator = () => {
         variant: "destructive"
       });
     } finally {
-      clearInterval(progressInterval);
-      setGenerating(false);
+      setTimeout(() => {
+        setGenerating(false);
+      }, 800);
     }
   };
 
@@ -115,22 +140,13 @@ const PlanCreator = () => {
   return (
     <div className="container max-w-5xl mx-auto py-12 px-4">
       {step === 1 ? (
-        <>
-          <BusinessPlanForm
-            formData={formData}
-            generating={generating}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
-          />
-          {generating && (
-            <div className="mt-8 space-y-3">
-              <Progress value={generatingProgress} className="h-2 bg-gray-200 dark:bg-gray-700" />
-              <p className="text-sm text-center text-muted-foreground animate-pulse">
-                Generating your business plan... {generatingProgress}%
-              </p>
-            </div>
-          )}
-        </>
+        <BusinessPlanForm
+          formData={formData}
+          generating={generating}
+          generatingProgress={generatingProgress}
+          onChange={handleInputChange}
+          onSubmit={handleSubmit}
+        />
       ) : (
         <BusinessPlanPreview
           businessName={formData.businessName}

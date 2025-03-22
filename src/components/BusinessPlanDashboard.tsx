@@ -9,7 +9,7 @@ import {
   extractStrengths, 
   extractOpportunities,
   extractCompetitors
-} from './dashboard/DashboardUtils';
+} from '@/components/dashboard/DashboardUtils';
 
 interface BusinessPlanDashboardProps {
   businessName: string;

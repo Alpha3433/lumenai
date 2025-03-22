@@ -27,25 +27,33 @@ export interface BusinessPlanData {
 }
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
-  toast.success("Generating your business plan...");
+  toast.info("Analyzing your business concept...");
+  
+  if (!formData.businessName || !formData.businessDescription) {
+    toast.error("Business name and description are required");
+    throw new Error("Business name and description are required");
+  }
   
   try {
     console.log("Generating business plan sections with OpenAI...");
     
-    const [
-      executiveSummary,
-      marketAnalysis,
-      businessModel,
-      marketingPlan,
-      financialProjections,
-      riskAssessment,
-      swotAnalysis
-    ] = await Promise.all([
-      generateSection('executive summary', formData),
+    // We'll generate sections sequentially to provide better context between sections
+    const executiveSummary = await generateSection('executive summary', formData);
+    toast.info("Executive summary created...");
+    
+    const [marketAnalysis, businessModel] = await Promise.all([
       generateSection('market analysis', formData),
-      generateSection('business model', formData),
+      generateSection('business model', formData)
+    ]);
+    toast.info("Market analysis completed...");
+    
+    const [marketingPlan, financialProjections] = await Promise.all([
       generateSection('marketing plan', formData),
-      generateSection('financial projections', formData),
+      generateSection('financial projections', formData)
+    ]);
+    toast.info("Marketing and financial plans drafted...");
+    
+    const [riskAssessment, swotAnalysis] = await Promise.all([
       generateSection('risk assessment', formData),
       generateSection('swot analysis', formData)
     ]);
@@ -64,8 +72,9 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     return plan;
   } catch (error) {
     console.error("Error generating business plan:", error);
-    toast.error("Failed to generate business plan. Using placeholder data.");
+    toast.error("Failed to generate business plan. Using placeholder data instead.");
     
+    // Fallback to mock data
     return {
       executiveSummary: generateExecutiveSummary(formData),
       marketAnalysis: generateMarketAnalysis(formData),

@@ -1,4 +1,3 @@
-
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 

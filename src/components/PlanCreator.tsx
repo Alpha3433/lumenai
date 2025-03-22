@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
+import { toast } from 'sonner';
+import { Progress } from './ui/progress';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -27,6 +29,7 @@ const defaultBusinessPlan: BusinessPlanData = {
 const PlanCreator = () => {
   const [step, setStep] = useState(1);
   const [generating, setGenerating] = useState(false);
+  const [generatingProgress, setGeneratingProgress] = useState(0);
   const [formData, setFormData] = useState({
     businessName: '',
     businessDescription: ''
@@ -41,39 +44,75 @@ const PlanCreator = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.businessName.trim() || !formData.businessDescription.trim()) {
+      toast.error("Please fill out all fields before generating your plan");
+      return;
+    }
+    
     setGenerating(true);
+    setGeneratingProgress(0);
+    
+    // Simulate progress
+    const progressInterval = setInterval(() => {
+      setGeneratingProgress(prev => {
+        if (prev >= 95) {
+          clearInterval(progressInterval);
+          return prev;
+        }
+        return prev + Math.floor(Math.random() * 10);
+      });
+    }, 600);
     
     try {
       const plan = await generateBusinessPlan(formData);
       setBusinessPlan(plan);
       setStep(2);
+      setGeneratingProgress(100);
     } catch (error) {
       console.error('Error generating business plan:', error);
-      // Handle error
+      toast.error("There was an error generating your business plan. Please try again.");
     } finally {
+      clearInterval(progressInterval);
       setGenerating(false);
     }
   };
 
   const downloadPlan = () => {
     // This would handle downloading the plan as PDF
-    alert('In a production app, this would download the generated business plan as a PDF');
+    toast.success('Your business plan is being prepared for download!');
+    setTimeout(() => {
+      toast.info('In a production app, this would download the generated business plan as a PDF');
+    }, 1500);
   };
 
   const upgradeAccount = () => {
     setIsPremium(true);
-    alert('In a production app, this would redirect to a payment page. For demo purposes, you now have premium access!');
+    toast.success('Premium access granted!');
+    setTimeout(() => {
+      toast.info('In a production app, this would redirect to a payment page');
+    }, 1500);
   };
 
   return (
     <div className="container max-w-5xl mx-auto py-12 px-4">
       {step === 1 ? (
-        <BusinessPlanForm
-          formData={formData}
-          generating={generating}
-          onChange={handleInputChange}
-          onSubmit={handleSubmit}
-        />
+        <>
+          <BusinessPlanForm
+            formData={formData}
+            generating={generating}
+            onChange={handleInputChange}
+            onSubmit={handleSubmit}
+          />
+          {generating && (
+            <div className="mt-8 space-y-3">
+              <Progress value={generatingProgress} className="h-2 bg-gray-200 dark:bg-gray-700" />
+              <p className="text-sm text-center text-muted-foreground animate-pulse">
+                Generating your business plan... {generatingProgress}%
+              </p>
+            </div>
+          )}
+        </>
       ) : (
         <BusinessPlanPreview
           businessName={formData.businessName}

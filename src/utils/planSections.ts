@@ -37,9 +37,12 @@ Based on the business description, identify the industry, target market, busines
 `;
 
   const sectionPrompts: Record<string, string> = {
-    'executive summary': `Write a professional executive summary for a business plan with the following details:${baseContext}
+    'executive summary': `Write a concise and compelling executive summary for a business plan with the following details:${baseContext}
     
-The executive summary should be concise, compelling, and highlight the key aspects of the business. Focus on the value proposition, market opportunity, and business goals. Keep it under 300 words.`,
+IMPORTANT: The executive summary must be EXACTLY TWO PARAGRAPHS MAXIMUM. DO NOT include a heading or title in your response.
+Paragraph 1: Introduce the business concept, value proposition, and target market.
+Paragraph 2: Highlight the market opportunity, business model, and competitive advantage.
+Keep it under 150 words total. Do not use bullet points or headings.`,
 
     'market analysis': `Create a detailed market analysis for a business plan with the following information:${baseContext}
     

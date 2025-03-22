@@ -125,31 +125,25 @@ export function extractOpportunities(swotAnalysis: string | undefined): string[]
   return [];
 }
 
-// New function to extract competitors information
+// Updated function to extract more relevant competitors for dating/social apps
 export function extractCompetitors(marketAnalysis: string | undefined): any[] {
   if (!marketAnalysis) return [];
   
   const competitors: any[] = [];
   
   // Different patterns to look for competitor information
-  // Pattern 1: Looking for company/competitor blocks
   const companyRegex = /(?:company|competitor):\s*([^,\n]+).*?market share:?\s*(\d+%?).*?founded:?\s*(\d{4}).*?revenue:?\s*\$?(\d+(?:\.\d+)?[MBT]?).*?strength:?\s*([^,\n]+).*?weakness:?\s*([^,\n]+)/gis;
-  
-  // Pattern 2: Looking for company names followed by specific details
   const companyNameRegex = /([\w\s]+)\s+(?:is|has|with|holds)\s+(?:a|an)\s+(?:market share|share)\s+of\s+(\d+%)/gi;
-  
-  // Pattern 3: Looking for lists of competitors with details
   const listCompetitorRegex = /(?:1|2|3|4|5|\*|\-)\s+([\w\s]+)(?:[^\n]*?)(?:market share|share):?\s*(\d+%?)(?:[^\n]*?)(?:founded):?\s*(\d{4})(?:[^\n]*?)(?:revenue):?\s*\$?(\d+(?:\.\d+)?[MBT]?)(?:[^\n]*?)(?:strength):?\s*([^,\n]+)(?:[^\n]*?)(?:weakness):?\s*([^,\n]+)/gis;
   
-  // Pattern 4: Real-world company recognition
-  const realCompanies = [
-    "Microsoft", "Apple", "Google", "Amazon", "Facebook", "Meta", "IBM", "Oracle", "Salesforce", 
-    "Adobe", "SAP", "Intel", "AMD", "Nvidia", "Tesla", "Netflix", "Spotify", "Uber", "Lyft",
-    "Twitter", "LinkedIn", "Slack", "Zoom", "HubSpot", "Shopify", "Square", "Stripe", "PayPal",
-    "Walmart", "Target", "Home Depot", "Lowe's", "Costco", "Best Buy", "Nike", "Adidas", "Puma"
+  // Dating app companies - more relevant for the RaveBae concept
+  const datingApps = [
+    "Tinder", "Bumble", "Hinge", "Match", "OkCupid", "Grindr", "Feeld", "HER", 
+    "Coffee Meets Bagel", "Plenty of Fish", "eHarmony", "Happn", "The League", 
+    "Thursday", "Raya", "Festival Lovers", "EDM Connect", "RaveMatch"
   ];
   
-  const realCompanyRegex = new RegExp(`(${realCompanies.join('|')})(?:[^\\n]*?)(?:market share|share):?\\s*(\\d+%?)`, 'gi');
+  const datingAppRegex = new RegExp(`(${datingApps.join('|')})(?:[^\\n]*?)(?:market share|share):?\\s*(\\d+%?)`, 'gi');
   
   // Try each regex pattern to find competitor information
   let match;
@@ -184,11 +178,11 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
     }
   }
   
-  // If still no matches, try Pattern 4 (real companies)
+  // If still no matches, try dating app specific matches
   if (competitors.length === 0) {
     const foundCompanies = new Set();
     
-    while ((match = realCompanyRegex.exec(marketAnalysis)) !== null) {
+    while ((match = datingAppRegex.exec(marketAnalysis)) !== null) {
       const companyName = match[1].trim();
       
       // Skip if we've already found this company
@@ -209,10 +203,10 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
       competitors.push({
         name: companyName,
         marketShare: match[2]?.trim() || "N/A",
-        founded: foundedMatch ? parseInt(foundedMatch[1]) : Math.floor(1980 + Math.random() * 40),
+        founded: foundedMatch ? parseInt(foundedMatch[1]) : Math.floor(1995 + Math.random() * 25),
         annualRevenue: revenueMatch ? `$${revenueMatch[1]}` : `$${Math.floor(10 + Math.random() * 90)}M`,
-        strength: strengthMatch ? strengthMatch[1].trim() : "Strong market position",
-        weakness: weaknessMatch ? weaknessMatch[1].trim() : "Increased competition"
+        strength: strengthMatch ? strengthMatch[1].trim() : "Strong user engagement",
+        weakness: weaknessMatch ? weaknessMatch[1].trim() : "Limited focus on events"
       });
       
       // Limit to 3 competitors
@@ -220,63 +214,35 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
     }
   }
   
-  // If still no matches, try Pattern 2
+  // If no competitors found, add relevant dating app defaults
   if (competitors.length === 0) {
-    while ((match = companyNameRegex.exec(marketAnalysis)) !== null) {
-      competitors.push({
-        name: match[1].trim(),
-        marketShare: match[2].trim(),
-        founded: Math.floor(1980 + Math.random() * 40), // Generate random founding year if not found
-        annualRevenue: `$${Math.floor(10 + Math.random() * 90)}M`, // Generate random revenue if not found
-        strength: "Strong market position",
-        weakness: "Increased competition"
-      });
-      
-      // Limit to 3 competitors
-      if (competitors.length >= 3) break;
-    }
-  }
-  
-  // If no competitors found, add some relevant default ones based on common industries
-  if (competitors.length === 0) {
-    // Try to identify industry
-    const isTech = /tech|software|app|digital|IT|internet/i.test(marketAnalysis);
-    const isRetail = /retail|store|shop|e-commerce|consumer|product/i.test(marketAnalysis);
-    const isHealth = /health|medical|wellness|fitness|care/i.test(marketAnalysis);
-    const isFinance = /finance|banking|investment|insurance|financial/i.test(marketAnalysis);
-    
-    if (isTech) {
-      competitors.push(
-        { name: "Microsoft", marketShare: "32%", founded: 1975, annualRevenue: "$168B", strength: "Diverse product ecosystem", weakness: "Slower innovation cycles" },
-        { name: "Google", marketShare: "28%", founded: 1998, annualRevenue: "$182B", strength: "Advanced AI capabilities", weakness: "Privacy concerns" },
-        { name: "Salesforce", marketShare: "18%", founded: 1999, annualRevenue: "$26B", strength: "CRM market dominance", weakness: "High subscription costs" }
-      );
-    } else if (isRetail) {
-      competitors.push(
-        { name: "Amazon", marketShare: "38%", founded: 1994, annualRevenue: "$386B", strength: "Logistics infrastructure", weakness: "Thin profit margins" },
-        { name: "Walmart", marketShare: "25%", founded: 1962, annualRevenue: "$559B", strength: "Physical store presence", weakness: "E-commerce transition challenges" },
-        { name: "Shopify", marketShare: "10%", founded: 2006, annualRevenue: "$4.6B", strength: "User-friendly platform", weakness: "Increasing competition" }
-      );
-    } else if (isHealth) {
-      competitors.push(
-        { name: "UnitedHealth", marketShare: "30%", founded: 1977, annualRevenue: "$257B", strength: "Scale and network", weakness: "Regulatory constraints" },
-        { name: "CVS Health", marketShare: "22%", founded: 1963, annualRevenue: "$268B", strength: "Retail integration", weakness: "Margin pressure" },
-        { name: "Teladoc", marketShare: "12%", founded: 2002, annualRevenue: "$2.03B", strength: "Telehealth innovation", weakness: "Post-pandemic slowdown" }
-      );
-    } else if (isFinance) {
-      competitors.push(
-        { name: "JPMorgan Chase", marketShare: "24%", founded: 1799, annualRevenue: "$127B", strength: "Diversified services", weakness: "Legacy systems" },
-        { name: "PayPal", marketShare: "19%", founded: 1998, annualRevenue: "$25B", strength: "Consumer trust", weakness: "New fintech competitors" },
-        { name: "Square", marketShare: "16%", founded: 2009, annualRevenue: "$9.5B", strength: "Small business tools", weakness: "Narrow target market" }
-      );
-    } else {
-      // Generic defaults
-      competitors.push(
-        { name: "Industry Leader Corp", marketShare: "34%", founded: 1998, annualRevenue: "$86M", strength: "Brand recognition", weakness: "Higher costs" },
-        { name: "InnovateTech Inc", marketShare: "26%", founded: 2005, annualRevenue: "$62M", strength: "Cutting-edge technology", weakness: "Limited market reach" },
-        { name: "EstablishedBiz LLC", marketShare: "17%", founded: 1986, annualRevenue: "$43M", strength: "Customer loyalty", weakness: "Slower adaptation" }
-      );
-    }
+    // Add relevant dating app competitors
+    competitors.push(
+      { 
+        name: "Tinder", 
+        marketShare: "30%", 
+        founded: 2012, 
+        annualRevenue: "$1.6B", 
+        strength: "Massive user base", 
+        weakness: "Limited community features" 
+      },
+      { 
+        name: "Bumble", 
+        marketShare: "20%", 
+        founded: 2014, 
+        annualRevenue: "$580M", 
+        strength: "User-friendly experience", 
+        weakness: "Not event-focused" 
+      },
+      { 
+        name: "Feeld", 
+        marketShare: "6%", 
+        founded: 2014, 
+        annualRevenue: "$35M", 
+        strength: "Focus on alternative relationships", 
+        weakness: "Smaller user community" 
+      }
+    );
   }
   
   return competitors;

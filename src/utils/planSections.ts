@@ -1,3 +1,4 @@
+
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 
@@ -45,15 +46,15 @@ Keep it under 150 words total. Do not use bullet points or headings.`,
 
     'market analysis': `Create a detailed market analysis for a business plan with the following information:${baseContext}
     
-The market analysis should include:
-1. Industry overview and current size in dollar terms
-2. Target market demographics with specific age ranges and characteristics
-3. Market growth rate percentage
-4. Competitive landscape with number of main competitors
-5. Market trends that affect this business
-6. Market segments with approximate percentage breakdowns
+The market analysis should focus on the following aspects:
+- Industry overview including current market size (provide a specific dollar amount)
+- Target demographic details with specific age ranges
+- Market growth trends with percentage figures
+- Key competitors (mention how many main competitors exist)
+- Market opportunities and challenges
+- Segment breakdown with their relative importance
 
-Present this as a coherent, detailed paragraph without subheadings or bullet points. Include specific numbers for market size, growth rate, and other metrics where possible.`,
+Write this as a coherent, detailed paragraph without subheadings or bullet points. Include specific numbers and metrics where possible to make the analysis data-rich and credible. Keep the tone professional and objective.`,
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     

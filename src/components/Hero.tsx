@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Search, CheckCircle } from 'lucide-react';
@@ -17,7 +16,7 @@ const Hero = () => {
         <h1 
           className={`text-4xl md:text-5xl lg:text-7xl font-bold leading-tight transition-all duration-700 delay-300 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
-          Discover Profitable <span className="text-primary">Business Niches</span> with AI
+          Discover Profitable <span>Business Niches</span> with AI
         </h1>
         
         <p 

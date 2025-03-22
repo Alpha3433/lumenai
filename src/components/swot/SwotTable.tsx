@@ -54,7 +54,7 @@ const SwotTable: React.FC<SwotTableProps> = ({ swotData }) => {
                 {strengths[i] && (
                   <div className="flex gap-2">
                     <span className="text-green-500 font-medium">•</span>
-                    <span>{strengths[i]}</span>
+                    <span style={{ whiteSpace: 'normal' }}>{strengths[i]}</span>
                   </div>
                 )}
               </TableCell>
@@ -62,7 +62,7 @@ const SwotTable: React.FC<SwotTableProps> = ({ swotData }) => {
                 {weaknesses[i] && (
                   <div className="flex gap-2">
                     <span className="text-red-500 font-medium">•</span>
-                    <span>{weaknesses[i]}</span>
+                    <span style={{ whiteSpace: 'normal' }}>{weaknesses[i]}</span>
                   </div>
                 )}
               </TableCell>
@@ -70,7 +70,7 @@ const SwotTable: React.FC<SwotTableProps> = ({ swotData }) => {
                 {opportunities[i] && (
                   <div className="flex gap-2">
                     <span className="text-blue-500 font-medium">•</span>
-                    <span>{opportunities[i]}</span>
+                    <span style={{ whiteSpace: 'normal' }}>{opportunities[i]}</span>
                   </div>
                 )}
               </TableCell>
@@ -78,7 +78,7 @@ const SwotTable: React.FC<SwotTableProps> = ({ swotData }) => {
                 {threats[i] && (
                   <div className="flex gap-2">
                     <span className="text-amber-500 font-medium">•</span>
-                    <span>{threats[i]}</span>
+                    <span style={{ whiteSpace: 'normal' }}>{threats[i]}</span>
                   </div>
                 )}
               </TableCell>

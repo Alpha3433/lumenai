@@ -21,7 +21,7 @@ const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
           </h3>
           <ul className="list-disc pl-5 space-y-2">
             {strengths.length ? strengths.slice(0, 4).map((strength, i) => (
-              <li key={i} className="text-sm">{strength}</li>
+              <li key={i} className="text-sm" style={{ whiteSpace: 'normal' }}>{strength}</li>
             )) : <li className="text-sm italic text-muted-foreground">No strengths identified.</li>}
           </ul>
         </CardContent>
@@ -35,7 +35,7 @@ const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
           </h3>
           <ul className="list-disc pl-5 space-y-2">
             {weaknesses.length ? weaknesses.slice(0, 4).map((weakness, i) => (
-              <li key={i} className="text-sm">{weakness}</li>
+              <li key={i} className="text-sm" style={{ whiteSpace: 'normal' }}>{weakness}</li>
             )) : <li className="text-sm italic text-muted-foreground">No weaknesses identified.</li>}
           </ul>
         </CardContent>
@@ -49,7 +49,7 @@ const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
           </h3>
           <ul className="list-disc pl-5 space-y-2">
             {opportunities.length ? opportunities.slice(0, 4).map((opportunity, i) => (
-              <li key={i} className="text-sm">{opportunity}</li>
+              <li key={i} className="text-sm" style={{ whiteSpace: 'normal' }}>{opportunity}</li>
             )) : <li className="text-sm italic text-muted-foreground">No opportunities identified.</li>}
           </ul>
         </CardContent>
@@ -63,7 +63,7 @@ const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
           </h3>
           <ul className="list-disc pl-5 space-y-2">
             {threats.length ? threats.slice(0, 4).map((threat, i) => (
-              <li key={i} className="text-sm">{threat}</li>
+              <li key={i} className="text-sm" style={{ whiteSpace: 'normal' }}>{threat}</li>
             )) : <li className="text-sm italic text-muted-foreground">No threats identified.</li>}
           </ul>
         </CardContent>

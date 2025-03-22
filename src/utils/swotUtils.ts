@@ -35,9 +35,32 @@ export const extractSwotComponents = (text: string): SwotComponents => {
 };
 
 export const extractBulletPoints = (text: string): string[] => {
-  // Extract bullet points, removing any empty items
-  const points = text.split(/•|-|\d+\./)
+  // Better handling of bullet points to avoid breaking a point into multiple items
+  // First try to extract bullet points marked with • 
+  let points = text.split(/\n\s*•\s*/)
     .map(point => point.trim())
     .filter(point => point.length > 0);
+  
+  // If that doesn't work well, try other common bullet point markers
+  if (points.length <= 1) {
+    points = text.split(/\n\s*-\s*|\n\s*\d+\.\s*/)
+      .map(point => point.trim())
+      .filter(point => point.length > 0);
+  }
+  
+  // If still no luck, just treat each line as a point
+  if (points.length <= 1) {
+    points = text.split(/\n+/)
+      .map(point => point.trim())
+      .filter(point => point.length > 0);
+  }
+  
+  // If there's still just one big block, try to split on sentences
+  if (points.length <= 1 && points[0]?.length > 100) {
+    points = points[0].split(/\.\s+/)
+      .map(point => point.trim() + '.')
+      .filter(point => point.length > 2); // Avoid empty points
+  }
+  
   return points;
 };

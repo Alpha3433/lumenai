@@ -9,6 +9,16 @@ interface InsightsGridProps {
 }
 
 const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities }) => {
+  // Pre-process strengths to ensure they're complete sentences
+  const processedStrengths = strengths.map(strength => 
+    strength.trim().endsWith('.') ? strength : `${strength}.`
+  );
+  
+  // Pre-process opportunities to ensure they're complete sentences
+  const processedOpportunities = opportunities.map(opportunity => 
+    opportunity.trim().endsWith('.') ? opportunity : `${opportunity}.`
+  );
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Strengths */}
@@ -16,7 +26,7 @@ const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities })
         title="Key Strengths"
         icon={Lightbulb}
         iconColor="text-amber-500"
-        insights={strengths}
+        insights={processedStrengths}
         prefix="S"
         badgeColors={{
           bg: "bg-amber-50",
@@ -33,7 +43,7 @@ const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities })
         title="Key Opportunities"
         icon={Activity}
         iconColor="text-emerald-500"
-        insights={opportunities}
+        insights={processedOpportunities}
         prefix="O"
         badgeColors={{
           bg: "bg-emerald-50",

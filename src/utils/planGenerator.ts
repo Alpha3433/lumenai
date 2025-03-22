@@ -1,5 +1,5 @@
 
-import { toast } from "sonner";
+import { toast } from "@/components/ui/use-toast";
 import { generateSection } from "./planSections";
 import { 
   generateExecutiveSummary,
@@ -27,10 +27,16 @@ export interface BusinessPlanData {
 }
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
-  toast.info("Analyzing your business concept...");
+  toast({
+    description: "Analyzing your business concept...",
+  });
   
   if (!formData.businessName || !formData.businessDescription) {
-    toast.error("Business name and description are required");
+    toast({
+      title: "Error",
+      description: "Business name and description are required",
+      variant: "destructive"
+    });
     throw new Error("Business name and description are required");
   }
   
@@ -39,19 +45,25 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     
     // We'll generate sections sequentially to provide better context between sections
     const executiveSummary = await generateSection('executive summary', formData);
-    toast.info("Executive summary created...");
+    toast({
+      description: "Executive summary created...",
+    });
     
     const [marketAnalysis, businessModel] = await Promise.all([
       generateSection('market analysis', formData),
       generateSection('business model', formData)
     ]);
-    toast.info("Market analysis completed...");
+    toast({
+      description: "Market analysis completed...",
+    });
     
     const [marketingPlan, financialProjections] = await Promise.all([
       generateSection('marketing plan', formData),
       generateSection('financial projections', formData)
     ]);
-    toast.info("Marketing and financial plans drafted...");
+    toast({
+      description: "Marketing and financial plans drafted...",
+    });
     
     const [riskAssessment, swotAnalysis] = await Promise.all([
       generateSection('risk assessment', formData),
@@ -68,11 +80,18 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       swotAnalysis
     };
     
-    toast.success("Business plan generated successfully!");
+    toast({
+      title: "Success",
+      description: "Business plan generated successfully!",
+    });
     return plan;
   } catch (error) {
     console.error("Error generating business plan:", error);
-    toast.error("Failed to generate business plan. Using placeholder data instead.");
+    toast({
+      title: "Error",
+      description: "Failed to generate business plan. Using placeholder data instead.",
+      variant: "destructive"
+    });
     
     // Fallback to mock data
     return {

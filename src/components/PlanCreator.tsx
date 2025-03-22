@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 import { Progress } from './ui/progress';
 
 interface BusinessPlanData {
@@ -46,7 +46,11 @@ const PlanCreator = () => {
     e.preventDefault();
     
     if (!formData.businessName.trim() || !formData.businessDescription.trim()) {
-      toast.error("Please fill out all fields before generating your plan");
+      toast({
+        title: "Error",
+        description: "Please fill out all fields before generating your plan",
+        variant: "destructive"
+      });
       return;
     }
     
@@ -71,7 +75,11 @@ const PlanCreator = () => {
       setGeneratingProgress(100);
     } catch (error) {
       console.error('Error generating business plan:', error);
-      toast.error("There was an error generating your business plan. Please try again.");
+      toast({
+        title: "Error",
+        description: "There was an error generating your business plan. Please try again.",
+        variant: "destructive"
+      });
     } finally {
       clearInterval(progressInterval);
       setGenerating(false);
@@ -80,17 +88,27 @@ const PlanCreator = () => {
 
   const downloadPlan = () => {
     // This would handle downloading the plan as PDF
-    toast.success('Your business plan is being prepared for download!');
+    toast({
+      title: "Success",
+      description: "Your business plan is being prepared for download!",
+    });
     setTimeout(() => {
-      toast.info('In a production app, this would download the generated business plan as a PDF');
+      toast({
+        description: "In a production app, this would download the generated business plan as a PDF",
+      });
     }, 1500);
   };
 
   const upgradeAccount = () => {
     setIsPremium(true);
-    toast.success('Premium access granted!');
+    toast({
+      title: "Success",
+      description: "Premium access granted!",
+    });
     setTimeout(() => {
-      toast.info('In a production app, this would redirect to a payment page');
+      toast({
+        description: "In a production app, this would redirect to a payment page",
+      });
     }, 1500);
   };
 

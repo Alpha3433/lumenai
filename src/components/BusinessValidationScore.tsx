@@ -2,7 +2,6 @@
 import React from 'react';
 import { extractValidationData } from '@/utils/businessValidationUtils';
 import ValidationScoreCard from './validation/ValidationScoreCard';
-import StrengthsAndChallenges from './validation/StrengthsAndChallenges';
 import RecommendationsCard from './validation/RecommendationsCard';
 
 interface BusinessValidationScoreProps {
@@ -17,16 +16,9 @@ const BusinessValidationScore = ({ businessText }: BusinessValidationScoreProps)
       {/* Overall score card */}
       <ValidationScoreCard validationData={validationData} />
       
-      {/* Pros and cons */}
-      <StrengthsAndChallenges 
-        positives={validationData.positives} 
-        negatives={validationData.negatives} 
-      />
-      
-      {/* Recommendations */}
+      {/* Recommendations - summary only */}
       <RecommendationsCard 
         score={validationData.overallScore} 
-        recommendations={validationData.recommendations} 
       />
     </div>
   );

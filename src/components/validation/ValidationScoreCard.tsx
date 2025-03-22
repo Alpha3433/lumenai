@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ValidationData, getScoreBadge } from '@/utils/businessValidationUtils';
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon, Users, Coins, Target, Calendar, TrendingUp } from 'lucide-react';
 
 interface ValidationScoreCardProps {
   validationData: ValidationData;
@@ -13,11 +13,11 @@ interface ValidationScoreCardProps {
 const ValidationScoreCard = ({ validationData }: ValidationScoreCardProps) => {
   // Map icon strings to actual Lucide components
   const iconMap: Record<string, LucideIcon> = {
-    Users: require('lucide-react').Users,
-    Coins: require('lucide-react').Coins,
-    Target: require('lucide-react').Target,
-    Calendar: require('lucide-react').Calendar,
-    TrendingUp: require('lucide-react').TrendingUp,
+    Users: Users,
+    Coins: Coins,
+    Target: Target,
+    Calendar: Calendar,
+    TrendingUp: TrendingUp,
   };
 
   return (

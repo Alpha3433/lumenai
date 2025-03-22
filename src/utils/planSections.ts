@@ -70,7 +70,35 @@ The implementation timeline should outline specific phases (such as Planning Pha
 
     'swot analysis': `Conduct a SWOT analysis for a business with these characteristics:${baseContext}
     
-The SWOT analysis should identify Strengths, Weaknesses, Opportunities, and Threats based on the provided information. Structure the response with clear headings for each SWOT component, and provide at least 3-5 bullet points under each heading. For Strengths, focus on internal advantages. For Weaknesses, identify internal limitations. For Opportunities, highlight external favorable factors. For Threats, list external unfavorable factors.`
+IMPORTANT: For the SWOT analysis, identify EXACTLY the 4 BEST Strengths, 4 BEST Weaknesses, 4 BEST Opportunities, and 4 BEST Threats based on the provided business information.
+
+Format your response as follows:
+
+**Strengths**
+• [Strength 1]
+• [Strength 2]
+• [Strength 3]
+• [Strength 4]
+
+**Weaknesses**
+• [Weakness 1]
+• [Weakness 2]
+• [Weakness 3]
+• [Weakness 4]
+
+**Opportunities**
+• [Opportunity 1]
+• [Opportunity 2]
+• [Opportunity 3]
+• [Opportunity 4]
+
+**Threats**
+• [Threat 1]
+• [Threat 2]
+• [Threat 3]
+• [Threat 4]
+
+Do not include any other text, explanations, or additional formatting. Only include the bold headings and bullet points as shown above.`
   };
 
   return sectionPrompts[section] || 

@@ -19,31 +19,40 @@ const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
       threats: [] as string[]
     };
 
-    // Simple parsing logic - extract points after each heading
-    const sections = text.split(/strengths|weaknesses|opportunities|threats/i);
+    // Simple regex-based parsing to extract each section and its bullet points
+    const strengthsMatch = text.match(/\*\*Strengths\*\*([\s\S]*?)(?=\*\*Weaknesses|\*\*Opportunities|\*\*Threats|$)/i);
+    const weaknessesMatch = text.match(/\*\*Weaknesses\*\*([\s\S]*?)(?=\*\*Strengths|\*\*Opportunities|\*\*Threats|$)/i);
+    const opportunitiesMatch = text.match(/\*\*Opportunities\*\*([\s\S]*?)(?=\*\*Strengths|\*\*Weaknesses|\*\*Threats|$)/i);
+    const threatsMatch = text.match(/\*\*Threats\*\*([\s\S]*?)(?=\*\*Strengths|\*\*Weaknesses|\*\*Opportunities|$)/i);
     
-    if (sections.length > 1) components.strengths = extractPoints(sections[1]);
-    if (sections.length > 2) components.weaknesses = extractPoints(sections[2]);
-    if (sections.length > 3) components.opportunities = extractPoints(sections[3]);
-    if (sections.length > 4) components.threats = extractPoints(sections[4]);
+    if (strengthsMatch && strengthsMatch[1]) components.strengths = extractBulletPoints(strengthsMatch[1]);
+    if (weaknessesMatch && weaknessesMatch[1]) components.weaknesses = extractBulletPoints(weaknessesMatch[1]);
+    if (opportunitiesMatch && opportunitiesMatch[1]) components.opportunities = extractBulletPoints(opportunitiesMatch[1]);
+    if (threatsMatch && threatsMatch[1]) components.threats = extractBulletPoints(threatsMatch[1]);
+    
+    // Ensure we have exactly 4 items per category (or fewer if not enough were found)
+    Object.keys(components).forEach(key => {
+      const typedKey = key as keyof typeof components;
+      components[typedKey] = components[typedKey].slice(0, 4);
+    });
     
     return components;
   };
 
-  const extractPoints = (text: string) => {
-    // Extract bullet points or numbered lists
-    const points = text.split(/•|-|\d+\./).filter(point => 
-      point.trim().length > 5 && !point.toLowerCase().includes("weaknesses") && 
-      !point.toLowerCase().includes("opportunities") && !point.toLowerCase().includes("threats")
-    );
-    return points.map(point => point.trim()).filter(Boolean);
+  const extractBulletPoints = (text: string) => {
+    // Extract bullet points, removing any empty items
+    const points = text.split(/•|-|\d+\./)
+      .map(point => point.trim())
+      .filter(point => point.length > 0);
+    return points;
   };
 
   const { strengths, weaknesses, opportunities, threats } = extractSwotComponents(swotText);
 
   // Function to calculate whether we have enough data for the table view
   const hasEnoughDataForTable = () => {
-    return strengths.length > 0 && weaknesses.length > 0 && opportunities.length > 0 && threats.length > 0;
+    return strengths.length > 0 && weaknesses.length > 0 && 
+           opportunities.length > 0 && threats.length > 0;
   };
 
   // Table view for larger screens with more structured data
@@ -79,7 +88,12 @@ const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[...Array(Math.max(strengths.length, weaknesses.length, opportunities.length, threats.length))].map((_, i) => (
+          {[...Array(Math.max(
+            Math.min(strengths.length, 4), 
+            Math.min(weaknesses.length, 4), 
+            Math.min(opportunities.length, 4), 
+            Math.min(threats.length, 4)
+          ))].map((_, i) => (
             <TableRow key={i} className={i % 2 === 0 ? "bg-background" : "bg-muted/20"}>
               <TableCell className="align-top p-3 border-r">
                 {strengths[i] && (
@@ -130,7 +144,7 @@ const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
             Strengths
           </h3>
           <ul className="list-disc pl-5 space-y-2">
-            {strengths.length ? strengths.map((strength, i) => (
+            {strengths.length ? strengths.slice(0, 4).map((strength, i) => (
               <li key={i} className="text-sm">{strength}</li>
             )) : <li className="text-sm italic text-muted-foreground">No strengths identified.</li>}
           </ul>
@@ -144,7 +158,7 @@ const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
             Weaknesses
           </h3>
           <ul className="list-disc pl-5 space-y-2">
-            {weaknesses.length ? weaknesses.map((weakness, i) => (
+            {weaknesses.length ? weaknesses.slice(0, 4).map((weakness, i) => (
               <li key={i} className="text-sm">{weakness}</li>
             )) : <li className="text-sm italic text-muted-foreground">No weaknesses identified.</li>}
           </ul>
@@ -158,7 +172,7 @@ const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
             Opportunities
           </h3>
           <ul className="list-disc pl-5 space-y-2">
-            {opportunities.length ? opportunities.map((opportunity, i) => (
+            {opportunities.length ? opportunities.slice(0, 4).map((opportunity, i) => (
               <li key={i} className="text-sm">{opportunity}</li>
             )) : <li className="text-sm italic text-muted-foreground">No opportunities identified.</li>}
           </ul>
@@ -172,7 +186,7 @@ const SwotAnalysis = ({ swotText }: SwotAnalysisProps) => {
             Threats
           </h3>
           <ul className="list-disc pl-5 space-y-2">
-            {threats.length ? threats.map((threat, i) => (
+            {threats.length ? threats.slice(0, 4).map((threat, i) => (
               <li key={i} className="text-sm">{threat}</li>
             )) : <li className="text-sm italic text-muted-foreground">No threats identified.</li>}
           </ul>

@@ -21,15 +21,18 @@ const Navbar = () => {
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/80 dark:bg-black/80 backdrop-blur-md shadow-sm py-2' 
+          ? 'bg-white/95 dark:bg-black/95 backdrop-blur-md shadow-sm py-2' 
           : 'bg-transparent py-4'
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <span className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-600">
-              Visionary Plans
+            <span className="text-xl md:text-2xl font-bold">
+              <span className="flex items-center gap-1">
+                <TrendingUpIcon className="h-5 w-5" />
+                VisionaryData
+              </span>
             </span>
           </Link>
 
@@ -41,19 +44,19 @@ const Navbar = () => {
             <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
               Features
             </a>
-            <a href="#how-it-works" className="text-sm font-medium hover:text-primary transition-colors">
-              How It Works
+            <a href="#" className="text-sm font-medium hover:text-primary transition-colors">
+              Comparison
             </a>
-            <a href="#templates" className="text-sm font-medium hover:text-primary transition-colors">
-              Templates
+            <a href="#" className="text-sm font-medium hover:text-primary transition-colors">
+              FAQ
             </a>
-            <Link to="/create" className="text-sm font-medium hover:text-primary transition-colors">
-              Create Plan
-            </Link>
           </div>
 
-          <div className="hidden md:block">
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 shadow-md transition-all">
+          <div className="hidden md:flex items-center space-x-4">
+            <Button variant="outline" className="border-gray-300 dark:border-gray-700 rounded-md">
+              Free Plan
+            </Button>
+            <Button className="bg-black hover:bg-black/90 text-white rounded-md">
               Get Started
             </Button>
           </div>
@@ -86,32 +89,27 @@ const Navbar = () => {
                 Features
               </a>
               <a 
-                href="#how-it-works" 
+                href="#" 
                 className="text-sm font-medium hover:text-primary transition-colors p-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                How It Works
+                Comparison
               </a>
               <a 
-                href="#templates" 
+                href="#" 
                 className="text-sm font-medium hover:text-primary transition-colors p-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Templates
+                FAQ
               </a>
-              <Link 
-                to="/create" 
-                className="text-sm font-medium hover:text-primary transition-colors p-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Create Plan
-              </Link>
-              <Button 
-                className="bg-primary hover:bg-primary/90 text-white rounded-full shadow-md transition-all w-full"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Get Started
-              </Button>
+              <div className="flex flex-col space-y-2 pt-2">
+                <Button variant="outline" className="border-gray-300 dark:border-gray-700 w-full rounded-md">
+                  Free Plan
+                </Button>
+                <Button className="bg-black hover:bg-black/90 text-white w-full rounded-md">
+                  Get Started
+                </Button>
+              </div>
             </div>
           </div>
         )}
@@ -119,5 +117,24 @@ const Navbar = () => {
     </nav>
   );
 };
+
+// Define the TrendingUpIcon component inline
+const TrendingUpIcon = ({ className }: { className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="24" 
+    height="24" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+    <polyline points="16 7 22 7 22 13"></polyline>
+  </svg>
+);
 
 export default Navbar;

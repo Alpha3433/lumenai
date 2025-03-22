@@ -12,6 +12,7 @@ interface BusinessPlanDashboardProps {
     marketAnalysis: string;
     businessModel: string;
     swotAnalysis: string;
+    financialProjections?: string; // Added as optional property
   };
 }
 
@@ -21,7 +22,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
 }) => {
   // Extract key metrics and insights from the business plan
   const targetMarket = extractTargetMarket(businessPlan.marketAnalysis);
-  const revenue = extractRevenue(businessPlan.financialProjections);
+  const revenue = extractRevenue(businessPlan.financialProjections || ''); // Add fallback for undefined
   const strengths = extractStrengths(businessPlan.swotAnalysis);
   const opportunities = extractOpportunities(businessPlan.swotAnalysis);
   

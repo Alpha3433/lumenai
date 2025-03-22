@@ -38,6 +38,15 @@ serve(async (req) => {
     
     console.log(`Calling OpenAI API with model: ${model}`);
     
+    // Check if this is a financial validation prompt to add special formatting instructions
+    const isValidationPrompt = prompt.toLowerCase().includes('financial and idea validation') || 
+                               prompt.toLowerCase().includes('viability score');
+    
+    // Add special system instructions for validation prompts
+    const systemMessage = isValidationPrompt ? 
+      'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores.' :
+      'You are a helpful assistant that generates business plan content.';
+    
     // Call OpenAI API using Chat Completions endpoint (newer API)
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -48,7 +57,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: model || 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: 'You are a helpful assistant that generates business plan content.' },
+          { role: 'system', content: systemMessage },
           { role: 'user', content: prompt }
         ],
         temperature: temperature || 0.7,

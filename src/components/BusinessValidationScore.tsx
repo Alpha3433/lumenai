@@ -3,6 +3,7 @@ import React from 'react';
 import { extractValidationData } from '@/utils/businessValidationUtils';
 import ValidationScoreCard from './validation/ValidationScoreCard';
 import RecommendationsCard from './validation/RecommendationsCard';
+import FormattedValidationContent from './validation/FormattedValidationContent';
 
 interface BusinessValidationScoreProps {
   businessText: string;
@@ -15,6 +16,11 @@ const BusinessValidationScore = ({ businessText }: BusinessValidationScoreProps)
     <div className="space-y-6">
       {/* Overall score card */}
       <ValidationScoreCard validationData={validationData} />
+      
+      {/* Formatted validation content */}
+      <div className="bg-card rounded-xl p-5 border border-border shadow-sm">
+        <FormattedValidationContent validationText={businessText} />
+      </div>
       
       {/* Recommendations - summary only */}
       <RecommendationsCard 

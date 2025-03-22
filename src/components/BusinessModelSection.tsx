@@ -49,7 +49,7 @@ const BusinessModelSection: React.FC<BusinessModelSectionProps> = ({ businessMod
                   <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">Core Strategy</h3>
                   <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                     <p className="text-gray-800 dark:text-gray-200">
-                      {businessModelText.split('.').slice(4).join('.') || "Loading..."}
+                      {businessModelText.split('.').slice(4, 8).join('.') || "Loading..."}
                     </p>
                   </div>
                 </div>

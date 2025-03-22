@@ -47,9 +47,9 @@ Keep it under 150 words total. Do not use bullet points or headings.`,
     'market analysis': `Create a detailed market analysis for a business plan with the following information:${baseContext}
     
 The market analysis should focus on the following aspects:
-- Industry overview including current market size (provide a specific dollar amount)
-- Target demographic details with specific age ranges
-- Market growth trends with percentage figures
+- Industry overview including current market size (provide a specific dollar amount in billions/millions)
+- Target demographic details with specific age ranges (e.g., 25-45)
+- Market growth trends with percentage figures (e.g., 12.5% annual growth)
 - Key competitors (mention how many main competitors exist)
 - Market opportunities and challenges
 - Segment breakdown with their relative importance
@@ -69,7 +69,14 @@ Format the competitor information in a way that can be easily extracted, for exa
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     
-The business model section should explain how the business will generate revenue, pricing strategy, cost structure, distribution channels, and key partnerships. Focus on sustainability and profitability.`,
+The business model section should explain how the business will generate revenue, pricing strategy, cost structure, distribution channels, and key partnerships. Focus on sustainability and profitability.
+
+Include the following details in your response:
+- Primary revenue streams with percentage breakdown (e.g., Product sales: 60%, Services: 40%)
+- Pricing model with specific price points or ranges
+- Cost structure breakdown (fixed vs variable costs)
+- Distribution channels and their relative importance
+- Key partnerships and strategic relationships`,
 
     'marketing plan': `Develop a comprehensive marketing plan for a business with these characteristics:${baseContext}
     
@@ -77,7 +84,16 @@ The marketing plan should outline target audience segmentation, positioning stra
 
     'financial projections': `Create realistic financial projections for a business with the following parameters:${baseContext}
     
-The financial projections should include specific numbers for anticipated revenue, expenses and profits for the first 3 years. Include startup costs, operational expenses, and monthly revenue estimates. Format the information clearly with specific dollar amounts for Year 1, Year 2, and Year 3 revenue, expenses and profit projections.`,
+The financial projections should include specific numbers for anticipated revenue, expenses and profits for the first 3 years. Include startup costs, operational expenses, and monthly revenue estimates. Format the information clearly with specific dollar amounts for Year 1, Year 2, and Year 3 revenue, expenses and profit projections.
+
+Please include:
+- Year 1 Revenue: $X (specify an exact amount)
+- Year 2 Revenue: $X (with X% growth)
+- Year 3 Revenue: $X (with X% growth)
+- Startup costs breakdown
+- Monthly operational expenses
+- Profit margins by year
+- Break-even timeline (in months)`,
 
     'risk assessment': `Perform a risk assessment for a business with these factors:${baseContext}
     

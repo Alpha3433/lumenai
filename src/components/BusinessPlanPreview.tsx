@@ -10,6 +10,7 @@ import MarketAnalysisSection from './MarketAnalysisSection';
 import BusinessModelSection from './BusinessModelSection';
 import MarketingPlanSection from './MarketingPlanSection';
 import RiskAssessmentSection from './RiskAssessmentSection';
+import BusinessPlanDashboard from './BusinessPlanDashboard';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -48,6 +49,12 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
       
       <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden">
         <CardContent className="p-8">
+          {/* Business Plan Dashboard */}
+          <BusinessPlanDashboard 
+            businessName={businessName}
+            businessPlan={businessPlan}
+          />
+          
           {/* Executive Summary */}
           <ExecutiveSummarySection summaryText={businessPlan.executiveSummary} />
           

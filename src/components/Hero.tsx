@@ -77,7 +77,7 @@ const Hero = () => {
           className={`text-4xl md:text-5xl lg:text-7xl font-bold leading-tight transition-all duration-700 delay-300 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           Discover Profitable 
-          <span className="relative inline-block mx-2">
+          <span className="relative inline-flex items-center mx-2">
             <span className="text-primary flip-container">
               {industries.map((industry, index) => (
                 <span 

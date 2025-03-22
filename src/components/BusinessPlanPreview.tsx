@@ -12,7 +12,7 @@ import MarketingPlanSection from './MarketingPlanSection';
 import RiskAssessmentSection from './RiskAssessmentSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import { Button } from "./ui/button";
-import FinancialTable from './FinancialTable';
+import BusinessValidationScore from './BusinessValidationScore';
 import { cn } from '@/lib/utils';
 
 interface BusinessPlanData {
@@ -65,6 +65,29 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             
             <Separator className="my-10" />
             
+            {/* Business Validation Score - Replacing Financial Table */}
+            <section className="mb-12">
+              <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
+                <Sparkles className="h-6 w-6 text-emerald-500" />
+                Business Validation
+              </h2>
+              
+              <Card className={cn(
+                "border border-gray-200 dark:border-gray-800 shadow-sm",
+                "bg-gradient-to-br from-emerald-50/50 to-transparent dark:from-emerald-950/30 dark:to-transparent"
+              )}>
+                <CardContent className="p-6">
+                  <div className="prose dark:prose-invert max-w-none text-sm mb-6">
+                    <p className="leading-relaxed">{businessPlan.financialProjections}</p>
+                  </div>
+                  
+                  <BusinessValidationScore businessText={businessPlan.financialProjections} />
+                </CardContent>
+              </Card>
+            </section>
+            
+            <Separator className="my-10" />
+            
             {/* SWOT Analysis */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
@@ -92,29 +115,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               isPremium={isPremium}
               onUpgrade={onUpgrade}
             />
-            
-            <Separator className="my-10" />
-            
-            {/* Financial Projections */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-                <Sparkles className="h-6 w-6 text-emerald-500" />
-                Financial Projections
-              </h2>
-              
-              <Card className={cn(
-                "border border-gray-200 dark:border-gray-800 shadow-sm",
-                "bg-gradient-to-br from-emerald-50/50 to-transparent dark:from-emerald-950/30 dark:to-transparent"
-              )}>
-                <CardContent className="p-6">
-                  <div className="prose dark:prose-invert max-w-none text-sm mb-6">
-                    <p className="leading-relaxed">{businessPlan.financialProjections}</p>
-                  </div>
-                  
-                  <FinancialTable financialText={businessPlan.financialProjections} />
-                </CardContent>
-              </Card>
-            </section>
             
             <Separator className="my-10" />
             

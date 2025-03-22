@@ -1,3 +1,4 @@
+
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 
@@ -87,20 +88,25 @@ Include the following details in your response:
     
 The marketing plan should outline target audience segmentation, positioning strategy, marketing channels, promotional activities, and customer acquisition strategies. Include digital and traditional approaches as appropriate.`,
 
-    'financial projections': `Create realistic financial projections for a business with the following parameters:${baseContext}
+    'financial and idea validation': `Provide a critical evaluation of this business idea, with the following details:${baseContext}
     
-IMPORTANT: The financial projections MUST include specific numbers for anticipated revenue, expenses and profits for Years 1, 2, and 3. Format the information clearly with specific dollar amounts.
+IMPORTANT: I need a detailed evaluation of the business idea that includes BOTH positives and negatives. Structure your response with the following elements:
 
-Please include:
-- Year 1 Revenue: $X (specify an exact amount)
-- Year 2 Revenue: $X (with X% growth)
-- Year 3 Revenue: $X (with X% growth)
-- Startup costs breakdown
-- Monthly operational expenses
-- Profit margins by year
-- Break-even timeline (in months)
+1. Overall viability score (a number from 1-100) with brief explanation
+2. Market need assessment (score 1-100) - How urgent is the problem being solved?
+3. Profitability potential (score 1-100) - What are the revenue and margin potentials?
+4. Competitive landscape (score 1-100) - How crowded is the space? What's the barrier to entry?
+5. Time to market (score 1-100) - How quickly can this be launched?
+6. Scalability (score 1-100) - How well can this business grow?
 
-Be specific about the dollar amounts and include all financial figures clearly labeled. For example, instead of saying "revenue will grow substantially", say "Year 1 Revenue: $120,000"`,
+For each category, provide a short explanation justifying the score.
+
+Then include:
+- Key strengths (list 4 specific positives about the business idea)
+- Key challenges (list 4 specific weaknesses or obstacles)
+- Recommendations (list 4 specific actions to improve viability)
+
+Be specific, realistic, and honest in your evaluation. Include numbers, percentages, and factual market information where possible. The goal is to provide a balanced assessment that highlights both the potential and the pitfalls of this business idea.`,
 
     'risk assessment': `Perform a risk assessment for a business with these factors:${baseContext}
     

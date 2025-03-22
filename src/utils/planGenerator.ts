@@ -59,10 +59,10 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     
     const [marketingPlan, financialProjections] = await Promise.all([
       generateSection('marketing plan', formData),
-      generateSection('financial projections', formData)
+      generateSection('financial and idea validation', formData)
     ]);
     toast({
-      description: "Marketing and financial plans drafted...",
+      description: "Validating your business idea...",
     });
     
     const [riskAssessment, swotAnalysis] = await Promise.all([
@@ -82,7 +82,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     
     toast({
       title: "Success",
-      description: "Business plan generated successfully!",
+      description: "Business plan generated with idea validation!",
     });
     return plan;
   } catch (error) {

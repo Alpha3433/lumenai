@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -10,7 +11,6 @@ import BusinessModelSection from './BusinessModelSection';
 import MarketingPlanSection from './MarketingPlanSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import { Button } from "./ui/button";
-import BusinessValidationScore from './BusinessValidationScore';
 import { cn } from '@/lib/utils';
 
 interface BusinessPlanData {
@@ -60,24 +60,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             
             {/* Executive Summary */}
             <ExecutiveSummarySection summaryText={businessPlan.executiveSummary} />
-            
-            <Separator className="my-10" />
-            
-            {/* Business Validation Score - Replacing Financial Table */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-                <div className="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
-                  <Sparkles className="h-5 w-5 text-emerald-500" />
-                </div>
-                Business Validation
-              </h2>
-              
-              <div className="prose dark:prose-invert max-w-none text-sm mb-6 bg-emerald-50/50 dark:bg-emerald-950/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900/20">
-                <p className="leading-relaxed">{businessPlan.financialProjections}</p>
-              </div>
-              
-              <BusinessValidationScore businessText={businessPlan.financialProjections} />
-            </section>
             
             <Separator className="my-10" />
             

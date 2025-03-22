@@ -6,37 +6,47 @@ export function formatValidationText(text: string): { headings: string[], points
   let currentHeadingIndex = -1;
   let currentPoints: string[] = [];
 
+  // Look for special pattern with scores like "**1. Overall viability score: 70/100**"
+  const scoreRegex = /\*\*\d+\.\s+(.*?):\s+(\d+)\/100\*\*/;
+  const sectionRegex = /^#+\s+(.*?)$|^##\s+(.*?)$/;
+  const keyPointsRegex = /^##\s+(Key\s+Strengths|Key\s+Challenges|Recommendations)\s*$/i;
+
   lines.forEach(line => {
-    // Check if line contains a heading pattern like "**3. Profitability Potential: 70/100**"
-    if (line.includes('**') && line.trim().startsWith('**') && line.trim().endsWith('**')) {
+    // Check if line contains a score pattern like "**1. Overall viability score: 70/100**"
+    if (line.match(scoreRegex)) {
       // If we already have points for a previous heading, add them
       if (currentHeadingIndex >= 0 && currentPoints.length > 0) {
         result.points[currentHeadingIndex] = [...currentPoints];
       }
       
-      // Add new heading
+      // Add new heading with score
       result.headings.push(line.replace(/\*\*/g, '').trim());
       currentHeadingIndex++;
       currentPoints = [];
     } 
-    // Check for key sections like "Key strengths", "Key challenges", "Recommendations"
-    else if (line.toLowerCase().includes('key strengths') || 
+    // Check for section headings like "## Key Strengths"
+    else if (line.match(keyPointsRegex) || line.toLowerCase().includes('key strengths') || 
              line.toLowerCase().includes('key challenges') || 
              line.toLowerCase().includes('recommendations')) {
       if (currentHeadingIndex >= 0 && currentPoints.length > 0) {
         result.points[currentHeadingIndex] = [...currentPoints];
       }
       
-      result.headings.push(line.trim());
+      // Clean up the heading text
+      const cleanHeading = line.replace(/^#+\s+/, '').replace(/\*\*/g, '').trim();
+      result.headings.push(cleanHeading);
       currentHeadingIndex++;
       currentPoints = [];
     }
     // Handle bullet points or numbered lists
     else if (line.trim().match(/^[-•*]|\d+\./) || line.trim().startsWith('-')) {
-      currentPoints.push(line.trim().replace(/^[-•*]\s*|\d+\.\s*/, ''));
+      const cleanPoint = line.trim().replace(/^[-•*]\s*|\d+\.\s*/, '');
+      if (cleanPoint) {
+        currentPoints.push(cleanPoint);
+      }
     }
-    // Add non-empty line as a point
-    else if (line.trim()) {
+    // Add non-empty line as a point if it's not a heading
+    else if (line.trim() && !line.match(sectionRegex)) {
       currentPoints.push(line.trim());
     }
   });

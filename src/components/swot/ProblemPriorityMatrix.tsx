@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { CheckCircle, AlertCircle, MinusCircle } from 'lucide-react';
 import { SwotComponents } from '@/utils/swotUtils';
 import { extractProblemsFromSwot, ProblemCategory } from '@/utils/problemMatrixUtils';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface ProblemPriorityMatrixProps {
   swotData: SwotComponents;
@@ -52,14 +52,9 @@ const ProblemPriorityMatrix: React.FC<ProblemPriorityMatrixProps> = ({ swotData 
 
   return (
     <Card className="mt-6 border border-gray-200 dark:border-gray-800 shadow-sm">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-medium flex items-center gap-2">
-          <span className="p-1 bg-blue-100 dark:bg-blue-900/30 rounded">
-            <CheckCircle className="h-4 w-4 text-blue-500" />
-          </span>
-          Problem Priority Matrix
-        </CardTitle>
-      </CardHeader>
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <h3 className="text-lg font-medium">Problem Priority Matrix</h3>
+      </div>
       <CardContent className="p-0">
         <div className="overflow-x-auto">
           <Table>

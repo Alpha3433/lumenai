@@ -4,13 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Download, FileText, CheckCircle, Sparkles, BarChart4, FileStack, Clock, Activity } from 'lucide-react';
+import { Loader2, Download, FileText, CheckCircle, Sparkles, Activity, FileStack, Clock } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import SwotAnalysis from '@/components/SwotAnalysis';
-import FinancialTable from '@/components/FinancialTable';
 import TimelineChart from '@/components/TimelineChart';
+import { Separator } from '@/components/ui/separator';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -42,7 +41,6 @@ const PlanCreator = () => {
     businessDescription: ''
   });
   const [businessPlan, setBusinessPlan] = useState<BusinessPlanData>(defaultBusinessPlan);
-  const [currentTab, setCurrentTab] = useState('executive-summary');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -140,159 +138,137 @@ const PlanCreator = () => {
           </Card>
         </div>
       ) : (
-        <div className="space-y-8 animate-fade-in">
+        <div className="space-y-10 animate-fade-in">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold">{formData.businessName} Business Plan</h1>
               <p className="text-gray-600 dark:text-gray-300">Generated based on your inputs</p>
             </div>
-            <Button
-              variant="outline"
-              className="rounded-full flex items-center gap-2"
-              onClick={downloadPlan}
-            >
-              <Download className="h-4 w-4" /> Download PDF
-            </Button>
+            <div className="flex space-x-3">
+              <Button
+                variant="outline"
+                className="rounded-full flex items-center gap-2"
+                onClick={() => setStep(1)}
+              >
+                Start Over
+              </Button>
+              <Button
+                variant="outline"
+                className="rounded-full flex items-center gap-2"
+                onClick={downloadPlan}
+              >
+                <Download className="h-4 w-4" /> Download PDF
+              </Button>
+            </div>
           </div>
           
           <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden">
-            <CardContent className="p-6">
-              <Tabs defaultValue="executive-summary" value={currentTab} onValueChange={setCurrentTab}>
-                <TabsList className="grid grid-cols-4 md:grid-cols-8 mb-6">
-                  <TabsTrigger value="executive-summary" className="flex items-center gap-1">
-                    <FileText className="h-4 w-4" />
-                    <span className="hidden md:inline">Summary</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="market-analysis" className="flex items-center gap-1">
-                    <Activity className="h-4 w-4" />
-                    <span className="hidden md:inline">Market</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="business-model" className="flex items-center gap-1">
-                    <FileStack className="h-4 w-4" />
-                    <span className="hidden md:inline">Model</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="marketing-plan" className="flex items-center gap-1">
-                    <Activity className="h-4 w-4" />
-                    <span className="hidden md:inline">Marketing</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="financial-projections" className="flex items-center gap-1">
-                    <BarChart4 className="h-4 w-4" />
-                    <span className="hidden md:inline">Financial</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="risk-assessment" className="flex items-center gap-1">
-                    <Activity className="h-4 w-4" />
-                    <span className="hidden md:inline">Risks</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="implementation-timeline" className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    <span className="hidden md:inline">Timeline</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="swot-analysis" className="flex items-center gap-1">
-                    <Activity className="h-4 w-4" />
-                    <span className="hidden md:inline">SWOT</span>
-                  </TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="executive-summary" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-blue-500" />
-                    Executive Summary
-                  </h2>
-                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
-                    <div className="prose dark:prose-invert max-w-none">
-                      <p className="leading-relaxed">{businessPlan.executiveSummary || "Loading..."}</p>
-                    </div>
-                  </Card>
-                </TabsContent>
-                
-                <TabsContent value="market-analysis" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
+            <CardContent className="p-8">
+              {/* Executive Summary */}
+              <section className="mb-12 max-w-3xl mx-auto">
+                <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
+                  <FileText className="h-6 w-6 text-blue-500" />
+                  Executive Summary
+                </h2>
+                <div className="prose dark:prose-invert max-w-none">
+                  <p className="leading-relaxed text-gray-700 dark:text-gray-300 text-lg">
+                    {businessPlan.executiveSummary || "Loading..."}
+                  </p>
+                </div>
+              </section>
+              
+              <Separator className="my-10" />
+              
+              {/* SWOT Analysis */}
+              <section className="mb-12">
+                <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
+                  <Activity className="h-6 w-6 text-purple-500" />
+                  SWOT Analysis
+                </h2>
+                <SwotAnalysis swotText={businessPlan.swotAnalysis} />
+              </section>
+              
+              <Separator className="my-10" />
+              
+              {/* Two Column Layout for Middle Sections */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
+                {/* Market Analysis */}
+                <section>
+                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <Activity className="h-5 w-5 text-blue-500" />
                     Market Analysis
                   </h2>
-                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
-                    <div className="prose dark:prose-invert max-w-none">
-                      <p className="leading-relaxed">{businessPlan.marketAnalysis || "Loading..."}</p>
-                    </div>
+                  <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
+                    <CardContent className="p-5">
+                      <div className="prose dark:prose-invert max-w-none text-sm">
+                        <p className="leading-relaxed">{businessPlan.marketAnalysis || "Loading..."}</p>
+                      </div>
+                    </CardContent>
                   </Card>
-                </TabsContent>
+                </section>
                 
-                <TabsContent value="business-model" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <FileStack className="h-5 w-5 text-blue-500" />
+                {/* Business Model */}
+                <section>
+                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <FileStack className="h-5 w-5 text-green-500" />
                     Business Model
                   </h2>
-                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
-                    <div className="prose dark:prose-invert max-w-none">
-                      <p className="leading-relaxed">{businessPlan.businessModel || "Loading..."}</p>
-                    </div>
+                  <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
+                    <CardContent className="p-5">
+                      <div className="prose dark:prose-invert max-w-none text-sm">
+                        <p className="leading-relaxed">{businessPlan.businessModel || "Loading..."}</p>
+                      </div>
+                    </CardContent>
                   </Card>
-                </TabsContent>
+                </section>
                 
-                <TabsContent value="marketing-plan" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-blue-500" />
+                {/* Marketing Plan */}
+                <section>
+                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-indigo-500" />
                     Marketing Plan
                   </h2>
-                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
-                    <div className="prose dark:prose-invert max-w-none">
-                      <p className="leading-relaxed">{businessPlan.marketingPlan || "Loading..."}</p>
-                    </div>
+                  <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
+                    <CardContent className="p-5">
+                      <div className="prose dark:prose-invert max-w-none text-sm">
+                        <p className="leading-relaxed">{businessPlan.marketingPlan || "Loading..."}</p>
+                      </div>
+                    </CardContent>
                   </Card>
-                </TabsContent>
+                </section>
                 
-                <TabsContent value="financial-projections" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <BarChart4 className="h-5 w-5 text-blue-500" />
-                    Financial Projections
-                  </h2>
-                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
-                    <FinancialTable financialText={businessPlan.financialProjections} />
-                  </Card>
-                </TabsContent>
-                
-                <TabsContent value="risk-assessment" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-blue-500" />
+                {/* Risk Assessment */}
+                <section>
+                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-red-500" />
                     Risk Assessment
                   </h2>
-                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm p-4">
-                    <div className="prose dark:prose-invert max-w-none">
-                      <p className="leading-relaxed">{businessPlan.riskAssessment || "Loading..."}</p>
-                    </div>
+                  <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
+                    <CardContent className="p-5">
+                      <div className="prose dark:prose-invert max-w-none text-sm">
+                        <p className="leading-relaxed">{businessPlan.riskAssessment || "Loading..."}</p>
+                      </div>
+                    </CardContent>
                   </Card>
-                </TabsContent>
-                
-                <TabsContent value="implementation-timeline" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-blue-500" />
-                    Implementation Timeline
-                  </h2>
-                  <TimelineChart timelineText={businessPlan.implementationTimeline} />
-                </TabsContent>
-                
-                <TabsContent value="swot-analysis" className="space-y-4 animate-fade-in">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-blue-500" />
-                    SWOT Analysis
-                  </h2>
-                  <SwotAnalysis swotText={businessPlan.swotAnalysis} />
-                </TabsContent>
-              </Tabs>
+                </section>
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Implementation Timeline */}
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
+                  <Clock className="h-6 w-6 text-amber-500" />
+                  Implementation Timeline
+                </h2>
+                <TimelineChart timelineText={businessPlan.implementationTimeline} />
+              </section>
             </CardContent>
           </Card>
           
-          <div className="flex justify-between items-center">
-            <Button 
-              variant="outline" 
-              className="rounded-full"
-              onClick={() => setStep(1)}
-            >
-              Start Over
-            </Button>
-            
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-              <CheckCircle className="h-4 w-4 text-green-500" /> 
+          <div className="flex justify-center items-center mt-4">
+            <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 font-medium bg-green-50 dark:bg-green-900/20 px-4 py-2 rounded-full">
+              <CheckCircle className="h-4 w-4" /> 
               Your business plan is ready
             </div>
           </div>

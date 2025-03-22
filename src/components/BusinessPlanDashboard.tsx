@@ -1,11 +1,8 @@
 
 import React from 'react';
 import { Separator } from "@/components/ui/separator";
-import DashboardGrid from './dashboard/DashboardGrid';
 import InsightsGrid from './dashboard/InsightsGrid';
 import CompetitorsCard from './dashboard/CompetitorsCard';
-import MarketInsightCard from './dashboard/MarketInsightCard';
-import TargetAudienceCard from './dashboard/TargetAudienceCard';
 import { 
   extractTargetMarket, 
   extractRevenue, 
@@ -48,27 +45,6 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
         <CompetitorsCard competitors={competitors} />
       </div>
       
-      {/* Market insights section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        {targetMarket && (
-          <>
-            <MarketInsightCard
-              demographic={targetMarket.demographic}
-              size={targetMarket.size}
-            />
-            <TargetAudienceCard
-              audience={targetMarket.audience}
-              growth={targetMarket.growth}
-            />
-          </>
-        )}
-      </div>
-      
-      <DashboardGrid 
-        targetMarket={targetMarket} 
-        revenue={revenue} 
-      />
-
       {/* Top Strengths & Opportunities */}
       <InsightsGrid 
         strengths={strengths} 

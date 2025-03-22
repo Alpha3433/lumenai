@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { formatValidationText } from '@/utils/businessValidationUtils';
+import { formatValidationText } from '@/utils/businessValidation';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';

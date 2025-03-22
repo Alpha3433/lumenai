@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { extractValidationData } from '@/utils/businessValidationUtils';
+import { extractValidationData } from '@/utils/businessValidation';
 import ValidationScoreCard from './validation/ValidationScoreCard';
 import RecommendationsCard from './validation/RecommendationsCard';
 import FormattedValidationContent from './validation/FormattedValidationContent';

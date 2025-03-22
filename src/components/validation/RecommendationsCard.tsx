@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Lightbulb } from 'lucide-react';
-import { getRecommendation } from '@/utils/businessValidationUtils';
+import { getRecommendation } from '@/utils/businessValidation';
 
 interface RecommendationsCardProps {
   score: number;

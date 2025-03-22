@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ValidationData, getScoreBadge } from '@/utils/businessValidationUtils';
+import { ValidationData, getScoreBadge } from '@/utils/businessValidation';
 import { LucideIcon, Users, Coins, Target, Calendar, TrendingUp, CheckCircle } from 'lucide-react';
 
 interface ValidationScoreCardProps {

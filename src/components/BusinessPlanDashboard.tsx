@@ -4,6 +4,8 @@ import { Separator } from "@/components/ui/separator";
 import DashboardGrid from './dashboard/DashboardGrid';
 import InsightsGrid from './dashboard/InsightsGrid';
 import CompetitorsCard from './dashboard/CompetitorsCard';
+import MarketInsightCard from './dashboard/MarketInsightCard';
+import TargetAudienceCard from './dashboard/TargetAudienceCard';
 import { 
   extractTargetMarket, 
   extractRevenue, 

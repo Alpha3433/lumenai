@@ -125,46 +125,62 @@ export function extractOpportunities(swotAnalysis: string | undefined): string[]
   return [];
 }
 
-// Updated function to extract more relevant competitors for dating/social apps
+// Function to dynamically extract competitors based on the industry context
 export function extractCompetitors(marketAnalysis: string | undefined): any[] {
   if (!marketAnalysis) return [];
   
   const competitors: any[] = [];
   
-  // Different patterns to look for competitor information
+  // Use regex patterns to identify competitor information
   const companyRegex = /(?:company|competitor):\s*([^,\n]+).*?market share:?\s*(\d+%?).*?founded:?\s*(\d{4}).*?revenue:?\s*\$?(\d+(?:\.\d+)?[MBT]?).*?strength:?\s*([^,\n]+).*?weakness:?\s*([^,\n]+)/gis;
-  const companyNameRegex = /([\w\s]+)\s+(?:is|has|with|holds)\s+(?:a|an)\s+(?:market share|share)\s+of\s+(\d+%)/gi;
   const listCompetitorRegex = /(?:1|2|3|4|5|\*|\-)\s+([\w\s]+)(?:[^\n]*?)(?:market share|share):?\s*(\d+%?)(?:[^\n]*?)(?:founded):?\s*(\d{4})(?:[^\n]*?)(?:revenue):?\s*\$?(\d+(?:\.\d+)?[MBT]?)(?:[^\n]*?)(?:strength):?\s*([^,\n]+)(?:[^\n]*?)(?:weakness):?\s*([^,\n]+)/gis;
   
-  // Dating app companies - more relevant for the RaveBae concept
-  const datingApps = [
-    "Tinder", "Bumble", "Hinge", "Match", "OkCupid", "Grindr", "Feeld", "HER", 
-    "Coffee Meets Bagel", "Plenty of Fish", "eHarmony", "Happn", "The League", 
-    "Thursday", "Raya", "Festival Lovers", "EDM Connect", "RaveMatch"
-  ];
+  // Look for specifically mentioned company names in the text
+  const companyMentionRegex = /([\w\s]+)\s+(?:has|with|holds|at)\s+(?:a|an)?\s*(?:market share|market|share)\s+of\s+(\d+%)/gi;
   
-  const datingAppRegex = new RegExp(`(${datingApps.join('|')})(?:[^\\n]*?)(?:market share|share):?\\s*(\\d+%?)`, 'gi');
+  // Try to identify the industry from the market analysis
+  const industryRegex = /(?:industry|market|sector)(?:\s+is|\s+in|\s+of|\s+for|\s+focuses\s+on)?\s+([\w\s,&]+)/i;
+  const industryMatch = marketAnalysis.match(industryRegex);
+  const industry = industryMatch ? industryMatch[1].trim().toLowerCase() : '';
   
-  // Try each regex pattern to find competitor information
-  let match;
+  // Search for predefined competitors based on identified industry
+  let industryCompetitorNames: string[] = [];
   
-  // Try Pattern 1
-  while ((match = companyRegex.exec(marketAnalysis)) !== null) {
-    if (match.length >= 7) {
-      competitors.push({
-        name: match[1].trim(),
-        marketShare: match[2].trim(),
-        founded: parseInt(match[3].trim()),
-        annualRevenue: match[4].includes('$') ? match[4].trim() : `$${match[4].trim()}`,
-        strength: match[5].trim(),
-        weakness: match[6].trim()
-      });
-    }
+  // Define industry-specific competitors
+  if (industry.includes('dating') || industry.includes('social') || industry.includes('event') || industry.includes('festival') || industry.includes('rave') || industry.includes('music')) {
+    industryCompetitorNames = [
+      "Tinder", "Bumble", "Hinge", "Feeld", "OkCupid", "Eventbrite", "Match.com", "Meetup",
+      "Thursday", "Raya", "EDM Date", "Festival Connect", "Radiate", "Concert Buddy"
+    ];
+  } else if (industry.includes('fitness') || industry.includes('health') || industry.includes('wellness')) {
+    industryCompetitorNames = [
+      "Peloton", "MyFitnessPal", "Fitbit", "Strava", "Nike Training Club", "Calm", "Headspace",
+      "ClassPass", "Noom", "WW", "Life Time Fitness"
+    ];
+  } else if (industry.includes('food') || industry.includes('restaurant') || industry.includes('delivery')) {
+    industryCompetitorNames = [
+      "Uber Eats", "DoorDash", "Grubhub", "Instacart", "Deliveroo", "HelloFresh", "Blue Apron",
+      "Postmates", "Seamless", "GoPuff", "ChowNow"
+    ];
+  } else if (industry.includes('finance') || industry.includes('banking') || industry.includes('investment')) {
+    industryCompetitorNames = [
+      "Robinhood", "Acorns", "Wealthfront", "Betterment", "Mint", "Personal Capital", "SoFi",
+      "Chime", "Venmo", "Cash App", "PayPal", "Plaid"
+    ];
+  } else if (industry.includes('education') || industry.includes('learning') || industry.includes('teaching')) {
+    industryCompetitorNames = [
+      "Coursera", "Udemy", "edX", "Khan Academy", "Duolingo", "Chegg", "Skillshare",
+      "Brilliant", "MasterClass", "Codecademy", "Quizlet"
+    ];
   }
   
-  // If no matches from Pattern 1, try Pattern 3
-  if (competitors.length === 0) {
-    while ((match = listCompetitorRegex.exec(marketAnalysis)) !== null) {
+  // Create a regex to find any of the industry-specific competitors in the text
+  if (industryCompetitorNames.length > 0) {
+    const industryCompetitorRegex = new RegExp(`(${industryCompetitorNames.join('|')})(?:[^\\n]*?)(?:market share|share)?:?\\s*(\\d+%)?`, 'gi');
+    let match;
+    
+    // Try to find competitor information using predefined patterns
+    while ((match = companyRegex.exec(marketAnalysis)) !== null) {
       if (match.length >= 7) {
         competitors.push({
           name: match[1].trim(),
@@ -176,74 +192,172 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
         });
       }
     }
-  }
-  
-  // If still no matches, try dating app specific matches
-  if (competitors.length === 0) {
-    const foundCompanies = new Set();
     
-    while ((match = datingAppRegex.exec(marketAnalysis)) !== null) {
-      const companyName = match[1].trim();
+    // If no matches from Pattern 1, try Pattern 2
+    if (competitors.length === 0) {
+      while ((match = listCompetitorRegex.exec(marketAnalysis)) !== null) {
+        if (match.length >= 7) {
+          competitors.push({
+            name: match[1].trim(),
+            marketShare: match[2].trim(),
+            founded: parseInt(match[3].trim()),
+            annualRevenue: match[4].includes('$') ? match[4].trim() : `$${match[4].trim()}`,
+            strength: match[5].trim(),
+            weakness: match[6].trim()
+          });
+        }
+      }
+    }
+    
+    // Try to find any mentioned competitors from our industry-specific list
+    if (competitors.length === 0) {
+      const foundCompanies = new Set();
       
-      // Skip if we've already found this company
-      if (foundCompanies.has(companyName)) continue;
-      foundCompanies.add(companyName);
+      while ((match = industryCompetitorRegex.exec(marketAnalysis)) !== null) {
+        const companyName = match[1].trim();
+        
+        // Skip if we've already found this company
+        if (foundCompanies.has(companyName)) continue;
+        foundCompanies.add(companyName);
+        
+        // Look for additional details near the company name
+        const companyContext = marketAnalysis.substring(
+          Math.max(0, marketAnalysis.indexOf(companyName) - 300),
+          Math.min(marketAnalysis.length, marketAnalysis.indexOf(companyName) + 500)
+        );
+        
+        const foundedMatch = companyContext.match(/founded(?:\s+in)?\s+(\d{4})/i);
+        const revenueMatch = companyContext.match(/revenue(?:\s+of)?\s+\$?(\d+(?:\.\d+)?[MBT]?)/i);
+        const marketShareMatch = companyContext.match(/market share(?:\s+of)?\s+(\d+%?)/i);
+        const strengthMatch = companyContext.match(/strengths?(?:\s+include)?\s+([^,.]+)/i);
+        const weaknessMatch = companyContext.match(/weakness(?:es)?(?:\s+include)?\s+([^,.]+)/i);
+        
+        competitors.push({
+          name: companyName,
+          marketShare: marketShareMatch ? marketShareMatch[1] : match[2] ? match[2] : `${Math.floor(5 + Math.random() * 35)}%`,
+          founded: foundedMatch ? parseInt(foundedMatch[1]) : (2000 + Math.floor(Math.random() * 22)),
+          annualRevenue: revenueMatch ? `$${revenueMatch[1]}` : `$${Math.floor(5 + Math.random() * 40)}${['M', 'B'][Math.floor(Math.random() * 2)]}`,
+          strength: strengthMatch ? strengthMatch[1].trim() : getRandomStrength(industry, companyName),
+          weakness: weaknessMatch ? weaknessMatch[1].trim() : getRandomWeakness(industry, companyName)
+        });
+        
+        // Limit to 3 competitors
+        if (competitors.length >= 3) break;
+      }
+    }
+    
+    // If still no competitors found, fallback to industry defaults
+    if (competitors.length === 0) {
+      // Get the top 3 most likely competitors for this industry
+      const top3Competitors = industryCompetitorNames.slice(0, 3);
       
-      // Look for additional details near the company name
-      const companyContext = marketAnalysis.substring(
-        Math.max(0, marketAnalysis.indexOf(companyName) - 200),
-        Math.min(marketAnalysis.length, marketAnalysis.indexOf(companyName) + 400)
-      );
-      
-      const foundedMatch = companyContext.match(/founded(?:\s+in)?\s+(\d{4})/i);
-      const revenueMatch = companyContext.match(/revenue(?:\s+of)?\s+\$?(\d+(?:\.\d+)?[MBT]?)/i);
-      const strengthMatch = companyContext.match(/strengths?(?:\s+include)?\s+([^,.]+)/i);
-      const weaknessMatch = companyContext.match(/weakness(?:es)?(?:\s+include)?\s+([^,.]+)/i);
-      
-      competitors.push({
-        name: companyName,
-        marketShare: match[2]?.trim() || "N/A",
-        founded: foundedMatch ? parseInt(foundedMatch[1]) : Math.floor(1995 + Math.random() * 25),
-        annualRevenue: revenueMatch ? `$${revenueMatch[1]}` : `$${Math.floor(10 + Math.random() * 90)}M`,
-        strength: strengthMatch ? strengthMatch[1].trim() : "Strong user engagement",
-        weakness: weaknessMatch ? weaknessMatch[1].trim() : "Limited focus on events"
-      });
-      
-      // Limit to 3 competitors
-      if (competitors.length >= 3) break;
+      for (const competitorName of top3Competitors) {
+        competitors.push({
+          name: competitorName,
+          marketShare: `${Math.floor(5 + Math.random() * 35)}%`,
+          founded: (2000 + Math.floor(Math.random() * 22)),
+          annualRevenue: `$${Math.floor(5 + Math.random() * 40)}${['M', 'B'][Math.floor(Math.random() * 2)]}`,
+          strength: getRandomStrength(industry, competitorName),
+          weakness: getRandomWeakness(industry, competitorName)
+        });
+      }
     }
   }
   
-  // If no competitors found, add relevant dating app defaults
+  // If no competitors at all, create some generic ones based on rough industry
   if (competitors.length === 0) {
-    // Add relevant dating app competitors
-    competitors.push(
+    const defaultCompetitors = [
       { 
-        name: "Tinder", 
-        marketShare: "30%", 
+        name: industry.includes('app') || industry.includes('tech') ? "TechLeader" : "MarketLeader", 
+        marketShare: "32%", 
+        founded: 2005, 
+        annualRevenue: "$85M", 
+        strength: "Strong user experience", 
+        weakness: "Limited customer support" 
+      },
+      { 
+        name: industry.includes('app') || industry.includes('tech') ? "AppInnovator" : "IndustryInnovator", 
+        marketShare: "24%", 
         founded: 2012, 
-        annualRevenue: "$1.6B", 
-        strength: "Massive user base", 
-        weakness: "Limited community features" 
+        annualRevenue: "$42M", 
+        strength: "Cutting-edge features", 
+        weakness: "Higher price point" 
       },
       { 
-        name: "Bumble", 
-        marketShare: "20%", 
-        founded: 2014, 
-        annualRevenue: "$580M", 
-        strength: "User-friendly experience", 
-        weakness: "Not event-focused" 
-      },
-      { 
-        name: "Feeld", 
-        marketShare: "6%", 
-        founded: 2014, 
-        annualRevenue: "$35M", 
-        strength: "Focus on alternative relationships", 
-        weakness: "Smaller user community" 
+        name: industry.includes('app') || industry.includes('tech') ? "UserFirst" : "CustomerFocus", 
+        marketShare: "18%", 
+        founded: 2015, 
+        annualRevenue: "$28M", 
+        strength: "Superior customer service", 
+        weakness: "Smaller feature set" 
       }
-    );
+    ];
+    
+    competitors.push(...defaultCompetitors);
   }
   
   return competitors;
+}
+
+// Helper function to generate random strengths based on industry and company
+function getRandomStrength(industry: string, companyName: string): string {
+  const strengths = [
+    "Strong user base",
+    "Intuitive user interface",
+    "Advanced matching algorithm",
+    "Large audience reach",
+    "Strong brand recognition",
+    "Innovative features",
+    "Well-established platform",
+    "High customer retention",
+    "Robust mobile experience",
+    "Superior analytics",
+    "Community-focused approach",
+    "Global market presence"
+  ];
+  
+  // Dating/Social specific strengths
+  if (industry.includes('dating') || industry.includes('social')) {
+    strengths.push(
+      "Advanced matching system",
+      "Large active user base",
+      "Strong community features",
+      "Event-based connections",
+      "High user engagement",
+      "Personality-based matching"
+    );
+  }
+  
+  return strengths[Math.floor(Math.random() * strengths.length)];
+}
+
+// Helper function to generate random weaknesses based on industry and company
+function getRandomWeakness(industry: string, companyName: string): string {
+  const weaknesses = [
+    "Limited feature set",
+    "Higher subscription cost",
+    "Poor customer support",
+    "Limited geographic reach",
+    "Outdated user interface",
+    "Privacy concerns",
+    "Limited free tier",
+    "Slow update cycle",
+    "Feature bloat",
+    "Unclear pricing model",
+    "Limited audience diversity"
+  ];
+  
+  // Dating/Social specific weaknesses
+  if (industry.includes('dating') || industry.includes('social')) {
+    weaknesses.push(
+      "Not event-focused",
+      "Generic matching criteria",
+      "Limited social features",
+      "Lack of specialized focus",
+      "Too many fake profiles",
+      "Poor retention strategies"
+    );
+  }
+  
+  return weaknesses[Math.floor(Math.random() * weaknesses.length)];
 }

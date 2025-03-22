@@ -1,81 +1,178 @@
 
-import React from 'react';
-import { Separator } from "@/components/ui/separator";
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PieChart, BarGraph, Gauge, Target } from 'lucide-react';
 import DashboardGrid from './dashboard/DashboardGrid';
-import InsightsGrid from './dashboard/InsightsGrid';
-import CompetitorsCard from './dashboard/CompetitorsCard';
+import KeyInsightCard from './dashboard/KeyInsightCard';
 import MarketInsightCard from './dashboard/MarketInsightCard';
 import TargetAudienceCard from './dashboard/TargetAudienceCard';
+import CompetitorsCard from './dashboard/CompetitorsCard';
+import FinancialOutlookCard from './dashboard/FinancialOutlookCard';
+import InsightsGrid from './dashboard/InsightsGrid';
 import { 
-  extractTargetMarket, 
-  extractRevenue, 
   extractStrengths, 
   extractOpportunities,
-  extractCompetitors
+  extractTargetMarket,
+  extractRevenue
 } from './dashboard/DashboardUtils';
+import { extractCompetitorsFromValidation } from '@/utils/businessValidation';
+
+interface BusinessPlanData {
+  executiveSummary: string;
+  marketAnalysis: string;
+  businessModel: string;
+  marketingPlan: string;
+  financialProjections: string;
+  riskAssessment: string;
+  swotAnalysis: string;
+}
 
 interface BusinessPlanDashboardProps {
   businessName: string;
-  businessPlan: {
-    executiveSummary: string;
-    marketAnalysis: string;
-    businessModel: string;
-    swotAnalysis: string;
-    financialProjections?: string; 
-    riskAssessment?: string;
-  };
+  businessPlan: BusinessPlanData;
 }
 
 const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({ 
   businessName, 
   businessPlan 
 }) => {
-  // Extract key metrics and insights from the business plan
+  const [activeTab, setActiveTab] = useState('overview');
+  const [competitors, setCompetitors] = useState([]);
+  
+  useEffect(() => {
+    // Extract competitors from the financialProjections (Business Validation) section
+    if (businessPlan.financialProjections) {
+      const extractedCompetitors = extractCompetitorsFromValidation(businessPlan.financialProjections);
+      setCompetitors(extractedCompetitors);
+    }
+  }, [businessPlan.financialProjections]);
+  
   const targetMarket = extractTargetMarket(businessPlan.marketAnalysis);
-  const revenue = extractRevenue(businessPlan.financialProjections || '');
   const strengths = extractStrengths(businessPlan.swotAnalysis);
   const opportunities = extractOpportunities(businessPlan.swotAnalysis);
-  const competitors = extractCompetitors(businessPlan.marketAnalysis || businessPlan.riskAssessment);
+  const revenueData = extractRevenue(businessPlan.financialProjections);
   
   return (
-    <section className="mb-10 animate-fade-in">
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Business Plan Dashboard: <span className="text-primary">{businessName}</span>
-      </h2>
+    <section className="mb-12 animate-fadeIn">
+      <h2 className="text-2xl font-bold mb-2 text-center sm:text-left">{businessName}</h2>
+      <p className="text-muted-foreground mb-6 text-center sm:text-left">Business Plan Dashboard</p>
       
-      {/* Competitors section - now spans full width */}
-      <div className="mb-6">
-        <CompetitorsCard competitors={competitors} />
-      </div>
-      
-      {/* Market insights section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        {targetMarket && (
-          <>
-            <MarketInsightCard
-              demographic={targetMarket.demographic}
-              size={targetMarket.size}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
+          <TabsTrigger value="overview" className="flex items-center gap-1.5">
+            <PieChart className="h-4 w-4" /> Overview
+          </TabsTrigger>
+          <TabsTrigger value="market" className="flex items-center gap-1.5">
+            <Target className="h-4 w-4" /> Market
+          </TabsTrigger>
+          <TabsTrigger value="financial" className="flex items-center gap-1.5">
+            <BarGraph className="h-4 w-4" /> Financial
+          </TabsTrigger>
+          <TabsTrigger value="strategic" className="flex items-center gap-1.5">
+            <Gauge className="h-4 w-4" /> Strategic
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="overview" className="space-y-6">
+          <DashboardGrid>
+            <KeyInsightCard 
+              title="Key Strength"
+              value={strengths?.[0] || "Strong market position"}
+              icon="TrendingUp"
+              color="text-green-500"
+              className="md:col-span-2"
             />
-            <TargetAudienceCard
-              audience={targetMarket.audience}
-              growth={targetMarket.growth}
+            <KeyInsightCard 
+              title="Key Opportunity"
+              value={opportunities?.[0] || "Expand to new markets"}
+              icon="Zap"
+              color="text-amber-500"
+              className="md:col-span-2"
             />
-          </>
-        )}
-      </div>
-      
-      <DashboardGrid 
-        targetMarket={targetMarket} 
-        revenue={revenue} 
-      />
-
-      {/* Top Strengths & Opportunities */}
-      <InsightsGrid 
-        strengths={strengths} 
-        opportunities={opportunities} 
-      />
-      
-      <Separator className="my-8" />
+            <MarketInsightCard 
+              targetMarket={targetMarket}
+              className="col-span-1 md:col-span-2"
+            />
+            <FinancialOutlookCard 
+              revenueData={revenueData}
+              className="col-span-1 md:col-span-2"
+            />
+          </DashboardGrid>
+        </TabsContent>
+        
+        <TabsContent value="market" className="space-y-6">
+          <DashboardGrid>
+            <TargetAudienceCard 
+              targetMarket={targetMarket}
+              className="col-span-1 md:col-span-3"
+            />
+            <KeyInsightCard 
+              title="Market Size"
+              value={targetMarket?.size || "Market Size Pending"}
+              icon="Globe"
+              color="text-blue-500"
+            />
+            <KeyInsightCard 
+              title="Growth Rate"
+              value={targetMarket?.growth || "Growth Rate Pending"}
+              icon="TrendingUp"
+              color="text-green-500"
+            />
+            <CompetitorsCard competitors={competitors} />
+          </DashboardGrid>
+        </TabsContent>
+        
+        <TabsContent value="financial" className="space-y-6">
+          <DashboardGrid>
+            <KeyInsightCard 
+              title="Year 1 Revenue"
+              value={revenueData?.year1 || "Revenue Projections Pending"}
+              icon="DollarSign"
+              color="text-green-500"
+              className="md:col-span-2"
+            />
+            <KeyInsightCard 
+              title="Year 3 Projection"
+              value={revenueData?.year3 || "3-Year Projection Pending"}
+              icon="TrendingUp"
+              color="text-blue-500"
+              className="md:col-span-2"
+            />
+            <InsightsGrid className="col-span-1 md:col-span-4" />
+          </DashboardGrid>
+        </TabsContent>
+        
+        <TabsContent value="strategic" className="space-y-6">
+          <DashboardGrid>
+            <KeyInsightCard 
+              title="Strength"
+              value={strengths?.[0] || "Pending Analysis"}
+              icon="Shield"
+              color="text-green-500"
+            />
+            <KeyInsightCard 
+              title="Opportunity"
+              value={opportunities?.[0] || "Pending Analysis"}
+              icon="Zap"
+              color="text-amber-500"
+            />
+            <KeyInsightCard 
+              title="Key Competitors"
+              value={competitors.length > 0 ? `${competitors.length} identified` : "Analysis Pending"}
+              icon="Users"
+              color="text-red-500"
+            />
+            <KeyInsightCard 
+              title="Growth Factors"
+              value={opportunities?.[1] || "Pending Analysis"}
+              icon="TrendingUp"
+              color="text-blue-500"
+            />
+            <CompetitorsCard competitors={competitors} />
+          </DashboardGrid>
+        </TabsContent>
+      </Tabs>
     </section>
   );
 };

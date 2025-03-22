@@ -43,8 +43,13 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
         Business Plan Dashboard: <span className="text-primary">{businessName}</span>
       </h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      {/* Competitors section - now spans full width */}
+      <div className="mb-6">
         <CompetitorsCard competitors={competitors} />
+      </div>
+      
+      {/* Market insights section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         {targetMarket && (
           <>
             <MarketInsightCard

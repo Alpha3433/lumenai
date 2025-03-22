@@ -4,6 +4,7 @@ import { Activity, Building, UsersRound } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { extractCompetitors } from './dashboard/DashboardUtils';
 
 interface RiskAssessmentSectionProps {
   riskAssessmentText: string;
@@ -22,85 +23,14 @@ const RiskAssessmentSection: React.FC<RiskAssessmentSectionProps> = ({ riskAsses
   const [competitors, setCompetitors] = useState<Competitor[]>([]);
   
   useEffect(() => {
-    // Parse competitors from the risk assessment text
+    // Extract competitors using the utility function
     if (riskAssessmentText) {
-      parseCompetitorsFromText(riskAssessmentText);
+      const extractedCompetitors = extractCompetitors(riskAssessmentText);
+      if (extractedCompetitors.length > 0) {
+        setCompetitors(extractedCompetitors);
+      }
     }
   }, [riskAssessmentText]);
-  
-  const parseCompetitorsFromText = (text: string) => {
-    try {
-      // This is a simple parser that extracts competitor information from the AI-generated text
-      // In a production app, this would be more sophisticated
-      
-      // Try to find competitor information in the text
-      const competitorInfo = extractCompetitorInfo(text);
-      
-      if (competitorInfo.length > 0) {
-        setCompetitors(competitorInfo);
-      } else {
-        // Fallback to defaults if parsing fails
-        setCompetitors(getDefaultCompetitors());
-      }
-    } catch (error) {
-      console.error('Error parsing competitors:', error);
-      setCompetitors(getDefaultCompetitors());
-    }
-  };
-  
-  const extractCompetitorInfo = (text: string): Competitor[] => {
-    const extractedCompetitors: Competitor[] = [];
-    
-    // Simple regex pattern to find competitor information
-    // This is a basic implementation and would be more robust in production
-    const companyRegex = /(?:company|competitor):\s*([^,\n]+).*?market share:?\s*(\d+%?).*?founded:?\s*(\d{4}).*?revenue:?\s*\$?(\d+(?:\.\d+)?[MBT]?).*?strength:?\s*([^,\n]+).*?weakness:?\s*([^,\n]+)/gis;
-    
-    let match;
-    while ((match = companyRegex.exec(text)) !== null) {
-      if (match.length >= 7) {
-        extractedCompetitors.push({
-          name: match[1].trim(),
-          marketShare: match[2].trim(),
-          founded: parseInt(match[3].trim()),
-          annualRevenue: `$${match[4].trim()}`,
-          strength: match[5].trim(),
-          weakness: match[6].trim()
-        });
-      }
-    }
-    
-    return extractedCompetitors;
-  };
-  
-  const getDefaultCompetitors = (): Competitor[] => {
-    // Fallback competitors if parsing fails
-    return [
-      {
-        name: "Salesforce",
-        marketShare: "34%",
-        strength: "Strong brand recognition and customer loyalty",
-        weakness: "Limited digital presence, slower to adapt to market changes",
-        annualRevenue: "$45M",
-        founded: 2005
-      },
-      {
-        name: "HubSpot",
-        marketShare: "28%",
-        strength: "Innovative technology solutions and rapid product development",
-        weakness: "Higher price point, smaller customer service team",
-        annualRevenue: "$38M",
-        founded: 2010
-      },
-      {
-        name: "Zoho",
-        marketShare: "19%",
-        strength: "Extensive distribution network and excellent supply chain",
-        weakness: "Product quality inconsistencies, outdated marketing strategies",
-        annualRevenue: "$25M",
-        founded: 2008
-      }
-    ];
-  };
 
   return (
     <section>
@@ -160,6 +90,15 @@ const RiskAssessmentSection: React.FC<RiskAssessmentSectionProps> = ({ riskAsses
                 </CardContent>
               </Card>
             ))}
+            
+            {competitors.length === 0 && (
+              <Card className="border border-gray-200 dark:border-gray-800 shadow-sm">
+                <CardContent className="p-5 text-center">
+                  <Building className="h-10 w-10 text-gray-400 mx-auto mb-3" />
+                  <p>No competitor data available</p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </TabsContent>
       </Tabs>

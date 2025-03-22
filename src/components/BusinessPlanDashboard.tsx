@@ -3,11 +3,13 @@ import React from 'react';
 import { Separator } from "@/components/ui/separator";
 import DashboardGrid from './dashboard/DashboardGrid';
 import InsightsGrid from './dashboard/InsightsGrid';
+import CompetitorsCard from './dashboard/CompetitorsCard';
 import { 
   extractTargetMarket, 
   extractRevenue, 
   extractStrengths, 
-  extractOpportunities 
+  extractOpportunities,
+  extractCompetitors
 } from './dashboard/DashboardUtils';
 
 interface BusinessPlanDashboardProps {
@@ -18,6 +20,7 @@ interface BusinessPlanDashboardProps {
     businessModel: string;
     swotAnalysis: string;
     financialProjections?: string; 
+    riskAssessment?: string;
   };
 }
 
@@ -30,12 +33,29 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
   const revenue = extractRevenue(businessPlan.financialProjections || '');
   const strengths = extractStrengths(businessPlan.swotAnalysis);
   const opportunities = extractOpportunities(businessPlan.swotAnalysis);
+  const competitors = extractCompetitors(businessPlan.marketAnalysis || businessPlan.riskAssessment);
   
   return (
     <section className="mb-10 animate-fade-in">
       <h2 className="text-2xl font-bold mb-6 text-center">
         Business Plan Dashboard: <span className="text-primary">{businessName}</span>
       </h2>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <CompetitorsCard competitors={competitors} />
+        {targetMarket && (
+          <>
+            <MarketInsightCard
+              demographic={targetMarket.demographic}
+              size={targetMarket.size}
+            />
+            <TargetAudienceCard
+              audience={targetMarket.audience}
+              growth={targetMarket.growth}
+            />
+          </>
+        )}
+      </div>
       
       <DashboardGrid 
         targetMarket={targetMarket} 

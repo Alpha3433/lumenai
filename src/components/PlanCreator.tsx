@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Download, FileText, CheckCircle, Sparkles, Activity, FileStack, Clock } from 'lucide-react';
+import { Loader2, Download, FileText, CheckCircle, Sparkles, Activity, FileStack, Clock, Lock, Building } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import SwotAnalysis from '@/components/SwotAnalysis';
 import TimelineChart from '@/components/TimelineChart';
 import MarketAnalysisSection from '@/components/MarketAnalysisSection';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -41,6 +42,7 @@ const PlanCreator = () => {
     businessDescription: ''
   });
   const [businessPlan, setBusinessPlan] = useState<BusinessPlanData>(defaultBusinessPlan);
+  const [isPremium, setIsPremium] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -67,6 +69,11 @@ const PlanCreator = () => {
   const downloadPlan = () => {
     // This would handle downloading the plan as PDF
     alert('In a production app, this would download the generated business plan as a PDF');
+  };
+
+  const upgradeAccount = () => {
+    setIsPremium(true);
+    alert('In a production app, this would redirect to a payment page. For demo purposes, you now have premium access!');
   };
 
   return (
@@ -195,38 +202,135 @@ const PlanCreator = () => {
               
               <Separator className="my-10" />
               
-              {/* Two Column Layout for Remaining Sections */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
-                {/* Business Model */}
-                <section>
-                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <FileStack className="h-5 w-5 text-green-500" />
-                    Business Model
-                  </h2>
-                  <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
-                    <CardContent className="p-5">
-                      <div className="prose dark:prose-invert max-w-none text-sm">
-                        <p className="leading-relaxed">{businessPlan.businessModel || "Loading..."}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </section>
+              {/* Business Model - Redesigned section */}
+              <section className="mb-12">
+                <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
+                  <Building className="h-6 w-6 text-teal-500" />
+                  Business Model
+                </h2>
                 
-                {/* Marketing Plan */}
-                <section>
-                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-indigo-500" />
-                    Marketing Plan
-                  </h2>
-                  <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
+                <Card className="border border-gray-200 dark:border-gray-800 shadow-md bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
+                  <CardContent className="p-6">
+                    <Tabs defaultValue="overview" className="w-full">
+                      <TabsList className="grid w-full grid-cols-3 mb-6">
+                        <TabsTrigger value="overview">Overview</TabsTrigger>
+                        <TabsTrigger value="revenue">Revenue Streams</TabsTrigger>
+                        <TabsTrigger value="operations">Operations</TabsTrigger>
+                      </TabsList>
+                      
+                      <TabsContent value="overview" className="p-2">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <h3 className="text-lg font-semibold mb-3 text-teal-600 dark:text-teal-400">Value Proposition</h3>
+                            <div className="bg-teal-50 dark:bg-teal-900/20 p-4 rounded-lg border border-teal-100 dark:border-teal-800">
+                              <p className="text-gray-800 dark:text-gray-200">
+                                {businessPlan.businessModel.split('.').slice(0, 2).join('.') + '.' || "Loading..."}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <h3 className="text-lg font-semibold mb-3 text-indigo-600 dark:text-indigo-400">Target Customers</h3>
+                            <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-100 dark:border-indigo-800">
+                              <p className="text-gray-800 dark:text-gray-200">
+                                {businessPlan.businessModel.split('.').slice(2, 4).join('.') + '.' || "Loading..."}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="md:col-span-2">
+                            <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">Core Strategy</h3>
+                            <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                              <p className="text-gray-800 dark:text-gray-200">
+                                {businessPlan.businessModel.split('.').slice(4).join('.') || "Loading..."}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </TabsContent>
+                      
+                      <TabsContent value="revenue" className="p-2">
+                        <div className="space-y-6">
+                          <div className="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg border border-emerald-100 dark:border-emerald-800">
+                            <h3 className="text-lg font-semibold mb-2 text-emerald-600 dark:text-emerald-400">Primary Revenue Sources</h3>
+                            <p className="text-gray-800 dark:text-gray-200">{businessPlan.businessModel.split('.').slice(0, 3).join('.') + '.' || "Loading..."}</p>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800">
+                              <h3 className="text-lg font-semibold mb-2 text-blue-600 dark:text-blue-400">Pricing Strategy</h3>
+                              <p className="text-gray-800 dark:text-gray-200">{businessPlan.businessModel.split('.').slice(3, 5).join('.') + '.' || "Loading..."}</p>
+                            </div>
+                            
+                            <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-100 dark:border-amber-800">
+                              <h3 className="text-lg font-semibold mb-2 text-amber-600 dark:text-amber-400">Projected Growth</h3>
+                              <p className="text-gray-800 dark:text-gray-200">{businessPlan.businessModel.split('.').slice(5, 7).join('.') + '.' || "Loading..."}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </TabsContent>
+                      
+                      <TabsContent value="operations" className="p-2">
+                        <div className="grid grid-cols-1 gap-6">
+                          <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
+                            <h3 className="text-lg font-semibold mb-2 text-purple-600 dark:text-purple-400">Key Partnerships</h3>
+                            <p className="text-gray-800 dark:text-gray-200">{businessPlan.businessModel.split('.').slice(2, 4).join('.') + '.' || "Loading..."}</p>
+                          </div>
+                          
+                          <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h3 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">Distribution Channels</h3>
+                            <p className="text-gray-800 dark:text-gray-200">{businessPlan.businessModel.split('.').slice(4, 6).join('.') + '.' || "Loading..."}</p>
+                          </div>
+                          
+                          <div className="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-lg border border-rose-100 dark:border-rose-800">
+                            <h3 className="text-lg font-semibold mb-2 text-rose-600 dark:text-rose-400">Cost Structure</h3>
+                            <p className="text-gray-800 dark:text-gray-200">{businessPlan.businessModel.split('.').slice(6).join('.') || "Loading..."}</p>
+                          </div>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+                  </CardContent>
+                </Card>
+              </section>
+              
+              {/* Marketing Plan - Hidden behind paywall */}
+              <section className="mb-12">
+                <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
+                  <Activity className="h-6 w-6 text-indigo-500" />
+                  Marketing Plan
+                </h2>
+                
+                {isPremium ? (
+                  <Card className="border border-gray-200 dark:border-gray-800 shadow-sm">
                     <CardContent className="p-5">
                       <div className="prose dark:prose-invert max-w-none text-sm">
                         <p className="leading-relaxed">{businessPlan.marketingPlan || "Loading..."}</p>
                       </div>
                     </CardContent>
                   </Card>
-                </section>
-                
+                ) : (
+                  <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 p-8 rounded-xl border border-indigo-100 dark:border-indigo-800/50 text-center">
+                    <div className="flex justify-center mb-4">
+                      <div className="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-full">
+                        <Lock className="h-8 w-8 text-indigo-500 dark:text-indigo-400" />
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-bold text-indigo-700 dark:text-indigo-300 mb-2">Premium Feature</h3>
+                    <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+                      Unlock our comprehensive Marketing Plan section to get detailed strategies for customer acquisition and brand growth.
+                    </p>
+                    <Button 
+                      onClick={upgradeAccount}
+                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-full px-8 py-2 shadow-md"
+                    >
+                      Upgrade to Premium
+                    </Button>
+                  </div>
+                )}
+              </section>
+              
+              {/* Two Column Layout for Remaining Sections */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
                 {/* Risk Assessment */}
                 <section>
                   <h2 className="text-xl font-bold mb-4 flex items-center gap-2">

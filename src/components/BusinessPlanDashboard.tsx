@@ -75,7 +75,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
         </TabsList>
         
         <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <DashboardGrid>
             <KeyInsightCard 
               title="Key Strength"
               value={strengths?.[0] || "Strong market position"}
@@ -99,11 +99,11 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
               revenue={revenueData}
               className="col-span-1 md:col-span-2"
             />
-          </div>
+          </DashboardGrid>
         </TabsContent>
         
         <TabsContent value="market" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <DashboardGrid>
             <TargetAudienceCard 
               audience={targetMarket?.audience}
               growth={targetMarket?.growth}
@@ -122,11 +122,11 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
               color="text-green-500"
             />
             <CompetitorsCard competitors={competitors} />
-          </div>
+          </DashboardGrid>
         </TabsContent>
         
         <TabsContent value="financial" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <DashboardGrid>
             <KeyInsightCard 
               title="Year 1 Revenue"
               value={revenueData?.year1 || "Revenue Projections Pending"}
@@ -146,11 +146,11 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
               opportunities={opportunities || []} 
               className="col-span-1 md:col-span-4" 
             />
-          </div>
+          </DashboardGrid>
         </TabsContent>
         
         <TabsContent value="strategic" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <DashboardGrid>
             <KeyInsightCard 
               title="Strength"
               value={strengths?.[0] || "Pending Analysis"}
@@ -176,7 +176,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
               color="text-blue-500"
             />
             <CompetitorsCard competitors={competitors} />
-          </div>
+          </DashboardGrid>
         </TabsContent>
       </Tabs>
     </section>

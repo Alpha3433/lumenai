@@ -54,6 +54,12 @@ The market analysis should focus on the following aspects:
 - Market opportunities and challenges
 - Segment breakdown with their relative importance
 
+IMPORTANT: Include ALL of these elements in your response:
+1. A clear dollar amount for market size (e.g., $4.5 billion, $250 million)
+2. Specific age range for target demographics (e.g., ages 18-34)
+3. Growth rate with percentage (e.g., 7.8% annual growth)
+4. Customer segments with descriptions
+
 Write this as a coherent, detailed paragraph without subheadings or bullet points. Include specific numbers and metrics where possible to make the analysis data-rich and credible. Keep the tone professional and objective.
 
 ALSO INCLUDE REAL-WORLD DATA: Please include factual information about the top 3 actual companies in this industry including:
@@ -84,7 +90,7 @@ The marketing plan should outline target audience segmentation, positioning stra
 
     'financial projections': `Create realistic financial projections for a business with the following parameters:${baseContext}
     
-The financial projections should include specific numbers for anticipated revenue, expenses and profits for the first 3 years. Include startup costs, operational expenses, and monthly revenue estimates. Format the information clearly with specific dollar amounts for Year 1, Year 2, and Year 3 revenue, expenses and profit projections.
+IMPORTANT: The financial projections MUST include specific numbers for anticipated revenue, expenses and profits for Years 1, 2, and 3. Format the information clearly with specific dollar amounts.
 
 Please include:
 - Year 1 Revenue: $X (specify an exact amount)
@@ -93,7 +99,9 @@ Please include:
 - Startup costs breakdown
 - Monthly operational expenses
 - Profit margins by year
-- Break-even timeline (in months)`,
+- Break-even timeline (in months)
+
+Be specific about the dollar amounts and include all financial figures clearly labeled. For example, instead of saying "revenue will grow substantially", say "Year 1 Revenue: $120,000"`,
 
     'risk assessment': `Perform a risk assessment for a business with these factors:${baseContext}
     

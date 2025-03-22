@@ -20,7 +20,7 @@ const FinancialOutlookCard: React.FC<FinancialOutlookCardProps> = ({ revenue }) 
         </div>
         <div className="mt-3">
           <p className="text-base font-medium">
-            {revenue?.year1 ? `${revenue.year1}` : "Financial Assessment in Progress"}
+            {revenue?.year1 || "Revenue Projections Pending"}
           </p>
           <p className="text-sm text-muted-foreground mt-1">
             {revenue?.year1 ? "Projected First-Year Revenue" : "Comprehensive Analysis Pending"}

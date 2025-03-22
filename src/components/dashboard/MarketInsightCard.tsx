@@ -17,7 +17,7 @@ const MarketInsightCard: React.FC<MarketInsightCardProps> = ({ demographic, size
           <PieChart className="h-4 w-4 text-blue-500" />
         </div>
         <div className="mt-3">
-          <p className="text-base font-medium">{demographic || "Diverse Consumer Base"}</p>
+          <p className="text-base font-medium">{demographic || "Diverse Demographics"}</p>
           <p className="text-sm text-muted-foreground mt-1">{size || "Market analysis pending"}</p>
         </div>
       </CardContent>

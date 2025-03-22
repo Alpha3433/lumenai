@@ -17,8 +17,8 @@ const TargetAudienceCard: React.FC<TargetAudienceCardProps> = ({ audience, growt
           <Users className="h-4 w-4 text-purple-500" />
         </div>
         <div className="mt-3">
-          <p className="text-base font-medium">{audience || "Multi-segment Approach"}</p>
-          <p className="text-sm text-muted-foreground mt-1">{growth || "Growth analysis pending"}</p>
+          <p className="text-base font-medium">{audience || "Diverse Customer Segments"}</p>
+          <p className="text-sm text-muted-foreground mt-1">{growth || "Growth Analysis Pending"}</p>
         </div>
       </CardContent>
     </Card>

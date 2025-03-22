@@ -95,13 +95,7 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
 
       {/* Interactive Loading Dialog */}
       <Dialog open={generating} onOpenChange={() => {}}>
-        <DialogContent className="sm:max-w-md">
-          {/* Hide the close button by applying custom styles */}
-          <style jsx global>{`
-            .dialog-no-close-button .close-button {
-              display: none;
-            }
-          `}</style>
+        <DialogContent className="sm:max-w-md dialog-no-close-button">
           <div className="space-y-6 py-6">
             <div className="text-center space-y-2">
               <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />

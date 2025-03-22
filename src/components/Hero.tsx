@@ -7,8 +7,10 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentIndustry, setCurrentIndustry] = useState(0);
+  const [animationSpeed, setAnimationSpeed] = useState(2000); // Start slow
+  const [isFinished, setIsFinished] = useState(false);
+  const cycleCount = useRef(0);
   const industries = [
-    "Business", 
     "Tech", 
     "Food", 
     "Health", 
@@ -17,7 +19,8 @@ const Hero = () => {
     "Fashion",
     "Sports",
     "Media",
-    "Education"
+    "Education",
+    "Business" // Business is now the last one
   ];
   const flipInterval = useRef<number | null>(null);
 
@@ -26,8 +29,41 @@ const Hero = () => {
     
     // Start the flip animation
     flipInterval.current = window.setInterval(() => {
-      setCurrentIndustry(prev => (prev + 1) % industries.length);
-    }, 2000); // Change every 2 seconds
+      cycleCount.current += 1;
+
+      // Speed up animation after a few cycles
+      if (cycleCount.current === 3) {
+        clearInterval(flipInterval.current!);
+        setAnimationSpeed(1200);
+        
+        flipInterval.current = window.setInterval(() => {
+          cycleCount.current += 1;
+          
+          // Speed up even more
+          if (cycleCount.current === 7) {
+            clearInterval(flipInterval.current!);
+            setAnimationSpeed(700);
+            
+            flipInterval.current = window.setInterval(() => {
+              cycleCount.current += 1;
+              
+              // Final speed and stop at "Business"
+              if (cycleCount.current === 12) {
+                clearInterval(flipInterval.current!);
+                setCurrentIndustry(industries.length - 1); // Set to "Business"
+                setIsFinished(true);
+              } else {
+                setCurrentIndustry(prev => (prev + 1) % industries.length);
+              }
+            }, 700);
+          } else {
+            setCurrentIndustry(prev => (prev + 1) % industries.length);
+          }
+        }, 1200);
+      } else {
+        setCurrentIndustry(prev => (prev + 1) % industries.length);
+      }
+    }, 2000);
     
     return () => {
       if (flipInterval.current) clearInterval(flipInterval.current);
@@ -42,11 +78,15 @@ const Hero = () => {
         >
           Discover Profitable 
           <span className="relative inline-block mx-2">
-            <span className="text-primary flip-container overflow-hidden">
+            <span className="text-primary flip-container">
               {industries.map((industry, index) => (
                 <span 
                   key={industry} 
-                  className={`flip-item absolute left-0 w-full transition-all duration-500 ${
+                  className={`flip-item absolute left-0 w-full transition-all ${
+                    isFinished && index === industries.length - 1
+                      ? 'duration-300' 
+                      : `duration-${500 - Math.min(300, cycleCount.current * 30)}`
+                  } ${
                     index === currentIndustry 
                       ? 'opacity-100 transform-none' 
                       : 'opacity-0 -translate-y-8'

@@ -9,7 +9,6 @@ import SwotAnalysis from './SwotAnalysis';
 import MarketAnalysisSection from './MarketAnalysisSection';
 import BusinessModelSection from './BusinessModelSection';
 import MarketingPlanSection from './MarketingPlanSection';
-import RiskAssessmentSection from './RiskAssessmentSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import { Button } from "./ui/button";
 import BusinessValidationScore from './BusinessValidationScore';
@@ -116,12 +115,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               onUpgrade={onUpgrade}
             />
             
-            <Separator className="my-10" />
-            
-            {/* Risk Assessment */}
-            <div className="mb-12">
-              <RiskAssessmentSection riskAssessmentText={businessPlan.riskAssessment} />
-            </div>
+            {/* Removed Risk Assessment Section */}
           </CardContent>
         </Card>
       </div>

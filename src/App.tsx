@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AuthProvider from "./components/AuthProvider";
+import ScrollProgressBar from "./components/ScrollProgressBar";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollProgressBar />
           <AnimatePresence mode="wait">
             <Routes>
               <Route path="/" element={<Index />} />

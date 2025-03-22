@@ -151,3 +151,13 @@ html {
     transform: rotate(360deg);
   }
 }
+
+/* Progress bar animation */
+@keyframes progressGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(var(--primary));
+  }
+  50% {
+    box-shadow: 0 0 15px hsl(var(--primary));
+  }
+}

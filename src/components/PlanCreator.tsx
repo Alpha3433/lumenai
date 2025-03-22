@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import SwotAnalysis from '@/components/SwotAnalysis';
 import TimelineChart from '@/components/TimelineChart';
+import MarketAnalysisSection from '@/components/MarketAnalysisSection';
 import { Separator } from '@/components/ui/separator';
 
 interface BusinessPlanData {
@@ -190,23 +190,13 @@ const PlanCreator = () => {
               
               <Separator className="my-10" />
               
-              {/* Two Column Layout for Middle Sections */}
+              {/* Market Analysis - Now using our new component */}
+              <MarketAnalysisSection analysisText={businessPlan.marketAnalysis} />
+              
+              <Separator className="my-10" />
+              
+              {/* Two Column Layout for Remaining Sections */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
-                {/* Market Analysis */}
-                <section>
-                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-blue-500" />
-                    Market Analysis
-                  </h2>
-                  <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
-                    <CardContent className="p-5">
-                      <div className="prose dark:prose-invert max-w-none text-sm">
-                        <p className="leading-relaxed">{businessPlan.marketAnalysis || "Loading..."}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </section>
-                
                 {/* Business Model */}
                 <section>
                   <h2 className="text-xl font-bold mb-4 flex items-center gap-2">

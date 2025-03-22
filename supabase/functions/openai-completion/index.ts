@@ -44,7 +44,7 @@ serve(async (req) => {
     
     // Add special system instructions for validation prompts
     const systemMessage = isValidationPrompt ? 
-      'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores.' :
+      'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL for proper display of the report.' :
       'You are a helpful assistant that generates business plan content.';
     
     // Call OpenAI API using Chat Completions endpoint (newer API)

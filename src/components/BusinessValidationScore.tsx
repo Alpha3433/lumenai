@@ -17,12 +17,12 @@ const BusinessValidationScore = ({ businessText }: BusinessValidationScoreProps)
       {/* Overall score card */}
       <ValidationScoreCard validationData={validationData} />
       
-      {/* Formatted validation content */}
+      {/* Formatted validation content with improved parsing */}
       <div className="bg-card rounded-xl p-5 border border-border shadow-sm">
         <FormattedValidationContent validationText={businessText} />
       </div>
       
-      {/* Recommendations - summary only */}
+      {/* Recommendations */}
       <RecommendationsCard 
         score={validationData.overallScore} 
       />

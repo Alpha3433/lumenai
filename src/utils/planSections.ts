@@ -1,3 +1,4 @@
+
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 
@@ -53,7 +54,15 @@ The market analysis should focus on the following aspects:
 - Market opportunities and challenges
 - Segment breakdown with their relative importance
 
-Write this as a coherent, detailed paragraph without subheadings or bullet points. Include specific numbers and metrics where possible to make the analysis data-rich and credible. Keep the tone professional and objective.`,
+Write this as a coherent, detailed paragraph without subheadings or bullet points. Include specific numbers and metrics where possible to make the analysis data-rich and credible. Keep the tone professional and objective.
+
+ALSO INCLUDE REAL-WORLD DATA: Please include factual information about the top 3 companies in this industry including:
+- Company names
+- Approximate market share percentage 
+- Year founded
+- Estimated annual revenue
+- One key strength for each company
+- One key weakness for each company`,
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     
@@ -69,7 +78,14 @@ The financial projections should include specific numbers for anticipated revenu
 
     'risk assessment': `Perform a risk assessment for a business with these factors:${baseContext}
     
-The risk assessment should identify potential internal and external risks, their likelihood and impact, and mitigation strategies. Consider market, operational, financial, and regulatory risks.`,
+The risk assessment should identify potential internal and external risks, their likelihood and impact, and mitigation strategies. Consider market, operational, financial, and regulatory risks.
+
+ALSO INCLUDE COMPETITOR ANALYSIS: For the top 3 competitors in this industry, identify:
+- Their approximate market share
+- Annual revenue figures (if available)
+- Key strengths and weaknesses
+- Year founded
+- Any potential threats they pose to the new business`,
 
     'swot analysis': `Conduct a SWOT analysis for a business with these characteristics:${baseContext}
     

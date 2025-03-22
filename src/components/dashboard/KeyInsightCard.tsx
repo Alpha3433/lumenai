@@ -16,7 +16,8 @@ interface KeyInsightCardProps {
   title: string;
   value: string;
   icon: string | LucideIcon;
-  color: string;
+  color?: string;
+  iconColor?: string;
   className?: string;
   insights?: string[];
   prefix?: string;
@@ -35,6 +36,7 @@ const KeyInsightCard: React.FC<KeyInsightCardProps> = ({
   value, 
   icon, 
   color, 
+  iconColor,
   className = '',
   insights = [],
   prefix = '',
@@ -61,7 +63,7 @@ const KeyInsightCard: React.FC<KeyInsightCardProps> = ({
     <Card className={`border border-gray-200 dark:border-gray-800 shadow-sm ${className}`}>
       <CardContent className="p-4">
         <div className="flex items-center gap-2 mb-3">
-          <IconComponent className={`h-4 w-4 ${color}`} />
+          <IconComponent className={`h-4 w-4 ${iconColor || color}`} />
           <h3 className="text-sm font-semibold">{title}</h3>
         </div>
 

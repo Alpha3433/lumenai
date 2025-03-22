@@ -34,7 +34,7 @@ const Hero = () => {
             </Button>
           </Link>
           <Button variant="outline" className="rounded-md h-12 px-8 text-base font-medium border-gray-300 dark:border-gray-700 hover:bg-secondary transition-all">
-            Learn More
+            Show Examples
           </Button>
         </div>
         

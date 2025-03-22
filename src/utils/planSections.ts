@@ -56,13 +56,16 @@ The market analysis should focus on the following aspects:
 
 Write this as a coherent, detailed paragraph without subheadings or bullet points. Include specific numbers and metrics where possible to make the analysis data-rich and credible. Keep the tone professional and objective.
 
-ALSO INCLUDE REAL-WORLD DATA: Please include factual information about the top 3 companies in this industry including:
-- Company names
+ALSO INCLUDE REAL-WORLD DATA: Please include factual information about the top 3 actual companies in this industry including:
+- Real company names (not generic placeholders)
 - Approximate market share percentage 
 - Year founded
-- Estimated annual revenue
+- Estimated annual revenue (with $ amounts)
 - One key strength for each company
-- One key weakness for each company`,
+- One key weakness for each company
+
+Format the competitor information in a way that can be easily extracted, for example:
+"Company: [Name], Market Share: [Percentage], Founded: [Year], Revenue: [Amount], Strength: [Description], Weakness: [Description]"`,
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     
@@ -80,12 +83,16 @@ The financial projections should include specific numbers for anticipated revenu
     
 The risk assessment should identify potential internal and external risks, their likelihood and impact, and mitigation strategies. Consider market, operational, financial, and regulatory risks.
 
-ALSO INCLUDE COMPETITOR ANALYSIS: For the top 3 competitors in this industry, identify:
+ALSO INCLUDE COMPETITOR ANALYSIS: For the top 3 actual competitors in this industry, identify:
+- Real company names (not generic placeholders)
 - Their approximate market share
-- Annual revenue figures (if available)
+- Annual revenue figures
 - Key strengths and weaknesses
 - Year founded
-- Any potential threats they pose to the new business`,
+- Any potential threats they pose to the new business
+
+Format the competitor information in a way that can be easily extracted, for example:
+"Company: [Name], Market Share: [Percentage], Founded: [Year], Revenue: [Amount], Strength: [Description], Weakness: [Description]"`,
 
     'swot analysis': `Conduct a SWOT analysis for a business with these characteristics:${baseContext}
     

@@ -200,7 +200,10 @@ const FinancialTable = ({ financialText }: FinancialTableProps) => {
                     ${financialData.profit[index].amount.toLocaleString()}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Badge variant={margin > 20 ? "success" : margin > 10 ? "default" : "outline"} className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50">
+                    <Badge 
+                      variant={margin > 20 ? "default" : margin > 10 ? "secondary" : "outline"} 
+                      className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50"
+                    >
                       {margin}%
                     </Badge>
                   </TableCell>

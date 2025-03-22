@@ -95,7 +95,7 @@ const RiskAssessmentSection: React.FC<RiskAssessmentSectionProps> = ({ riskAsses
               <Card className="border border-gray-200 dark:border-gray-800 shadow-sm">
                 <CardContent className="p-5 text-center">
                   <Building className="h-10 w-10 text-gray-400 mx-auto mb-3" />
-                  <p>No competitor data available</p>
+                  <p>No competitor data available for this business type</p>
                 </CardContent>
               </Card>
             )}

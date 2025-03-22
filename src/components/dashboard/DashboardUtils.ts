@@ -1,3 +1,4 @@
+
 // Helper functions to extract data from the business plan
 export function extractTargetMarket(marketAnalysis: string | undefined): { demographic: string; size: string; audience: string; growth: string } | null {
   if (!marketAnalysis) return null;
@@ -139,38 +140,92 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
   const companyMentionRegex = /([\w\s]+)\s+(?:has|with|holds|at)\s+(?:a|an)?\s*(?:market share|market|share)\s+of\s+(\d+%)/gi;
   
   // Try to identify the industry from the market analysis
-  const industryRegex = /(?:industry|market|sector)(?:\s+is|\s+in|\s+of|\s+for|\s+focuses\s+on)?\s+([\w\s,&]+)/i;
+  const industryRegex = /(?:industry|market|sector|business)(?:\s+is|\s+in|\s+of|\s+for|\s+focuses\s+on)?\s+([\w\s,&]+)/i;
   const industryMatch = marketAnalysis.match(industryRegex);
   const industry = industryMatch ? industryMatch[1].trim().toLowerCase() : '';
+  
+  // Try to identify product/service type
+  const productServiceRegex = /(?:product|service|app|platform|software|solution)(?:\s+is|\s+for|\s+that|\s+which|\s+offering)?\s+([\w\s,&]+)/i;
+  const productMatch = marketAnalysis.match(productServiceRegex);
+  const productType = productMatch ? productMatch[1].trim().toLowerCase() : '';
+  
+  // Combine industry and product information
+  const businessContext = `${industry} ${productType}`.toLowerCase();
   
   // Search for predefined competitors based on identified industry
   let industryCompetitorNames: string[] = [];
   
   // Define industry-specific competitors
-  if (industry.includes('dating') || industry.includes('social') || industry.includes('event') || industry.includes('festival') || industry.includes('rave') || industry.includes('music')) {
+  if (businessContext.includes('dating') || businessContext.includes('social') || businessContext.includes('event') || 
+     businessContext.includes('festival') || businessContext.includes('rave') || businessContext.includes('music') ||
+     businessContext.includes('parties') || businessContext.includes('nightlife')) {
     industryCompetitorNames = [
       "Tinder", "Bumble", "Hinge", "Feeld", "OkCupid", "Eventbrite", "Match.com", "Meetup",
       "Thursday", "Raya", "EDM Date", "Festival Connect", "Radiate", "Concert Buddy"
     ];
-  } else if (industry.includes('fitness') || industry.includes('health') || industry.includes('wellness')) {
+  } 
+  else if (businessContext.includes('fitness') || businessContext.includes('health') || 
+          businessContext.includes('wellness') || businessContext.includes('workout') ||
+          businessContext.includes('gym') || businessContext.includes('exercise')) {
     industryCompetitorNames = [
       "Peloton", "MyFitnessPal", "Fitbit", "Strava", "Nike Training Club", "Calm", "Headspace",
-      "ClassPass", "Noom", "WW", "Life Time Fitness"
+      "ClassPass", "Noom", "WW", "Life Time Fitness", "Planet Fitness", "Equinox"
     ];
-  } else if (industry.includes('food') || industry.includes('restaurant') || industry.includes('delivery')) {
+  } 
+  else if (businessContext.includes('food') || businessContext.includes('restaurant') || 
+          businessContext.includes('delivery') || businessContext.includes('grocery') ||
+          businessContext.includes('meal') || businessContext.includes('cooking')) {
     industryCompetitorNames = [
       "Uber Eats", "DoorDash", "Grubhub", "Instacart", "Deliveroo", "HelloFresh", "Blue Apron",
-      "Postmates", "Seamless", "GoPuff", "ChowNow"
+      "Postmates", "Seamless", "GoPuff", "ChowNow", "Whole Foods", "Sprouts", "Trader Joe's"
     ];
-  } else if (industry.includes('finance') || industry.includes('banking') || industry.includes('investment')) {
+  } 
+  else if (businessContext.includes('finance') || businessContext.includes('banking') || 
+          businessContext.includes('investment') || businessContext.includes('fintech') ||
+          businessContext.includes('payment') || businessContext.includes('loan')) {
     industryCompetitorNames = [
       "Robinhood", "Acorns", "Wealthfront", "Betterment", "Mint", "Personal Capital", "SoFi",
-      "Chime", "Venmo", "Cash App", "PayPal", "Plaid"
+      "Chime", "Venmo", "Cash App", "PayPal", "Plaid", "Stripe", "Square"
     ];
-  } else if (industry.includes('education') || industry.includes('learning') || industry.includes('teaching')) {
+  } 
+  else if (businessContext.includes('education') || businessContext.includes('learning') || 
+          businessContext.includes('teaching') || businessContext.includes('school') ||
+          businessContext.includes('training') || businessContext.includes('course')) {
     industryCompetitorNames = [
       "Coursera", "Udemy", "edX", "Khan Academy", "Duolingo", "Chegg", "Skillshare",
-      "Brilliant", "MasterClass", "Codecademy", "Quizlet"
+      "Brilliant", "MasterClass", "Codecademy", "Quizlet", "LinkedIn Learning", "Pluralsight"
+    ];
+  }
+  else if (businessContext.includes('travel') || businessContext.includes('vacation') || 
+          businessContext.includes('tourism') || businessContext.includes('hotel') ||
+          businessContext.includes('booking') || businessContext.includes('trip')) {
+    industryCompetitorNames = [
+      "Airbnb", "Booking.com", "Expedia", "TripAdvisor", "Hotels.com", "Kayak", "Hopper",
+      "Vrbo", "Priceline", "Skyscanner", "Google Flights", "Marriott", "Hilton"
+    ];
+  }
+  else if (businessContext.includes('real estate') || businessContext.includes('property') || 
+          businessContext.includes('home') || businessContext.includes('housing') ||
+          businessContext.includes('apartment') || businessContext.includes('rental')) {
+    industryCompetitorNames = [
+      "Zillow", "Redfin", "Trulia", "Realtor.com", "Compass", "Century 21", "RE/MAX",
+      "Apartments.com", "Keller Williams", "CoStar", "LoopNet", "Opendoor"
+    ];
+  }
+  else if (businessContext.includes('ecommerce') || businessContext.includes('retail') || 
+          businessContext.includes('shopping') || businessContext.includes('store') ||
+          businessContext.includes('marketplace')) {
+    industryCompetitorNames = [
+      "Amazon", "Shopify", "Walmart", "eBay", "Etsy", "Target", "Wayfair",
+      "Best Buy", "Alibaba", "ASOS", "Chewy", "Home Depot", "Lowe's"
+    ];
+  }
+  else if (businessContext.includes('software') || businessContext.includes('saas') || 
+          businessContext.includes('tech') || businessContext.includes('app') ||
+          businessContext.includes('platform') || businessContext.includes('it')) {
+    industryCompetitorNames = [
+      "Microsoft", "Google", "Salesforce", "Adobe", "Oracle", "SAP", "Slack",
+      "Zoom", "Atlassian", "Dropbox", "HubSpot", "ServiceNow", "Workday"
     ];
   }
   
@@ -237,8 +292,8 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
           marketShare: marketShareMatch ? marketShareMatch[1] : match[2] ? match[2] : `${Math.floor(5 + Math.random() * 35)}%`,
           founded: foundedMatch ? parseInt(foundedMatch[1]) : (2000 + Math.floor(Math.random() * 22)),
           annualRevenue: revenueMatch ? `$${revenueMatch[1]}` : `$${Math.floor(5 + Math.random() * 40)}${['M', 'B'][Math.floor(Math.random() * 2)]}`,
-          strength: strengthMatch ? strengthMatch[1].trim() : getRandomStrength(industry, companyName),
-          weakness: weaknessMatch ? weaknessMatch[1].trim() : getRandomWeakness(industry, companyName)
+          strength: strengthMatch ? strengthMatch[1].trim() : getRandomStrength(businessContext, companyName),
+          weakness: weaknessMatch ? weaknessMatch[1].trim() : getRandomWeakness(businessContext, companyName)
         });
         
         // Limit to 3 competitors
@@ -257,26 +312,42 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
           marketShare: `${Math.floor(5 + Math.random() * 35)}%`,
           founded: (2000 + Math.floor(Math.random() * 22)),
           annualRevenue: `$${Math.floor(5 + Math.random() * 40)}${['M', 'B'][Math.floor(Math.random() * 2)]}`,
-          strength: getRandomStrength(industry, competitorName),
-          weakness: getRandomWeakness(industry, competitorName)
+          strength: getRandomStrength(businessContext, competitorName),
+          weakness: getRandomWeakness(businessContext, competitorName)
         });
       }
     }
   }
   
-  // If no competitors at all, create some generic ones based on rough industry
+  // If no competitors at all, create some generic ones based on rough industry context
   if (competitors.length === 0) {
+    let industryPrefix = "Industry";
+    
+    if (businessContext.includes('tech') || businessContext.includes('software') || businessContext.includes('app')) {
+      industryPrefix = "Tech";
+    } else if (businessContext.includes('food') || businessContext.includes('restaurant')) {
+      industryPrefix = "Food";
+    } else if (businessContext.includes('health') || businessContext.includes('fitness')) {
+      industryPrefix = "Health";
+    } else if (businessContext.includes('finance') || businessContext.includes('banking')) {
+      industryPrefix = "Finance";
+    } else if (businessContext.includes('education') || businessContext.includes('learning')) {
+      industryPrefix = "Education";
+    } else if (businessContext.includes('travel') || businessContext.includes('tourism')) {
+      industryPrefix = "Travel";
+    }
+    
     const defaultCompetitors = [
       { 
-        name: industry.includes('app') || industry.includes('tech') ? "TechLeader" : "MarketLeader", 
+        name: `${industryPrefix}Leader`, 
         marketShare: "32%", 
         founded: 2005, 
         annualRevenue: "$85M", 
-        strength: "Strong user experience", 
-        weakness: "Limited customer support" 
+        strength: "Strong market presence", 
+        weakness: "Limited innovation" 
       },
       { 
-        name: industry.includes('app') || industry.includes('tech') ? "AppInnovator" : "IndustryInnovator", 
+        name: `${industryPrefix}Innovator`, 
         marketShare: "24%", 
         founded: 2012, 
         annualRevenue: "$42M", 
@@ -284,12 +355,12 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
         weakness: "Higher price point" 
       },
       { 
-        name: industry.includes('app') || industry.includes('tech') ? "UserFirst" : "CustomerFocus", 
+        name: `${industryPrefix}Focus`, 
         marketShare: "18%", 
         founded: 2015, 
         annualRevenue: "$28M", 
         strength: "Superior customer service", 
-        weakness: "Smaller feature set" 
+        weakness: "Smaller market reach" 
       }
     ];
     
@@ -300,11 +371,11 @@ export function extractCompetitors(marketAnalysis: string | undefined): any[] {
 }
 
 // Helper function to generate random strengths based on industry and company
-function getRandomStrength(industry: string, companyName: string): string {
+function getRandomStrength(industryContext: string, companyName: string): string {
   const strengths = [
     "Strong user base",
     "Intuitive user interface",
-    "Advanced matching algorithm",
+    "Advanced technology",
     "Large audience reach",
     "Strong brand recognition",
     "Innovative features",
@@ -316,8 +387,8 @@ function getRandomStrength(industry: string, companyName: string): string {
     "Global market presence"
   ];
   
-  // Dating/Social specific strengths
-  if (industry.includes('dating') || industry.includes('social')) {
+  // Industry-specific strengths
+  if (industryContext.includes('dating') || industryContext.includes('social')) {
     strengths.push(
       "Advanced matching system",
       "Large active user base",
@@ -326,13 +397,31 @@ function getRandomStrength(industry: string, companyName: string): string {
       "High user engagement",
       "Personality-based matching"
     );
+  } else if (industryContext.includes('food') || industryContext.includes('restaurant')) {
+    strengths.push(
+      "Fast delivery times",
+      "Wide restaurant selection",
+      "Competitive pricing",
+      "Quality ingredients",
+      "Excellent customer satisfaction",
+      "Innovative menu options"
+    );
+  } else if (industryContext.includes('fitness') || industryContext.includes('health')) {
+    strengths.push(
+      "Personalized workout plans",
+      "Expert nutritional guidance",
+      "Progress tracking features",
+      "Motivational community",
+      "High-quality equipment",
+      "Certified trainers"
+    );
   }
   
   return strengths[Math.floor(Math.random() * strengths.length)];
 }
 
 // Helper function to generate random weaknesses based on industry and company
-function getRandomWeakness(industry: string, companyName: string): string {
+function getRandomWeakness(industryContext: string, companyName: string): string {
   const weaknesses = [
     "Limited feature set",
     "Higher subscription cost",
@@ -347,8 +436,8 @@ function getRandomWeakness(industry: string, companyName: string): string {
     "Limited audience diversity"
   ];
   
-  // Dating/Social specific weaknesses
-  if (industry.includes('dating') || industry.includes('social')) {
+  // Industry-specific weaknesses
+  if (industryContext.includes('dating') || industryContext.includes('social')) {
     weaknesses.push(
       "Not event-focused",
       "Generic matching criteria",
@@ -356,6 +445,24 @@ function getRandomWeakness(industry: string, companyName: string): string {
       "Lack of specialized focus",
       "Too many fake profiles",
       "Poor retention strategies"
+    );
+  } else if (industryContext.includes('food') || industryContext.includes('restaurant')) {
+    weaknesses.push(
+      "Long delivery times",
+      "Limited geographic coverage",
+      "High delivery fees",
+      "Inconsistent food quality",
+      "Limited menu options",
+      "Poor customer service"
+    );
+  } else if (industryContext.includes('fitness') || industryContext.includes('health')) {
+    weaknesses.push(
+      "Limited workout variety",
+      "Complicated interface",
+      "High monthly fees",
+      "Poor integration with devices",
+      "Limited personalization",
+      "Insufficient guidance"
     );
   }
   

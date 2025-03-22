@@ -29,7 +29,7 @@ const CompetitorsCard: React.FC<CompetitorsCardProps> = ({ competitors }) => {
           </div>
           <div className="mt-3">
             <p className="text-base font-medium">Industry Analysis</p>
-            <p className="text-sm text-muted-foreground mt-1">Competitor data pending</p>
+            <p className="text-sm text-muted-foreground mt-1">No competitors identified for this business type</p>
           </div>
         </CardContent>
       </Card>

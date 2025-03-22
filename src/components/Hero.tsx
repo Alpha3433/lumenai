@@ -2,14 +2,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Search, CheckCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  const handleTryForFree = () => {
+    navigate('/market-trends');
+  };
 
   return (
     <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center pb-16">
@@ -27,12 +32,13 @@ const Hero = () => {
         </p>
         
         <div className={`mt-12 flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 delay-700 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <Link to="/create">
-            <Button className="bg-black hover:bg-black/90 text-white rounded-md h-12 px-8 text-base font-medium transition-all">
-              Try for Free
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+          <Button 
+            onClick={handleTryForFree}
+            className="bg-black hover:bg-black/90 text-white rounded-md h-12 px-8 text-base font-medium transition-all"
+          >
+            Try for Free
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
           <Link to="/examples">
             <Button variant="outline" className="rounded-md h-12 px-8 text-base font-medium border-gray-300 dark:border-gray-700 hover:bg-secondary transition-all">
               Show Examples

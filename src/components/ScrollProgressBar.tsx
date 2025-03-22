@@ -6,9 +6,8 @@ const ScrollProgressBar = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const location = useLocation();
   
-  // Only show the progress bar on specific routes
-  // Currently only on the plan viewing page which would match /plan/
-  const shouldShowProgressBar = location.pathname.includes('/plan/');
+  // Only show the progress bar on the create page
+  const shouldShowProgressBar = location.pathname === '/create';
   
   useEffect(() => {
     if (!shouldShowProgressBar) return;

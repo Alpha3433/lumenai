@@ -44,9 +44,9 @@ const Navbar = () => {
             <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
               Features
             </a>
-            <a href="#" className="text-sm font-medium hover:text-primary transition-colors">
-              Comparison
-            </a>
+            <Link to="/examples" className="text-sm font-medium hover:text-primary transition-colors">
+              Examples
+            </Link>
             <a href="#" className="text-sm font-medium hover:text-primary transition-colors">
               FAQ
             </a>
@@ -88,13 +88,13 @@ const Navbar = () => {
               >
                 Features
               </a>
-              <a 
-                href="#" 
+              <Link 
+                to="/examples" 
                 className="text-sm font-medium hover:text-primary transition-colors p-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Comparison
-              </a>
+                Examples
+              </Link>
               <a 
                 href="#" 
                 className="text-sm font-medium hover:text-primary transition-colors p-2"

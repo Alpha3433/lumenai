@@ -33,9 +33,11 @@ const Hero = () => {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
-          <Button variant="outline" className="rounded-md h-12 px-8 text-base font-medium border-gray-300 dark:border-gray-700 hover:bg-secondary transition-all">
-            Show Examples
-          </Button>
+          <Link to="/examples">
+            <Button variant="outline" className="rounded-md h-12 px-8 text-base font-medium border-gray-300 dark:border-gray-700 hover:bg-secondary transition-all">
+              Show Examples
+            </Button>
+          </Link>
         </div>
         
         <div className={`mt-4 text-sm text-gray-500 transition-all duration-700 delay-800 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>

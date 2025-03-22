@@ -1,16 +1,18 @@
 
 import React from 'react';
-import KeyInsightCard from './KeyInsightCard';
+import { Card, CardContent } from "@/components/ui/card";
 import { Lightbulb, Activity } from 'lucide-react';
+import KeyInsightCard from './KeyInsightCard';
 
 interface InsightsGridProps {
   strengths: string[];
   opportunities: string[];
+  className?: string;
 }
 
-const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities }) => {
+const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities, className = '' }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${className}`}>
       {/* Strengths */}
       <KeyInsightCard 
         title="Key Strengths"
@@ -26,6 +28,7 @@ const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities })
           border: "border-amber-200",
           darkBorder: "border-amber-800"
         }}
+        value="" // Adding an empty value prop to satisfy type checks
       />
 
       {/* Opportunities */}
@@ -43,6 +46,7 @@ const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities })
           border: "border-emerald-200",
           darkBorder: "border-emerald-800"
         }}
+        value="" // Adding an empty value prop to satisfy type checks
       />
     </div>
   );

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PieChart, BarGraph, Gauge, Target } from 'lucide-react';
+import { PieChart, BarChart, Gauge, Target } from 'lucide-react';
 import DashboardGrid from './dashboard/DashboardGrid';
 import KeyInsightCard from './dashboard/KeyInsightCard';
 import MarketInsightCard from './dashboard/MarketInsightCard';
@@ -67,7 +67,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
             <Target className="h-4 w-4" /> Market
           </TabsTrigger>
           <TabsTrigger value="financial" className="flex items-center gap-1.5">
-            <BarGraph className="h-4 w-4" /> Financial
+            <BarChart className="h-4 w-4" /> Financial
           </TabsTrigger>
           <TabsTrigger value="strategic" className="flex items-center gap-1.5">
             <Gauge className="h-4 w-4" /> Strategic
@@ -75,7 +75,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
         </TabsList>
         
         <TabsContent value="overview" className="space-y-6">
-          <DashboardGrid>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <KeyInsightCard 
               title="Key Strength"
               value={strengths?.[0] || "Strong market position"}
@@ -91,20 +91,22 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
               className="md:col-span-2"
             />
             <MarketInsightCard 
-              targetMarket={targetMarket}
+              demographic={targetMarket?.demographic}
+              size={targetMarket?.size}
               className="col-span-1 md:col-span-2"
             />
             <FinancialOutlookCard 
-              revenueData={revenueData}
+              revenue={revenueData}
               className="col-span-1 md:col-span-2"
             />
-          </DashboardGrid>
+          </div>
         </TabsContent>
         
         <TabsContent value="market" className="space-y-6">
-          <DashboardGrid>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <TargetAudienceCard 
-              targetMarket={targetMarket}
+              audience={targetMarket?.audience}
+              growth={targetMarket?.growth}
               className="col-span-1 md:col-span-3"
             />
             <KeyInsightCard 
@@ -120,11 +122,11 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
               color="text-green-500"
             />
             <CompetitorsCard competitors={competitors} />
-          </DashboardGrid>
+          </div>
         </TabsContent>
         
         <TabsContent value="financial" className="space-y-6">
-          <DashboardGrid>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <KeyInsightCard 
               title="Year 1 Revenue"
               value={revenueData?.year1 || "Revenue Projections Pending"}
@@ -139,12 +141,16 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
               color="text-blue-500"
               className="md:col-span-2"
             />
-            <InsightsGrid className="col-span-1 md:col-span-4" />
-          </DashboardGrid>
+            <InsightsGrid 
+              strengths={strengths || []} 
+              opportunities={opportunities || []} 
+              className="col-span-1 md:col-span-4" 
+            />
+          </div>
         </TabsContent>
         
         <TabsContent value="strategic" className="space-y-6">
-          <DashboardGrid>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <KeyInsightCard 
               title="Strength"
               value={strengths?.[0] || "Pending Analysis"}
@@ -170,7 +176,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
               color="text-blue-500"
             />
             <CompetitorsCard competitors={competitors} />
-          </DashboardGrid>
+          </div>
         </TabsContent>
       </Tabs>
     </section>

@@ -4,13 +4,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Users } from 'lucide-react';
 
 interface TargetAudienceCardProps {
-  audience: string | undefined;
-  growth: string | undefined;
+  audience?: string;
+  growth?: string;
+  className?: string;
 }
 
-const TargetAudienceCard: React.FC<TargetAudienceCardProps> = ({ audience, growth }) => {
+const TargetAudienceCard: React.FC<TargetAudienceCardProps> = ({ audience, growth, className = '' }) => {
   return (
-    <Card className="border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+    <Card className={`border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow ${className}`}>
       <CardContent className="p-4">
         <div className="flex justify-between items-start">
           <h3 className="text-sm font-semibold text-muted-foreground">Target Audience</h3>

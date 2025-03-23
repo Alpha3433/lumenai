@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { AlertCircle, CheckCircle, ExternalLink, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, ExternalLink, XCircle, Triangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { extractCompetitors } from '@/utils/extraction/competitorUtils';
 
@@ -81,9 +80,12 @@ const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAna
 
   return (
     <Card className="mt-8 border border-gray-200 dark:border-gray-800 shadow-sm">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
-        <h3 className="text-lg font-medium flex items-center gap-2">
-          <AlertCircle className="h-5 w-5 text-red-500" /> High Threat Competitors
+      <div className="p-6 border-b border-gray-200 dark:border-gray-800">
+        <h3 className="text-2xl font-bold text-center flex items-center justify-center gap-2">
+          <div className="p-1.5 bg-red-100 dark:bg-red-900/30 rounded-full">
+            <Triangle className="h-5 w-5 text-red-500" />
+          </div>
+          High Threat Competitors
         </h3>
       </div>
       <CardContent className="p-0">

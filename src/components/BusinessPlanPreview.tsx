@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -67,19 +66,11 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             
             <Separator className="my-10" />
             
-            {/* SWOT Analysis */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-                <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                  <CheckCircle className="h-5 w-5 text-purple-500" />
-                </div>
-                SWOT Analysis
-              </h2>
-              <SwotAnalysis 
-                swotText={businessPlan.swotAnalysis} 
-                marketAnalysis={businessPlan.marketAnalysis}
-              />
-            </section>
+            {/* SWOT Analysis - Removing the title as it's now in the SwotAnalysis component */}
+            <SwotAnalysis 
+              swotText={businessPlan.swotAnalysis} 
+              marketAnalysis={businessPlan.marketAnalysis}
+            />
             
             <Separator className="my-10" />
             
@@ -92,8 +83,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             <PorterFiveForcesSection analysisText={businessPlan.marketAnalysis} />
             
             <Separator className="my-10" />
-            
-            {/* Market Analysis section removed as requested */}
             
             {/* Marketing Plan */}
             <MarketingPlanSection 

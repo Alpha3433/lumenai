@@ -52,13 +52,15 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
             <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
               Unlock our comprehensive Marketing Plan section to get detailed strategies for customer acquisition and brand growth.
             </p>
-            <Button 
-              onClick={onUpgrade}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-full px-8 py-2 shadow-md flex items-center gap-2"
-            >
-              <Sparkles className="h-4 w-4" />
-              Upgrade to Premium
-            </Button>
+            <div className="flex justify-center">
+              <Button 
+                onClick={onUpgrade}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-full px-8 py-2 shadow-md flex items-center gap-2"
+              >
+                <Sparkles className="h-4 w-4" />
+                Upgrade to Premium
+              </Button>
+            </div>
           </div>
         </div>
       )}

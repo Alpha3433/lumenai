@@ -13,14 +13,10 @@ interface HighThreatCompetitorsProps {
 const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAnalysis }) => {
   const { competitorsWithModels, isLoading } = useCompetitorData(marketAnalysis);
 
-  if (!competitorsWithModels.length && !isLoading) {
-    return null;
-  }
-
   return (
     <Card className="mt-8 border border-gray-200 dark:border-gray-800 shadow-sm">
       <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col items-center relative">
-        <h3 className="text-2xl font-bold flex items-center justify-center gap-2">
+        <h3 className="text-2xl font-bold flex items-center justify-center gap-2 text-black dark:text-white">
           <div className="p-1.5 bg-red-100 dark:bg-red-900/30 rounded-full">
             <Target className="h-5 w-5 text-red-500" />
           </div>

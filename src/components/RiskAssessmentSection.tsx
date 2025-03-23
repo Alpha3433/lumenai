@@ -4,19 +4,11 @@ import { Activity, Building, UsersRound } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { extractCompetitors } from './dashboard/DashboardUtils';
+import { extractCompetitors } from '@/utils/extraction/competitorUtils';
+import type { Competitor } from '@/utils/extraction/competitorUtils';
 
 interface RiskAssessmentSectionProps {
   riskAssessmentText: string;
-}
-
-interface Competitor {
-  name: string;
-  marketShare: string;
-  strength: string;
-  weakness: string;
-  annualRevenue: string;
-  founded: number;
 }
 
 const RiskAssessmentSection: React.FC<RiskAssessmentSectionProps> = ({ riskAssessmentText }) => {

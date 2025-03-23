@@ -3,17 +3,18 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertCircle, CheckCircle, ExternalLink, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { extractCompetitors, Competitor } from '@/components/dashboard/DashboardUtils';
+import { extractCompetitors } from '@/utils/extraction/competitorUtils';
 
 interface HighThreatCompetitorsProps {
   marketAnalysis: string;
 }
 
 const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAnalysis }) => {
+  // Extract and calculate competitor threat scores
   const competitors = extractCompetitors(marketAnalysis);
   
   // Calculate threat scores based on market share and other factors
-  const competitorsWithScores = competitors.map((competitor: Competitor) => {
+  const competitorsWithScores = competitors.map(competitor => {
     // Extract market share percentage
     const marketShareMatch = competitor.marketShare.match(/(\d+)/);
     const marketShareValue = marketShareMatch ? parseInt(marketShareMatch[1]) : 0;
@@ -60,7 +61,7 @@ const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAna
   };
   
   // Generate pricing model description if not available
-  const inferPricingModel = (competitor: Competitor) => {
+  const inferPricingModel = (competitor) => {
     const models = [
       "Freemium (free access, pay for premium services)",
       "Subscription-based model",

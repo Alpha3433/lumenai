@@ -32,7 +32,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
   const revenue = extractRevenue(businessPlan.financialProjections || '');
   const strengths = extractStrengths(businessPlan.swotAnalysis);
   const opportunities = extractOpportunities(businessPlan.swotAnalysis);
-  const competitors = extractCompetitors(businessPlan.marketAnalysis || businessPlan.riskAssessment);
+  const competitors = extractCompetitors(businessPlan.marketAnalysis || businessPlan.riskAssessment || '');
   
   return (
     <section className="mb-10 animate-fade-in">

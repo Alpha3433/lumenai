@@ -4,18 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Building, TrendingUp, TrendingDown } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-
-interface Competitor {
-  name: string;
-  marketShare: string;
-  founded: number;
-  annualRevenue: string;
-  strength: string;
-  weakness: string;
-}
+import { extractCompetitors } from '@/utils/extraction/competitorUtils';
 
 interface CompetitorsCardProps {
-  competitors: Competitor[];
+  competitors: any[];
 }
 
 const CompetitorsCard: React.FC<CompetitorsCardProps> = ({ competitors }) => {

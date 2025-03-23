@@ -39,7 +39,7 @@ const SwotAnalysis = ({ swotText, marketAnalysis = '' }: SwotAnalysisProps) => {
         <ProblemPriorityMatrix swotData={swotData} />
       )}
       
-      {/* Add the High Threat Competitors section */}
+      {/* Add the High Threat Competitors section - pass marketAnalysis to it */}
       {marketAnalysis && <HighThreatCompetitors marketAnalysis={marketAnalysis} />}
     </div>
   );

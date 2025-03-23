@@ -103,7 +103,7 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
                 ) : (
                   <>
                     <Sparkles className="mr-2 h-4 w-4" /> 
-                    Craft Your Roadmap to Success
+                    Discover Your Niche!
                   </>
                 )}
               </Button>

@@ -39,12 +39,19 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
   // Get the number of risks
   const risksCount = negatives.length;
   
+  // Get progress bar color based on score out of 10
+  const getProgressBarColor = () => {
+    if (scoreOutOfTen >= 8) return "bg-green-500"; 
+    if (scoreOutOfTen >= 5) return "bg-amber-500"; 
+    return "bg-red-500";
+  };
+  
   return (
     <div className="space-y-8">
       {/* Viability Section - Updated Design */}
       <Card className="border-none shadow-md rounded-xl overflow-hidden bg-white dark:bg-gray-900">
         <CardContent className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Business Viability Assessment</h3>
+          <h3 className="font-semibold text-lg mb-4">Business Idea Score</h3>
           
           <div className="flex justify-between items-center mb-4">
             <span className="text-gray-800 dark:text-gray-300 font-medium"></span>
@@ -54,10 +61,10 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
             </div>
           </div>
           
-          {/* Progress bar */}
+          {/* Progress bar with dynamic color */}
           <div className="w-full h-3 bg-gray-200 rounded-full mb-4">
             <div 
-              className="h-3 bg-amber-500 rounded-full" 
+              className={`h-3 rounded-full ${getProgressBarColor()}`} 
               style={{ width: `${score}%` }}
             ></div>
           </div>

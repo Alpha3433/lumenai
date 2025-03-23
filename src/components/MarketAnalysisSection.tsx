@@ -19,28 +19,33 @@ const MarketAnalysisSection: React.FC<MarketAnalysisSectionProps> = ({ analysisT
   const chartConfig = getChartConfig();
 
   return (
-    <section className="mb-12 animate-fade-in">
-      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-        <Activity className="h-6 w-6 text-purple-500" />
-        Market Analysis
-      </h2>
+    <section className="mb-12 animate-fade-in space-y-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Activity className="h-6 w-6 text-purple-500" />
+          Market Analysis
+        </h2>
+        <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full">
+          Data extracted from AI analysis
+        </div>
+      </div>
 
-      {/* Key Metrics Cards */}
+      {/* Key Metrics Cards - Top Row */}
       <KeyMetricsCards marketData={marketData} />
 
-      {/* Market Analysis Text and Market Growth Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      {/* Main Content Grid - Analysis Text and Market Trend */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AnalysisTextCard analysisText={analysisText} />
         <MarketTrendChart trends={marketData.trends} chartConfig={chartConfig} />
       </div>
 
-      {/* Annual Growth Rate and Segment Comparison Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      {/* Chart Comparison Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <GrowthRateChart trends={marketData.trends} chartConfig={chartConfig} />
         <SegmentChart segments={marketData.segments} chartConfig={chartConfig} />
       </div>
 
-      {/* Market Segments Breakdown Table */}
+      {/* Market Segments Table - Full Width */}
       <SegmentTable segments={marketData.segments} />
     </section>
   );

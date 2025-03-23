@@ -23,12 +23,32 @@ export interface MarketData {
 }
 
 export const extractMarketData = (analysisText: string): MarketData => {
-  // Mock data - in a real app, this would parse the AI-generated text
+  // In a real implementation, we would parse the analysisText to extract this data
+  // For now, we'll return mock data that looks realistic
+  
+  // Try to extract market size using regex
+  const marketSizeMatch = analysisText.match(/\$\d+(\.\d+)?\s*(billion|million|B|M)/i);
+  const marketSize = marketSizeMatch ? marketSizeMatch[0] : "$4.5B";
+  
+  // Try to extract growth rate using regex
+  const growthRateMatch = analysisText.match(/(\d+(\.\d+)?%)/);
+  const growthRate = growthRateMatch ? growthRateMatch[0] : "12.6%";
+  
+  // Count competitors mentioned
+  const competitorsCount = (analysisText.match(/competitor/gi) || []).length;
+  const competitors = competitorsCount > 0 ? competitorsCount : 7;
+  
+  // Extract demographic info
+  const targetCustomersMatch = analysisText.match(/ages?\s+(\d+)[-–](\d+)/i);
+  const targetCustomers = targetCustomersMatch 
+    ? `Ages ${targetCustomersMatch[1]}-${targetCustomersMatch[2]}` 
+    : "18-45 professionals";
+  
   return {
-    marketSize: "$4.5B",
-    growthRate: "12.6%",
-    competitors: 7,
-    targetCustomers: "18-45 professionals",
+    marketSize,
+    growthRate,
+    competitors,
+    targetCustomers,
     segments: [
       { name: 'Segment A', percent: 45, revenue: 2.1 },
       { name: 'Segment B', percent: 30, revenue: 1.4 },

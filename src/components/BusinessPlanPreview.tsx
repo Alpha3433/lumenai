@@ -81,7 +81,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             <Separator className="my-10" />
             
             {/* Porter's Five Forces Analysis */}
-            <PorterFiveForcesSection analysisText={businessPlan.marketAnalysis} />
+            <PorterFiveForcesSection marketAnalysis={businessPlan.marketAnalysis} />
             
             <Separator className="my-10" />
             

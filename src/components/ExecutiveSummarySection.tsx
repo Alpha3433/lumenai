@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { FileText, Quote, Buildings } from 'lucide-react';
+import { FileText, Quote, Building } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
 import { extractTargetMarket } from '@/utils/extraction/marketExtraction';
@@ -49,7 +49,7 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
       {/* Industry Overview */}
       <div>
         <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-          <Buildings className="h-6 w-6 text-indigo-500" />
+          <Building className="h-6 w-6 text-indigo-500" />
           Industry Overview
         </h2>
         

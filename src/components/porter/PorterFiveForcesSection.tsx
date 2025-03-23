@@ -15,7 +15,7 @@ const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ force
     console.warn('PorterFiveForcesSection: forcesData is undefined');
     return (
       <section className="mb-12 animate-fade-in space-y-6">
-        <div className="flex flex-col items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col items-center gap-4 mb-6">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <FileBarChart className="h-6 w-6 text-blue-500" />
             Porter's Five Forces Analysis
@@ -33,7 +33,7 @@ const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ force
 
   return (
     <section className="mb-12 animate-fade-in space-y-6">
-      <div className="flex flex-col items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col items-center gap-4 mb-6">
         <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
           <FileBarChart className="h-6 w-6 text-blue-500" />
           Porter's Five Forces Analysis

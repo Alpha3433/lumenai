@@ -15,14 +15,14 @@ const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAna
 
   return (
     <Card className="mt-8 border-t border-b border-gray-200 dark:border-gray-800 shadow-sm">
-      <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col items-center relative">
+      <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col items-center">
         <h3 className="text-2xl font-bold flex items-center justify-center gap-2 text-black dark:text-white">
           <div className="p-1.5 bg-red-100 dark:bg-red-900/30 rounded-full">
             <Target className="h-5 w-5 text-red-500" />
           </div>
           High Threat Competitors
         </h3>
-        <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full absolute right-0 top-6">
+        <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full mt-1">
           Competitive intelligence
         </div>
       </div>

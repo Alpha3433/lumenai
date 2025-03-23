@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertTriangle, Check, LogIn, Shuffle, Truck, Users, Swords } from 'lucide-react';
-import { PorterForce, ForcesLevel } from '@/utils/porterFiveUtils';
+import { PorterForce, ForcesLevel } from '@/utils/porter';
 
 interface PorterFiveForceCardProps {
   force: PorterForce;

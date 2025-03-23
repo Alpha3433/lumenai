@@ -1,6 +1,6 @@
 
 import React, { useMemo } from 'react';
-import { extractPorterFiveForcesData } from '@/utils/porterFiveUtils';
+import { extractPorterFiveForcesData } from '@/utils/porter';
 import PorterFiveForcesSectionComponent from './porter/PorterFiveForcesSection';
 
 interface PorterFiveForcesSectionProps {

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { FileBarChart } from 'lucide-react';
-import { PorterFiveForcesData } from '@/utils/porterFiveUtils';
+import { PorterFiveForcesData } from '@/utils/porter';
 import PorterFiveForceCard from './PorterFiveForceCard';
 
 interface PorterFiveForcesSectionProps {

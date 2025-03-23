@@ -33,6 +33,13 @@ export const extractPorterFiveForcesData = (analysisText: string): PorterFiveFor
     }
   };
   
+  // Look for the business name and industry to help with fallbacks if needed
+  const businessNameMatch = analysisText.match(/Business Name:\s*([^\n]+)/i);
+  const businessName = businessNameMatch ? businessNameMatch[1].trim() : '';
+  
+  const industryMatch = analysisText.match(/(?:in the|within the)\s+([^\n.,]+(?:\s+[^\n.,]+){0,3})\s+(?:industry|market|sector)/i);
+  const industry = industryMatch ? industryMatch[1].trim() : '';
+  
   // Handle Porter's Five Forces section specifically if it exists
   if (analysisText.includes("Porter's Five Forces") || analysisText.includes("Porters Five Forces")) {
     // Try to find the Porter's section and parse it
@@ -85,7 +92,7 @@ export const extractPorterFiveForcesData = (analysisText: string): PorterFiveFor
   Object.keys(result).forEach(key => {
     const category = key as PorterForce['category'];
     if (result[category].points.length === 0) {
-      result[category].points = getFallbackPoints(category);
+      result[category].points = getFallbackPoints(category, businessName, industry, analysisText);
     }
   });
   

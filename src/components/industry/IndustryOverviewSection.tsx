@@ -20,8 +20,14 @@ const IndustryOverviewSection: React.FC<IndustryOverviewSectionProps> = ({
   const marketData = marketAnalysis ? extractTargetMarket(marketAnalysis) : null;
   const industryText = marketAnalysis || getIndustryOverview('', businessName);
   
+  // Clean the industry text by removing any "Industry Overview" title that might be in it
+  const cleanedIndustryText = industryText
+    .replace(/^(?:#*\s*|\**\s*)industry\s+overview(?:\s*\**|\s*:*)\s*/i, '')
+    .replace(/^(?:\d+\.\s*)industry\s+overview(?:\s*:*)\s*/i, '')
+    .trim();
+  
   // Split industry text into paragraphs for better presentation
-  const industryParagraphs = splitIntoParagraphs(industryText);
+  const industryParagraphs = splitIntoParagraphs(cleanedIndustryText);
   
   return (
     <div>

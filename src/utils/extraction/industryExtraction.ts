@@ -95,8 +95,8 @@ export function getRandomNumber(min: number, max: number): number {
 export function splitIntoParagraphs(text: string): string[] {
   // Clean any markdown formatting from the text
   const cleanText = text
-    .replace(/\*\*\s*Industry\s*Overview\s*\*\*/gi, '')
-    .replace(/##\s*Industry\s*Overview/gi, '')
+    .replace(/(?:#*\s*|\**\s*)Industry\s*Overview(?:\s*\**|\s*:*)/gi, '')
+    .replace(/\d+\.\s*Industry\s*Overview(?:\s*:*)/gi, '')
     .replace(/\*\*/g, '')
     .replace(/##/g, '')
     .replace(/\n#{2,}/g, '')

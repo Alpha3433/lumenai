@@ -10,11 +10,18 @@ interface AnalysisTextCardProps {
 const AnalysisTextCard: React.FC<AnalysisTextCardProps> = ({ analysisText }) => {
   // Function to format the analysis text with better paragraphs
   const formatAnalysisText = (text: string) => {
-    const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
+    // Clean any markdown formatting from the text
+    const cleanText = text
+      .replace(/\*\*/g, '')
+      .replace(/##/g, '')
+      .replace(/\n#{2,}/g, '')
+      .trim();
+    
+    const paragraphs = cleanText.split('\n\n').filter(p => p.trim() !== '');
     
     if (paragraphs.length <= 1) {
       // If there aren't clear paragraphs, split by sentences for better readability
-      return text.split('. ').map((sentence, index, array) => {
+      return cleanText.split('. ').map((sentence, index, array) => {
         // Add period back except for the last item if it already has punctuation
         const hasEndingPunctuation = /[.!?]$/.test(sentence);
         const formattedSentence = hasEndingPunctuation ? sentence : sentence + '.';

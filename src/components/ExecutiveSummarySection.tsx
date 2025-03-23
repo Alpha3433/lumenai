@@ -101,17 +101,26 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
 
 // Function to split long text into paragraphs for better readability
 function splitIntoParagraphs(text: string): string[] {
+  // Clean any markdown formatting from the text
+  const cleanText = text
+    .replace(/\*\*\s*Industry\s*Overview\s*\*\*/gi, '')
+    .replace(/##\s*Industry\s*Overview/gi, '')
+    .replace(/\*\*/g, '')
+    .replace(/##/g, '')
+    .replace(/\n#{2,}/g, '')
+    .trim();
+  
   // If the text already has paragraph breaks, use them
-  if (text.includes('\n\n')) {
-    return text.split('\n\n').filter(p => p.trim().length > 0);
+  if (cleanText.includes('\n\n')) {
+    return cleanText.split('\n\n').filter(p => p.trim().length > 0);
   }
   
   // If no explicit paragraph breaks, create logical breaks
   // Split after approximately every 3-4 sentences for readability
-  const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+  const sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [];
   
   if (sentences.length <= 4) {
-    return [text]; // Return as single paragraph if it's short
+    return [cleanText]; // Return as single paragraph if it's short
   }
   
   const paragraphs = [];

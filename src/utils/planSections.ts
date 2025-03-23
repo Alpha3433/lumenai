@@ -86,7 +86,7 @@ IMPORTANT: Write a detailed industry overview with AT LEAST 14-16 sentences that
 19. Changing demographics creating new market segments
 20. Key industry events, conferences, or trade shows
 
-DO NOT include any headings or labels in your response. Just write the content directly in paragraph form. Use specific figures, percentages, and data points throughout to make the overview substantive and credible. Include at least 5-6 specific statistical data points with dollar amounts or percentages. Cite specific trends and developments that relate directly to the business concept described.`,
+DO NOT use any markdown formatting, headings, or special characters like asterisks or hash symbols. DO NOT include any labels like "Industry Overview" in your response. Just write the content directly in paragraph form with natural paragraph breaks. Use specific figures, percentages, and data points throughout to make the overview substantive and credible. Include at least 5-6 specific statistical data points with dollar amounts or percentages. Cite specific trends and developments that relate directly to the business concept described.`,
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     

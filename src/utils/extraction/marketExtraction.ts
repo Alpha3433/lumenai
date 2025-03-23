@@ -4,20 +4,27 @@
 export function extractTargetMarket(marketAnalysis: string | undefined): { demographic: string; size: string; audience: string; growth: string } | null {
   if (!marketAnalysis) return null;
   
+  // Clean any markdown formatting from the text
+  const cleanText = marketAnalysis
+    .replace(/\*\*/g, '')
+    .replace(/##/g, '')
+    .replace(/\n#{2,}/g, '')
+    .trim();
+  
   // Extract market size using regex - looking for dollar amounts with better pattern matching
-  const sizeMatch = marketAnalysis.match(/\$\d+(\.\d+)?\s*(billion|million|trillion|B|M|T)/i) || 
-                    marketAnalysis.match(/market\s+size\s+of\s+\$?\d+(\.\d+)?\s*(billion|million|trillion|B|M|T)/i);
+  const sizeMatch = cleanText.match(/\$\d+(\.\d+)?\s*(billion|million|trillion|B|M|T)/i) || 
+                    cleanText.match(/market\s+size\s+of\s+\$?\d+(\.\d+)?\s*(billion|million|trillion|B|M|T)/i);
   
   // Extract demographic information (age ranges, professionals, etc.)
-  const demographicMatch = marketAnalysis.match(/age[s]?\s+(\d+)[-–](\d+)/i) || 
-                          marketAnalysis.match(/(millennials|gen z|professionals|adults|seniors)/i);
+  const demographicMatch = cleanText.match(/age[s]?\s+(\d+)[-–](\d+)/i) || 
+                          cleanText.match(/(millennials|gen z|professionals|adults|seniors)/i);
   
   // Extract growth percentage
-  const growthMatch = marketAnalysis.match(/(\d+(\.\d+)?%\s+(growth|increase))/i) ||
-                      marketAnalysis.match(/growth\s+of\s+(\d+(\.\d+)?%)/i);
+  const growthMatch = cleanText.match(/(\d+(\.\d+)?%\s+(growth|increase))/i) ||
+                      cleanText.match(/growth\s+of\s+(\d+(\.\d+)?%)/i);
   
   // Extract audience information
-  const audienceInfo = extractAudienceFromText(marketAnalysis);
+  const audienceInfo = extractAudienceFromText(cleanText);
   
   return {
     demographic: demographicMatch ? 

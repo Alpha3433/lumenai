@@ -62,5 +62,33 @@ export const extractBulletPoints = (text: string): string[] => {
       .filter(point => point.length > 2); // Avoid empty points
   }
   
-  return points;
+  // Merge points that appear to be fragments of the same bullet point
+  let mergedPoints: string[] = [];
+  let currentPoint = '';
+  
+  points.forEach((point, i) => {
+    // If this point starts with lowercase and there's a current point being built,
+    // or if the current point doesn't end with punctuation and this point starts with lowercase,
+    // then these are likely fragments of the same point
+    const startsWithLowercase = /^[a-z]/.test(point);
+    const previousPointEndsWithoutPunctuation = currentPoint && !currentPoint.match(/[.!?]$/);
+    
+    if ((startsWithLowercase && currentPoint) || previousPointEndsWithoutPunctuation) {
+      // This is likely a continuation
+      currentPoint += ' ' + point;
+    } else {
+      // This is a new point
+      if (currentPoint) {
+        mergedPoints.push(currentPoint);
+      }
+      currentPoint = point;
+    }
+  });
+  
+  // Add the last point if there is one
+  if (currentPoint) {
+    mergedPoints.push(currentPoint);
+  }
+  
+  return mergedPoints;
 };

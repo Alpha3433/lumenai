@@ -9,12 +9,19 @@ interface InsightsGridProps {
 }
 
 const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities }) => {
-  // Pre-process strengths to ensure they're complete sentences
-  const processedStrengths = strengths.map(strength => 
-    strength.trim().endsWith('.') ? strength : `${strength}.`
-  );
+  // Process strengths to ensure they're complete sentences and not accidentally split
+  const processedStrengths = strengths.map(strength => {
+    const trimmed = strength.trim();
+    // Check if this strength appears to be a fragment (ends without punctuation and starts with lowercase)
+    const seemsFragmented = !trimmed.match(/[.!?]$/) && 
+                            !trimmed.match(/^[A-Z]/) && 
+                            strengths.length > 1;
+    
+    // Add a period if needed
+    return trimmed.endsWith('.') ? trimmed : `${trimmed}.`;
+  });
   
-  // Pre-process opportunities to ensure they're complete sentences
+  // Process opportunities to ensure they're complete sentences
   const processedOpportunities = opportunities.map(opportunity => 
     opportunity.trim().endsWith('.') ? opportunity : `${opportunity}.`
   );

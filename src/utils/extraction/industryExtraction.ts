@@ -1,3 +1,4 @@
+
 // Helper functions for extracting and formatting industry information
 
 /**
@@ -99,8 +100,10 @@ export function getRandomNumber(min: number, max: number): number {
  * Function to split long text into paragraphs for better readability
  */
 export function splitIntoParagraphs(text: string): string[] {
-  // Clean any markdown formatting from the text
-  const cleanText = text
+  // Pre-process text to fix decimal number formatting issues
+  let fixedText = text
+    .replace(/(\d+)\.\s+(\d+)/g, '$1.$2') // Fix "10. 5" to "10.5"
+    .replace(/\$(\d+)\.\s+(\d+)/g, '\$$1.$2') // Fix "$10. 5" to "$10.5"
     .replace(/(?:#*\s*|\**\s*)Industry\s*Overview(?:\s*\**|\s*:*)/gi, '')
     .replace(/\d+\.\s*Industry\s*Overview(?:\s*:*)/gi, '')
     .replace(/\*\*/g, '')
@@ -108,37 +111,47 @@ export function splitIntoParagraphs(text: string): string[] {
     .replace(/\n#{2,}/g, '')
     .trim();
   
-  // Fix formatting issues with decimal numbers
-  const fixedText = cleanText
-    .replace(/(\d+)\.\s+(\d+)/g, '$1.$2')
-    .replace(/\$(\d+)\.\s+(\d+)/g, '\$$1.$2');
-  
   // If the text already has paragraph breaks, use them
   if (fixedText.includes('\n\n')) {
-    return fixedText.split('\n\n').filter(p => p.trim().length > 0);
+    return fixedText.split('\n\n')
+      .filter(p => p.trim().length > 0)
+      .map(p => p.replace(/(\d+)\.\s+(\d+)/g, '$1.$2')); // Apply fix again in case it was missed
   }
   
   // Split on single newlines if there are any
   if (fixedText.includes('\n')) {
-    const paragraphs = fixedText.split('\n').filter(p => p.trim().length > 0);
+    const paragraphs = fixedText.split('\n')
+      .filter(p => p.trim().length > 0)
+      .map(p => p.replace(/(\d+)\.\s+(\d+)/g, '$1.$2')); // Apply fix again
+    
     if (paragraphs.length > 1) {
       return paragraphs;
     }
   }
   
   // If no explicit paragraph breaks, create logical breaks
-  // Split after approximately every 3-4 sentences for readability
+  // We need to handle decimal numbers properly
+  
+  // First, temporarily replace decimal points to avoid splitting on them
+  fixedText = fixedText.replace(/(\d+)\.(\d+)/g, '$1DECIMAL$2');
+  
+  // Now split on sentence endings
   const sentences = fixedText.match(/[^.!?]+[.!?]+/g) || [];
   
-  if (sentences.length <= 4) {
-    return [fixedText]; // Return as single paragraph if it's short
+  // Restore decimal points
+  const restoredSentences = sentences.map(s => 
+    s.replace(/(\d+)DECIMAL(\d+)/g, '$1.$2')
+  );
+  
+  if (restoredSentences.length <= 4) {
+    return [fixedText.replace(/(\d+)DECIMAL(\d+)/g, '$1.$2')]; // Return as single paragraph if it's short
   }
   
   const paragraphs = [];
-  const sentencesPerParagraph = Math.ceil(sentences.length / 3); // Aim for 3 paragraphs
+  const sentencesPerParagraph = Math.ceil(restoredSentences.length / 3); // Aim for 3 paragraphs
   
-  for (let i = 0; i < sentences.length; i += sentencesPerParagraph) {
-    const paragraph = sentences.slice(i, i + sentencesPerParagraph).join(' ');
+  for (let i = 0; i < restoredSentences.length; i += sentencesPerParagraph) {
+    const paragraph = restoredSentences.slice(i, i + sentencesPerParagraph).join(' ');
     paragraphs.push(paragraph);
   }
   

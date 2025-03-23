@@ -1,4 +1,3 @@
-
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 
@@ -59,6 +58,13 @@ MAKE SURE to include REAL COMPETITOR INFORMATION about these companies:
 - Year each company was founded
 - Estimated annual revenue with $ amounts
 - Key strengths and weaknesses for each
+
+ALSO INCLUDE a section titled "Porter's Five Forces Analysis" with subsections for each of the five forces:
+- "Threat of New Entrants" - Indicate whether it is HIGH, MEDIUM, or LOW and list 3-4 bullet points explaining why.
+- "Threat of Substitution" - Indicate whether it is HIGH, MEDIUM, or LOW and list 3-4 bullet points explaining why.
+- "Bargaining Power of Suppliers" - Indicate whether it is HIGH, MEDIUM, or LOW and list 3-4 bullet points explaining why.
+- "Bargaining Power of Buyers" - Indicate whether it is HIGH, MEDIUM, or LOW and list 3-4 bullet points explaining why.
+- "Competitive Rivalry" - Indicate whether it is HIGH, MEDIUM, or LOW and list 3-4 bullet points explaining why.
 
 Format this as a professional, detailed analysis with specific facts and figures throughout. Include actual numbers, percentages, and named companies to give the analysis credibility.`,
 

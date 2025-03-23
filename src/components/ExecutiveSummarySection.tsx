@@ -154,7 +154,7 @@ function getIndustryOverview(text: string, businessName: string): string {
     industry = "service";
   }
   
-  return `The ${industry} industry is currently experiencing significant growth and transformation. Companies like ${businessName} are positioned to capitalize on emerging market trends and evolving consumer preferences. This sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing market share. As digital adoption accelerates and consumer behaviors shift, businesses in this industry face both unique challenges and substantial opportunities for differentiation.`;
+  return `The ${industry} industry is currently experiencing significant growth and transformation. Companies like ${businessName} are positioned to capitalize on emerging market trends and evolving consumer preferences. This sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing market share. As digital adoption accelerates and consumer behaviors shift, businesses in this industry face both unique challenges and substantial opportunities for differentiation. Furthermore, the evolving regulatory landscape and technological advancements are reshaping competitive dynamics, creating new entry points for disruptive business models while also raising barriers for traditional approaches. Economic factors including changing workforce dynamics and supply chain transformations are additionally influencing market conditions, with agile companies finding advantages through adaptive strategies.`;
 }
 
 export default ExecutiveSummarySection;

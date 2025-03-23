@@ -46,11 +46,13 @@ serve(async (req) => {
     let systemMessage = '';
     
     if (isValidationPrompt) {
-      systemMessage = 'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL for proper display of the report.';
+      systemMessage = 'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL FOR PROPER DISPLAY of the report.';
     } else if (prompt.toLowerCase().includes('market analysis')) {
-      systemMessage = 'You are a helpful assistant that generates business plan content. For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, age demographics, and identify real competitor companies with estimates of their market share and revenue. Format any statistics with numbers and percentages clearly.';
+      systemMessage = 'You are a helpful assistant that generates business plan content. For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, age demographics, and identify real competitor companies with estimates of their market share and revenue. Format any statistics with numbers and percentages clearly. Provide detailed information on at least 3-4 specific real companies in this industry, including their year founded, approximate annual revenue, and key strengths/weaknesses.';
     } else if (prompt.toLowerCase().includes('executive summary')) {
       systemMessage = 'You are a helpful assistant that generates business plan content. Create a concise and compelling executive summary with exactly two paragraphs. The first paragraph should introduce the business concept, value proposition, and target market. The second paragraph should highlight the market opportunity, business model, and competitive advantage.';
+    } else if (prompt.toLowerCase().includes('industry overview')) {
+      systemMessage = 'You are a helpful assistant that generates detailed industry overviews for business plans. Include specific metrics like total market size in dollars (e.g., $4.5 billion), compound annual growth rate percentages, key trends, and emerging opportunities. Do not label this as "Industry Overview" - just provide the detailed content directly. Write at least 5-6 sentences that thoroughly describe the industry landscape, competitive dynamics, regulatory considerations, and future outlook. Use specific numbers and percentages whenever possible.';
     } else {
       systemMessage = 'You are a helpful assistant that generates business plan content.';
     }

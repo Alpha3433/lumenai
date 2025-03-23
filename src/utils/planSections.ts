@@ -1,3 +1,4 @@
+
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 
@@ -61,6 +62,20 @@ MAKE SURE to include REAL COMPETITOR INFORMATION about these companies:
 
 Format this as a professional, detailed analysis with specific facts and figures throughout. Include actual numbers, percentages, and named companies to give the analysis credibility.`,
 
+    'industry overview': `Generate a detailed industry overview for this business description:${baseContext}
+    
+IMPORTANT: Write a comprehensive industry overview with AT LEAST 6-8 sentences that covers:
+1. Current market size in specific dollar amounts (e.g., $4.5 billion)
+2. Compound annual growth rate as a percentage
+3. Key technological trends affecting the industry
+4. Regulatory considerations or changes
+5. Consumer behavior patterns and changes
+6. Major industry challenges or disruptions
+7. Emerging opportunities 
+8. Industry consolidation or fragmentation patterns
+
+DO NOT include any headings or labels like "Industry Overview" in your response. Just write the content directly in paragraph form. Use specific figures, percentages, and data points throughout to make the overview substantive and credible.`,
+
     'business model': `Describe the business model for a company with these details:${baseContext}
     
 The business model section should explain how the business will generate revenue, pricing strategy, cost structure, distribution channels, and key partnerships. Focus on sustainability and profitability.
@@ -78,7 +93,7 @@ The marketing plan should outline target audience segmentation, positioning stra
 
     'financial and idea validation': `Provide a critical evaluation of this business idea, with the following details:${baseContext}
     
-IMPORTANT: I need a detailed evaluation of the business idea that includes BOTH positives and negatives. Structure your response with the following elements:
+IMPORTANT: I need a detailed evaluation of the business idea that includes BOTH positives AND negatives. Structure your response with the following elements:
 
 1. Overall viability score (a number from 1-100) with brief explanation
 2. Market need assessment (score 1-100) - How urgent is the problem being solved?

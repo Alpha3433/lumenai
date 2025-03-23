@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { FileText, Quote, Building } from 'lucide-react';
+import { FileText, Quote, Building, BarChart, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
 import { extractTargetMarket } from '@/utils/extraction/marketExtraction';
@@ -19,6 +19,9 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
   // Extract industry information from market analysis
   const marketData = marketAnalysis ? extractTargetMarket(marketAnalysis) : null;
   const industryText = getIndustryOverview(marketAnalysis || '', businessName);
+  
+  // Split industry text into paragraphs for better presentation
+  const industryParagraphs = splitIntoParagraphs(industryText);
   
   return (
     <section className="mb-12 max-w-3xl mx-auto space-y-8">
@@ -59,23 +62,31 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
         )}>
           <CardContent className="p-8">
             <div className="prose dark:prose-invert max-w-none">
-              <p className="leading-relaxed text-gray-700 dark:text-gray-300 text-lg">
-                {industryText || "Industry analysis pending..."}
-              </p>
+              {industryParagraphs.map((paragraph, index) => (
+                <p key={index} className="leading-relaxed text-gray-700 dark:text-gray-300 text-base mb-4">
+                  {paragraph}
+                </p>
+              ))}
               
               {marketData && (
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-indigo-50/50 dark:bg-indigo-900/20 p-4 rounded-lg">
-                    <h3 className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-1">
-                      Market Size
-                    </h3>
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-indigo-50/50 dark:bg-indigo-900/20 p-5 rounded-lg shadow-sm">
+                    <div className="flex items-center justify-start gap-2 mb-2">
+                      <BarChart className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                      <h3 className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                        Market Size
+                      </h3>
+                    </div>
                     <p className="text-base font-semibold">{marketData.size}</p>
                   </div>
                   
-                  <div className="bg-indigo-50/50 dark:bg-indigo-900/20 p-4 rounded-lg">
-                    <h3 className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-1">
-                      Growth Rate
-                    </h3>
+                  <div className="bg-indigo-50/50 dark:bg-indigo-900/20 p-5 rounded-lg shadow-sm">
+                    <div className="flex items-center justify-start gap-2 mb-2">
+                      <TrendingUp className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                      <h3 className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                        Growth Rate
+                      </h3>
+                    </div>
                     <p className="text-base font-semibold">{marketData.growth}</p>
                   </div>
                 </div>
@@ -87,6 +98,32 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
     </section>
   );
 };
+
+// Function to split long text into paragraphs for better readability
+function splitIntoParagraphs(text: string): string[] {
+  // If the text already has paragraph breaks, use them
+  if (text.includes('\n\n')) {
+    return text.split('\n\n').filter(p => p.trim().length > 0);
+  }
+  
+  // If no explicit paragraph breaks, create logical breaks
+  // Split after approximately every 3-4 sentences for readability
+  const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+  
+  if (sentences.length <= 4) {
+    return [text]; // Return as single paragraph if it's short
+  }
+  
+  const paragraphs = [];
+  const sentencesPerParagraph = Math.ceil(sentences.length / 3); // Aim for 3 paragraphs
+  
+  for (let i = 0; i < sentences.length; i += sentencesPerParagraph) {
+    const paragraph = sentences.slice(i, i + sentencesPerParagraph).join(' ');
+    paragraphs.push(paragraph);
+  }
+  
+  return paragraphs;
+}
 
 // Enhanced helper function to extract industry overview from market analysis text
 // or generate a placeholder based on the business name if no analysis is available
@@ -105,15 +142,15 @@ function getIndustryOverview(text: string, businessName: string): string {
     for (const pattern of industryPatterns) {
       const match = text.match(pattern);
       if (match && match[0]) {
-        // Find the next 2-3 sentences for context
+        // Find the next 4-5 sentences for context
         const startIndex = text.indexOf(match[0]);
         let endIndex = startIndex + match[0].length;
         let sentenceCount = 1;
-        const maxSentences = 4; // Look for up to 4 sentences
+        const maxSentences = 8; // Look for up to 8 sentences
         
         while (sentenceCount < maxSentences) {
           const nextPeriod = text.indexOf('.', endIndex + 1);
-          if (nextPeriod !== -1 && nextPeriod < startIndex + 600) {
+          if (nextPeriod !== -1 && nextPeriod < startIndex + 1200) {
             endIndex = nextPeriod + 1;
             sentenceCount++;
           } else {
@@ -127,13 +164,13 @@ function getIndustryOverview(text: string, businessName: string): string {
     
     // Fallback to first paragraph if no specific industry description found
     const firstParagraphEnd = text.indexOf('\n\n');
-    if (firstParagraphEnd !== -1 && firstParagraphEnd < 500) {
+    if (firstParagraphEnd !== -1 && firstParagraphEnd < 800) {
       return text.substring(0, firstParagraphEnd);
     }
     
-    // If all else fails, return first 400 characters as the industry overview
-    return text.substring(0, Math.min(400, text.length)) + 
-      (text.length > 400 ? '...' : '');
+    // If all else fails, return first 600 characters as the industry overview
+    return text.substring(0, Math.min(600, text.length)) + 
+      (text.length > 600 ? '...' : '');
   }
   
   // If no meaningful text is provided, generate a placeholder based on business name
@@ -164,7 +201,7 @@ function getIndustryOverview(text: string, businessName: string): string {
     industry = "service";
   }
   
-  return `The ${industry} industry is currently experiencing significant growth and transformation, with the market size reaching approximately $${getRandomNumber(5, 50)} billion in 2023 and projected to grow at a CAGR of ${getRandomNumber(7, 15)}% over the next five years. Companies like ${businessName} are positioned to capitalize on emerging market trends and evolving consumer preferences in this dynamic landscape. This sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing market share. As digital adoption accelerates and consumer behaviors shift toward greater convenience and personalization, businesses in this industry face both unique challenges and substantial opportunities for differentiation. The competitive environment is being reshaped by technological advancements and new entrants, creating pressure on traditional business models to adapt or risk obsolescence. Furthermore, the evolving regulatory landscape is introducing both complexities and new market opportunities, particularly regarding data privacy, environmental sustainability, and consumer protection measures. Economic factors including changing workforce dynamics, supply chain transformations, and inflationary pressures are additionally influencing market conditions, with agile companies finding competitive advantages through adaptive strategies. Recent macroeconomic shifts have created both challenges and opportunities, as businesses navigate rising input costs while benefiting from increased consumer spending in specific segments. The industry is also witnessing significant capital investment flows, especially toward businesses with strong digital capabilities and innovation potential.`;
+  return `The ${industry} industry is experiencing unprecedented transformation, with the global market size reaching approximately $${getRandomNumber(5, 50)} billion in 2023 and projected to grow at a CAGR of ${getRandomNumber(7, 15)}% over the next five years. Companies like ${businessName} are strategically positioned to capitalize on emerging trends and evolving consumer preferences in this dynamic landscape. The sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing significant market share. As digital adoption accelerates across all segments, businesses are witnessing a fundamental shift toward greater convenience, personalization, and seamless user experiences. The competitive environment continues to evolve rapidly, with established players investing heavily in technology and new entrants disrupting traditional business models through innovative approaches. Recent regulatory developments have introduced both challenges and opportunities, particularly regarding data privacy, environmental sustainability, and consumer protection measures. Economic factors including changing workforce dynamics, supply chain transformations, and inflationary pressures are additionally influencing market conditions, with agile companies finding competitive advantages through adaptive strategies. Recent macroeconomic shifts have created both obstacles and opportunities, as businesses navigate rising input costs while benefiting from increased consumer spending in specific segments. The industry is also witnessing significant capital investment flows, with venture funding increasing by ${getRandomNumber(15, 45)}% year-over-year, particularly toward businesses with strong digital capabilities and innovation potential. Consolidation activities have accelerated, with merger and acquisition value reaching $${getRandomNumber(5, 20)} billion in the past year alone, driven by strategic players seeking to expand capabilities and market reach. Customer acquisition costs have increased by approximately ${getRandomNumber(10, 30)}% industry-wide, highlighting the importance of retention strategies and lifetime value optimization. International expansion represents a significant growth vector, with emerging markets accounting for ${getRandomNumber(20, 40)}% of new business opportunities. Sustainability initiatives have become a strategic imperative, with ${getRandomNumber(50, 80)}% of industry leaders implementing environmental and social governance measures as central to their business models. Technological advancements including artificial intelligence, blockchain, and advanced analytics are reshaping operational efficiencies and creating new product possibilities, with early adopters realizing cost reductions of ${getRandomNumber(15, 35)}%. Changing demographics are creating entirely new market segments, with Generation Z and Millennial consumers driving ${getRandomNumber(30, 60)}% of industry growth through their distinct preferences and purchasing behaviors. Labor market trends indicate talent shortages in specialized roles, with companies implementing innovative recruitment and retention strategies to secure necessary expertise in this competitive environment. Industry events and conferences have evolved to hybrid formats, expanding reach and accessibility while creating new networking and partnership opportunities for businesses of all sizes.`;
 }
 
 // Helper function to generate random numbers for the mock industry data

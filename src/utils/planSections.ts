@@ -64,7 +64,7 @@ Format this as a professional, detailed analysis with specific facts and figures
 
     'industry overview': `Generate a comprehensive industry overview for this business description:${baseContext}
     
-IMPORTANT: Write a detailed industry overview with AT LEAST 8-10 sentences that covers:
+IMPORTANT: Write a detailed industry overview with AT LEAST 14-16 sentences that covers:
 1. Current market size in specific dollar amounts (e.g., $4.5 billion)
 2. Compound annual growth rate as a percentage
 3. Key technological trends affecting the industry
@@ -79,8 +79,14 @@ IMPORTANT: Write a detailed industry overview with AT LEAST 8-10 sentences that 
 12. How recent macroeconomic factors are influencing the industry
 13. The impact of technological innovations on business models in this space
 14. Shifts in consumer preferences and their implications
+15. Industry investment patterns and venture capital interest
+16. International market expansion opportunities and global trends
+17. Sustainability considerations and environmental impact
+18. Disruptive technologies reshaping the competitive landscape
+19. Changing demographics creating new market segments
+20. Key industry events, conferences, or trade shows
 
-DO NOT include any headings or labels like "Industry Overview" in your response. Just write the content directly in paragraph form. Use specific figures, percentages, and data points throughout to make the overview substantive and credible. Cite specific trends and developments that relate directly to the business concept described.`,
+DO NOT include any headings or labels in your response. Just write the content directly in paragraph form. Use specific figures, percentages, and data points throughout to make the overview substantive and credible. Include at least 5-6 specific statistical data points with dollar amounts or percentages. Cite specific trends and developments that relate directly to the business concept described.`,
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     

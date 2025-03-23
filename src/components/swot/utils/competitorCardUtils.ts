@@ -38,7 +38,7 @@ export const getThreatBadgeColor = (score: number) => {
 
 // Get threat level badge text
 export const getThreatLevelText = (score: number) => {
-  if (score >= 8) return "Significant Threat";
+  if (score >= 8) return "Main Threat";
   if (score >= 6) return "High Threat";
   return "Moderate Threat";
 };

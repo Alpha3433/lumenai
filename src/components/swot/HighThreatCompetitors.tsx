@@ -14,7 +14,7 @@ const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAna
   const { competitorsWithModels, isLoading } = useCompetitorData(marketAnalysis);
 
   return (
-    <Card className="mt-8 border border-gray-200 dark:border-gray-800 shadow-sm">
+    <Card className="mt-8 border-t border-b border-gray-200 dark:border-gray-800 shadow-sm">
       <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col items-center relative">
         <h3 className="text-2xl font-bold flex items-center justify-center gap-2 text-black dark:text-white">
           <div className="p-1.5 bg-red-100 dark:bg-red-900/30 rounded-full">

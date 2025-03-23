@@ -51,7 +51,7 @@ const ProblemPriorityMatrix: React.FC<ProblemPriorityMatrixProps> = ({ swotData 
   };
 
   return (
-    <Card className="mt-6 border border-gray-200 dark:border-gray-800 shadow-sm">
+    <Card className="mt-6 border-t border-b border-gray-200 dark:border-gray-800 shadow-sm">
       <CardContent className="p-0">
         <div className="flex flex-col items-center p-6 relative border-b border-gray-200 dark:border-gray-800">
           <h3 className="text-2xl font-bold flex items-center gap-2">

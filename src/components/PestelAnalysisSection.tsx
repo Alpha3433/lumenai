@@ -14,8 +14,8 @@ const PestelAnalysisSection: React.FC<PestelAnalysisSectionProps> = ({ analysisT
 
   return (
     <section className="mb-12 animate-fade-in space-y-6">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+        <h2 className="text-2xl font-bold flex items-center gap-2 mx-auto md:mx-0">
           <Globe className="h-6 w-6 text-blue-500" />
           PESTEL Analysis
         </h2>

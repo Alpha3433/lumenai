@@ -20,6 +20,25 @@ interface BusinessPlanFormProps {
   onSubmit: (e: React.FormEvent) => void;
 }
 
+// Array of AI model action messages to randomize during generation
+const aiActionMessages = [
+  "Analyzing market dynamics and competitive landscape...",
+  "Crafting strategic frameworks for your business concept...",
+  "Evaluating financial viability and scaling potential...",
+  "Identifying target customer segments and value propositions...",
+  "Optimizing your business model for maximum growth...",
+  "Running competitor analysis and market positioning...",
+  "Calculating revenue projections and market fit...",
+  "Assessing risk factors and mitigation strategies...",
+  "Building strategic recommendations tailored to your vision...",
+  "Processing industry trends and growth opportunities...",
+];
+
+const getRandomAiActionMessage = () => {
+  const randomIndex = Math.floor(Math.random() * aiActionMessages.length);
+  return aiActionMessages[randomIndex];
+};
+
 const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
   formData,
   generating,
@@ -79,12 +98,12 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
                 {generating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
-                    Generating
+                    Crafting Plan
                   </>
                 ) : (
                   <>
                     <Sparkles className="mr-2 h-4 w-4" /> 
-                    Generate Business Plan
+                    Craft Your Roadmap to Success
                   </>
                 )}
               </Button>
@@ -111,9 +130,9 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
                 className="h-2 bg-gray-200 dark:bg-gray-700"
               />
               <p className="text-sm text-center text-muted-foreground">
-                {generatingProgress < 33 && "Analyzing market opportunity..."}
-                {generatingProgress >= 33 && generatingProgress < 66 && "Building business model..."}
-                {generatingProgress >= 66 && generatingProgress < 99 && "Finalizing your business plan..."}
+                {generatingProgress < 33 && getRandomAiActionMessage()}
+                {generatingProgress >= 33 && generatingProgress < 66 && getRandomAiActionMessage()}
+                {generatingProgress >= 66 && generatingProgress < 99 && getRandomAiActionMessage()}
                 {generatingProgress === 100 && "Complete! Preparing your results..."}
               </p>
             </div>

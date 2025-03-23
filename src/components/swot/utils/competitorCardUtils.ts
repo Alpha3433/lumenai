@@ -1,6 +1,7 @@
 
 import { extractCompetitors } from '@/utils/extraction/competitorUtils';
 import { Shield, AlertCircle, TrendingDown } from 'lucide-react';
+import React from 'react';
 
 export interface CompetitorWithBusinessModel {
   name: string;
@@ -44,7 +45,7 @@ export const getThreatLevelText = (score: number) => {
 
 // Get threat icon based on threat score
 export const getThreatIcon = (score: number) => {
-  if (score >= 8) return <AlertCircle className="h-4 w-4" />;
-  if (score >= 6) return <TrendingDown className="h-4 w-4" />;
-  return <Shield className="h-4 w-4" />;
+  if (score >= 8) return React.createElement(AlertCircle, { className: "h-4 w-4" });
+  if (score >= 6) return React.createElement(TrendingDown, { className: "h-4 w-4" });
+  return React.createElement(Shield, { className: "h-4 w-4" });
 };

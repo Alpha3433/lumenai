@@ -29,8 +29,11 @@ export function extractTargetMarket(marketAnalysis: string | undefined): { demog
   
   // Generate random growth percentage if not found
   const randomGrowth = () => {
-    const percentage = (Math.random() * 20 + 3).toFixed(1); // Random between 3.0% and 23.0%
-    return `${percentage}% annual growth`;
+    const randomValue = Math.random() * 20 + 3;
+    const percentage = randomValue.toFixed(1);
+    // Remove the .0 when the decimal is zero
+    const cleanPercentage = percentage.endsWith('.0') ? percentage.slice(0, -2) : percentage;
+    return `${cleanPercentage}% annual growth`;
   };
   
   return {

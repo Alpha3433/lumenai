@@ -26,8 +26,13 @@ const IndustryOverviewSection: React.FC<IndustryOverviewSectionProps> = ({
     .replace(/^(?:\d+\.\s*)industry\s+overview(?:\s*:*)\s*/i, '')
     .trim();
   
+  // Fix formatting issues with decimal numbers (e.g., "$4. 5" to "$4.5")
+  const fixedText = cleanedIndustryText
+    .replace(/(\d+)\.\s+(\d+)/g, '$1.$2')
+    .replace(/\$(\d+)\.\s+(\d+)/g, '\$$1.$2');
+  
   // Split industry text into paragraphs for better presentation
-  const industryParagraphs = splitIntoParagraphs(cleanedIndustryText);
+  const industryParagraphs = splitIntoParagraphs(fixedText);
   
   return (
     <div>

@@ -1,4 +1,3 @@
-
 // Helper functions for extracting and formatting industry information
 
 /**
@@ -52,6 +51,13 @@ export function getIndustryOverview(text: string, businessName: string): string 
   }
   
   // If no meaningful text is provided, generate a placeholder based on business name
+  return getPlaceholderText(businessName);
+}
+
+/**
+ * Helper function to generate a placeholder industry overview text
+ */
+function getPlaceholderText(businessName: string): string {
   const words = businessName.split(/\s+/).filter(word => word.length > 2);
   let industry = "";
   
@@ -79,7 +85,7 @@ export function getIndustryOverview(text: string, businessName: string): string 
     industry = "service";
   }
   
-  return `The ${industry} industry is experiencing unprecedented transformation, with the global market size reaching approximately $${getRandomNumber(5, 50)} billion in 2023 and projected to grow at a CAGR of ${getRandomNumber(7, 15)}% over the next five years. Companies like ${businessName} are strategically positioned to capitalize on emerging trends and evolving consumer preferences in this dynamic landscape. The sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing significant market share. As digital adoption accelerates across all segments, businesses are witnessing a fundamental shift toward greater convenience, personalization, and seamless user experiences. The competitive environment continues to evolve rapidly, with established players investing heavily in technology and new entrants disrupting traditional business models through innovative approaches. Recent regulatory developments have introduced both challenges and opportunities, particularly regarding data privacy, environmental sustainability, and consumer protection measures. Economic factors including changing workforce dynamics, supply chain transformations, and inflationary pressures are additionally influencing market conditions, with agile companies finding competitive advantages through adaptive strategies. Recent macroeconomic shifts have created both obstacles and opportunities, as businesses navigate rising input costs while benefiting from increased consumer spending in specific segments. The industry is also witnessing significant capital investment flows, with venture funding increasing by ${getRandomNumber(15, 45)}% year-over-year, particularly toward businesses with strong digital capabilities and innovation potential. Consolidation activities have accelerated, with merger and acquisition value reaching $${getRandomNumber(5, 20)} billion in the past year alone, driven by strategic players seeking to expand capabilities and market reach. Customer acquisition costs have increased by approximately ${getRandomNumber(10, 30)}% industry-wide, highlighting the importance of retention strategies and lifetime value optimization. International expansion represents a significant growth vector, with emerging markets accounting for ${getRandomNumber(20, 40)}% of new business opportunities. Sustainability initiatives have become a strategic imperative, with ${getRandomNumber(50, 80)}% of industry leaders implementing environmental and social governance measures as central to their business models. Technological advancements including artificial intelligence, blockchain, and advanced analytics are reshaping operational efficiencies and creating new product possibilities, with early adopters realizing cost reductions of ${getRandomNumber(15, 35)}%. Changing demographics are creating entirely new market segments, with Generation Z and Millennial consumers driving ${getRandomNumber(30, 60)}% of industry growth through their distinct preferences and purchasing behaviors. Labor market trends indicate talent shortages in specialized roles, with companies implementing innovative recruitment and retention strategies to secure necessary expertise in this competitive environment. Industry events and conferences have evolved to hybrid formats, expanding reach and accessibility while creating new networking and partnership opportunities for businesses of all sizes.`;
+  return `The ${industry} industry is experiencing unprecedented transformation, with the global market size reaching approximately $${getRandomNumber(5, 50)} billion in 2023 and projected to grow at a CAGR of ${getRandomNumber(7, 15)}% over the next five years. Companies like ${businessName} are strategically positioned to capitalize on emerging trends and evolving consumer preferences in this dynamic landscape. The sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing significant market share. As digital adoption accelerates across all segments, businesses are witnessing a fundamental shift toward greater convenience, personalization, and seamless user experiences. The competitive environment continues to evolve rapidly, with established players investing heavily in technology and new entrants disrupting traditional business models through innovative approaches.`;
 }
 
 /**
@@ -102,17 +108,30 @@ export function splitIntoParagraphs(text: string): string[] {
     .replace(/\n#{2,}/g, '')
     .trim();
   
+  // Fix formatting issues with decimal numbers
+  const fixedText = cleanText
+    .replace(/(\d+)\.\s+(\d+)/g, '$1.$2')
+    .replace(/\$(\d+)\.\s+(\d+)/g, '\$$1.$2');
+  
   // If the text already has paragraph breaks, use them
-  if (cleanText.includes('\n\n')) {
-    return cleanText.split('\n\n').filter(p => p.trim().length > 0);
+  if (fixedText.includes('\n\n')) {
+    return fixedText.split('\n\n').filter(p => p.trim().length > 0);
+  }
+  
+  // Split on single newlines if there are any
+  if (fixedText.includes('\n')) {
+    const paragraphs = fixedText.split('\n').filter(p => p.trim().length > 0);
+    if (paragraphs.length > 1) {
+      return paragraphs;
+    }
   }
   
   // If no explicit paragraph breaks, create logical breaks
   // Split after approximately every 3-4 sentences for readability
-  const sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [];
+  const sentences = fixedText.match(/[^.!?]+[.!?]+/g) || [];
   
   if (sentences.length <= 4) {
-    return [cleanText]; // Return as single paragraph if it's short
+    return [fixedText]; // Return as single paragraph if it's short
   }
   
   const paragraphs = [];

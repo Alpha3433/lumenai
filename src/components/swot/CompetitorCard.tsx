@@ -28,7 +28,7 @@ const CompetitorCard: React.FC<CompetitorCardProps> = ({ competitor }) => {
               </div>
               <div>
                 <h4 className="text-lg font-semibold">{competitor.name}</h4>
-                <div className="text-xs text-gray-500">Est. {competitor.founded}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Est. {competitor.founded}</div>
               </div>
             </div>
             
@@ -90,4 +90,3 @@ const CompetitorCard: React.FC<CompetitorCardProps> = ({ competitor }) => {
 };
 
 export default CompetitorCard;
-

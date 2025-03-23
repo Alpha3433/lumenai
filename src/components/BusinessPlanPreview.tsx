@@ -61,7 +61,10 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             />
             
             {/* Executive Summary */}
-            <ExecutiveSummarySection summaryText={businessPlan.executiveSummary} />
+            <ExecutiveSummarySection 
+              summaryText={businessPlan.executiveSummary} 
+              businessName={businessName}
+            />
             
             <Separator className="my-10" />
             

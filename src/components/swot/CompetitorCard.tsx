@@ -1,8 +1,7 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { ExternalLink, Zap, Building } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Building, Zap } from 'lucide-react';
 import { CompetitorWithBusinessModel, getLogoColor, getThreatBadgeColor, getThreatLevelText, getThreatIcon } from './utils/competitorCardUtils';
 
 interface CompetitorCardProps {
@@ -42,14 +41,14 @@ const CompetitorCard: React.FC<CompetitorCardProps> = ({ competitor }) => {
           
           {/* Market position */}
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg">
+            <div className="bg-gray-50 dark:bg-gray-800/50 p-2.5 rounded-lg">
               <div className="text-xs text-gray-500 mb-1">Market Share</div>
               <div className="font-semibold flex items-center gap-1">
                 <Zap className="h-4 w-4 text-purple-500" />
                 {competitor.marketShare}
               </div>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg">
+            <div className="bg-gray-50 dark:bg-gray-800/50 p-2.5 rounded-lg">
               <div className="text-xs text-gray-500 mb-1">Revenue</div>
               <div className="font-semibold">{competitor.annualRevenue}</div>
             </div>
@@ -75,7 +74,7 @@ const CompetitorCard: React.FC<CompetitorCardProps> = ({ competitor }) => {
           </div>
           
           {/* Business Model - Now dynamic */}
-          <div className="mb-4">
+          <div>
             <h5 className="text-sm font-semibold mb-2 flex items-center gap-1">
               <Building className="h-4 w-4 text-blue-500" />
               Business Model
@@ -84,13 +83,6 @@ const CompetitorCard: React.FC<CompetitorCardProps> = ({ competitor }) => {
               {competitor.businessModel}
             </p>
           </div>
-          
-          {/* Action button */}
-          <div className="text-right mt-5">
-            <Button variant="outline" size="sm" className="text-xs">
-              View Details <ExternalLink className="ml-1 h-3 w-3" />
-            </Button>
-          </div>
         </div>
       </div>
     </Card>
@@ -98,3 +90,4 @@ const CompetitorCard: React.FC<CompetitorCardProps> = ({ competitor }) => {
 };
 
 export default CompetitorCard;
+

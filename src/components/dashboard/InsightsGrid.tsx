@@ -23,7 +23,7 @@ const InsightsGrid: React.FC<InsightsGridProps> = ({ strengths, opportunities })
   
   // Process opportunities to ensure they're complete sentences
   const processedOpportunities = opportunities.map(opportunity => 
-    opportunity.trim().endsWith('.') ? opportunity : `${opportunity}.`
+    opportunity.trim().endsWith('.') ? opportunity.trim() : `${opportunity.trim()}.`
   );
 
   return (

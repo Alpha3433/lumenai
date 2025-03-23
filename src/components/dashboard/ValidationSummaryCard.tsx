@@ -30,12 +30,21 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
     return "low viability";
   };
   
+  // Get the number of opportunities
+  const opportunitiesCount = positives.length;
+  
+  // Get the number of strengths (unique selling points)
+  const strengthsCount = positives.length;
+  
+  // Get the number of risks
+  const risksCount = negatives.length;
+  
   return (
     <div className="space-y-8">
       {/* Viability Section - Updated Design */}
       <Card className="border-none shadow-md rounded-xl overflow-hidden bg-white dark:bg-gray-900">
         <CardContent className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Viability Score</h3>
+          <h3 className="font-semibold text-lg mb-4">Business Viability Assessment</h3>
           
           <div className="flex justify-between items-center mb-4">
             <span className="text-gray-800 dark:text-gray-300 font-medium"></span>
@@ -66,7 +75,7 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
                 <h4 className="font-medium text-blue-700 dark:text-blue-400">Market Potential</h4>
               </div>
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                The market is growing at a rate of 8.4% annually, with 4 identified opportunities.
+                The market is growing at a rate of 8.4% annually, with {opportunitiesCount} identified opportunities.
               </p>
             </div>
             
@@ -77,7 +86,7 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
                 <h4 className="font-medium text-green-700 dark:text-green-400">Competitive Edge</h4>
               </div>
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                4 unique selling points against 4 competitors.
+                {strengthsCount} unique selling points against 4 competitors.
               </p>
             </div>
             
@@ -88,7 +97,7 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
                 <h4 className="font-medium text-amber-700 dark:text-amber-400">Risk Assessment</h4>
               </div>
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                4 risks identified with mitigation strategies.
+                {risksCount} risks identified with mitigation strategies.
               </p>
             </div>
           </div>

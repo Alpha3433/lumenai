@@ -10,6 +10,7 @@ import MarketAnalysisSection from './MarketAnalysisSection';
 import BusinessModelSection from './BusinessModelSection';
 import MarketingPlanSection from './MarketingPlanSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
+import PestelAnalysisSection from './PestelAnalysisSection';
 import { Button } from "./ui/button";
 import { cn } from '@/lib/utils';
 
@@ -76,6 +77,11 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
                 marketAnalysis={businessPlan.marketAnalysis}
               />
             </section>
+            
+            <Separator className="my-10" />
+            
+            {/* PESTEL Analysis */}
+            <PestelAnalysisSection analysisText={businessPlan.marketAnalysis} />
             
             <Separator className="my-10" />
             

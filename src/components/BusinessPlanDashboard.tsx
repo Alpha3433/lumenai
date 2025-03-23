@@ -51,6 +51,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
           score={validationData.overallScore}
           positives={validationData.positives.slice(0, 2)}
           negatives={validationData.negatives.slice(0, 2)}
+          businessName={businessName}
         />
       </div>
       

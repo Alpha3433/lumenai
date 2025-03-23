@@ -6,7 +6,6 @@ import BusinessPlanActionBar from './BusinessPlanActionBar';
 import ExecutiveSummarySection from './ExecutiveSummarySection';
 import SwotAnalysis from './SwotAnalysis';
 import MarketAnalysisSection from './MarketAnalysisSection';
-import BusinessModelSection from './BusinessModelSection';
 import MarketingPlanSection from './MarketingPlanSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import PestelAnalysisSection from './PestelAnalysisSection';
@@ -99,10 +98,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             
             <Separator className="my-10" />
             
-            {/* Business Model */}
-            <BusinessModelSection businessModelText={businessPlan.businessModel} />
-            
-            <Separator className="my-10" />
+            {/* Business Model section removed as requested */}
             
             {/* Marketing Plan */}
             <MarketingPlanSection 

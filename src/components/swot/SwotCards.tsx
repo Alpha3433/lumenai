@@ -11,6 +11,22 @@ interface SwotCardsProps {
 const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
   const { strengths, weaknesses, opportunities, threats } = swotData;
 
+  // Helper function to get a more informative empty state message
+  const getEmptyMessage = (category: 'strengths' | 'weaknesses' | 'opportunities' | 'threats') => {
+    switch (category) {
+      case 'strengths':
+        return "No significant strengths identified. This could indicate a new business or limited competitive advantages.";
+      case 'weaknesses':
+        return "No significant weaknesses identified. This suggests your business model may be solid, but consider potential blind spots.";
+      case 'opportunities':
+        return "No significant opportunities identified. Consider exploring adjacent markets or innovations that could create new opportunities.";
+      case 'threats':
+        return "No significant threats identified. While positive, remain vigilant about market changes and emerging competitors.";
+      default:
+        return "No items identified for this category.";
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <Card className="border-l-4 border-l-green-500 hover:shadow-md transition-shadow">
@@ -22,7 +38,7 @@ const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
           <ul className="list-disc pl-5 space-y-2">
             {strengths.length ? strengths.slice(0, 4).map((strength, i) => (
               <li key={i} className="text-sm" style={{ whiteSpace: 'normal' }}>{strength}</li>
-            )) : <li className="text-sm italic text-muted-foreground">No strengths identified.</li>}
+            )) : <li className="text-sm italic text-muted-foreground">{getEmptyMessage('strengths')}</li>}
           </ul>
         </CardContent>
       </Card>
@@ -36,7 +52,7 @@ const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
           <ul className="list-disc pl-5 space-y-2">
             {weaknesses.length ? weaknesses.slice(0, 4).map((weakness, i) => (
               <li key={i} className="text-sm" style={{ whiteSpace: 'normal' }}>{weakness}</li>
-            )) : <li className="text-sm italic text-muted-foreground">No weaknesses identified.</li>}
+            )) : <li className="text-sm italic text-muted-foreground">{getEmptyMessage('weaknesses')}</li>}
           </ul>
         </CardContent>
       </Card>
@@ -50,7 +66,7 @@ const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
           <ul className="list-disc pl-5 space-y-2">
             {opportunities.length ? opportunities.slice(0, 4).map((opportunity, i) => (
               <li key={i} className="text-sm" style={{ whiteSpace: 'normal' }}>{opportunity}</li>
-            )) : <li className="text-sm italic text-muted-foreground">No opportunities identified.</li>}
+            )) : <li className="text-sm italic text-muted-foreground">{getEmptyMessage('opportunities')}</li>}
           </ul>
         </CardContent>
       </Card>
@@ -64,7 +80,7 @@ const SwotCards: React.FC<SwotCardsProps> = ({ swotData }) => {
           <ul className="list-disc pl-5 space-y-2">
             {threats.length ? threats.slice(0, 4).map((threat, i) => (
               <li key={i} className="text-sm" style={{ whiteSpace: 'normal' }}>{threat}</li>
-            )) : <li className="text-sm italic text-muted-foreground">No threats identified.</li>}
+            )) : <li className="text-sm italic text-muted-foreground">{getEmptyMessage('threats')}</li>}
           </ul>
         </CardContent>
       </Card>

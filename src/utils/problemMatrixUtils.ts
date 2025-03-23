@@ -13,26 +13,26 @@ export const extractProblemsFromSwot = (swotData: SwotComponents): ProblemCatego
   // Combine weaknesses and threats to form our problem base
   const allProblems = [...swotData.weaknesses, ...swotData.threats];
   
-  // If we don't have any problems, return empty categories
+  // If we don't have any problems, return categories with helpful messages
   if (allProblems.length === 0) {
     return [
       {
         priority: 'High',
-        problems: [],
-        action: 'Solve Immediately',
-        description: 'Include these problems in your first product version for maximum impact.'
+        problems: ["No immediate critical issues identified. Focus on preventive measures for potential industry disruptions."],
+        action: 'Focus on Growth Opportunities',
+        description: 'Since no critical problems were identified, allocate resources toward capitalizing on your strengths and market opportunities.'
       },
       {
         priority: 'Medium',
-        problems: [],
-        action: 'Plan for these in your near-term roadmap',
-        description: 'Address these issues in your next development cycle.'
+        problems: ["Consider conducting a competitive analysis to identify potential blind spots in your business model."],
+        action: 'Develop Monitoring Systems',
+        description: 'Establish KPIs and monitoring mechanisms to detect early warning signs of potential market threats.'
       },
       {
         priority: 'Low',
-        problems: [],
-        action: 'Consider for future versions or discard',
-        description: 'Keep these on your radar for future consideration.'
+        problems: ["Maintain awareness of industry trends and regulatory changes that could impact your business in the future."],
+        action: 'Quarterly Review Process',
+        description: 'Schedule regular reviews to reassess market conditions and update your SWOT analysis accordingly.'
       }
     ];
   }
@@ -72,19 +72,19 @@ export const extractProblemsFromSwot = (swotData: SwotComponents): ProblemCatego
   return [
     {
       priority: 'High',
-      problems: highPriorityProblems,
+      problems: highPriorityProblems.length > 0 ? highPriorityProblems : ["No critical issues identified. Focus on preventive measures and growth opportunities."],
       action: 'Solve Immediately',
       description: 'Include these problems in your first product version for maximum impact.'
     },
     {
       priority: 'Medium',
-      problems: mediumPriorityProblems,
+      problems: mediumPriorityProblems.length > 0 ? mediumPriorityProblems : ["Consider conducting a competitive analysis to identify potential blind spots in your business model."],
       action: 'Plan for these in your near-term roadmap',
       description: 'Address these issues in your next development cycle.'
     },
     {
       priority: 'Low',
-      problems: lowPriorityProblems.length > 0 ? lowPriorityProblems : ['None identified'],
+      problems: lowPriorityProblems.length > 0 ? lowPriorityProblems : ["Maintain awareness of industry trends and regulatory changes that could impact your business in the future."],
       action: 'Consider for future versions or discard',
       description: 'Keep these on your radar for future consideration.'
     }

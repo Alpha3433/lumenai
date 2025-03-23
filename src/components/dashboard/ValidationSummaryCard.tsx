@@ -53,7 +53,7 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
             ></div>
           </div>
           
-          <p className="text-gray-700 dark:text-gray-300 mb-6">
+          <p className="text-gray-700 dark:text-gray-300 mb-6 font-normal">
             Based on our comprehensive analysis of market conditions, competitive landscape, and risk factors, this business idea demonstrates <span className="text-amber-600 font-medium">{getViabilityText()}</span>.
           </p>
           

@@ -9,7 +9,7 @@ import SwotAnalysis from './SwotAnalysis';
 import MarketingPlanSection from './MarketingPlanSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import PestelAnalysisSection from './PestelAnalysisSection';
-import PorterFiveForcesSection from './porter/PorterFiveForcesSection';
+import PorterFiveForcesSection from './PorterFiveForcesSection';
 import { Button } from "./ui/button";
 import { cn } from '@/lib/utils';
 

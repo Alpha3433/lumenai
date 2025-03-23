@@ -4,14 +4,14 @@ import { extractPorterFiveForcesData } from '@/utils/porter';
 import PorterFiveForcesSectionComponent from './porter/PorterFiveForcesSection';
 
 interface PorterFiveForcesSectionProps {
-  analysisText: string;
+  marketAnalysis: string;
 }
 
-const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ analysisText }) => {
-  // Extract Porter's Five Forces data from analysis text
-  const forcesData = useMemo(() => extractPorterFiveForcesData(analysisText), [analysisText]);
+const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ marketAnalysis }) => {
+  // Extract Porter's Five Forces data from market analysis text
+  const forcesData = useMemo(() => extractPorterFiveForcesData(marketAnalysis), [marketAnalysis]);
 
-  return <PorterFiveForcesSectionComponent forcesData={forcesData} />;
+  return <PorterFiveForcesSectionComponent forcesData={forcesData} marketAnalysis={marketAnalysis} />;
 };
 
 export default PorterFiveForcesSection;

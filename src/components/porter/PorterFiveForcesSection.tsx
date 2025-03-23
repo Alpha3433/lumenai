@@ -5,10 +5,32 @@ import { PorterFiveForcesData } from '@/utils/porter';
 import PorterFiveForceCard from './PorterFiveForceCard';
 
 interface PorterFiveForcesSectionProps {
-  forcesData: PorterFiveForcesData;
+  marketAnalysis?: string;
+  forcesData?: PorterFiveForcesData;
 }
 
-const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ forcesData }) => {
+const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ forcesData, marketAnalysis }) => {
+  // Ensure forcesData is defined before trying to access its properties
+  if (!forcesData) {
+    console.warn('PorterFiveForcesSection: forcesData is undefined');
+    return (
+      <section className="mb-12 animate-fade-in space-y-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <FileBarChart className="h-6 w-6 text-blue-500" />
+            Porter's Five Forces Analysis
+          </h2>
+          <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full">
+            Competitive industry assessment
+          </div>
+        </div>
+        <div className="text-center py-8 text-gray-500">
+          Analysis data is being processed...
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="mb-12 animate-fade-in space-y-6">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">

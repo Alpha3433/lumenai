@@ -95,16 +95,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
           </CardContent>
         </Card>
       </div>
-      
-      <div className="flex justify-center mt-8">
-        <Button 
-          onClick={onDownload} 
-          className="flex items-center gap-2 bg-primary/90 hover:bg-primary"
-        >
-          <ArrowDownToLine className="h-4 w-4" />
-          Download as PDF
-        </Button>
-      </div>
     </div>
   );
 };

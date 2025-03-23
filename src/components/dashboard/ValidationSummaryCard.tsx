@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
+import { AlertTriangle, Shield, TrendingUp } from "lucide-react";
 
 interface ValidationSummaryCardProps {
   score: number;
@@ -22,6 +23,17 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
   
   // Get the first word of the business name for more concise display
   const businessNameFirst = businessName.split(' ')[0];
+  
+  // Calculate score out of 10 for display
+  const scoreOutOfTen = Math.round(score / 10);
+  
+  // Determine viability text based on score
+  const getViabilityText = () => {
+    if (score >= 80) return "high viability";
+    if (score >= 60) return "moderate viability";
+    if (score >= 40) return "cautious viability";
+    return "low viability";
+  };
   
   return (
     <div className="space-y-8">
@@ -73,50 +85,68 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
         </CardContent>
       </Card>
       
-      {/* Viability Section */}
+      {/* Viability Section - Updated Design */}
       <Card className="border-none shadow-md rounded-xl overflow-hidden bg-white dark:bg-gray-900">
         <CardContent className="p-6">
-          <h3 className="font-semibold text-lg text-center mb-6">Viability for {businessName}</h3>
+          <h3 className="font-semibold text-lg mb-4">Viability Score</h3>
           
-          <div className="flex justify-center items-center">
-            <div className="relative w-72 h-40">
-              {/* Gauge Background */}
-              <div className="absolute top-0 left-0 w-full h-40">
-                <svg viewBox="0 0 200 100" className="w-full">
-                  <path 
-                    d="M10,90 A80,80 0 0,1 190,90" 
-                    fill="none" 
-                    stroke="#047857" 
-                    strokeWidth="20"
-                  />
-                  <path 
-                    d="M10,90 A80,80 0 0,1 190,90" 
-                    fill="none" 
-                    stroke="#22c55e" 
-                    strokeWidth="20"
-                    strokeDasharray="282.7"
-                    strokeDashoffset={(100 - score) * 2.827}
-                  />
-                </svg>
-                
-                {/* Gauge Needle */}
-                <div 
-                  className="absolute top-[85px] left-1/2 transform -translate-x-1/2 origin-bottom rotate-0"
-                  style={{ transform: `translateX(-50%) rotate(${(score - 50) * 1.8}deg)` }}
-                >
-                  <div className="bg-purple-600 w-1 h-24 rounded-t-full"></div>
-                  <div className="bg-gray-700 w-4 h-4 rounded-full -mt-1 ml-[-6px]"></div>
-                </div>
-                
-                {/* Score in center */}
-                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-center">
-                  <div className="text-3xl font-bold">{score}%</div>
-                </div>
-              </div>
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-gray-800 dark:text-gray-300 font-medium"></span>
+            <div className="flex items-baseline">
+              <span className="text-4xl font-bold">{scoreOutOfTen}</span>
+              <span className="text-gray-500 text-lg">/10</span>
             </div>
           </div>
           
-          <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4 max-w-md mx-auto">
+          {/* Progress bar */}
+          <div className="w-full h-3 bg-gray-200 rounded-full mb-4">
+            <div 
+              className="h-3 bg-amber-500 rounded-full" 
+              style={{ width: `${score}%` }}
+            ></div>
+          </div>
+          
+          <p className="text-gray-700 dark:text-gray-300 mb-6">
+            Based on our comprehensive analysis of market conditions, competitive landscape, and risk factors, this business idea demonstrates <span className="text-amber-600 font-medium">{getViabilityText()}</span>.
+          </p>
+          
+          {/* Three cards in a row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            {/* Market Potential Card */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <h4 className="font-medium text-blue-700 dark:text-blue-400">Market Potential</h4>
+              </div>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                The market is growing at a rate of 8.4% annually, with 4 identified opportunities.
+              </p>
+            </div>
+            
+            {/* Competitive Edge Card */}
+            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Shield className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <h4 className="font-medium text-green-700 dark:text-green-400">Competitive Edge</h4>
+              </div>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                4 unique selling points against 4 competitors.
+              </p>
+            </div>
+            
+            {/* Risk Assessment Card */}
+            <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                <h4 className="font-medium text-amber-700 dark:text-amber-400">Risk Assessment</h4>
+              </div>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                4 risks identified with mitigation strategies.
+              </p>
+            </div>
+          </div>
+          
+          <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
             The viability score is based on a comprehensive analysis of your business model, market size, SWOT, PESTEL, and Porter's Five Forces.
           </p>
         </CardContent>

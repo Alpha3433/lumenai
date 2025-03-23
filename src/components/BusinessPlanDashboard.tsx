@@ -33,6 +33,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
   const revenue = extractRevenue(businessPlan.financialProjections || '');
   const strengths = extractStrengths(businessPlan.swotAnalysis);
   const opportunities = extractOpportunities(businessPlan.swotAnalysis);
+  const competitors = extractCompetitors(businessPlan.marketAnalysis);
   
   // Extract validation data for the summary card
   const validationData = extractValidationData(

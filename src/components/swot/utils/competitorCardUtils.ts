@@ -2,9 +2,17 @@
 import { extractCompetitors } from '@/utils/extraction/competitorUtils';
 import { Shield, AlertCircle, TrendingDown } from 'lucide-react';
 
-export interface CompetitorWithBusinessModel extends ReturnType<typeof extractCompetitors>[0] {
+export interface CompetitorWithBusinessModel {
+  name: string;
+  marketShare: string;
+  founded: number;
+  annualRevenue: string;
+  strength: string;
+  weakness: string;
   businessModel?: string;
   threatScore?: number;
+  logo?: string;
+  pricingModel?: string;
 }
 
 // Generate a logo color based on competitor name

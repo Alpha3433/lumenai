@@ -69,12 +69,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             
             {/* SWOT Analysis */}
             <section className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-                <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                  <CheckCircle className="h-5 w-5 text-purple-500" />
-                </div>
-                SWOT Analysis
-              </h2>
               <SwotAnalysis 
                 swotText={businessPlan.swotAnalysis} 
                 marketAnalysis={businessPlan.marketAnalysis}

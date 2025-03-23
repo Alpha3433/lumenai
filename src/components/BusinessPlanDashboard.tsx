@@ -2,7 +2,6 @@
 import React from 'react';
 import { Separator } from "@/components/ui/separator";
 import InsightsGrid from './dashboard/InsightsGrid';
-import CompetitorsCard from './dashboard/CompetitorsCard';
 import { 
   extractTargetMarket, 
   extractRevenue, 
@@ -32,18 +31,12 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
   const revenue = extractRevenue(businessPlan.financialProjections || '');
   const strengths = extractStrengths(businessPlan.swotAnalysis);
   const opportunities = extractOpportunities(businessPlan.swotAnalysis);
-  const competitors = extractCompetitors(businessPlan.marketAnalysis || businessPlan.riskAssessment || '');
   
   return (
     <section className="mb-10 animate-fade-in">
       <h2 className="text-2xl font-bold mb-6 text-center">
         <span className="text-primary">{businessName}</span>
       </h2>
-      
-      {/* Competitors section - now spans full width */}
-      <div className="mb-6">
-        <CompetitorsCard competitors={competitors} />
-      </div>
       
       {/* Top Strengths & Opportunities */}
       <InsightsGrid 

@@ -16,8 +16,9 @@ const IndustryOverviewSection: React.FC<IndustryOverviewSectionProps> = ({
   marketAnalysis 
 }) => {
   // Extract industry information from market analysis
+  // We're only receiving the industry overview portion of the text now
   const marketData = marketAnalysis ? extractTargetMarket(marketAnalysis) : null;
-  const industryText = getIndustryOverview(marketAnalysis || '', businessName);
+  const industryText = marketAnalysis || getIndustryOverview('', businessName);
   
   // Split industry text into paragraphs for better presentation
   const industryParagraphs = splitIntoParagraphs(industryText);

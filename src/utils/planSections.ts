@@ -70,7 +70,9 @@ Format this as a professional, detailed analysis with specific facts and figures
 
     'industry overview': `Generate a comprehensive industry overview for this business description:${baseContext}
     
-IMPORTANT: Write a detailed industry overview with AT LEAST 14-16 sentences that covers:
+IMPORTANT FORMATTING: Begin your response with a section titled "Industry Overview" and ONLY provide information about the industry itself.
+
+Write a detailed industry overview with AT LEAST 14-16 sentences that covers:
 1. Current market size in specific dollar amounts (e.g., $4.5 billion)
 2. Compound annual growth rate as a percentage
 3. Key technological trends affecting the industry
@@ -79,20 +81,12 @@ IMPORTANT: Write a detailed industry overview with AT LEAST 14-16 sentences that
 6. Major industry challenges or disruptions
 7. Emerging opportunities 
 8. Industry consolidation or fragmentation patterns
-9. Supply chain considerations specific to this industry
-10. Labor market dynamics affecting the industry
-11. Potential future developments over the next 3-5 years
-12. How recent macroeconomic factors are influencing the industry
-13. The impact of technological innovations on business models in this space
-14. Shifts in consumer preferences and their implications
-15. Industry investment patterns and venture capital interest
-16. International market expansion opportunities and global trends
-17. Sustainability considerations and environmental impact
-18. Disruptive technologies reshaping the competitive landscape
-19. Changing demographics creating new market segments
-20. Key industry events, conferences, or trade shows
 
-DO NOT use any markdown formatting, headings, or special characters like asterisks or hash symbols. DO NOT include any labels like "Industry Overview" in your response. Just write the content directly in paragraph form with natural paragraph breaks. Use specific figures, percentages, and data points throughout to make the overview substantive and credible. Include at least 5-6 specific statistical data points with dollar amounts or percentages. Cite specific trends and developments that relate directly to the business concept described.`,
+DO NOT include any information about the specific business, its competitors, or market analysis beyond the industry itself.
+DO NOT include Porter's Five Forces or any other analysis frameworks.
+DO NOT include sections about marketing strategies, business models, or financial projections.
+
+Your response should ONLY contain the industry overview - nothing else. Use specific figures, percentages, and data points throughout to make the overview substantive and credible.`,
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     

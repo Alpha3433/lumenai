@@ -50,7 +50,7 @@ const PorterFiveForceCard: React.FC<PorterFiveForceCardProps> = ({ force }) => {
   const config = levelConfig[force.level];
 
   return (
-    <Card className="border border-gray-200 dark:border-gray-800 shadow-sm mb-4">
+    <Card className="border border-gray-200 dark:border-gray-800 shadow-sm mb-4 hover:shadow-md transition-shadow duration-200">
       <CardContent className="p-6">
         <div className="flex items-start gap-3">
           <div className="mt-1">

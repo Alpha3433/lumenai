@@ -16,11 +16,6 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
   negatives,
   businessName
 }) => {
-  // Generate market size data
-  const tam = "20M";
-  const sam = "500K";
-  const som = "10K";
-  
   // Get the first word of the business name for more concise display
   const businessNameFirst = businessName.split(' ')[0];
   
@@ -37,54 +32,6 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
   
   return (
     <div className="space-y-8">
-      {/* Market Size Estimations Section */}
-      <Card className="border-none shadow-md rounded-xl overflow-hidden bg-white dark:bg-gray-900">
-        <CardContent className="p-6">
-          <h3 className="font-semibold text-lg text-center mb-6">Market size estimations for {businessName}</h3>
-          
-          <div className="flex justify-center items-center h-80 relative">
-            {/* TAM Circle - Largest and leftmost */}
-            <div className="absolute left-0 z-10">
-              <div className="bg-green-500 rounded-full w-56 h-56 flex items-center justify-center text-white">
-                <div className="text-center">
-                  <div className="text-3xl font-bold">{tam}</div>
-                  <div className="text-sm">TAM</div>
-                </div>
-              </div>
-              <p className="text-xs text-green-600 mt-2 max-w-32 text-center">
-                Individuals interested in interior design globally
-              </p>
-            </div>
-            
-            {/* SAM Circle - Medium and overlapping TAM */}
-            <div className="absolute left-1/4 z-20">
-              <div className="bg-green-700 rounded-full w-48 h-48 flex items-center justify-center text-white">
-                <div className="text-center">
-                  <div className="text-2xl font-bold">{sam}</div>
-                  <div className="text-sm">SAM</div>
-                </div>
-              </div>
-              <p className="text-xs text-green-700 mt-2 max-w-40 text-center">
-                Individuals in {businessNameFirst} interested in tailored interior design services for small spaces
-              </p>
-            </div>
-            
-            {/* SOM Circle - Smallest and overlapping SAM */}
-            <div className="absolute left-2/4 z-30">
-              <div className="bg-green-900 rounded-full w-40 h-40 flex items-center justify-center text-white">
-                <div className="text-center">
-                  <div className="text-xl font-bold">{som}</div>
-                  <div className="text-sm">SOM</div>
-                </div>
-              </div>
-              <p className="text-xs text-green-800 mt-2 max-w-40 text-center">
-                Potential clients in {businessNameFirst} likely to engage in the next year
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      
       {/* Viability Section - Updated Design */}
       <Card className="border-none shadow-md rounded-xl overflow-hidden bg-white dark:bg-gray-900">
         <CardContent className="p-6">

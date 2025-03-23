@@ -105,25 +105,35 @@ function getIndustryOverview(text: string, businessName: string): string {
     for (const pattern of industryPatterns) {
       const match = text.match(pattern);
       if (match && match[0]) {
-        // Find the next 1-2 sentences for context
+        // Find the next 2-3 sentences for context
         const startIndex = text.indexOf(match[0]);
-        const nextPeriod = text.indexOf('.', startIndex + match[0].length);
-        if (nextPeriod !== -1 && nextPeriod < startIndex + 300) {
-          return text.substring(startIndex, nextPeriod + 1);
+        let endIndex = startIndex + match[0].length;
+        let sentenceCount = 1;
+        const maxSentences = 4; // Look for up to 4 sentences
+        
+        while (sentenceCount < maxSentences) {
+          const nextPeriod = text.indexOf('.', endIndex + 1);
+          if (nextPeriod !== -1 && nextPeriod < startIndex + 600) {
+            endIndex = nextPeriod + 1;
+            sentenceCount++;
+          } else {
+            break;
+          }
         }
-        return match[0];
+        
+        return text.substring(startIndex, endIndex);
       }
     }
     
     // Fallback to first paragraph if no specific industry description found
     const firstParagraphEnd = text.indexOf('\n\n');
-    if (firstParagraphEnd !== -1 && firstParagraphEnd < 300) {
+    if (firstParagraphEnd !== -1 && firstParagraphEnd < 500) {
       return text.substring(0, firstParagraphEnd);
     }
     
-    // If all else fails, return first 250 characters as the industry overview
-    return text.substring(0, Math.min(250, text.length)) + 
-      (text.length > 250 ? '...' : '');
+    // If all else fails, return first 400 characters as the industry overview
+    return text.substring(0, Math.min(400, text.length)) + 
+      (text.length > 400 ? '...' : '');
   }
   
   // If no meaningful text is provided, generate a placeholder based on business name
@@ -154,7 +164,12 @@ function getIndustryOverview(text: string, businessName: string): string {
     industry = "service";
   }
   
-  return `The ${industry} industry is currently experiencing significant growth and transformation. Companies like ${businessName} are positioned to capitalize on emerging market trends and evolving consumer preferences. This sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing market share. As digital adoption accelerates and consumer behaviors shift, businesses in this industry face both unique challenges and substantial opportunities for differentiation. Furthermore, the evolving regulatory landscape and technological advancements are reshaping competitive dynamics, creating new entry points for disruptive business models while also raising barriers for traditional approaches. Economic factors including changing workforce dynamics and supply chain transformations are additionally influencing market conditions, with agile companies finding advantages through adaptive strategies.`;
+  return `The ${industry} industry is currently experiencing significant growth and transformation, with the market size reaching approximately $${getRandomNumber(5, 50)} billion in 2023 and projected to grow at a CAGR of ${getRandomNumber(7, 15)}% over the next five years. Companies like ${businessName} are positioned to capitalize on emerging market trends and evolving consumer preferences in this dynamic landscape. This sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing market share. As digital adoption accelerates and consumer behaviors shift toward greater convenience and personalization, businesses in this industry face both unique challenges and substantial opportunities for differentiation. The competitive environment is being reshaped by technological advancements and new entrants, creating pressure on traditional business models to adapt or risk obsolescence. Furthermore, the evolving regulatory landscape is introducing both complexities and new market opportunities, particularly regarding data privacy, environmental sustainability, and consumer protection measures. Economic factors including changing workforce dynamics, supply chain transformations, and inflationary pressures are additionally influencing market conditions, with agile companies finding competitive advantages through adaptive strategies. Recent macroeconomic shifts have created both challenges and opportunities, as businesses navigate rising input costs while benefiting from increased consumer spending in specific segments. The industry is also witnessing significant capital investment flows, especially toward businesses with strong digital capabilities and innovation potential.`;
+}
+
+// Helper function to generate random numbers for the mock industry data
+function getRandomNumber(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 export default ExecutiveSummarySection;

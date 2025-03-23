@@ -12,7 +12,7 @@ export async function generateSection(section: string, formData: BusinessFormDat
       prompt,
       model: "gpt-4o-mini", // Using gpt-4o-mini for better quality responses
       temperature: 0.7,
-      maxTokens: 800 // Increased for more detailed responses
+      maxTokens: 1000 // Increased for more detailed responses
     });
     
     if (!response.success) {
@@ -62,9 +62,9 @@ MAKE SURE to include REAL COMPETITOR INFORMATION about these companies:
 
 Format this as a professional, detailed analysis with specific facts and figures throughout. Include actual numbers, percentages, and named companies to give the analysis credibility.`,
 
-    'industry overview': `Generate a detailed industry overview for this business description:${baseContext}
+    'industry overview': `Generate a comprehensive industry overview for this business description:${baseContext}
     
-IMPORTANT: Write a comprehensive industry overview with AT LEAST 6-8 sentences that covers:
+IMPORTANT: Write a detailed industry overview with AT LEAST 8-10 sentences that covers:
 1. Current market size in specific dollar amounts (e.g., $4.5 billion)
 2. Compound annual growth rate as a percentage
 3. Key technological trends affecting the industry
@@ -73,8 +73,14 @@ IMPORTANT: Write a comprehensive industry overview with AT LEAST 6-8 sentences t
 6. Major industry challenges or disruptions
 7. Emerging opportunities 
 8. Industry consolidation or fragmentation patterns
+9. Supply chain considerations specific to this industry
+10. Labor market dynamics affecting the industry
+11. Potential future developments over the next 3-5 years
+12. How recent macroeconomic factors are influencing the industry
+13. The impact of technological innovations on business models in this space
+14. Shifts in consumer preferences and their implications
 
-DO NOT include any headings or labels like "Industry Overview" in your response. Just write the content directly in paragraph form. Use specific figures, percentages, and data points throughout to make the overview substantive and credible.`,
+DO NOT include any headings or labels like "Industry Overview" in your response. Just write the content directly in paragraph form. Use specific figures, percentages, and data points throughout to make the overview substantive and credible. Cite specific trends and developments that relate directly to the business concept described.`,
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     

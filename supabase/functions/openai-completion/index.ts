@@ -52,7 +52,7 @@ serve(async (req) => {
     } else if (prompt.toLowerCase().includes('executive summary')) {
       systemMessage = 'You are a helpful assistant that generates business plan content. Create a concise and compelling executive summary with exactly two paragraphs. The first paragraph should introduce the business concept, value proposition, and target market. The second paragraph should highlight the market opportunity, business model, and competitive advantage.';
     } else if (prompt.toLowerCase().includes('industry overview')) {
-      systemMessage = 'You are a helpful assistant that generates detailed industry overviews for business plans. Include specific metrics like total market size in dollars (e.g., $4.5 billion), compound annual growth rate percentages, key trends, and emerging opportunities. Do not label this as "Industry Overview" - just provide the detailed content directly. Write at least 5-6 sentences that thoroughly describe the industry landscape, competitive dynamics, regulatory considerations, and future outlook. Use specific numbers and percentages whenever possible.';
+      systemMessage = 'You are a helpful assistant that generates detailed industry overviews for business plans. Create a comprehensive overview with AT LEAST 8-10 detailed sentences. Include specific metrics like total market size in dollars (e.g., $4.5 billion), compound annual growth rate percentages, key technological trends, regulatory considerations, consumer behavior patterns, major industry challenges, emerging opportunities, and competitive dynamics. Do not label this as "Industry Overview" - just provide the detailed content directly. Use specific numbers, percentages, and factual market information throughout. Mention how recent macroeconomic factors, technological innovations, and shifts in consumer preferences are influencing the industry. Discuss supply chain considerations, labor market dynamics affecting the industry, and potential future developments over the next 3-5 years.';
     } else {
       systemMessage = 'You are a helpful assistant that generates business plan content.';
     }
@@ -71,7 +71,7 @@ serve(async (req) => {
           { role: 'user', content: prompt }
         ],
         temperature: temperature || 0.7,
-        max_tokens: max_tokens || 800
+        max_tokens: max_tokens || 1000
       })
     });
     

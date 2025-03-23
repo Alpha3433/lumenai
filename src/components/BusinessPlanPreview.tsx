@@ -1,14 +1,15 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, ArrowDownToLine, Sparkles } from 'lucide-react';
+import { ArrowDownToLine, Sparkles } from 'lucide-react';
 import BusinessPlanActionBar from './BusinessPlanActionBar';
 import ExecutiveSummarySection from './ExecutiveSummarySection';
 import SwotAnalysis from './SwotAnalysis';
 import MarketingPlanSection from './MarketingPlanSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import PestelAnalysisSection from './PestelAnalysisSection';
-import PorterFiveForcesSection from './PorterFiveForcesSection';
+import PorterFiveForcesSection from './porter/PorterFiveForcesSection';
 import { Button } from "./ui/button";
 import { cn } from '@/lib/utils';
 
@@ -95,12 +96,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
         </Card>
       </div>
       
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
-        <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 font-medium bg-green-50 dark:bg-green-900/20 px-4 py-2 rounded-full">
-          <CheckCircle className="h-4 w-4" /> 
-          Your business plan is ready
-        </div>
-        
+      <div className="flex justify-center mt-8">
         <Button 
           onClick={onDownload} 
           className="flex items-center gap-2 bg-primary/90 hover:bg-primary"

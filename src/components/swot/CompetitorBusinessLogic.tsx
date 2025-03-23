@@ -45,20 +45,19 @@ export const useCompetitorData = (marketAnalysis: string) => {
         (b.threatScore || 0) - (a.threatScore || 0)
       );
       
-      // Get top 3 highest threat competitors
-      // If less than 3 competitors, duplicate the top one or create generic ones to fill the gap
-      let topCompetitors = sortedCompetitors.slice(0, 3);
+      // Get top 2 highest threat competitors
+      let topCompetitors = sortedCompetitors.slice(0, 2);
       
-      // If we have fewer than 3 competitors, add generic ones
-      while (topCompetitors.length < 3) {
+      // If we have fewer than 2 competitors, add generic ones
+      while (topCompetitors.length < 2) {
         const index = topCompetitors.length + 1;
         const genericCompetitor = {
           name: `Competitor ${index}`,
           marketShare: `${15 - (index * 3)}%`,
           founded: new Date().getFullYear() - (5 * index),
           annualRevenue: `$${20 - (index * 5)}M`,
-          strength: `Strong ${index === 1 ? 'product innovation' : index === 2 ? 'customer service' : 'market presence'}`,
-          weakness: `Limited ${index === 1 ? 'market reach' : index === 2 ? 'product range' : 'customer support'}`,
+          strength: `Strong ${index === 1 ? 'product innovation' : 'customer service'}`,
+          weakness: `Limited ${index === 1 ? 'market reach' : 'product range'}`,
           threatScore: 8 - index
         };
         topCompetitors.push(genericCompetitor);

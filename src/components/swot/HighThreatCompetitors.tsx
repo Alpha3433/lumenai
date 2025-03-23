@@ -28,13 +28,13 @@ const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAna
       </div>
       <CardContent className="p-6">
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center">
+            {[1, 2].map((index) => (
               <CompetitorCardSkeleton key={index} />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center">
             {competitorsWithModels.map((competitor, index) => (
               <CompetitorCard key={index} competitor={competitor} />
             ))}

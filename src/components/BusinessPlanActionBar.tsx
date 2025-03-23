@@ -17,8 +17,8 @@ const BusinessPlanActionBar: React.FC<BusinessPlanActionBarProps> = ({
   return (
     <div className="flex items-center justify-between">
       <div>
-        <h1 className="text-2xl font-bold">{businessName} Business Plan</h1>
-        <p className="text-gray-600 dark:text-gray-300">Generated based on your inputs</p>
+        <h1 className="text-2xl font-bold">{businessName} Strategic Business Report</h1>
+        <p className="text-gray-600 dark:text-gray-300">Professional analysis based on your inputs</p>
       </div>
       <div className="flex space-x-3">
         <Button

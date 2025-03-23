@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { AlertCircle, CheckCircle, ExternalLink, XCircle, Triangle } from 'lucide-react';
+import { AlertCircle, ExternalLink, Shield, Target, Zap, TrendingDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { extractCompetitors } from '@/utils/extraction/competitorUtils';
+import { cn } from '@/lib/utils';
 
 interface HighThreatCompetitorsProps {
   marketAnalysis: string;
@@ -50,13 +52,34 @@ const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAna
   const getLogoColor = (name: string) => {
     const colors = [
       'bg-red-500', 'bg-blue-500', 'bg-green-500', 
-      'bg-yellow-500', 'bg-purple-500', 'bg-pink-500',
-      'bg-indigo-500', 'bg-cyan-500', 'bg-orange-500'
+      'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 
+      'bg-cyan-500', 'bg-orange-500'
     ];
     
     // Use the competitor name to deterministically select a color
     const charSum = name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
     return colors[charSum % colors.length];
+  };
+  
+  // Get threat level badge color
+  const getThreatBadgeColor = (score: number) => {
+    if (score >= 8) return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
+    if (score >= 6) return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
+    return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
+  };
+  
+  // Get threat level badge text
+  const getThreatLevelText = (score: number) => {
+    if (score >= 8) return "Critical Threat";
+    if (score >= 6) return "High Threat";
+    return "Moderate Threat";
+  };
+  
+  // Get threat icon based on threat score
+  const getThreatIcon = (score: number) => {
+    if (score >= 8) return <AlertCircle className="h-4 w-4" />;
+    if (score >= 6) return <TrendingDown className="h-4 w-4" />;
+    return <Shield className="h-4 w-4" />;
   };
   
   // Generate pricing model description if not available
@@ -80,82 +103,99 @@ const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAna
 
   return (
     <Card className="mt-8 border border-gray-200 dark:border-gray-800 shadow-sm">
-      <div className="p-6 border-b border-gray-200 dark:border-gray-800">
-        <h3 className="text-2xl font-bold text-center flex items-center justify-center gap-2">
+      <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col items-center relative">
+        <h3 className="text-2xl font-bold flex items-center justify-center gap-2">
           <div className="p-1.5 bg-red-100 dark:bg-red-900/30 rounded-full">
-            <Triangle className="h-5 w-5 text-red-500" />
+            <Target className="h-5 w-5 text-red-500" />
           </div>
           High Threat Competitors
         </h3>
+        <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full absolute right-0 top-6">
+          Competitive intelligence
+        </div>
       </div>
-      <CardContent className="p-0">
-        <div className="divide-y divide-gray-200 dark:divide-gray-800">
+      <CardContent className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {topCompetitors.map((competitor, index) => (
-            <div key={index} className="p-6 relative">
-              <div className="absolute right-6 top-6 w-10 h-10 flex items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-full">
-                <span className="text-lg font-bold text-red-600 dark:text-red-400">
-                  {competitor.threatScore}
-                </span>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-white ${getLogoColor(competitor.name)}`}>
-                  {competitor.name.substring(0, 2).toUpperCase()}
-                </div>
-                <div className="space-y-1">
-                  <h4 className="text-xl font-semibold">{competitor.name}</h4>
-                  <p className="text-muted-foreground">{competitor.strength}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="font-medium">Market Share:</span>
-                    <span className="py-0.5 px-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-xs font-medium">
-                      {competitor.marketShare}
-                    </span>
-                  </div>
-                  <div className="text-sm">
-                    <span className="font-medium">Founded:</span> {competitor.founded}
-                  </div>
-                  <div className="text-sm">
-                    <span className="font-medium">Annual Revenue:</span> {competitor.annualRevenue}
-                  </div>
-                </div>
+            <Card key={index} className="overflow-hidden border border-gray-200 dark:border-gray-800 transition-all duration-200 hover:shadow-md">
+              <div className="relative">
+                {/* Header gradient banner based on threat level */}
+                <div className={cn(
+                  "h-3",
+                  competitor.threatScore >= 8 ? "bg-gradient-to-r from-red-500 to-pink-500" : 
+                  competitor.threatScore >= 6 ? "bg-gradient-to-r from-amber-500 to-red-400" : 
+                  "bg-gradient-to-r from-blue-500 to-purple-500"
+                )} />
                 
-                <div>
-                  <h5 className="font-medium mb-2">Strengths & Weaknesses</h5>
-                  <div className="space-y-1">
-                    <div className="flex gap-2 items-start text-sm">
-                      <CheckCircle className="h-4 w-4 text-green-500 mt-0.5" />
-                      <span>{competitor.strength}</span>
+                <div className="p-5">
+                  {/* Company logo and name */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-10 w-10 rounded-lg flex items-center justify-center text-white font-bold ${getLogoColor(competitor.name)}`}>
+                        {competitor.name.substring(0, 2).toUpperCase()}
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-semibold">{competitor.name}</h4>
+                        <div className="text-xs text-gray-500">Est. {competitor.founded}</div>
+                      </div>
                     </div>
-                    <div className="flex gap-2 items-start text-sm">
-                      <XCircle className="h-4 w-4 text-red-500 mt-0.5" />
-                      <span>{competitor.weakness}</span>
+                    
+                    {/* Threat score badge */}
+                    <div className={`rounded-full py-1 px-3 text-xs font-medium flex items-center gap-1 ${getThreatBadgeColor(competitor.threatScore)}`}>
+                      {getThreatIcon(competitor.threatScore)}
+                      <span>{getThreatLevelText(competitor.threatScore)}</span>
                     </div>
+                  </div>
+                  
+                  {/* Market position */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg">
+                      <div className="text-xs text-gray-500 mb-1">Market Share</div>
+                      <div className="font-semibold flex items-center gap-1">
+                        <Zap className="h-4 w-4 text-purple-500" />
+                        {competitor.marketShare}
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg">
+                      <div className="text-xs text-gray-500 mb-1">Revenue</div>
+                      <div className="font-semibold">{competitor.annualRevenue}</div>
+                    </div>
+                  </div>
+                  
+                  {/* Strengths & Weaknesses */}
+                  <div className="mb-4">
+                    <h5 className="text-sm font-semibold mb-2">Key Characteristics</h5>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2">
+                        <div className="h-5 w-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5 flex-shrink-0">
+                          <span className="text-green-600 text-xs">+</span>
+                        </div>
+                        <p className="text-sm text-gray-700 dark:text-gray-300">{competitor.strength}</p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <div className="h-5 w-5 rounded-full bg-red-100 flex items-center justify-center mt-0.5 flex-shrink-0">
+                          <span className="text-red-600 text-xs">-</span>
+                        </div>
+                        <p className="text-sm text-gray-700 dark:text-gray-300">{competitor.weakness}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Pricing Model */}
+                  <div className="mb-4">
+                    <h5 className="text-sm font-semibold mb-2">Business Model</h5>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">{inferPricingModel(competitor)}</p>
+                  </div>
+                  
+                  {/* Action button */}
+                  <div className="text-right mt-5">
+                    <Button variant="outline" size="sm" className="text-xs">
+                      View Details <ExternalLink className="ml-1 h-3 w-3" />
+                    </Button>
                   </div>
                 </div>
               </div>
-              
-              <div className="mt-4 space-y-2">
-                <div>
-                  <h5 className="font-medium">Market Position</h5>
-                  <p className="text-sm">Major player (~{competitor.marketShare} market share)</p>
-                </div>
-                <div>
-                  <h5 className="font-medium">Pricing Model</h5>
-                  <p className="text-sm">{inferPricingModel(competitor)}</p>
-                </div>
-              </div>
-              
-              <div className="mt-4 text-right">
-                <Button variant="ghost" size="sm" className="text-primary">
-                  Visit website <ExternalLink className="ml-1 h-3 w-3" />
-                </Button>
-              </div>
-            </div>
+            </Card>
           ))}
         </div>
       </CardContent>

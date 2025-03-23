@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -64,6 +63,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             <ExecutiveSummarySection 
               summaryText={businessPlan.executiveSummary} 
               businessName={businessName}
+              marketAnalysis={businessPlan.marketAnalysis}
             />
             
             <Separator className="my-10" />

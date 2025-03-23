@@ -19,7 +19,12 @@ export type PorterFiveForcesData = {
 const determineThreatLevel = (text: string): ForcesLevel => {
   const lowerText = text.toLowerCase();
   
-  // Count instances of high, medium, low in the text
+  // Look for explicit level indicators like "HIGH", "MEDIUM", "LOW"
+  if (/high[:\.]|strong|significant|substantial|intense|considerable/i.test(lowerText)) return 'High';
+  if (/medium[:\.]|moderate|average|balanced|fair/i.test(lowerText)) return 'Medium';
+  if (/low[:\.]|minimal|limited|negligible|small|weak/i.test(lowerText)) return 'Low';
+  
+  // Count instances of high, medium, low in the text (fallback)
   const highCount = (lowerText.match(/high|strong|significant|substantial|intense|considerable/g) || []).length;
   const mediumCount = (lowerText.match(/medium|moderate|average|balanced|fair/g) || []).length;
   const lowCount = (lowerText.match(/low|minimal|limited|negligible|small|weak/g) || []).length;
@@ -32,9 +37,15 @@ const determineThreatLevel = (text: string): ForcesLevel => {
 
 // Extracts bullet points from text sections
 const extractBulletPoints = (text: string): string[] => {
+  // First, remove any titles or headers that contain the force name
+  const cleanedText = text.replace(/#+\s*(?:competitive rivalry|threat of (?:new )?(?:entrants|entry|substitution)|bargaining power of (?:suppliers|buyers)|supplier power|buyer power)[^\n]*/gi, '');
+  
+  // Clean up any "HIGH", "MEDIUM", "LOW" markers at the beginning of the text
+  const furtherCleanedText = cleanedText.replace(/^\s*(?:high|medium|low)[:\.\s]*/gi, '');
+  
   // If text already has bullet points (•, -, *, etc.)
-  if (/[•\-\*]\s+/.test(text)) {
-    return text
+  if (/[•\-\*]\s+/.test(furtherCleanedText)) {
+    return furtherCleanedText
       .split(/\n/)
       .map(line => line.trim())
       .filter(line => /^[•\-\*]\s+/.test(line))
@@ -43,7 +54,7 @@ const extractBulletPoints = (text: string): string[] => {
   }
   
   // If no bullet points, split by sentences and take up to 4
-  const sentences = text
+  const sentences = furtherCleanedText
     .split(/\.(?:\s+|\n)/)
     .map(s => s.trim())
     .filter(s => s.length > 10 && !s.includes('Porter') && !s.includes('Five Forces'));
@@ -92,7 +103,7 @@ export const extractPorterFiveForcesData = (analysisText: string): PorterFiveFor
     }
   };
   
-  // Extract sections for each force
+  // Extract sections for each force by looking for specific phrases in the text
   const sections: Record<string, { regex: RegExp, category: PorterForce['category'] }> = {
     newEntrants: { 
       regex: /threat of new (?:entrants|entries|entry)|barriers to entry/i, 
@@ -116,24 +127,53 @@ export const extractPorterFiveForcesData = (analysisText: string): PorterFiveFor
     }
   };
   
-  // Find paragraphs for each force
-  const paragraphs = analysisText.split(/\n\n+/);
-  
-  paragraphs.forEach(paragraph => {
-    // For each type of force, check if the paragraph matches
-    Object.values(sections).forEach(({ regex, category }) => {
-      if (regex.test(paragraph)) {
-        // Extract threat level and bullet points
-        const level = determineThreatLevel(paragraph);
-        const points = extractBulletPoints(paragraph);
-        
-        if (points.length > 0) {
-          result[category].level = level;
-          result[category].points = points;
+  // Handle Porter's Five Forces section specifically if it exists
+  if (analysisText.includes("Porter's Five Forces") || analysisText.includes("Porters Five Forces")) {
+    // Try to find the Porter's section and parse it
+    const porterSectionMatch = analysisText.match(/(?:Porter's|Porters) Five Forces(?:.|\n)*?(?=(?:\n\n|\n#|\n<h))/i);
+    
+    if (porterSectionMatch) {
+      const porterSection = porterSectionMatch[0];
+      
+      // Split the Porter's section into subsections for each force
+      const forceBlocks = porterSection.split(/\n\s*(?=(?:Threat|Bargaining|Competitive))/i);
+      
+      forceBlocks.forEach(block => {
+        // For each block, identify which force it describes
+        Object.values(sections).forEach(({ regex, category }) => {
+          if (regex.test(block)) {
+            const level = determineThreatLevel(block);
+            const points = extractBulletPoints(block);
+            
+            if (points.length > 0) {
+              result[category].level = level;
+              result[category].points = points;
+            }
+          }
+        });
+      });
+    }
+  } else {
+    // If no specific Porter's section, scan the whole text
+    // Find paragraphs for each force
+    const paragraphs = analysisText.split(/\n\n+/);
+    
+    paragraphs.forEach(paragraph => {
+      // For each type of force, check if the paragraph matches
+      Object.values(sections).forEach(({ regex, category }) => {
+        if (regex.test(paragraph)) {
+          // Extract threat level and bullet points
+          const level = determineThreatLevel(paragraph);
+          const points = extractBulletPoints(paragraph);
+          
+          if (points.length > 0) {
+            result[category].level = level;
+            result[category].points = points;
+          }
         }
-      }
+      });
     });
-  });
+  }
   
   // If any force has no points, provide generic fallback content
   Object.keys(result).forEach(key => {

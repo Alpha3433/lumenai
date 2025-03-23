@@ -21,7 +21,8 @@ export function extractTargetMarket(marketAnalysis: string | undefined): { demog
   
   // Extract growth percentage
   const growthMatch = cleanText.match(/(\d+(\.\d+)?%\s+(growth|increase))/i) ||
-                      cleanText.match(/growth\s+of\s+(\d+(\.\d+)?%)/i);
+                      cleanText.match(/growth\s+of\s+(\d+(\.\d+)?%)/i) ||
+                      cleanText.match(/CAGR\s+of\s+(\d+(\.\d+)?%)/i);
   
   // Extract audience information
   const audienceInfo = extractAudienceFromText(cleanText);

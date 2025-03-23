@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -5,7 +6,6 @@ import { CheckCircle, ArrowDownToLine, Sparkles } from 'lucide-react';
 import BusinessPlanActionBar from './BusinessPlanActionBar';
 import ExecutiveSummarySection from './ExecutiveSummarySection';
 import SwotAnalysis from './SwotAnalysis';
-import MarketAnalysisSection from './MarketAnalysisSection';
 import MarketingPlanSection from './MarketingPlanSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import PestelAnalysisSection from './PestelAnalysisSection';
@@ -93,12 +93,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             
             <Separator className="my-10" />
             
-            {/* Market Analysis */}
-            <MarketAnalysisSection analysisText={businessPlan.marketAnalysis} />
-            
-            <Separator className="my-10" />
-            
-            {/* Business Model section removed as requested */}
+            {/* Market Analysis section removed as requested */}
             
             {/* Marketing Plan */}
             <MarketingPlanSection 
@@ -107,7 +102,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               onUpgrade={onUpgrade}
             />
             
-            {/* Removed Risk Assessment Section */}
           </CardContent>
         </Card>
       </div>

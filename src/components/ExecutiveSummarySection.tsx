@@ -18,7 +18,7 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
 }) => {
   // Extract industry information from market analysis
   const marketData = marketAnalysis ? extractTargetMarket(marketAnalysis) : null;
-  const industryText = getIndustryOverview(marketAnalysis || '');
+  const industryText = getIndustryOverview(marketAnalysis || '', businessName);
   
   return (
     <section className="mb-12 max-w-3xl mx-auto space-y-8">
@@ -88,39 +88,73 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
   );
 };
 
-// Helper function to extract industry overview from market analysis text
-function getIndustryOverview(text: string): string {
-  // Look for patterns that indicate industry descriptions
-  const industryPatterns = [
-    /the\s+\w+\s+industry\s+is[^.!?]*[.!?]/i,
-    /industry\s+overview[^.!?]*[.!?]/i,
-    /market\s+overview[^.!?]*[.!?]/i,
-    /industry\s+is\s+characterized\s+by[^.!?]*[.!?]/i,
-    /industry\s+is\s+experiencing[^.!?]*[.!?]/i
-  ];
-  
-  for (const pattern of industryPatterns) {
-    const match = text.match(pattern);
-    if (match && match[0]) {
-      // Find the next 1-2 sentences for context
-      const startIndex = text.indexOf(match[0]);
-      const nextPeriod = text.indexOf('.', startIndex + match[0].length);
-      if (nextPeriod !== -1 && nextPeriod < startIndex + 300) {
-        return text.substring(startIndex, nextPeriod + 1);
+// Enhanced helper function to extract industry overview from market analysis text
+// or generate a placeholder based on the business name if no analysis is available
+function getIndustryOverview(text: string, businessName: string): string {
+  // First try to extract from the provided text
+  if (text && text.length > 10) {
+    // Look for patterns that indicate industry descriptions
+    const industryPatterns = [
+      /the\s+\w+\s+industry\s+is[^.!?]*[.!?]/i,
+      /industry\s+overview[^.!?]*[.!?]/i,
+      /market\s+overview[^.!?]*[.!?]/i,
+      /industry\s+is\s+characterized\s+by[^.!?]*[.!?]/i,
+      /industry\s+is\s+experiencing[^.!?]*[.!?]/i
+    ];
+    
+    for (const pattern of industryPatterns) {
+      const match = text.match(pattern);
+      if (match && match[0]) {
+        // Find the next 1-2 sentences for context
+        const startIndex = text.indexOf(match[0]);
+        const nextPeriod = text.indexOf('.', startIndex + match[0].length);
+        if (nextPeriod !== -1 && nextPeriod < startIndex + 300) {
+          return text.substring(startIndex, nextPeriod + 1);
+        }
+        return match[0];
       }
-      return match[0];
     }
+    
+    // Fallback to first paragraph if no specific industry description found
+    const firstParagraphEnd = text.indexOf('\n\n');
+    if (firstParagraphEnd !== -1 && firstParagraphEnd < 300) {
+      return text.substring(0, firstParagraphEnd);
+    }
+    
+    // If all else fails, return first 250 characters as the industry overview
+    return text.substring(0, Math.min(250, text.length)) + 
+      (text.length > 250 ? '...' : '');
   }
   
-  // Fallback to first paragraph if no specific industry description found
-  const firstParagraphEnd = text.indexOf('\n\n');
-  if (firstParagraphEnd !== -1 && firstParagraphEnd < 300) {
-    return text.substring(0, firstParagraphEnd);
+  // If no meaningful text is provided, generate a placeholder based on business name
+  const words = businessName.split(/\s+/).filter(word => word.length > 2);
+  let industry = "";
+  
+  // Try to guess industry from business name
+  if (businessName.match(/tech|software|app|digital|cyber|web|online|cloud|ai|ml|data/i)) {
+    industry = "technology";
+  } else if (businessName.match(/food|restaurant|cafe|kitchen|bakery|catering|meal/i)) {
+    industry = "food service";
+  } else if (businessName.match(/retail|shop|store|boutique|mart|market/i)) {
+    industry = "retail";
+  } else if (businessName.match(/health|wellness|fitness|gym|medical|therapy|care/i)) {
+    industry = "healthcare";
+  } else if (businessName.match(/finance|bank|invest|capital|wealth|money|fund/i)) {
+    industry = "financial services";
+  } else if (businessName.match(/travel|tour|trip|vacation|holiday|adventure/i)) {
+    industry = "tourism";
+  } else if (businessName.match(/edu|learn|train|teach|school|academy|tutor/i)) {
+    industry = "education";
+  } else if (businessName.match(/fashion|cloth|wear|apparel|style|design/i)) {
+    industry = "fashion";
+  } else if (businessName.match(/media|content|entertainment|film|video|audio/i)) {
+    industry = "media and entertainment";
+  } else {
+    // Default to service industry if can't determine
+    industry = "service";
   }
   
-  // If all else fails, return first 250 characters as the industry overview
-  return text.substring(0, Math.min(250, text.length)) + 
-    (text.length > 250 ? '...' : '');
+  return `The ${industry} industry is currently experiencing significant growth and transformation. Companies like ${businessName} are positioned to capitalize on emerging market trends and evolving consumer preferences. This sector is characterized by increasing demand for innovative solutions, with strong potential for scaling operations and capturing market share. As digital adoption accelerates and consumer behaviors shift, businesses in this industry face both unique challenges and substantial opportunities for differentiation.`;
 }
 
 export default ExecutiveSummarySection;

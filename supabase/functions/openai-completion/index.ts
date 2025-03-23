@@ -42,10 +42,18 @@ serve(async (req) => {
     const isValidationPrompt = prompt.toLowerCase().includes('financial and idea validation') || 
                                prompt.toLowerCase().includes('viability score');
     
-    // Add special system instructions for validation prompts
-    const systemMessage = isValidationPrompt ? 
-      'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL for proper display of the report.' :
-      'You are a helpful assistant that generates business plan content.';
+    // Add special system instructions based on prompt type
+    let systemMessage = '';
+    
+    if (isValidationPrompt) {
+      systemMessage = 'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL for proper display of the report.';
+    } else if (prompt.toLowerCase().includes('market analysis')) {
+      systemMessage = 'You are a helpful assistant that generates business plan content. For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, age demographics, and identify real competitor companies with estimates of their market share and revenue. Format any statistics with numbers and percentages clearly.';
+    } else if (prompt.toLowerCase().includes('executive summary')) {
+      systemMessage = 'You are a helpful assistant that generates business plan content. Create a concise and compelling executive summary with exactly two paragraphs. The first paragraph should introduce the business concept, value proposition, and target market. The second paragraph should highlight the market opportunity, business model, and competitive advantage.';
+    } else {
+      systemMessage = 'You are a helpful assistant that generates business plan content.';
+    }
     
     // Call OpenAI API using Chat Completions endpoint (newer API)
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {

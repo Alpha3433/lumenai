@@ -1,13 +1,12 @@
-
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 
 // Generate a section of the business plan using OpenAI
 export async function generateSection(section: string, formData: BusinessFormData): Promise<string> {
   try {
-    const prompt = createPromptForSection(section, formData);
     console.log(`Generating ${section} with prompt...`);
     
+    const prompt = createPromptForSection(section, formData);
     const response = await callOpenAI({
       prompt,
       model: "gpt-4o-mini", // Using gpt-4o-mini for better quality responses
@@ -46,32 +45,21 @@ Keep it under 150 words total. Do not use bullet points or headings.`,
 
     'market analysis': `Create a detailed market analysis for a business plan with the following information:${baseContext}
     
-The market analysis should focus on the following aspects:
-- Industry overview including current market size (provide a specific dollar amount in billions/millions)
-- Target demographic details with specific age ranges (e.g., 25-45)
-- Market growth trends with percentage figures (e.g., 12.5% annual growth)
-- Key competitors (mention how many main competitors exist)
-- Market opportunities and challenges
-- Segment breakdown with their relative importance
+The market analysis should include ALL of these elements in your response:
+1. Industry overview with current market size as a SPECIFIC dollar amount (e.g., $4.5 billion, $250 million)
+2. Target demographic details with specific age ranges (e.g., 25-45)
+3. Market growth trends with percentage figures (e.g., 12.5% annual growth)
+4. Key competitors - identify at least 3 REAL company names in this industry
+5. Market segments with descriptions and estimated percentage breakdown
 
-IMPORTANT: Include ALL of these elements in your response:
-1. A clear dollar amount for market size (e.g., $4.5 billion, $250 million)
-2. Specific age range for target demographics (e.g., ages 18-34)
-3. Growth rate with percentage (e.g., 7.8% annual growth)
-4. Customer segments with descriptions
+MAKE SURE to include REAL COMPETITOR INFORMATION about these companies:
+- Actual company names (not generic placeholders)
+- Approximate market share percentage for each competitor
+- Year each company was founded
+- Estimated annual revenue with $ amounts
+- Key strengths and weaknesses for each
 
-Write this as a coherent, detailed paragraph without subheadings or bullet points. Include specific numbers and metrics where possible to make the analysis data-rich and credible. Keep the tone professional and objective.
-
-ALSO INCLUDE REAL-WORLD DATA: Please include factual information about the top 3 actual companies in this industry including:
-- Real company names (not generic placeholders)
-- Approximate market share percentage 
-- Year founded
-- Estimated annual revenue (with $ amounts)
-- One key strength for each company
-- One key weakness for each company
-
-Format the competitor information in a way that can be easily extracted, for example:
-"Company: [Name], Market Share: [Percentage], Founded: [Year], Revenue: [Amount], Strength: [Description], Weakness: [Description]"`,
+Format this as a professional, detailed analysis with specific facts and figures throughout. Include actual numbers, percentages, and named companies to give the analysis credibility.`,
 
     'business model': `Describe the business model for a company with these details:${baseContext}
     

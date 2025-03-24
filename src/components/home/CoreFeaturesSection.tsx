@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
 import { Search, BarChart3, Target } from 'lucide-react';
+import FeatureCard from '@/components/FeatureCard';
 
 const CoreFeaturesSection = () => {
   // Core features data
@@ -27,25 +27,24 @@ const CoreFeaturesSection = () => {
     <section id="features" className="py-20 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Core Features</h2>
+          <div className="inline-block mb-4 px-4 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium">
+            Core Features
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">Everything you need to validate your business</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Everything you need to validate your business idea in minutes
+            Discover profitable niches and validate your business ideas in minutes
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {coreFeatures.map((feature, index) => (
-            <Card key={index} className="border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex flex-col h-full">
-                  <div className="mb-4">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
-                </div>
-              </CardContent>
-            </Card>
+            <FeatureCard
+              key={index}
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+              className="h-full"
+            />
           ))}
         </div>
       </div>

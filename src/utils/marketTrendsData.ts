@@ -83,7 +83,7 @@ const printNiches = [
   'Community Health Updates',
   'Neighborhood Business Spotlight',
   'Educational Supplements',
-  'Collectors' Editions',
+  'Collectors\' Editions',
   'Senior-Focused Publications',
   'Artisanal Business Quarterly',
   'Industry-Specific Journals',

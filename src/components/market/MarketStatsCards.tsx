@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, TrendingUp, TrendingDown, Flame } from 'lucide-react';
+import { FileText, TrendingUp, TrendingDown, Flame, Clock } from 'lucide-react';
 import { MarketTrendStats } from '@/utils/marketTrendsData';
 
 interface MarketStatsCardsProps {

@@ -62,13 +62,13 @@ const Hero = () => {
           className="mb-6"
         >
           <div className="inline-block px-4 py-1 mb-4 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/30">
-            AI-Powered Market Analysis
+            AI-Powered Business Builder
           </div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-            Discover Profitable <span className="relative">
+            The Most Complete <span className="relative">
               Business
               <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500/70 dark:bg-blue-400/70 rounded-full"></div>
-            </span> Niches with AI
+            </span> Builder Platform
           </h1>
         </motion.div>
         
@@ -78,7 +78,7 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-12"
         >
-          Stop guessing, start knowing. Our AI-powered platform helps solopreneurs identify low-competition, high-profit niches in minutes, not months.
+          Stop guessing, start building. Our all-in-one AI platform helps entrepreneurs create comprehensive business plans, find profitable niches, and launch successful ventures in days, not months.
         </motion.p>
         
         <motion.div

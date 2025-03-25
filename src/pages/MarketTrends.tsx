@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FilePlus, Clock, TrendingUp, TrendingDown, Flame, FileText } from 'lucide-react';
+import { FilePlus, Clock, TrendingUp, TrendingDown, Flame, FileText, RefreshCw } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/components/AuthProvider';
 import { useToast } from "@/components/ui/use-toast";
@@ -17,23 +17,30 @@ const MarketTrends = () => {
   const { toast } = useToast();
   const [marketData, setMarketData] = useState<MarketTrendStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Function to load and update market data
   const updateMarketData = () => {
     setLoading(true);
-    // Generate new mock data
-    const newData = generateMarketTrendData();
+    setIsRefreshing(true);
     
-    // Update state with new data
-    setMarketData(newData);
-    setLoading(false);
-    
-    // Show toast notification
-    toast({
-      title: "Market data updated",
-      description: `Latest trends as of ${formatLastUpdated(newData.lastUpdated)}`,
-      duration: 3000,
-    });
+    // Add a slight delay to show the refresh animation
+    setTimeout(() => {
+      // Generate new mock data
+      const newData = generateMarketTrendData();
+      
+      // Update state with new data
+      setMarketData(newData);
+      setLoading(false);
+      setIsRefreshing(false);
+      
+      // Show toast notification
+      toast({
+        title: "Market data updated",
+        description: `Latest trends as of ${formatLastUpdated(newData.lastUpdated)}`,
+        duration: 3000,
+      });
+    }, 600);
   };
 
   // Initialize data and set up refresh timer
@@ -52,7 +59,9 @@ const MarketTrends = () => {
 
   // Function to manually refresh data
   const handleRefresh = () => {
-    updateMarketData();
+    if (!isRefreshing) {
+      updateMarketData();
+    }
   };
 
   if (loading || !marketData) {
@@ -70,12 +79,22 @@ const MarketTrends = () => {
     <div className="container mx-auto py-8">
       <Navbar />
       
-      <div className="flex justify-between items-center mb-4 mt-6">
+      <div className="flex justify-between items-center mb-6 mt-10 pt-4">
         <h1 className="text-2xl font-bold">Market Trends Dashboard</h1>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>Last updated: {formatLastUpdated(marketData.lastUpdated)}</span>
-          <Button variant="outline" size="sm" onClick={handleRefresh}>
-            Refresh
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-muted-foreground">
+            <Clock className="inline-block mr-1 h-4 w-4" />
+            Last updated: {formatLastUpdated(marketData.lastUpdated)}
+          </span>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="flex items-center gap-1 transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20"
+          >
+            <RefreshCw className={`h-4 w-4 text-blue-600 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span className="text-blue-600">{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
           </Button>
         </div>
       </div>
@@ -113,6 +132,7 @@ const MarketTrends = () => {
                 )}
               </div>
               <div className="text-sm font-medium mb-1">Sustainable products</div>
+              <div className="text-xs font-medium text-green-600">{marketData.sustainableProducts.nicheName}</div>
               <div className="flex items-center text-xs text-muted-foreground mt-1">
                 <Clock className="h-3 w-3 mr-1" />
                 <span>Last 24hrs</span>
@@ -134,6 +154,7 @@ const MarketTrends = () => {
                 )}
               </div>
               <div className="text-sm font-medium mb-1">Print newspapers</div>
+              <div className="text-xs font-medium text-red-600">{marketData.printNewspapers.nicheName}</div>
               <div className="flex items-center text-xs text-muted-foreground mt-1">
                 <Clock className="h-3 w-3 mr-1" />
                 <span>Last 24hrs</span>

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, TrendingUp } from 'lucide-react';
+import { Menu, X, TrendingUp, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -53,10 +53,10 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <div className="p-1.5 bg-blue-600 text-white rounded-md">
-                <TrendingUp className="h-5 w-5" />
+              <div className="p-1.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md">
+                <Sparkles className="h-5 w-5" />
               </div>
-              <span className="text-gradient">VisionaryData</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">Foster AI</span>
             </motion.span>
           </Link>
 

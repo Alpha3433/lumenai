@@ -14,7 +14,7 @@ const CTASection = () => {
             Start generating data-driven business insights today and validate your ideas in minutes.
           </p>
           <Link to="/create">
-            <Button className="bg-black hover:bg-black/90 text-white rounded-md h-12 px-8 text-base font-medium">
+            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-md h-12 px-8 text-base font-medium">
               Try for Free
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

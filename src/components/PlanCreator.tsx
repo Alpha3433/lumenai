@@ -150,6 +150,7 @@ const PlanCreator = () => {
       ) : (
         <BusinessPlanPreview
           businessName={formData.businessName}
+          businessDescription={formData.businessDescription}
           businessPlan={businessPlan}
           isPremium={isPremium}
           onStartOver={() => setStep(1)}

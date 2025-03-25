@@ -7,6 +7,7 @@ import BusinessPlanActionBar from './BusinessPlanActionBar';
 import ExecutiveSummarySection from './ExecutiveSummarySection';
 import SwotAnalysis from './SwotAnalysis';
 import MarketingPlanSection from './MarketingPlanSection';
+import WebBusinessModelsSection from './WebBusinessModelsSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import PestelAnalysisSection from './PestelAnalysisSection';
 import PorterFiveForcesSection from './PorterFiveForcesSection';
@@ -30,6 +31,7 @@ interface BusinessPlanPreviewProps {
   onStartOver: () => void;
   onDownload: () => void;
   onUpgrade: () => void;
+  businessDescription?: string;
 }
 
 const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
@@ -38,7 +40,8 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   isPremium,
   onStartOver,
   onDownload,
-  onUpgrade
+  onUpgrade,
+  businessDescription = ''
 }) => {
   return (
     <div className="space-y-10 animate-fade-in">
@@ -88,6 +91,16 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
             {/* Marketing Plan */}
             <MarketingPlanSection 
               marketingPlanText={businessPlan.marketingPlan} 
+              isPremium={isPremium}
+              onUpgrade={onUpgrade}
+            />
+            
+            <Separator className="my-10" />
+            
+            {/* Web Business Models - New Section */}
+            <WebBusinessModelsSection 
+              businessName={businessName}
+              businessDescription={businessDescription}
               isPremium={isPremium}
               onUpgrade={onUpgrade}
             />

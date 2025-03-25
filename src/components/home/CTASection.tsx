@@ -9,13 +9,13 @@ const CTASection = () => {
     <section className="py-20 px-4">
       <div className="container mx-auto max-w-4xl">
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-12 text-center shadow-xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to build your complete business plan?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to build your business from the ground up?</h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Create comprehensive, data-driven business plans with our all-in-one AI platform in days, not months.
+            Start building your complete business plan with our AI platform and turn your vision into reality in days, not months.
           </p>
           <Link to="/create">
             <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-md h-12 px-8 text-base font-medium">
-              Try for Free
+              Start Building Now
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>

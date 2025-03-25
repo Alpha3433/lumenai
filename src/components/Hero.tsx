@@ -65,10 +65,10 @@ const Hero = () => {
             AI-Powered Business Builder
           </div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-            The Most Complete <span className="relative">
+            Build Your <span className="relative">
               Business
               <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500/70 dark:bg-blue-400/70 rounded-full"></div>
-            </span> Builder Platform
+            </span> From Vision to Reality
           </h1>
         </motion.div>
         
@@ -91,7 +91,7 @@ const Hero = () => {
             onClick={handleTryForFree}
             className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-14 px-8 text-lg font-medium transition-all shadow-md hover:shadow-lg"
           >
-            Try for Free
+            Start Building Now
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
           <Link to="/examples">

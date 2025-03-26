@@ -3,12 +3,11 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/components/AuthProvider';
 import { useToast } from "@/hooks/use-toast";
-import { generateMarketTrendData, formatLastUpdated, type MarketTrendStats } from '@/utils/marketTrendsData';
+import { generateMarketTrendData, type MarketTrendStats } from '@/utils/marketTrendsData';
 import MarketTrendHeader from '@/components/market/MarketTrendHeader';
 import MarketStatsCards from '@/components/market/MarketStatsCards';
 import EmptyReportsSection from '@/components/market/EmptyReportsSection';
 import LoadingState from '@/components/market/LoadingState';
-import { Clock } from 'lucide-react';
 
 const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
 
@@ -17,14 +16,12 @@ const MarketTrends: React.FC = () => {
   const { toast } = useToast();
   const [marketData, setMarketData] = useState<MarketTrendStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Function to load and update market data
   const updateMarketData = () => {
     setLoading(true);
-    setIsRefreshing(true);
     
-    // Add a slight delay to show the refresh animation
+    // Add a slight delay to simulate loading
     setTimeout(() => {
       // Generate new mock data
       const newData = generateMarketTrendData();
@@ -32,14 +29,6 @@ const MarketTrends: React.FC = () => {
       // Update state with new data
       setMarketData(newData);
       setLoading(false);
-      setIsRefreshing(false);
-      
-      // Show toast notification
-      toast({
-        title: "Market data updated",
-        description: `Latest trends as of ${formatLastUpdated(newData.lastUpdated)}`,
-        duration: 3000,
-      });
     }, 600);
   };
 
@@ -57,13 +46,6 @@ const MarketTrends: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Function to manually refresh data
-  const handleRefresh = () => {
-    if (!isRefreshing) {
-      updateMarketData();
-    }
-  };
-
   if (loading || !marketData) {
     return <LoadingState />;
   }
@@ -72,11 +54,7 @@ const MarketTrends: React.FC = () => {
     <div className="container mx-auto py-8">
       <Navbar />
       <div className="mt-16">
-        <MarketTrendHeader 
-          lastUpdated={marketData.lastUpdated}
-          isRefreshing={isRefreshing}
-          onRefresh={handleRefresh}
-        />
+        <MarketTrendHeader />
         
         <MarketStatsCards marketData={marketData} />
         

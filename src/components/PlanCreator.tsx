@@ -61,7 +61,7 @@ const PlanCreator = () => {
     if (formData.useAIV2 && !isPremium) {
       toast({
         title: "Premium Feature",
-        description: "AI V2 is only available for premium users. Upgrade to access this feature.",
+        description: "Enhanced AI engine is only available for premium users. Upgrade to access this feature.",
         variant: "destructive"
       });
       return;

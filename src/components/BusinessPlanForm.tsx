@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,7 +24,6 @@ interface BusinessPlanFormProps {
   onUpgrade: () => void;
 }
 
-// Array of AI model action messages to randomize during generation
 const aiActionMessages = [
   "Analyzing market dynamics and competitive landscape...",
   "Crafting strategic frameworks for your business concept...",
@@ -101,10 +99,10 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
                   <div className="flex-1">
                     <h3 className="font-medium flex items-center">
                       <Zap className="mr-2 h-4 w-4 text-amber-500" />
-                      AI Engine Version
+                      Enhanced AI Engine
                     </h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Use our advanced AI V2 for more detailed and accurate business plans
+                      Unlock next-gen analysis with our premium AI engine
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -120,20 +118,20 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
                       </Button>
                     )}
                     <div className="flex items-center gap-2">
-                      <span className="text-sm">V1</span>
+                      <span className="text-sm">Standard</span>
                       <Switch
                         id="ai-version-switch"
                         checked={formData.useAIV2}
                         onCheckedChange={(checked) => onToggleChange('useAIV2', checked)}
                         disabled={!isPremium}
                       />
-                      <span className="text-sm font-medium">V2 {!isPremium && '🔒'}</span>
+                      <span className="text-sm font-medium">Premium {!isPremium && '🔒'}</span>
                     </div>
                   </div>
                 </div>
                 {!isPremium && (
                   <div className="mt-2 text-xs text-muted-foreground">
-                    AI V2 is a premium feature with enhanced analytics and more detailed business insights
+                    Premium AI delivers deeper insights and more strategic business recommendations
                   </div>
                 )}
               </div>
@@ -162,7 +160,6 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
         </CardContent>
       </Card>
 
-      {/* Interactive Loading Dialog */}
       <Dialog open={generating} onOpenChange={() => {}}>
         <DialogContent className="sm:max-w-md dialog-no-close-button">
           <div className="space-y-6 py-6">

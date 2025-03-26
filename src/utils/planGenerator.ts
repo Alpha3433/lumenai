@@ -1,4 +1,3 @@
-
 import { toast } from "@/components/ui/use-toast";
 import { generateSection } from "./planSections";
 import { 
@@ -28,10 +27,10 @@ export interface BusinessPlanData {
 }
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
-  const aiVersion = formData.useAIV2 ? 'v2' : 'v1';
+  const aiEngine = formData.useAIV2 ? 'Premium' : 'Standard';
   
   toast({
-    description: `Analyzing your business concept with AI ${aiVersion.toUpperCase()}...`,
+    description: `Analyzing your business concept with ${aiEngine} AI engine...`,
   });
   
   if (!formData.businessName || !formData.businessDescription) {
@@ -44,7 +43,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   }
   
   try {
-    console.log(`Generating business plan sections with OpenAI (${aiVersion})...`);
+    console.log(`Generating business plan sections with ${aiEngine} AI engine...`);
     
     // We'll generate sections sequentially to provide better context between sections
     const executiveSummary = await generateSection('executive summary', formData);

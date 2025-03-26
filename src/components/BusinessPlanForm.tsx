@@ -5,19 +5,24 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from '@/components/ui/label';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles, Zap } from 'lucide-react';
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import { Progress } from './ui/progress';
+import { Switch } from './ui/switch';
 
 interface BusinessPlanFormProps {
   formData: {
     businessName: string;
     businessDescription: string;
+    useAIV2: boolean;
   };
   generating: boolean;
   generatingProgress: number;
+  isPremium: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onToggleChange: (name: string, value: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
+  onUpgrade: () => void;
 }
 
 // Array of AI model action messages to randomize during generation
@@ -43,8 +48,11 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
   formData,
   generating,
   generatingProgress,
+  isPremium,
   onChange,
-  onSubmit
+  onToggleChange,
+  onSubmit,
+  onUpgrade
 }) => {
   return (
     <div className="space-y-8 animate-fade-in">
@@ -87,6 +95,48 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
                   className="mt-1 min-h-40"
                 />
               </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/10 rounded-xl p-4 border border-blue-100 dark:border-blue-800">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-medium flex items-center">
+                      <Zap className="mr-2 h-4 w-4 text-amber-500" />
+                      AI Engine Version
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Use our advanced AI V2 for more detailed and accurate business plans
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {!isPremium && (
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={onUpgrade}
+                        className="text-xs"
+                      >
+                        Upgrade
+                      </Button>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">V1</span>
+                      <Switch
+                        id="ai-version-switch"
+                        checked={formData.useAIV2}
+                        onCheckedChange={(checked) => onToggleChange('useAIV2', checked)}
+                        disabled={!isPremium}
+                      />
+                      <span className="text-sm font-medium">V2 {!isPremium && '🔒'}</span>
+                    </div>
+                  </div>
+                </div>
+                {!isPremium && (
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    AI V2 is a premium feature with enhanced analytics and more detailed business insights
+                  </div>
+                )}
+              </div>
             </div>
             
             <div className="mt-8 flex justify-end">
@@ -122,6 +172,12 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
               <p className="text-sm text-muted-foreground">
                 We're analyzing your business concept and generating a comprehensive plan...
               </p>
+              {formData.useAIV2 && (
+                <p className="text-xs text-amber-500 font-medium mt-1">
+                  <Zap className="inline-block h-3 w-3 mr-1" /> 
+                  Using enhanced AI V2 engine for superior results
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">

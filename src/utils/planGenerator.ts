@@ -14,6 +14,7 @@ import {
 export interface BusinessFormData {
   businessName: string;
   businessDescription: string;
+  useAIV2?: boolean;
 }
 
 export interface BusinessPlanData {
@@ -27,8 +28,10 @@ export interface BusinessPlanData {
 }
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
+  const aiVersion = formData.useAIV2 ? 'v2' : 'v1';
+  
   toast({
-    description: "Analyzing your business concept...",
+    description: `Analyzing your business concept with AI ${aiVersion.toUpperCase()}...`,
   });
   
   if (!formData.businessName || !formData.businessDescription) {
@@ -41,7 +44,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   }
   
   try {
-    console.log("Generating business plan sections with OpenAI...");
+    console.log(`Generating business plan sections with OpenAI (${aiVersion})...`);
     
     // We'll generate sections sequentially to provide better context between sections
     const executiveSummary = await generateSection('executive summary', formData);
@@ -82,7 +85,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     
     toast({
       title: "Success",
-      description: "Business plan generated with idea validation!",
+      description: `Business plan generated with ${formData.useAIV2 ? 'enhanced' : 'standard'} AI analysis!`,
     });
     return plan;
   } catch (error) {

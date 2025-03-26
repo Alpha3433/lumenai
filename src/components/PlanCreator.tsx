@@ -31,13 +31,18 @@ const PlanCreator = () => {
   const [generatingProgress, setGeneratingProgress] = useState(0);
   const [formData, setFormData] = useState({
     businessName: '',
-    businessDescription: ''
+    businessDescription: '',
+    useAIV2: false
   });
   const [businessPlan, setBusinessPlan] = useState<BusinessPlanData>(defaultBusinessPlan);
   const [isPremium, setIsPremium] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleToggleChange = (name: string, value: boolean) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -48,6 +53,15 @@ const PlanCreator = () => {
       toast({
         title: "Error",
         description: "Please fill out all fields before generating your plan",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (formData.useAIV2 && !isPremium) {
+      toast({
+        title: "Premium Feature",
+        description: "AI V2 is only available for premium users. Upgrade to access this feature.",
         variant: "destructive"
       });
       return;
@@ -89,7 +103,11 @@ const PlanCreator = () => {
     simulateProgress();
     
     try {
-      const plan = await generateBusinessPlan(formData);
+      const plan = await generateBusinessPlan({
+        businessName: formData.businessName,
+        businessDescription: formData.businessDescription,
+        useAIV2: formData.useAIV2
+      });
       setBusinessPlan(plan);
       setGeneratingProgress(100);
       
@@ -145,7 +163,10 @@ const PlanCreator = () => {
           generating={generating}
           generatingProgress={generatingProgress}
           onChange={handleInputChange}
+          onToggleChange={handleToggleChange}
           onSubmit={handleSubmit}
+          isPremium={isPremium}
+          onUpgrade={upgradeAccount}
         />
       ) : (
         <BusinessPlanPreview

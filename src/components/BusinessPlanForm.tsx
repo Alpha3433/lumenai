@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Sparkles } from 'lucide-react';
@@ -31,6 +31,39 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
   onSubmit,
   onUpgrade
 }) => {
+  const [errors, setErrors] = useState<{
+    businessName?: string;
+    businessDescription?: string;
+  }>({});
+
+  const validateForm = () => {
+    const newErrors: {
+      businessName?: string;
+      businessDescription?: string;
+    } = {};
+    
+    if (!formData.businessName.trim()) {
+      newErrors.businessName = 'Business name is required';
+    }
+    
+    if (!formData.businessDescription.trim()) {
+      newErrors.businessDescription = 'Business description is required';
+    } else if (formData.businessDescription.trim().length < 30) {
+      newErrors.businessDescription = 'Please provide a more detailed description (at least 30 characters)';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (validateForm()) {
+      onSubmit(e);
+    }
+  };
+
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="text-center max-w-2xl mx-auto">
@@ -45,9 +78,10 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
 
       <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden">
         <CardContent className="p-0">
-          <form onSubmit={onSubmit} className="p-6 md:p-8">
+          <form onSubmit={handleSubmit} className="p-6 md:p-8">
             <BusinessPlanFormFields 
               formData={formData}
+              errors={errors}
               isPremium={isPremium}
               onChange={onChange}
               onToggleChange={onToggleChange}

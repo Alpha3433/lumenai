@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FlowChart, LineChart, PieChart } from 'lucide-react';
+import { GitBranch, LineChart, PieChart } from 'lucide-react';
 
 const RoadmapSection = () => {
   return (
@@ -25,7 +25,7 @@ const RoadmapSection = () => {
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-md">
-                  <FlowChart className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  <GitBranch className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-1">Strategic Planning</h3>

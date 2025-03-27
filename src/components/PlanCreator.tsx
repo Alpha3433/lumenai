@@ -30,34 +30,11 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     setStep
   } = usePlanCreator(initialData);
 
-  const [showUpgradeBanner, setShowUpgradeBanner] = useState(false);
-
-  // Show the upgrade banner when the business plan is generated and user is not premium
-  useEffect(() => {
-    if (step === 2 && !isPremium) {
-      // Slight delay for better UX
-      const timer = setTimeout(() => {
-        setShowUpgradeBanner(true);
-      }, 1000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [step, isPremium]);
-
-  const handleCloseBanner = () => {
-    setShowUpgradeBanner(false);
-  };
-
   return (
     <div className={`container ${step === 2 ? 'max-w-full' : 'max-w-5xl'} mx-auto py-8 px-4`}>
-      <AnimatePresence>
-        {showUpgradeBanner && !isPremium && step === 2 && (
-          <UpgradeNotificationBanner 
-            onUpgrade={upgradeAccount} 
-            onClose={handleCloseBanner} 
-          />
-        )}
-      </AnimatePresence>
+      {step === 2 && !isPremium && (
+        <UpgradeNotificationBanner onUpgrade={upgradeAccount} />
+      )}
       
       {step === 1 ? (
         <BusinessPlanForm

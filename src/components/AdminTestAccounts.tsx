@@ -5,13 +5,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { subscriptionService } from '@/utils/subscriptionService';
+import { subscriptionService, SubscriptionPlan } from '@/utils/subscriptionService';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminTestAccounts = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [plan, setPlan] = useState('entrepreneur');
+  const [plan, setPlan] = useState<SubscriptionPlan>('entrepreneur');
   const [loading, setLoading] = useState(false);
 
   const handleCreateAdmin = async (e: React.FormEvent) => {
@@ -19,15 +20,32 @@ const AdminTestAccounts = () => {
     setLoading(true);
 
     try {
-      const { user, error } = await subscriptionService.createTestAdmin(email, password);
+      // First create the user account with Entrepreneur plan
+      const { user, error: userError } = await subscriptionService.createTestAdmin(email, password);
       
-      if (error) {
-        toast.error('Failed to create test account: ' + error.message);
-      } else {
-        toast.success('Test account created successfully!');
-        setEmail('');
-        setPassword('');
+      if (userError) {
+        toast.error('Failed to create test account: ' + userError.message);
+        setLoading(false);
+        return;
       }
+      
+      // If the selected plan is different from entrepreneur, update it
+      if (plan !== 'entrepreneur' && user) {
+        const { error: updateError } = await supabase
+          .from('user_subscriptions')
+          .update({ plan })
+          .eq('user_id', user.id);
+          
+        if (updateError) {
+          toast.error('Created user but failed to set plan: ' + updateError.message);
+          setLoading(false);
+          return;
+        }
+      }
+      
+      toast.success('Test account created successfully!');
+      setEmail('');
+      setPassword('');
     } catch (error) {
       toast.error('An unexpected error occurred');
       console.error(error);
@@ -68,7 +86,7 @@ const AdminTestAccounts = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="plan">Subscription Plan</Label>
-            <Select defaultValue="entrepreneur" onValueChange={setPlan}>
+            <Select value={plan} onValueChange={(value: SubscriptionPlan) => setPlan(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select plan" />
               </SelectTrigger>

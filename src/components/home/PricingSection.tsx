@@ -22,7 +22,7 @@ const PricingSection = () => {
         { text: "3 Competitor Insights", available: true },
         { text: "Advanced Market Analysis", available: false },
         { text: "AI-Powered Next-Gen Business Validation Tool", available: false },
-        { text: "10 Detailed Competitor Insights", available: false },
+        { text: "5 Detailed Competitor Insights", available: false },
         { text: "Marketing Strategy Recommendations", available: false },
         { text: "Priority Support", available: false }
       ],
@@ -31,7 +31,7 @@ const PricingSection = () => {
       isPopular: false
     },
     {
-      name: "Business",
+      name: "Entrepreneur",
       description: "Ideal for growing companies",
       price: "$29",
       period: "/mo",
@@ -40,7 +40,7 @@ const PricingSection = () => {
         { text: "Unlimited Idea Creation Plans", available: true },
         { text: "Advanced Market Analysis", available: true },
         { text: "AI-Powered Next-Gen Business Validation Tool", available: true },
-        { text: "10 Detailed Competitor Insights", available: true },
+        { text: "5 Detailed Competitor Insights", available: true },
         { text: "Marketing Strategy Recommendations", available: true },
         { text: "Priority Support", available: true }
       ],
@@ -49,17 +49,19 @@ const PricingSection = () => {
       isPopular: true
     },
     {
-      name: "Entrepreneur",
+      name: "Strategist",
       description: "For established organizations",
       price: "$79",
       period: "/mo",
       features: [
         { text: "Unlimited Business Plans", available: true },
         { text: "Unlimited Idea Creation Plans", available: true },
-        { text: "Real-time Market Intelligence", available: true },
+        { text: "Integrated AI Marketing Tool", available: true },
         { text: "Advanced Next-Gen Business Validation Tool", available: true },
         { text: "Unlimited Competitor Analysis", available: true },
-        { text: "Custom Marketing Strategies", available: true }
+        { text: "Custom Marketing Strategies", available: true },
+        { text: "Priority Support", available: true },
+        { text: "1-on-1 Marketing Consulting", available: true }
       ],
       buttonText: "Get Started",
       buttonLink: "/register",

@@ -9,6 +9,7 @@ import TransformSection from '@/components/home/TransformSection';
 import RoadmapSection from '@/components/home/RoadmapSection';
 import MobileShowcase from '@/components/home/MobileShowcase';
 import BuildProductsSection from '@/components/home/BuildProductsSection';
+import PricingSection from '@/components/home/PricingSection';
 import FAQAccordion from '@/components/home/FAQAccordion';
 
 const Index = () => {
@@ -22,6 +23,7 @@ const Index = () => {
       <RoadmapSection />
       <MobileShowcase />
       <BuildProductsSection />
+      <PricingSection />
       <FAQAccordion />
       <Footer />
     </div>

@@ -83,6 +83,12 @@ const Navbar = () => {
               {isActive('/examples') && <motion.div layoutId="navIndicator" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 rounded" />}
             </Link>
             <a 
+              href="#pricing" 
+              className="text-sm font-medium hover:text-blue-600 transition-colors"
+            >
+              Pricing
+            </a>
+            <a 
               href="#faq" 
               className="text-sm font-medium hover:text-blue-600 transition-colors"
             >
@@ -143,6 +149,13 @@ const Navbar = () => {
             >
               Examples
             </Link>
+            <a 
+              href="#pricing" 
+              className="text-sm font-medium p-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Pricing
+            </a>
             <a 
               href="#faq" 
               className="text-sm font-medium p-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"

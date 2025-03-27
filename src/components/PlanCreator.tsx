@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import BusinessPlanForm from './BusinessPlanForm';
@@ -44,7 +43,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
   const [businessPlan, setBusinessPlan] = useState<BusinessPlanData>(defaultBusinessPlan);
   const [isPremium, setIsPremium] = useState(false);
 
-  // Set initial data if provided
   useEffect(() => {
     if (initialData?.businessName || initialData?.businessDescription) {
       setFormData(prev => ({
@@ -53,7 +51,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
         businessDescription: initialData.businessDescription || prev.businessDescription
       }));
       
-      // Show toast notification when data is pre-filled
       toast({
         title: "Business Idea Loaded",
         description: "We've pre-filled your form with the generated business idea."
@@ -94,13 +91,12 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     setGenerating(true);
     setGeneratingProgress(0);
     
-    // Simulate more realistic and interactive progress
     const progressSteps = [
-      { target: 15, time: 1000 }, // Market analysis starts
-      { target: 35, time: 2000 }, // Business model analysis
-      { target: 60, time: 2500 }, // Financial projections
-      { target: 85, time: 2000 }, // Risk assessment
-      { target: 95, time: 1500 }, // Final touches
+      { target: 15, time: 1000 },
+      { target: 35, time: 2000 },
+      { target: 60, time: 2500 },
+      { target: 85, time: 2000 },
+      { target: 95, time: 1500 },
     ];
     
     let currentStep = 0;
@@ -115,7 +111,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
             if (next >= target) {
               clearInterval(stepInterval);
               currentStep++;
-              setTimeout(simulateProgress, 300); // Slight pause between major steps
+              setTimeout(simulateProgress, 300);
               return target;
             }
             return next;
@@ -135,7 +131,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
       setBusinessPlan(plan);
       setGeneratingProgress(100);
       
-      // Small delay to show 100% completion before showing the results
       setTimeout(() => {
         setStep(2);
       }, 800);
@@ -154,7 +149,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
   };
 
   const downloadPlan = () => {
-    // This would handle downloading the plan as PDF
     toast({
       title: "Success",
       description: "Your business plan is being prepared for download!",
@@ -180,7 +174,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
   };
 
   return (
-    <div className="container max-w-5xl mx-auto py-12 px-4">
+    <div className="container max-w-5xl mx-auto py-8 px-4">
       {step === 1 ? (
         <BusinessPlanForm
           formData={formData}

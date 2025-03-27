@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, Info } from 'lucide-react';
+import { Check, X, Info } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -12,16 +12,21 @@ const PricingSection = () => {
     {
       name: "Startup",
       description: "Perfect for indie entrepreneurs",
-      originalPrice: "Free",
       price: "Free",
       period: "",
       features: [
-        "2 Business Plan Reports",
-        "Basic Market Analysis",
-        "Standard AI Business Validation",
-        "3 Competitor Insights",
-        "Basic SWOT Analysis",
-        "Email Support"
+        { text: "1 Business Plan Report", available: true },
+        { text: "Unlimited Idea Creation Plans", available: true },
+        { text: "Basic Market Analysis", available: true },
+        { text: "Standard AI Business Validation", available: true },
+        { text: "3 Competitor Insights", available: true },
+        { text: "Basic SWOT Analysis", available: true },
+        { text: "Advanced Market Analysis", available: false },
+        { text: "AI-Powered Business Validation", available: false },
+        { text: "10 Detailed Competitor Insights", available: false },
+        { text: "Marketing Strategy Recommendations", available: false },
+        { text: "Financial Projections", available: false },
+        { text: "Priority Support", available: false }
       ],
       buttonText: "Try for Free",
       buttonLink: "/register",
@@ -30,39 +35,37 @@ const PricingSection = () => {
     {
       name: "Business",
       description: "Ideal for growing companies",
-      originalPrice: "$49",
       price: "$29",
       period: "/mo",
       features: [
-        "Unlimited Business Plans",
-        "Advanced Market Analysis",
-        "AI-Powered Business Validation",
-        "10 Detailed Competitor Insights",
-        "Advanced SWOT Analysis",
-        "Marketing Strategy Recommendations",
-        "Financial Projections",
-        "Priority Support"
+        { text: "Unlimited Business Plans", available: true },
+        { text: "Unlimited Idea Creation Plans", available: true },
+        { text: "Advanced Market Analysis", available: true },
+        { text: "AI-Powered Business Validation", available: true },
+        { text: "10 Detailed Competitor Insights", available: true },
+        { text: "Advanced SWOT Analysis", available: true },
+        { text: "Marketing Strategy Recommendations", available: true },
+        { text: "Financial Projections", available: true },
+        { text: "Priority Support", available: true }
       ],
       buttonText: "Get Started",
       buttonLink: "/register",
       isPopular: true
     },
     {
-      name: "Enterprise",
+      name: "Entrepreneur",
       description: "For established organizations",
-      originalPrice: "$99",
       price: "$79",
       period: "/mo",
       features: [
-        "Unlimited Business Plans",
-        "Real-time Market Intelligence",
-        "Advanced AI Business Validation",
-        "Unlimited Competitor Analysis",
-        "Executive SWOT Analysis Dashboard",
-        "Custom Marketing Strategies",
-        "5-Year Financial Projections",
-        "Dedicated Account Manager",
-        "API Access"
+        { text: "Unlimited Business Plans", available: true },
+        { text: "Unlimited Idea Creation Plans", available: true },
+        { text: "Real-time Market Intelligence", available: true },
+        { text: "Advanced AI Business Validation", available: true },
+        { text: "Unlimited Competitor Analysis", available: true },
+        { text: "Executive SWOT Analysis Dashboard", available: true },
+        { text: "Custom Marketing Strategies", available: true },
+        { text: "5-Year Financial Projections", available: true }
       ],
       buttonText: "Get Started",
       buttonLink: "/register",
@@ -70,10 +73,16 @@ const PricingSection = () => {
     }
   ];
 
-  const FeatureItem = ({ feature }: { feature: string }) => (
+  const FeatureItem = ({ feature, available }: { feature: string, available: boolean }) => (
     <div className="flex items-start space-x-2">
-      <Check className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
-      <span className="text-sm text-gray-600 dark:text-gray-300">{feature}</span>
+      {available ? (
+        <Check className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+      ) : (
+        <X className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
+      )}
+      <span className={`text-sm ${available ? 'text-gray-600 dark:text-gray-300' : 'text-gray-400 dark:text-gray-500'}`}>
+        {feature}
+      </span>
     </div>
   );
 
@@ -113,9 +122,6 @@ const PricingSection = () => {
                   <p className="text-gray-500 dark:text-gray-400 mt-1">{plan.description}</p>
                 </CardHeader>
                 <CardContent className="text-center pt-6 flex-grow">
-                  {plan.originalPrice !== "Free" && plan.originalPrice !== plan.price && (
-                    <span className="text-gray-400 line-through block text-lg">{plan.originalPrice}</span>
-                  )}
                   <div className="flex items-center justify-center">
                     <span className="text-4xl font-bold">{plan.price}</span>
                     {plan.period && <span className="text-gray-500 ml-1">{plan.period}</span>}
@@ -123,7 +129,7 @@ const PricingSection = () => {
                   
                   <div className="mt-8 space-y-4 text-left">
                     {plan.features.map((feature, idx) => (
-                      <FeatureItem key={idx} feature={feature} />
+                      <FeatureItem key={idx} feature={feature.text} available={feature.available} />
                     ))}
                   </div>
                 </CardContent>

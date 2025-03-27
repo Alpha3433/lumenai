@@ -2,7 +2,8 @@
 import React from 'react';
 import { Globe } from 'lucide-react';
 import { PestelData } from '@/utils/pestelUtils';
-import PestelAnalysisCard from './PestelAnalysisCard';
+import PestelAnalysisCategoryGrid from './PestelAnalysisCategoryGrid';
+import PestelSectionHeader from './PestelSectionHeader';
 
 interface PestelAnalysisSectionProps {
   pestelData: PestelData;
@@ -11,25 +12,8 @@ interface PestelAnalysisSectionProps {
 const PestelAnalysisSection: React.FC<PestelAnalysisSectionProps> = ({ pestelData }) => {
   return (
     <section className="mb-12 animate-fade-in space-y-6">
-      <div className="flex flex-col items-center mb-6 relative">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <Globe className="h-6 w-6 text-blue-500" />
-          PESTEL Analysis
-        </h2>
-        <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full absolute right-0 top-1">
-          Macro-environmental factors
-        </div>
-      </div>
-
-      {/* PESTEL Grid - 2x3 layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <PestelAnalysisCard category="political" points={pestelData.political} />
-        <PestelAnalysisCard category="economic" points={pestelData.economic} />
-        <PestelAnalysisCard category="social" points={pestelData.social} />
-        <PestelAnalysisCard category="technological" points={pestelData.technological} />
-        <PestelAnalysisCard category="environmental" points={pestelData.environmental} />
-        <PestelAnalysisCard category="legal" points={pestelData.legal} />
-      </div>
+      <PestelSectionHeader />
+      <PestelAnalysisCategoryGrid pestelData={pestelData} />
     </section>
   );
 };

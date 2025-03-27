@@ -1,6 +1,5 @@
 
 import React from 'react';
-import Navbar from '@/components/Navbar';
 import PlanCreator from '@/components/PlanCreator';
 import Footer from '@/components/Footer';
 import { useLocation } from 'react-router-dom';
@@ -14,8 +13,7 @@ const Create = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="pt-20">
+      <div className="pt-4">
         <div className="container max-w-5xl mx-auto px-4 py-8">
           {!businessIdeaData && (
             <div className="mb-8 bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg border border-blue-100 dark:border-blue-800 flex items-center justify-between">

@@ -43,7 +43,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
   return (
     <section className="mb-10 animate-fade-in">
       <h2 className="text-3xl font-bold mb-6 text-center text-amber-600">
-        Overall
+        Summary
       </h2>
       
       {/* Overall Validation Score Summary */}

@@ -17,9 +17,9 @@ import {
   Globe, 
   Scale, 
   Activity, 
-  ShieldCheck 
+  ShieldCheck,
+  Layers
 } from 'lucide-react';
-import { Button } from './ui/button';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -51,13 +51,13 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   businessDescription = ''
 }) => {
   const sections = [
-    { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-4 w-4" /> },
-    { id: 'dashboard', title: 'Dashboard', icon: <PieChart className="h-4 w-4" /> },
-    { id: 'swot-analysis', title: 'SWOT Analysis', icon: <CheckCircle className="h-4 w-4" /> },
-    { id: 'pestel-analysis', title: 'PESTEL Analysis', icon: <Globe className="h-4 w-4" /> },
-    { id: 'porter-five-forces', title: "Porter's Five Forces", icon: <Scale className="h-4 w-4" /> },
-    { id: 'marketing-plan', title: 'Marketing Plan', icon: <Activity className="h-4 w-4" /> },
-    { id: 'business-models', title: 'Business Models', icon: <ShieldCheck className="h-4 w-4" /> },
+    { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-5 w-5" /> },
+    { id: 'dashboard', title: 'Summary', icon: <PieChart className="h-5 w-5" /> },
+    { id: 'swot-analysis', title: 'SWOT Analysis', icon: <CheckCircle className="h-5 w-5" /> },
+    { id: 'pestel-analysis', title: 'PESTEL Analysis', icon: <Globe className="h-5 w-5" /> },
+    { id: 'porter-five-forces', title: "Porter's Five Forces", icon: <Scale className="h-5 w-5" /> },
+    { id: 'marketing-plan', title: 'Marketing Plan', icon: <Activity className="h-5 w-5" /> },
+    { id: 'business-models', title: 'Business Models', icon: <ShieldCheck className="h-5 w-5" /> },
   ];
 
   const scrollToSection = (id: string) => {
@@ -68,7 +68,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   };
 
   return (
-    <div className="space-y-10 animate-fade-in">
+    <div className="space-y-10 animate-fade-in pb-20">
       <BusinessPlanActionBar 
         businessName={businessName}
         onStartOver={onStartOver}
@@ -76,27 +76,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
       />
       
       <div className="max-w-6xl mx-auto px-4">
-        {/* Business Plan Navigation */}
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md mb-8 sticky top-4 z-10">
-          <div className="p-4">
-            <h3 className="font-medium text-md mb-4 text-center">Business Plan</h3>
-            <div className="flex flex-wrap justify-center gap-2">
-              {sections.map((section) => (
-                <Button
-                  key={section.id}
-                  onClick={() => scrollToSection(section.id)}
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-2"
-                >
-                  {section.icon}
-                  <span>{section.title}</span>
-                </Button>
-              ))}
-            </div>
-          </div>
-        </div>
-        
         {/* Main Content */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent -z-10 rounded-3xl blur-xl opacity-50"></div>
@@ -168,6 +147,28 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
             </CardContent>
           </Card>
+        </div>
+      </div>
+
+      {/* Fixed Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-lg z-50 border-t border-gray-200 dark:border-gray-800 backdrop-blur-md bg-white/90 dark:bg-gray-900/90">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between py-2 overflow-x-auto custom-scrollbar">
+            <div className="flex space-x-1 md:space-x-3">
+              {sections.map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className="flex flex-col items-center justify-center px-3 py-2 text-xs md:text-sm rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
+                  <div className="bg-primary/10 dark:bg-primary/20 rounded-full p-1.5 mb-1">
+                    {section.icon}
+                  </div>
+                  <span className="whitespace-nowrap">{section.title}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

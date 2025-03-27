@@ -20,6 +20,12 @@ export const usePestelData = (analysisText: string): PestelData => {
             .replace(/^[A-Z\s]+:\s*/g, '')
             .replace(/^\d+\.\s*/, '')
             .replace(/\*\*/g, '')
+            .replace(/POLITICAL FACTORS?:?\s*/i, '')
+            .replace(/ECONOMIC FACTORS?:?\s*/i, '')
+            .replace(/SOCIAL FACTORS?:?\s*/i, '')
+            .replace(/TECHNOLOGICAL FACTORS?:?\s*/i, '')
+            .replace(/ENVIRONMENTAL FACTORS?:?\s*/i, '')
+            .replace(/LEGAL FACTORS?:?\s*/i, '')
             .trim()
         )
         // Remove any empty points

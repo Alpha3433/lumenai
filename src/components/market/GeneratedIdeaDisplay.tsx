@@ -34,7 +34,7 @@ const GeneratedIdeaDisplay: React.FC<GeneratedIdeaDisplayProps> = ({
         
         <h4 className="font-medium text-sm text-gray-500 dark:text-gray-400 mb-2">Why This Could Work</h4>
         <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
-          {generatedIdea.whyItWorks.map((reason, index) => (
+          {generatedIdea.whyItWorks.slice(0, 2).map((reason, index) => (
             <li key={index}>{reason}</li>
           ))}
         </ul>

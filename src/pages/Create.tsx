@@ -23,7 +23,7 @@ const Create = () => {
                   <img src="/lovable-uploads/b7d15e1c-3772-4da7-9d7f-5ad9b562db15.png" alt="Limited plan" width="180" height="36" />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Upgrade to get the full business plan.
+                  Need a business idea? Generate innovative business ideas based on your interests or current trends
                 </p>
               </div>
               <button 

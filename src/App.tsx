@@ -17,6 +17,7 @@ import Dashboard from "./pages/Dashboard";
 import MarketTrends from "./pages/MarketTrends";
 import AuthProvider from "./components/AuthProvider";
 import ScrollProgressBar from "./components/ScrollProgressBar";
+import AdminTest from "./pages/AdminTest";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/market-trends" element={<MarketTrends />} />
+                <Route path="/admin-test" element={<AdminTest />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

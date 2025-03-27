@@ -8,9 +8,31 @@ interface UserProfileSectionProps {
 }
 
 const UserProfileSection: React.FC<UserProfileSectionProps> = ({ onClose }) => {
-  const { user } = useAuth();
+  const { user, subscriptionPlan } = useAuth();
 
   if (!user) return null;
+
+  const getPlanDisplay = () => {
+    switch (subscriptionPlan) {
+      case 'entrepreneur':
+        return {
+          text: 'Entrepreneur Plan',
+          bgClass: 'bg-green-50 text-green-700 border-green-100 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800'
+        };
+      case 'strategist':
+        return {
+          text: 'Strategist Plan',
+          bgClass: 'bg-purple-50 text-purple-700 border-purple-100 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800'
+        };
+      default:
+        return {
+          text: 'Free Plan',
+          bgClass: 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800'
+        };
+    }
+  };
+
+  const planDisplay = getPlanDisplay();
 
   return (
     <div className="flex items-center gap-3 p-2 mb-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
@@ -20,8 +42,8 @@ const UserProfileSection: React.FC<UserProfileSectionProps> = ({ onClose }) => {
       <div>
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">{user.email?.split('@')[0]}</span>
-          <Badge variant="outline" className="px-2 py-0 text-[10px] bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
-            Free Plan
+          <Badge variant="outline" className={`px-2 py-0 text-[10px] ${planDisplay.bgClass}`}>
+            {planDisplay.text}
           </Badge>
         </div>
       </div>

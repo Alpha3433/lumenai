@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 
 const UserAuthSection: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, subscriptionPlan } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -18,13 +18,44 @@ const UserAuthSection: React.FC = () => {
     }
   };
 
+  const getPlanDisplay = () => {
+    switch (subscriptionPlan) {
+      case 'entrepreneur':
+        return {
+          text: 'Entrepreneur Plan',
+          bgClass: 'bg-green-50 dark:bg-green-900/30',
+          borderClass: 'border-green-100 dark:border-green-800',
+          textClass: 'text-green-700 dark:text-green-300',
+          dotClass: 'text-green-500'
+        };
+      case 'strategist':
+        return {
+          text: 'Strategist Plan',
+          bgClass: 'bg-purple-50 dark:bg-purple-900/30',
+          borderClass: 'border-purple-100 dark:border-purple-800',
+          textClass: 'text-purple-700 dark:text-purple-300',
+          dotClass: 'text-purple-500'
+        };
+      default:
+        return {
+          text: 'Free Plan',
+          bgClass: 'bg-blue-50 dark:bg-blue-900/30',
+          borderClass: 'border-blue-100 dark:border-blue-800',
+          textClass: 'text-blue-700 dark:text-blue-300',
+          dotClass: 'text-blue-500'
+        };
+    }
+  };
+
+  const planDisplay = getPlanDisplay();
+
   return (
     <div className="hidden md:flex items-center space-x-4">
       {user ? (
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full border border-blue-100 dark:border-blue-800">
-            <CircleDot className="h-3 w-3 text-blue-500" />
-            <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Free Plan</span>
+          <div className={`flex items-center gap-2 ${planDisplay.bgClass} px-3 py-1 rounded-full border ${planDisplay.borderClass}`}>
+            <CircleDot className={`h-3 w-3 ${planDisplay.dotClass}`} />
+            <span className={`text-xs font-medium ${planDisplay.textClass}`}>{planDisplay.text}</span>
           </div>
           <div className="relative">
             <button 

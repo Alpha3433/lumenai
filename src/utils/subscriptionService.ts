@@ -1,0 +1,59 @@
+
+import { supabase } from '@/integrations/supabase/client';
+
+export type SubscriptionPlan = 'free' | 'entrepreneur' | 'strategist';
+
+export interface UserSubscription {
+  id?: string;
+  user_id: string;
+  plan: SubscriptionPlan;
+  is_active: boolean;
+  created_at?: string;
+  expires_at?: string | null;
+}
+
+export const subscriptionService = {
+  async getUserPlan(userId: string): Promise<SubscriptionPlan> {
+    if (!userId) return 'free';
+    
+    const { data, error } = await supabase
+      .from('user_subscriptions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+    
+    if (error || !data) {
+      console.log('Error fetching subscription or no subscription found:', error);
+      return 'free';
+    }
+    
+    return data.plan as SubscriptionPlan;
+  },
+  
+  async createTestAdmin(email: string, password: string): Promise<{ user: any, error: any }> {
+    // Create a user account
+    const { data: { user }, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    
+    if (error || !user) {
+      return { user: null, error };
+    }
+    
+    // Give them entrepreneur plan for testing
+    const { error: subscriptionError } = await supabase
+      .from('user_subscriptions')
+      .insert({
+        user_id: user.id,
+        plan: 'entrepreneur',
+        is_active: true,
+        expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days from now
+      });
+    
+    return { user, error: subscriptionError };
+  }
+};

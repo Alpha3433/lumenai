@@ -50,13 +50,13 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   businessDescription = ''
 }) => {
   const sections = [
-    { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-5 w-5" /> },
-    { id: 'dashboard', title: 'Summary', icon: <PieChart className="h-5 w-5" /> },
-    { id: 'swot-analysis', title: 'SWOT Analysis', icon: <CheckCircle className="h-5 w-5" /> },
-    { id: 'pestel-analysis', title: 'PESTEL Analysis', icon: <Globe className="h-5 w-5" /> },
-    { id: 'porter-five-forces', title: "Porter's Five Forces", icon: <Scale className="h-5 w-5" /> },
-    { id: 'marketing-plan', title: 'Marketing Plan', icon: <Activity className="h-5 w-5" /> },
-    { id: 'business-models', title: 'Business Models', icon: <ShieldCheck className="h-5 w-5" /> },
+    { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-4 w-4" /> },
+    { id: 'dashboard', title: 'Summary', icon: <PieChart className="h-4 w-4" /> },
+    { id: 'swot-analysis', title: 'SWOT', icon: <CheckCircle className="h-4 w-4" /> },
+    { id: 'pestel-analysis', title: 'PESTEL', icon: <Globe className="h-4 w-4" /> },
+    { id: 'porter-five-forces', title: "Porter's", icon: <Scale className="h-4 w-4" /> },
+    { id: 'marketing-plan', title: 'Marketing', icon: <Activity className="h-4 w-4" /> },
+    { id: 'business-models', title: 'Models', icon: <ShieldCheck className="h-4 w-4" /> },
   ];
 
   const scrollToSection = (id: string) => {
@@ -149,24 +149,24 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
         </div>
       </div>
 
-      {/* Floating Bottom Navigation */}
+      {/* Floating Bottom Navigator - Sleek & Minimalistic Redesign */}
       <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
-        <div className="max-w-3xl w-11/12 mx-auto pointer-events-auto">
-          <div className="bg-white dark:bg-gray-900 rounded-full shadow-lg border border-gray-200 dark:border-gray-800 backdrop-blur-md bg-white/90 dark:bg-gray-900/90 py-1.5 px-2 animate-fade-in hover:shadow-xl transition-all">
-            <div className="flex items-center justify-between overflow-x-auto custom-scrollbar no-scrollbar gap-1">
-              {sections.map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => scrollToSection(section.id)}
-                  className="flex flex-col items-center justify-center px-2 md:px-3 py-2 text-xs rounded-full transition-all hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105"
-                >
-                  <div className="bg-primary/10 dark:bg-primary/20 rounded-full p-1.5 mb-1 transition-transform group-hover:scale-110">
-                    {section.icon}
-                  </div>
-                  <span className="whitespace-nowrap text-[10px] md:text-xs">{section.title}</span>
-                </button>
-              ))}
-            </div>
+        <div className="pointer-events-auto">
+          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full shadow-xl border border-gray-200/50 dark:border-gray-800/50 flex items-center gap-1 py-1 px-2">
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => scrollToSection(section.id)}
+                className="flex flex-col items-center justify-center px-3 py-2 rounded-full transition-all hover:bg-gray-100/70 dark:hover:bg-gray-800/50"
+              >
+                <div className="bg-primary/5 dark:bg-primary/10 rounded-full p-2 mb-1 text-primary">
+                  {section.icon}
+                </div>
+                <span className="text-[10px] font-medium text-gray-700 dark:text-gray-300">
+                  {section.title}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
       </div>

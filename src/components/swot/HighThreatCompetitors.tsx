@@ -14,6 +14,11 @@ interface HighThreatCompetitorsProps {
 const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAnalysis }) => {
   const { competitorsWithModels, isLoading } = useCompetitorData(marketAnalysis);
 
+  // Don't show the component if no competitors found
+  if (!isLoading && competitorsWithModels.length === 0) {
+    return null;
+  }
+
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -42,7 +47,7 @@ const HighThreatCompetitors: React.FC<HighThreatCompetitorsProps> = ({ marketAna
       viewport={{ once: true }}
       variants={containerVariants}
     >
-      <Card className="mt-8 border-t border-b border-gray-200 dark:border-gray-800 shadow-lg overflow-hidden">
+      <Card className="mt-8 border-t border-gray-200 dark:border-gray-800 shadow-lg overflow-hidden">
         <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col items-center bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20">
           <h3 className="text-2xl font-bold flex items-center justify-center gap-2 text-black dark:text-white">
             <div className="p-1.5 bg-red-100 dark:bg-red-900/30 rounded-full">

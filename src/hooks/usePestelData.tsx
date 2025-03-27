@@ -5,6 +5,7 @@ import { extractPestelData, PestelData } from '@/utils/pestel';
 export const usePestelData = (analysisText: string): PestelData => {
   // Extract PESTEL data from analysis text and clean up formatting
   const pestelData = useMemo(() => {
+    console.log("Processing PESTEL data from analysis text");
     const data = extractPestelData(analysisText);
     
     // Process each category

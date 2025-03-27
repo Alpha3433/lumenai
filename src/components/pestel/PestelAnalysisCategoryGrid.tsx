@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { PestelData } from '@/utils/pestelUtils';
+import { PestelData } from '@/utils/pestel';
 import PestelAnalysisCard from './PestelAnalysisCard';
 
 interface PestelAnalysisCategoryGridProps {

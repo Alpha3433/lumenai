@@ -1,6 +1,6 @@
 
 import { useMemo } from 'react';
-import { extractPestelData, PestelData } from '@/utils/pestelUtils';
+import { extractPestelData, PestelData } from '@/utils/pestel';
 
 export const usePestelData = (analysisText: string): PestelData => {
   // Extract PESTEL data from analysis text and limit to 4 points per category

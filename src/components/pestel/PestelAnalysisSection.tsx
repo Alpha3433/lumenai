@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Globe } from 'lucide-react';
-import { PestelData } from '@/utils/pestelUtils';
+import { PestelData } from '@/utils/pestel';
 import PestelAnalysisCategoryGrid from './PestelAnalysisCategoryGrid';
 import PestelSectionHeader from './PestelSectionHeader';
 

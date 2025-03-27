@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Building, DollarSign, Users, Cpu, Leaf, Scale } from 'lucide-react';
-import { PestelFactor } from '@/utils/pestelUtils';
+import { PestelFactor } from '@/utils/pestel';
 
 interface PestelAnalysisCardProps {
   category: PestelFactor['category'];

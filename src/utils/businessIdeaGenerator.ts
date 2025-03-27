@@ -131,4 +131,6 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
 }
 
 // Re-export the necessary types from the businessIdeas directory
-export { BusinessIdeaPreferences, BusinessIdeaSuggestion };
+// Fix: Use 'export type' for type-only exports
+export type { BusinessIdeaPreferences, BusinessIdeaSuggestion };
+

@@ -16,7 +16,7 @@ const UpgradeNotificationBanner: React.FC<UpgradeNotificationBannerProps> = ({
       initial={{ y: -10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -10, opacity: 0 }}
-      className="sticky top-20 z-40 w-full max-w-3xl mx-auto mb-4"
+      className="sticky top-20 z-40 w-full max-w-5xl mx-auto mb-4"
     >
       <div className="relative">
         <motion.div

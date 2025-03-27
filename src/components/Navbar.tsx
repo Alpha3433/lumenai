@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, TrendingUp, Sparkles, Crown, User } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, TrendingUp, Sparkles, Crown, User, CircleDot } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/components/AuthProvider';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -12,7 +12,8 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +36,15 @@ const Navbar = () => {
   const menuVariants = {
     closed: { opacity: 0, height: 0 },
     open: { opacity: 1, height: 'auto' }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (
@@ -103,15 +113,18 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 py-1 px-3 rounded-full border border-gray-200 dark:border-gray-700">
-                  <Crown className="h-3.5 w-3.5 text-amber-500" />
-                  <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Free plan</span>
+                <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full border border-blue-100 dark:border-blue-800">
+                  <CircleDot className="h-3 w-3 text-blue-500" />
+                  <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Free Plan</span>
                 </div>
-                <Avatar className="h-8 w-8 border-2 border-white dark:border-gray-800">
-                  <AvatarFallback className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                    <User className="h-4 w-4" />
-                  </AvatarFallback>
-                </Avatar>
+                <div className="relative">
+                  <button 
+                    onClick={handleSignOut}
+                    className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    {user.email?.substring(0, 2).toUpperCase() || 'JD'}
+                  </button>
+                </div>
               </div>
             ) : (
               <>
@@ -150,16 +163,14 @@ const Navbar = () => {
           <div className="flex flex-col space-y-4 px-4 py-6">
             {user && (
               <div className="flex items-center gap-3 p-2 mb-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                <Avatar className="h-8 w-8 border-2 border-white dark:border-gray-800">
-                  <AvatarFallback className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                    <User className="h-4 w-4" />
-                  </AvatarFallback>
-                </Avatar>
+                <div className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300">
+                  {user.email?.substring(0, 2).toUpperCase() || 'JD'}
+                </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium">{user.email?.split('@')[0]}</span>
-                    <Badge variant="outline" className="px-2 py-0 text-[10px] bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800/50">
-                      Free plan
+                    <Badge variant="outline" className="px-2 py-0 text-[10px] bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
+                      Free Plan
                     </Badge>
                   </div>
                 </div>
@@ -215,7 +226,7 @@ const Navbar = () => {
                   </Link>
                 </>
               ) : (
-                <Button variant="outline" className="border-gray-300 dark:border-gray-700 w-full rounded-md">
+                <Button variant="outline" className="border-gray-300 dark:border-gray-700 w-full rounded-md" onClick={handleSignOut}>
                   Sign Out
                 </Button>
               )}

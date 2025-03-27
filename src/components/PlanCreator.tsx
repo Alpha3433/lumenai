@@ -31,7 +31,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
   } = usePlanCreator(initialData);
 
   return (
-    <div className={`container ${step === 2 ? 'max-w-full' : 'max-w-5xl'} mx-auto py-8 px-4`}>
+    <div className={`${step === 2 ? 'max-w-full' : 'max-w-5xl'} mx-auto py-6 px-4`}>
       {step === 2 && !isPremium && (
         <UpgradeNotificationBanner onUpgrade={upgradeAccount} />
       )}

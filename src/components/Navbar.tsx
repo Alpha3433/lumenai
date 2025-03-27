@@ -1,14 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, TrendingUp, Sparkles } from 'lucide-react';
+import { Menu, X, TrendingUp, Sparkles, Crown, User } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/components/AuthProvider';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,16 +101,32 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button variant="outline" className="border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/create">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md">
-                Get Started
-              </Button>
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 py-1 px-3 rounded-full border border-gray-200 dark:border-gray-700">
+                  <Crown className="h-3.5 w-3.5 text-amber-500" />
+                  <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Free plan</span>
+                </div>
+                <Avatar className="h-8 w-8 border-2 border-white dark:border-gray-800">
+                  <AvatarFallback className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                    <User className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline" className="border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/create">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md">
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -128,6 +148,23 @@ const Navbar = () => {
           transition={{ duration: 0.3 }}
         >
           <div className="flex flex-col space-y-4 px-4 py-6">
+            {user && (
+              <div className="flex items-center gap-3 p-2 mb-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                <Avatar className="h-8 w-8 border-2 border-white dark:border-gray-800">
+                  <AvatarFallback className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                    <User className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium">{user.email?.split('@')[0]}</span>
+                    <Badge variant="outline" className="px-2 py-0 text-[10px] bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800/50">
+                      Free plan
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+            )}
             <Link 
               to="/" 
               className={`text-sm font-medium p-2 rounded-md transition-colors ${isActive('/') ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'}`}
@@ -164,16 +201,24 @@ const Navbar = () => {
               FAQ
             </a>
             <div className="flex flex-col space-y-2 pt-4 border-t border-gray-100 dark:border-gray-800">
-              <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+              {!user ? (
+                <>
+                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="outline" className="border-gray-300 dark:border-gray-700 w-full rounded-md">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/create" onClick={() => setIsMenuOpen(false)}>
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full rounded-md">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              ) : (
                 <Button variant="outline" className="border-gray-300 dark:border-gray-700 w-full rounded-md">
-                  Sign In
+                  Sign Out
                 </Button>
-              </Link>
-              <Link to="/create" onClick={() => setIsMenuOpen(false)}>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full rounded-md">
-                  Get Started
-                </Button>
-              </Link>
+              )}
             </div>
           </div>
         </motion.div>

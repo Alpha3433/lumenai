@@ -15,6 +15,9 @@ const GeneratedIdeaDisplay: React.FC<GeneratedIdeaDisplayProps> = ({
   onRegenerateIdea,
   onUseIdea
 }) => {
+  // Take only the first 2 reasons from the whyItWorks array
+  const limitedReasons = generatedIdea.whyItWorks.slice(0, 2);
+  
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="rounded-lg bg-blue-50 dark:bg-blue-950/30 p-5 border-l-4 border-blue-500">
@@ -34,7 +37,7 @@ const GeneratedIdeaDisplay: React.FC<GeneratedIdeaDisplayProps> = ({
         
         <h4 className="font-medium text-sm text-gray-500 dark:text-gray-400 mb-2">Why This Could Work</h4>
         <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-          {generatedIdea.whyItWorks.map((reason, index) => (
+          {limitedReasons.map((reason, index) => (
             <li key={index} className="flex items-start gap-2">
               <span className="inline-block w-5 h-5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex-shrink-0 text-xs flex items-center justify-center mt-0.5">
                 {index + 1}

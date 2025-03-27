@@ -17,8 +17,7 @@ import {
   Globe, 
   Scale, 
   Activity, 
-  ShieldCheck,
-  Layers
+  ShieldCheck
 } from 'lucide-react';
 
 interface BusinessPlanData {

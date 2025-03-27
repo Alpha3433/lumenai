@@ -1,26 +1,28 @@
 
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
-import CoreFeaturesSection from '@/components/home/CoreFeaturesSection';
-import AnalysisToolsSection from '@/components/home/AnalysisToolsSection';
-import WhyChooseUsSection from '@/components/home/WhyChooseUsSection';
-import FAQSection from '@/components/home/FAQSection';
-import CTASection from '@/components/home/CTASection';
-import TestimonialsSection from '@/components/home/TestimonialsSection';
+import NewHero from '@/components/home/NewHero';
+import ToolsShowcase from '@/components/home/ToolsShowcase';
+import ThreeColumnFeatures from '@/components/home/ThreeColumnFeatures';
+import TransformSection from '@/components/home/TransformSection';
+import RoadmapSection from '@/components/home/RoadmapSection';
+import MobileShowcase from '@/components/home/MobileShowcase';
+import BuildProductsSection from '@/components/home/BuildProductsSection';
+import FAQAccordion from '@/components/home/FAQAccordion';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <Hero />
-      <CoreFeaturesSection />
-      <AnalysisToolsSection />
-      <TestimonialsSection />
-      <WhyChooseUsSection />
-      <FAQSection />
-      <CTASection />
+      <NewHero />
+      <ToolsShowcase />
+      <ThreeColumnFeatures />
+      <TransformSection />
+      <RoadmapSection />
+      <MobileShowcase />
+      <BuildProductsSection />
+      <FAQAccordion />
       <Footer />
     </div>
   );

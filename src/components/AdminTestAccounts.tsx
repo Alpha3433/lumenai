@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { subscriptionService, SubscriptionPlan } from '@/utils/subscriptionService';
+import { subscriptionService, SubscriptionPlan, UserSubscription } from '@/utils/subscriptionService';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -31,9 +31,10 @@ const AdminTestAccounts = () => {
       
       // If the selected plan is different from entrepreneur, update it
       if (plan !== 'entrepreneur' && user) {
+        // Use type assertion to tell TypeScript this is okay
         const { error: updateError } = await supabase
-          .from('user_subscriptions')
-          .update({ plan })
+          .from('user_subscriptions' as any)
+          .update({ plan } as Partial<UserSubscription>)
           .eq('user_id', user.id);
           
         if (updateError) {

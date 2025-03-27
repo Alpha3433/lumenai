@@ -17,8 +17,9 @@ export const subscriptionService = {
     if (!userId) return 'free';
     
     try {
+      // Use type assertion to tell TypeScript this is okay
       const { data, error } = await supabase
-        .from('user_subscriptions')
+        .from('user_subscriptions' as any)
         .select('*')
         .eq('user_id', userId)
         .eq('is_active', true)
@@ -31,7 +32,7 @@ export const subscriptionService = {
         return 'free';
       }
       
-      return data.plan as SubscriptionPlan;
+      return (data as UserSubscription).plan as SubscriptionPlan;
     } catch (error) {
       console.error('Error in getUserPlan:', error);
       return 'free';
@@ -51,14 +52,15 @@ export const subscriptionService = {
     
     try {
       // Give them entrepreneur plan for testing
+      // Use type assertion to tell TypeScript this is okay
       const { error: subscriptionError } = await supabase
-        .from('user_subscriptions')
+        .from('user_subscriptions' as any)
         .insert({
           user_id: user.id,
           plan: 'entrepreneur',
           is_active: true,
           expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days from now
-        });
+        } as UserSubscription);
       
       if (subscriptionError) {
         console.error('Error creating subscription:', subscriptionError);

@@ -55,7 +55,7 @@ const AIEngineSelector = ({
       </div>
       {!isPremium && (
         <div className="mt-2 text-xs text-muted-foreground">
-          Premium AI delivers deeper insights and more strategic business recommendations
+          Our Premium AI delivers deeper insights and more strategic business recommendations
         </div>
       )}
     </div>

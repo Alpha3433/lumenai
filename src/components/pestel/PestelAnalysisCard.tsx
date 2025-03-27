@@ -17,42 +17,48 @@ const PestelAnalysisCard: React.FC<PestelAnalysisCardProps> = ({ category, point
       icon: <Building className="h-5 w-5 text-red-500" />,
       bgColor: 'bg-red-50 dark:bg-red-950/20',
       textColor: 'text-red-800 dark:text-red-300',
-      borderColor: 'border-red-200 dark:border-red-800/30'
+      borderColor: 'border-red-200 dark:border-red-800/30',
+      dotColor: 'bg-red-500'
     },
     economic: {
       title: 'Economic',
       icon: <DollarSign className="h-5 w-5 text-blue-500" />,
       bgColor: 'bg-blue-50 dark:bg-blue-950/20',
       textColor: 'text-blue-800 dark:text-blue-300',
-      borderColor: 'border-blue-200 dark:border-blue-800/30'
+      borderColor: 'border-blue-200 dark:border-blue-800/30',
+      dotColor: 'bg-blue-500'
     },
     social: {
       title: 'Social',
       icon: <Users className="h-5 w-5 text-yellow-500" />,
       bgColor: 'bg-yellow-50 dark:bg-yellow-950/20',
       textColor: 'text-yellow-800 dark:text-yellow-300',
-      borderColor: 'border-yellow-200 dark:border-yellow-800/30'
+      borderColor: 'border-yellow-200 dark:border-yellow-800/30',
+      dotColor: 'bg-yellow-500'
     },
     technological: {
       title: 'Technological',
       icon: <Cpu className="h-5 w-5 text-purple-500" />,
       bgColor: 'bg-purple-50 dark:bg-purple-950/20',
       textColor: 'text-purple-800 dark:text-purple-300',
-      borderColor: 'border-purple-200 dark:border-purple-800/30'
+      borderColor: 'border-purple-200 dark:border-purple-800/30',
+      dotColor: 'bg-purple-500'
     },
     environmental: {
       title: 'Environmental',
       icon: <Leaf className="h-5 w-5 text-green-500" />,
       bgColor: 'bg-green-50 dark:bg-green-950/20',
       textColor: 'text-green-800 dark:text-green-300',
-      borderColor: 'border-green-200 dark:border-green-800/30'
+      borderColor: 'border-green-200 dark:border-green-800/30',
+      dotColor: 'bg-green-500'
     },
     legal: {
       title: 'Legal',
       icon: <Scale className="h-5 w-5 text-orange-500" />,
       bgColor: 'bg-orange-50 dark:bg-orange-950/20',
       textColor: 'text-orange-800 dark:text-orange-300',
-      borderColor: 'border-orange-200 dark:border-orange-800/30'
+      borderColor: 'border-orange-200 dark:border-orange-800/30',
+      dotColor: 'bg-orange-500'
     }
   };
 
@@ -65,11 +71,11 @@ const PestelAnalysisCard: React.FC<PestelAnalysisCardProps> = ({ category, point
           {config.icon}
           {config.title}
         </h3>
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {points.map((point, index) => (
-            <li key={index} className="flex items-start gap-2 text-sm">
-              <span className={`text-${category}-500 font-bold mt-1`}>•</span>
-              <span>{point}</span>
+            <li key={index} className="flex items-start gap-2.5 text-sm">
+              <span className={`mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0 ${config.dotColor}`}></span>
+              <span className="text-gray-700 dark:text-gray-300">{point}</span>
             </li>
           ))}
         </ul>

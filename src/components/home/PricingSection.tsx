@@ -37,7 +37,7 @@ const PricingSection = () => {
       period: "/mo",
       features: [
         { text: "Unlimited Business Plans", available: true },
-        { text: "5 Idea Creation Plans", available: true },
+        { text: "Unlimited Idea Creation Plans", available: true },
         { text: "Advanced Market Analysis", available: true },
         { text: "AI-Powered Next-Gen Business Validation Tool", available: true },
         { text: "5 Detailed Competitor Insights", available: true },
@@ -55,7 +55,7 @@ const PricingSection = () => {
       period: "/mo",
       features: [
         { text: "Unlimited Business Plans", available: true },
-        { text: "5 Idea Creation Plans", available: true },
+        { text: "Unlimited Idea Creation Plans", available: true },
         { text: "Integrated AI Marketing Tool", available: true },
         { text: "Advanced Next-Gen Business Validation Tool", available: true },
         { text: "Unlimited Competitor Analysis", available: true },

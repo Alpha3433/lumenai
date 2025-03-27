@@ -13,9 +13,9 @@ const Create = () => {
   const businessIdeaData = location.state || null;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      <div className="pt-20">
+      <div className="pt-20 flex-1">
         <div className="container max-w-5xl mx-auto px-4 py-8">
           {!businessIdeaData && (
             <div className="mb-8 bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg border border-blue-100 dark:border-blue-800 flex items-center justify-between">

@@ -7,5 +7,10 @@ export interface PestelFactor {
 }
 
 export interface PestelData {
-  [key in PestelFactor['category']]: string[];
+  political: string[];
+  economic: string[];
+  social: string[];
+  technological: string[];
+  environmental: string[];
+  legal: string[];
 }

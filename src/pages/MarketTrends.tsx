@@ -8,7 +8,6 @@ import MarketTrendHeader from '@/components/market/MarketTrendHeader';
 import MarketStatsCards from '@/components/market/MarketStatsCards';
 import EmptyReportsSection from '@/components/market/EmptyReportsSection';
 import LoadingState from '@/components/market/LoadingState';
-import BusinessIdeaGenerator from '@/components/market/BusinessIdeaGenerator';
 
 const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
 
@@ -56,11 +55,7 @@ const MarketTrends: React.FC = () => {
       <Navbar />
       <div className="mt-16">
         <MarketTrendHeader />
-        
         <MarketStatsCards marketData={marketData} />
-        
-        <BusinessIdeaGenerator />
-        
         <EmptyReportsSection />
       </div>
     </div>

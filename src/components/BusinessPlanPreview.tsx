@@ -2,7 +2,6 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
-import { ArrowDownToLine, Sparkles } from 'lucide-react';
 import BusinessPlanActionBar from './BusinessPlanActionBar';
 import ExecutiveSummarySection from './ExecutiveSummarySection';
 import SwotAnalysis from './SwotAnalysis';
@@ -11,8 +10,7 @@ import WebBusinessModelsSection from './WebBusinessModelsSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import PestelAnalysisSection from './PestelAnalysisSection';
 import PorterFiveForcesSection from './PorterFiveForcesSection';
-import { Button } from "./ui/button";
-import { cn } from '@/lib/utils';
+import ReportSidePanel from './business-plan/ReportSidePanel';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -51,62 +49,82 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
         onDownload={onDownload}
       />
       
-      <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent -z-10 rounded-3xl blur-xl opacity-50"></div>
-        <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden bg-card/95 backdrop-blur-sm">
-          <CardContent className="p-8">
-            {/* Business Plan Dashboard */}
-            <BusinessPlanDashboard 
-              businessName={businessName}
-              businessPlan={businessPlan}
-            />
-            
-            {/* Executive Summary */}
-            <ExecutiveSummarySection 
-              summaryText={businessPlan.executiveSummary} 
-              businessName={businessName}
-              marketAnalysis={businessPlan.marketAnalysis}
-            />
-            
-            <Separator className="my-10" />
-            
-            {/* SWOT Analysis - Removing the title as it's now in the SwotAnalysis component */}
-            <SwotAnalysis 
-              swotText={businessPlan.swotAnalysis} 
-              marketAnalysis={businessPlan.marketAnalysis}
-            />
-            
-            <Separator className="my-10" />
-            
-            {/* PESTEL Analysis */}
-            <PestelAnalysisSection analysisText={businessPlan.marketAnalysis} />
-            
-            <Separator className="my-10" />
-            
-            {/* Porter's Five Forces Analysis */}
-            <PorterFiveForcesSection marketAnalysis={businessPlan.marketAnalysis} />
-            
-            <Separator className="my-10" />
-            
-            {/* Marketing Plan */}
-            <MarketingPlanSection 
-              marketingPlanText={businessPlan.marketingPlan} 
-              isPremium={isPremium}
-              onUpgrade={onUpgrade}
-            />
-            
-            <Separator className="my-10" />
-            
-            {/* Web Business Models - New Section */}
-            <WebBusinessModelsSection 
-              businessName={businessName}
-              businessDescription={businessDescription}
-              isPremium={isPremium}
-              onUpgrade={onUpgrade}
-            />
-            
-          </CardContent>
-        </Card>
+      <div className="flex">
+        {/* Side Panel */}
+        <ReportSidePanel />
+        
+        {/* Main Content */}
+        <div className="flex-1 relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent -z-10 rounded-3xl blur-xl opacity-50"></div>
+          <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden bg-card/95 backdrop-blur-sm">
+            <CardContent className="p-8">
+              {/* Business Plan Dashboard */}
+              <div id="dashboard">
+                <BusinessPlanDashboard 
+                  businessName={businessName}
+                  businessPlan={businessPlan}
+                />
+              </div>
+              
+              {/* Executive Summary */}
+              <div id="executive-summary">
+                <ExecutiveSummarySection 
+                  summaryText={businessPlan.executiveSummary} 
+                  businessName={businessName}
+                  marketAnalysis={businessPlan.marketAnalysis}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* SWOT Analysis */}
+              <div id="swot-analysis">
+                <SwotAnalysis 
+                  swotText={businessPlan.swotAnalysis} 
+                  marketAnalysis={businessPlan.marketAnalysis}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* PESTEL Analysis */}
+              <div id="pestel-analysis">
+                <PestelAnalysisSection analysisText={businessPlan.marketAnalysis} />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Porter's Five Forces Analysis */}
+              <div id="porter-five-forces">
+                <PorterFiveForcesSection marketAnalysis={businessPlan.marketAnalysis} />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Marketing Plan */}
+              <div id="marketing-plan">
+                <MarketingPlanSection 
+                  marketingPlanText={businessPlan.marketingPlan} 
+                  isPremium={isPremium}
+                  onUpgrade={onUpgrade}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Web Business Models */}
+              <div id="business-models">
+                <WebBusinessModelsSection 
+                  businessName={businessName}
+                  businessDescription={businessDescription}
+                  isPremium={isPremium}
+                  onUpgrade={onUpgrade}
+                />
+              </div>
+              
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

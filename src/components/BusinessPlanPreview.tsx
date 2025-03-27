@@ -8,9 +8,10 @@ import SwotAnalysis from './SwotAnalysis';
 import MarketingPlanSection from './MarketingPlanSection';
 import WebBusinessModelsSection from './WebBusinessModelsSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
-import PestelAnalysisSection from './PestelAnalysisSection';
+import PestelAnalysisSection from './pestel/PestelAnalysisSection';
 import PorterFiveForcesSection from './PorterFiveForcesSection';
 import ReportSidePanel from './business-plan/ReportSidePanel';
+import { usePestelData } from '@/hooks/usePestelData';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -41,6 +42,9 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   onUpgrade,
   businessDescription = ''
 }) => {
+  // Extract PESTEL data
+  const pestelData = usePestelData(businessPlan.marketAnalysis);
+  
   return (
     <div className="space-y-10 animate-fade-in">
       <BusinessPlanActionBar 
@@ -89,7 +93,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               {/* PESTEL Analysis */}
               <div id="pestel-analysis">
-                <PestelAnalysisSection analysisText={businessPlan.marketAnalysis} />
+                <PestelAnalysisSection pestelData={pestelData} />
               </div>
               
               <Separator className="my-10" />

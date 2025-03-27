@@ -6,6 +6,6 @@ export interface PestelFactor {
   points: string[];
 }
 
-export type PestelData = {
+export interface PestelData {
   [key in PestelFactor['category']]: string[];
-};
+}

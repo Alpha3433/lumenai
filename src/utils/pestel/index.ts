@@ -1,10 +1,10 @@
 
-import { PestelData, PestelFactor } from './types';
+import type { PestelData, PestelFactor } from './types';
 import { extractFactorsForCategory, categoryKeywords } from './extractionUtils';
 import { generateFallbackPestelData, generateFallbackFactorsForCategory } from './fallbackData';
 import { getCategoryIcon, getCategoryColor } from './displayUtils';
 
-// Re-export types with 'export type' syntax
+// Re-export types
 export type { PestelData, PestelFactor };
 
 // Re-export functions normally

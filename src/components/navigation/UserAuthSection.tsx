@@ -1,9 +1,17 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleDot } from 'lucide-react';
+import { CircleDot, Settings, FileText, ChartBar, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const UserAuthSection: React.FC = () => {
   const { user, signOut, subscriptionPlan } = useAuth();
@@ -58,12 +66,47 @@ const UserAuthSection: React.FC = () => {
             <span className={`text-xs font-medium ${planDisplay.textClass}`}>{planDisplay.text}</span>
           </div>
           <div className="relative">
-            <button 
-              onClick={handleSignOut}
-              className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-            >
-              {user.email?.substring(0, 2).toUpperCase() || 'JD'}
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button 
+                  className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                  {user.email?.substring(0, 2).toUpperCase() || 'JD'}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user.email?.split('@')[0] || 'User'}</p>
+                    <p className="text-xs leading-none text-gray-500 dark:text-gray-400">{user.email}</p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard" className="flex items-center cursor-pointer">
+                    <ChartBar className="mr-2 h-4 w-4" />
+                    <span>Dashboard</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/reports" className="flex items-center cursor-pointer">
+                    <FileText className="mr-2 h-4 w-4" />
+                    <span>Reports</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/settings" className="flex items-center cursor-pointer">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut} className="text-red-500 dark:text-red-400 cursor-pointer">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       ) : (

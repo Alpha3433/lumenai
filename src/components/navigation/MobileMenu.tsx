@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { X, Menu } from 'lucide-react';
+import { X, Menu, Settings, FileText, ChartBar, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import NavLinks from './NavLinks';
@@ -60,6 +60,23 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
             <NavLinks isMobile={true} onMobileClick={closeMenu} />
           </div>
           
+          {user && (
+            <div className="flex flex-col space-y-1 pt-4 border-t border-gray-100 dark:border-gray-800">
+              <Link to="/dashboard" onClick={closeMenu} className="flex items-center py-2 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                <ChartBar className="mr-2 h-4 w-4" />
+                <span>Dashboard</span>
+              </Link>
+              <Link to="/reports" onClick={closeMenu} className="flex items-center py-2 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                <FileText className="mr-2 h-4 w-4" />
+                <span>Reports</span>
+              </Link>
+              <Link to="/settings" onClick={closeMenu} className="flex items-center py-2 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </Link>
+            </div>
+          )}
+          
           <div className="flex flex-col space-y-2 pt-4 border-t border-gray-100 dark:border-gray-800">
             {!user ? (
               <>
@@ -75,7 +92,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
                 </Link>
               </>
             ) : (
-              <Button variant="outline" className="border-gray-300 dark:border-gray-700 w-full rounded-md" onClick={handleSignOut}>
+              <Button 
+                variant="outline" 
+                className="border-gray-300 dark:border-gray-700 w-full rounded-md text-red-500 dark:text-red-400" 
+                onClick={handleSignOut}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
                 Sign Out
               </Button>
             )}

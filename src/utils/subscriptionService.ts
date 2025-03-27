@@ -32,7 +32,9 @@ export const subscriptionService = {
         return 'free';
       }
       
-      return (data as UserSubscription).plan as SubscriptionPlan;
+      // Cast data to UserSubscription type
+      const subscription = data as unknown as UserSubscription;
+      return subscription.plan;
     } catch (error) {
       console.error('Error in getUserPlan:', error);
       return 'free';

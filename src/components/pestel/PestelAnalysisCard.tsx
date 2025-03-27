@@ -52,17 +52,25 @@ const PestelAnalysisCard: React.FC<PestelAnalysisCardProps> = ({ category, point
 
   const config = categoryConfig[category];
   
-  // Limit to 3 points
-  const limitedPoints = points.slice(0, 3);
+  // Limit to 3 points and clean up any heading format
+  const cleanedPoints = points.map(point => 
+    point
+      .replace(/^(political|economic|social|technological|environmental|legal):\s*/i, '')
+      .replace(/^(#|\*|\-)+\s*/g, '')
+      .replace(/^[A-Z\s]+:\s*/g, '')
+      .replace(/^\d+\.\s*/, '')
+      .trim()
+  ).slice(0, 3);
 
   return (
-    <Card className={`border ${config.borderColor} shadow-sm h-full ${config.bgColor}`}>
+    <Card className={`border ${config.borderColor} shadow-sm h-full overflow-hidden ${config.bgColor}`}>
       <CardContent className="p-6">
         <div className="flex items-center mb-4">
           {config.icon}
+          <span className="ml-2 font-medium capitalize">{category}</span>
         </div>
         <ul className="space-y-3">
-          {limitedPoints.map((point, index) => (
+          {cleanedPoints.map((point, index) => (
             <li key={index} className="flex items-start gap-2.5 text-sm">
               <span className={`mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0 ${config.dotColor}`}></span>
               <span className="text-gray-700 dark:text-gray-300">{point}</span>

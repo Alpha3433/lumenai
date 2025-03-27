@@ -4,9 +4,11 @@ import { extractFactorsForCategory, categoryKeywords } from './extractionUtils';
 import { generateFallbackPestelData, generateFallbackFactorsForCategory } from './fallbackData';
 import { getCategoryIcon, getCategoryColor } from './displayUtils';
 
+// Re-export types with 'export type' syntax
+export type { PestelData, PestelFactor };
+
+// Re-export functions normally
 export { 
-  PestelData, 
-  PestelFactor,
   getCategoryIcon, 
   getCategoryColor,
   generateFallbackPestelData,

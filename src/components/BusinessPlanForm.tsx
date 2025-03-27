@@ -68,7 +68,7 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
     <div className="space-y-8 animate-fade-in">
       <div className="text-center max-w-2xl mx-auto">
         <div className="inline-block mb-4 px-4 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium">
-          Step 1: Tell Us About Your Business
+          Tell Us About Your Business
         </div>
         <h1 className="text-3xl font-bold mb-2">Create Your Business Plan</h1>
         <p className="text-gray-600 dark:text-gray-300">

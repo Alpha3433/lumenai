@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Separator } from '@/components/ui/separator';
-import { FileText, PieChart, BarChart, Globe, Scale, Users, ShieldCheck } from 'lucide-react';
+import { FileText, PieChart, LineChart, Users, Globe, BarChart, Scale, ShieldCheck } from 'lucide-react';
 
 interface SectionLink {
   id: string;
@@ -28,20 +28,18 @@ const ReportSidePanel = () => {
   };
 
   return (
-    <div className="w-72 border-r border-gray-200 dark:border-gray-800 px-6 py-8 h-screen sticky top-0 overflow-y-auto bg-gray-50 dark:bg-gray-900/50">
-      <h3 className="font-bold text-xl mb-6">Business Plan</h3>
-      <Separator className="mb-6" />
-      <div className="space-y-4">
+    <div className="w-64 border-r border-gray-200 dark:border-gray-800 px-4 py-6 h-screen sticky top-0 overflow-y-auto">
+      <h3 className="font-medium text-md mb-4">Business Plan</h3>
+      <Separator className="mb-4" />
+      <div className="space-y-1">
         {sections.map((section) => (
           <button
             key={section.id}
             onClick={() => scrollToSection(section.id)}
-            className="w-full flex items-center gap-3 py-3 px-4 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
+            className="w-full flex items-center gap-2 py-2 px-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200"
           >
-            <div className="p-1.5 bg-primary/10 dark:bg-primary/20 rounded-full">
-              {section.icon}
-            </div>
-            <span className="font-medium">{section.title}</span>
+            {section.icon}
+            <span>{section.title}</span>
           </button>
         ))}
       </div>

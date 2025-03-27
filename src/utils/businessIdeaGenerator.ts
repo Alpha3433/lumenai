@@ -1,4 +1,3 @@
-
 import { callOpenAI } from './openaiService';
 
 export interface BusinessIdeaPreferences {
@@ -208,6 +207,42 @@ const mockBusinessIdeasByIndustry: Record<string, BusinessIdeaSuggestion[]> = {
         "Limited availability of privacy expertise outside large enterprises",
         "Growing consumer awareness around data privacy issues"
       ]
+    },
+    {
+      businessName: "QuantumVerse Solutions",
+      description: "A platform that uses quantum computing algorithms to solve complex optimization problems for businesses. Offers cloud-based quantum computing resources that can tackle problems traditional computers find intractable.",
+      targetMarket: "Research institutions, logistics companies, financial services firms",
+      revenueModel: "Subscription-based access to quantum computing resources with usage-based pricing tiers",
+      whyItWorks: [
+        "Quantum computing is reaching commercial viability for specific use cases",
+        "Growing demand for solving complex optimization problems",
+        "Few accessible platforms for businesses to leverage quantum capabilities",
+        "High barrier to entry creates opportunity for specialized service providers"
+      ]
+    },
+    {
+      businessName: "CyberShield Dynamics",
+      description: "AI-powered cybersecurity platform that proactively hunts for vulnerabilities in company systems by simulating advanced attacks. Provides continuous security testing and real-time threat intelligence.",
+      targetMarket: "Mid-sized businesses without dedicated security teams",
+      revenueModel: "Monthly subscription with tiered pricing based on company size and features",
+      whyItWorks: [
+        "Rising cybersecurity threats against businesses of all sizes",
+        "Shortage of qualified cybersecurity professionals",
+        "Proactive approach addressing vulnerabilities before breaches occur",
+        "Regulatory compliance requirements driving security investments"
+      ]
+    },
+    {
+      businessName: "Hologram Spaces",
+      description: "A service providing holographic telepresence technology for remote meetings, events, and educational content. Uses advanced projection technology to create lifelike 3D representations of remote participants.",
+      targetMarket: "Conference centers, educational institutions, and large enterprises",
+      revenueModel: "Hardware sales plus subscription for software platform and maintenance",
+      whyItWorks: [
+        "Remote work trends creating demand for immersive collaboration technologies",
+        "Fatigue with traditional video conferencing",
+        "Decreasing costs of holographic display technology",
+        "Premium experience commanding premium pricing"
+      ]
     }
   ],
   'healthcare': [
@@ -257,6 +292,42 @@ const mockBusinessIdeasByIndustry: Record<string, BusinessIdeaSuggestion[]> = {
         "Poor adherence to traditional rehabilitation exercises",
         "Advances in motion tracking and AR technology",
         "Shift toward value-based care rewarding better outcomes"
+      ]
+    },
+    {
+      businessName: "BioFeedback Therapeutics",
+      description: "Platform combining wearable sensors with AI analysis to provide personalized stress management interventions. Real-time biofeedback guides users through customized mindfulness exercises based on physiological stress markers.",
+      targetMarket: "Working professionals with high-stress jobs and health-conscious individuals",
+      revenueModel: "Hardware sales plus subscription for personalized intervention programs",
+      whyItWorks: [
+        "Growing awareness of stress as a health risk factor",
+        "Increasing adoption of wellness wearables and health tracking",
+        "Scientific validation of biofeedback for stress management",
+        "Integration possibilities with corporate wellness programs"
+      ]
+    },
+    {
+      businessName: "GenomeMate",
+      description: "Personalized nutrition and lifestyle platform based on genomic analysis and continuous health monitoring. Provides tailored dietary recommendations and supplement formulations based on genetic predispositions.",
+      targetMarket: "Health-optimizing consumers and individuals with genetic health risks",
+      revenueModel: "Initial genetic testing fee plus subscription for ongoing personalized recommendations and custom supplements",
+      whyItWorks: [
+        "Declining costs of genomic testing making personalization more accessible",
+        "Growing consumer interest in precision health approaches",
+        "Scientific advances connecting genetic factors to nutritional needs",
+        "Shift from reactive to preventative healthcare models"
+      ]
+    },
+    {
+      businessName: "CareCollective",
+      description: "Marketplace connecting families with vetted caregivers for elderly relatives, using matching algorithms based on personality compatibility, experience, and specific care needs.",
+      targetMarket: "Families with aging parents who need assistance but want to remain in their homes",
+      revenueModel: "Commission on caregiver hours plus premium features for advanced monitoring",
+      whyItWorks: [
+        "Aging population creating unprecedented demand for eldercare",
+        "Shortage of qualified caregivers and difficulty finding trusted providers",
+        "Families increasingly geographically dispersed from elderly relatives",
+        "Technology enabling better remote monitoring and coordination"
       ]
     }
   ],
@@ -308,6 +379,42 @@ const mockBusinessIdeasByIndustry: Record<string, BusinessIdeaSuggestion[]> = {
         "Parental anxiety about making 'right' choices",
         "Time constraints making traditional parenting classes impractical"
       ]
+    },
+    {
+      businessName: "MicroMasters",
+      description: "Platform offering intensive 12-week training programs co-designed with industry leaders in emerging technical fields. Each program combines theory with practical projects mentored by industry professionals.",
+      targetMarket: "Career changers and professionals seeking to adapt to changing industry demands",
+      revenueModel: "Upfront tuition with employer sponsorship options and income share agreements",
+      whyItWorks: [
+        "Rapid technological change creating need for continuous reskilling",
+        "Traditional degrees too slow for emerging technical fields",
+        "Employer frustration with skill gaps in traditional graduate hiring",
+        "Growing acceptance of alternative credentials for technical roles"
+      ]
+    },
+    {
+      businessName: "KnowledgeGraph",
+      description: "Adaptive learning platform that uses knowledge mapping to identify and fill gaps in student understanding. Creates personalized learning pathways based on cognitive science principles.",
+      targetMarket: "K-12 schools and homeschooling families seeking personalized learning solutions",
+      revenueModel: "Subscription model for schools with per-student pricing and direct-to-consumer options",
+      whyItWorks: [
+        "Growing recognition of learning gaps caused by one-size-fits-all education",
+        "Advances in mapping knowledge domains and cognitive learning science",
+        "Increasing parent involvement in educational decisions",
+        "Schools seeking effective tools to address post-pandemic learning recovery"
+      ]
+    },
+    {
+      businessName: "ExpertMentor",
+      description: "Platform connecting students with retired professionals for project-based mentoring and career guidance. Facilitates intergenerational knowledge transfer through structured collaboration.",
+      targetMarket: "College students and early-career professionals seeking practical guidance",
+      revenueModel: "Membership fee for mentees with optional premium services for intensive mentoring",
+      whyItWorks: [
+        "Disconnect between academic training and workplace realities",
+        "Untapped resource of retired professionals with valuable expertise",
+        "Students seeking authentic relationships with industry insiders",
+        "Corporations interested in pipeline development and diversity initiatives"
+      ]
     }
   ],
   'finance': [
@@ -357,6 +464,42 @@ const mockBusinessIdeasByIndustry: Record<string, BusinessIdeaSuggestion[]> = {
         "Emotional barriers to addressing debt problems",
         "Success of gamification in other challenging behavior change areas",
         "Growing financial literacy movement creating awareness"
+      ]
+    },
+    {
+      businessName: "WealthMatrix",
+      description: "Holistic financial planning platform that helps users optimize across multiple financial goals simultaneously. Uses advanced modeling to balance competing priorities like retirement, education, and home ownership.",
+      targetMarket: "Middle and upper-middle income households with multiple financial goals",
+      revenueModel: "Tiered subscription model with optional advisor consultations",
+      whyItWorks: [
+        "Traditional financial planning treats goals in isolation",
+        "Increasing complexity of financial decisions and tradeoffs",
+        "Growing interest in holistic approaches to financial wellbeing",
+        "Advancements in computational modeling for complex optimization"
+      ]
+    },
+    {
+      businessName: "MicroVentures",
+      description: "Platform enabling everyday investors to back small local businesses through revenue-based financing. Businesses repay investors with a percentage of revenue until a predetermined return is reached.",
+      targetMarket: "Small investors seeking local impact and established small businesses needing growth capital",
+      revenueModel: "Origination fees plus ongoing administration percentage",
+      whyItWorks: [
+        "Regulatory changes making local investing more accessible",
+        "Small businesses underserved by traditional capital sources",
+        "Investor interest in tangible, community-oriented investments",
+        "Technology making micro-investment administration cost-effective"
+      ]
+    },
+    {
+      businessName: "FoundersFund",
+      description: "Automated equity funding platform for early-stage startups that standardizes terms and streamlines the fundraising process. Combines elements of crowdfunding with traditional venture capital approaches.",
+      targetMarket: "Pre-seed and seed-stage technology startups and accredited investors",
+      revenueModel: "Percentage of funds raised plus carried interest in successful investments",
+      whyItWorks: [
+        "Inefficient fundraising processes consuming founder time and energy",
+        "Growing interest in startup investing beyond traditional VC hubs",
+        "Technology enabling standardization of early-stage investment terms",
+        "Potential to unlock capital for underrepresented founder communities"
       ]
     }
   ],
@@ -408,6 +551,42 @@ const mockBusinessIdeasByIndustry: Record<string, BusinessIdeaSuggestion[]> = {
         "Brand differentiation potential through sustainable packaging",
         "Advancements in compostable materials reducing cost premium"
       ]
+    },
+    {
+      businessName: "AuthentiCheck",
+      description: "Platform using blockchain and advanced authentication technologies to verify the authenticity of luxury goods in the secondary market. Provides digital certificates of authenticity that stay with items through resale.",
+      targetMarket: "Luxury resellers, online marketplaces, and high-end consumers",
+      revenueModel: "Authentication fees plus recurring marketplace listing fees",
+      whyItWorks: [
+        "Growing luxury resale market with significant counterfeit concerns",
+        "Consumer willingness to pay premium for authentication certainty",
+        "Blockchain enabling transparent ownership history",
+        "Brand interest in maintaining product integrity in secondary markets"
+      ]
+    },
+    {
+      businessName: "RelayCommerce",
+      description: "Neighborhood-based network for package acceptance and return facilitation. Transforms local businesses into secure package handling hubs, solving the last-mile delivery problem for urban dwellers.",
+      targetMarket: "Urban apartment dwellers and local retailers with storefront space",
+      revenueModel: "Subscription from consumers plus fees from delivery companies",
+      whyItWorks: [
+        "Package theft concerns driving demand for secure delivery options",
+        "Increasing e-commerce volume creating delivery complexity",
+        "Local businesses seeking additional foot traffic and revenue streams",
+        "Community-based approach creating network effects"
+      ]
+    },
+    {
+      businessName: "VirtualCloset",
+      description: "AR/VR fashion platform allowing users to virtually try on clothing from multiple retailers and receive style advice. Creates personalized digital avatars based on actual body measurements.",
+      targetMarket: "Fashion-conscious consumers who shop primarily online",
+      revenueModel: "Affiliate commissions from retailers plus premium styling services",
+      whyItWorks: [
+        "High return rates for online clothing purchases due to fit issues",
+        "Advancements in 3D modeling and AR technology",
+        "Retailer interest in reducing returns and increasing conversion",
+        "Consumer desire for personalized shopping experiences"
+      ]
     }
   ],
   'food': [
@@ -458,6 +637,42 @@ const mockBusinessIdeasByIndustry: Record<string, BusinessIdeaSuggestion[]> = {
         "Innovative processing techniques enabling new value creation",
         "Multiple revenue streams from diverse byproducts"
       ]
+    },
+    {
+      businessName: "CulinaryAI",
+      description: "Smart kitchen assistant that uses computer vision and weight sensors to guide home cooks through recipes with real-time feedback. Adapts recipes based on available ingredients and cooking equipment.",
+      targetMarket: "Tech-savvy home cooks seeking to improve their skills",
+      revenueModel: "Smart kitchen hardware plus subscription for premium recipe content",
+      whyItWorks: [
+        "Increased interest in home cooking post-pandemic",
+        "Advances in computer vision and AI making real-time guidance possible",
+        "Consumer struggles with recipe adaptation and cooking techniques",
+        "Integration potential with smart kitchen appliances and grocery delivery"
+      ]
+    },
+    {
+      businessName: "HeritagePantry",
+      description: "Subscription service delivering authentic, small-batch ethnic ingredients and recipes from diaspora communities. Each box includes video stories from producers and cultural context for dishes.",
+      targetMarket: "Adventurous home cooks and cultural food enthusiasts",
+      revenueModel: "Monthly subscription boxes with tiered pricing options",
+      whyItWorks: [
+        "Growing consumer interest in authentic global cuisines",
+        "Difficulty sourcing specialty ingredients outside ethnic enclaves",
+        "Storytelling aspect creating emotional connection to products",
+        "Supporting immigrant producers creates compelling social impact narrative"
+      ]
+    },
+    {
+      businessName: "FermentCollective",
+      description: "Urban fermentation facility offering equipment, expertise and space for creating fermented foods and beverages. Combines production services with education and community building.",
+      targetMarket: "Urban food enthusiasts interested in fermentation and preservation techniques",
+      revenueModel: "Membership fees, class tuition, and production service charges",
+      whyItWorks: [
+        "Surging interest in gut health and fermented foods",
+        "Space and equipment constraints limiting home fermentation",
+        "Knowledge gaps around traditional preservation techniques",
+        "Community aspect creating engagement and retention"
+      ]
     }
   ],
   'sustainability': [
@@ -503,150 +718,3 @@ const mockBusinessIdeasByIndustry: Record<string, BusinessIdeaSuggestion[]> = {
       targetMarket: "Environmentally conscious homeowners in water-stressed regions",
       revenueModel: "Hardware sales plus subscription for premium features",
       whyItWorks: [
-        "Increasing water costs and restrictions in many regions",
-        "Hidden household leaks wasting up to 10% of home water use",
-        "Advancements in affordable IoT sensors and data analytics",
-        "Growing awareness of water scarcity and conservation needs"
-      ]
-    }
-  ],
-  'entertainment': [
-    {
-      businessName: "HyperLocal",
-      description: "Platform for discovering and booking ultra-local entertainment experiences led by neighborhood talent. Features everything from backyard concerts to garage art galleries and home-based cooking classes.",
-      targetMarket: "Experience-seeking consumers and local creators with underutilized talents",
-      revenueModel: "Booking commissions plus optional promotion packages for hosts",
-      whyItWorks: [
-        "Growing preference for authentic, unique experiences over material consumption",
-        "Untapped creator talent outside traditional venues",
-        "Desire for community connection in increasingly anonymous urban areas",
-        "Technology enabling trust mechanisms for in-home experiences"
-      ]
-    },
-    {
-      businessName: "NostalgiaStream",
-      description: "Content platform specializing in restored and remastered vintage media from the 1950s-1990s. Offers films, TV shows, commercials, and educational content that has fallen into public domain or through special licensing.",
-      targetMarket: "Generation X and Baby Boomers seeking nostalgic entertainment",
-      revenueModel: "Monthly subscription with tiered access to different eras and content types",
-      whyItWorks: [
-        "Aging demographics with disposable income and digital adoption",
-        "Strong emotional connection to media from formative years",
-        "Vast archives of under-monetized vintage content",
-        "Technical advances in restoration and digital conversion"
-      ]
-    },
-    {
-      businessName: "PopUpPlay",
-      description: "Service creating temporary entertainment spaces in vacant retail locations. Transforms empty storefronts into escape rooms, immersive art experiences, and themed pop-up attractions using modular design systems.",
-      targetMarket: "Mall operators, property owners with vacant space, and entertainment seekers",
-      revenueModel: "Revenue sharing with property owners plus ticket sales",
-      whyItWorks: [
-        "High retail vacancy rates creating available space",
-        "Property owners seeking temporary activation solutions",
-        "Consumer desire for novel, shareable entertainment experiences",
-        "Flexible design technology enabling rapid deployment and customization"
-      ]
-    },
-    {
-      businessName: "CreatorCraft",
-      description: "Specialized platform connecting brands with niche content creators in underserved categories like crafting, gardening, and DIY home improvement. Provides collaboration tools, licensing management, and audience analytics.",
-      targetMarket: "Hobby-focused brands and specialized content creators",
-      revenueModel: "Percentage of brand-creator deals plus subscription fees for creators",
-      whyItWorks: [
-        "Brand shift toward authentic micro-influencers over celebrities",
-        "Underserved vertical niches with passionate communities",
-        "Complex logistics of managing multiple creator relationships",
-        "Growing creator economy seeking diversified income streams"
-      ]
-    }
-  ]
-};
-
-// General business ideas to use as fallbacks
-const generalMockBusinessIdeas: BusinessIdeaSuggestion[] = [
-  {
-    businessName: "Urban Micro-Farming Network",
-    description: "Platform connecting urban buildings (offices, apartments) with local micro-farmers to install and maintain edible gardens in unused spaces. Produce is shared between building owners, residents, and subscription customers.",
-    targetMarket: "Urban property owners and local food enthusiasts in cities",
-    revenueModel: "Setup fees, maintenance subscriptions, and marketplace commissions on excess produce sales",
-    whyItWorks: [
-      "Growing interest in ultra-local food production and food security",
-      "Unutilized urban spaces like rooftops and setbacks offering growing potential",
-      "Increasing property values associated with green amenities",
-      "Consumer willingness to pay premium for hyper-local, fresh produce"
-    ]
-  },
-  {
-    businessName: "Heritage DNA Experience",
-    description: "Service combining DNA ancestry testing with personalized heritage experiences. Offers virtual and in-person cultural immersion, customized recipe boxes, language classes, and storytelling focused on customer's genetic background.",
-    targetMarket: "Identity-seeking consumers interested in cultural connection and personal heritage",
-    revenueModel: "Premium testing package plus subscription for ongoing cultural experiences",
-    whyItWorks: [
-      "Growing interest in personal heritage and identity exploration",
-      "Advancement in DNA testing creating baseline consumer interest",
-      "Desire for meaningful experiences over material possessions",
-      "Strong gift potential for family members seeking connection"
-    ]
-  },
-  {
-    businessName: "Solo Dining Social",
-    description: "App-based service connecting solo diners who want company while eating out. Matches diners based on cuisine preferences, conversation interests, and dining schedules with participating restaurant partners.",
-    targetMarket: "Urban professionals, travelers, and anyone who enjoys dining out but lacks company",
-    revenueModel: "Freemium subscription model plus partnership fees from restaurants",
-    whyItWorks: [
-      "Growing single-person households in urban areas",
-      "Social stigma around dining alone limiting restaurant visits",
-      "Restaurant interest in attracting additional weeknight business",
-      "Technology enabling trust-based connections among strangers"
-    ]
-  },
-  {
-    businessName: "Sensory Wellness Pods",
-    description: "Network of private micro-spaces in high-stress environments (airports, shopping centers, hospitals) offering short-term sensory relaxation experiences. Customizable lighting, sound, aromatherapy and haptic elements relieve stress and restore focus.",
-    targetMarket: "Travelers, caregivers, and professionals experiencing sensory overload or stress",
-    revenueModel: "Pay-per-use with membership options for frequent users",
-    whyItWorks: [
-      "Increasing awareness of sensory issues and overstimulation",
-      "Highly stimulating public spaces causing stress and anxiety",
-      "Research supporting multi-sensory approaches to relaxation",
-      "Space-efficient design allowing placement in high-value locations"
-    ]
-  },
-  {
-    businessName: "CommunityPlot",
-    description: "Platform reimagining community gardens with smart technology, reservation systems, and education. Members receive a personal garden plot with soil sensors, automated watering, and mobile monitoring alongside in-person and virtual gardening guidance.",
-    targetMarket: "Urban dwellers interested in gardening without yards of their own",
-    revenueModel: "Monthly membership fees plus optional equipment and supplies",
-    whyItWorks: [
-      "Desire for connection with nature and food sources in urban areas",
-      "Apartment living limiting traditional gardening opportunities",
-      "Technology making gardening more accessible to beginners",
-      "Community aspect addressing social isolation trends"
-    ]
-  },
-  {
-    businessName: "SkilledSeniors",
-    description: "Platform connecting retired professionals with businesses for project-based consulting work. Focuses on specialized industries where expertise accumulates with age and facilitates knowledge transfer between generations.",
-    targetMarket: "Companies needing specialized expertise and semi-retired professionals seeking meaningful work",
-    revenueModel: "Commission on project fees plus optional knowledge capture services",
-    whyItWorks: [
-      "Aging workforce with valuable expertise leaving traditional employment",
-      "Businesses losing institutional knowledge through retirements",
-      "Many seniors desiring partial work engagement without full-time commitments",
-      "Critical skill shortages in specialized technical and industrial niches"
-    ]
-  },
-  {
-    businessName: "HeirloomRestore",
-    description: "Service combining professional restoration of family heirlooms with digital storytelling. Experts repair and preserve physical items while capturing family stories and provenance in engaging multimedia formats for future generations.",
-    targetMarket: "Families with sentimental items in need of restoration and context preservation",
-    revenueModel: "Restoration services plus digital archiving and storytelling packages",
-    whyItWorks: [
-      "Aging population concerned about legacy and story preservation",
-      "Declining repair skills making restoration services valuable",
-      "Technology enabling compelling multimedia storytelling",
-      "Strong emotional connection to family heirlooms and histories"
-    ]
-  }
-];
-

@@ -23,8 +23,8 @@ const Index = () => {
       <RoadmapSection />
       <MobileShowcase />
       <PricingSection />
-      <BuildProductsSection />
       <FAQAccordion />
+      <BuildProductsSection />
       <Footer />
     </div>
   );

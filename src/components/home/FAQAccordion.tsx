@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 const FAQAccordion = () => {
   const faqs = [
     {
-      question: "Is Spurvo suitable for various size businesses?",
+      question: "Is Foster AI suitable for various size businesses?",
       answer: "Yes, our platform is designed to help businesses of all sizes, from startups to established enterprises. We offer flexible plans to accommodate different needs and growth stages."
     },
     {

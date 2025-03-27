@@ -54,7 +54,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
         <ReportSidePanel />
         
         {/* Main Content */}
-        <div className="flex-1 relative">
+        <div className="flex-1 ml-4 relative max-w-6xl mx-auto px-4">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent -z-10 rounded-3xl blur-xl opacity-50"></div>
           <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden bg-card/95 backdrop-blur-sm">
             <CardContent className="p-8">

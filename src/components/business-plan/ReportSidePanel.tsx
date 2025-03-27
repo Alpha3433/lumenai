@@ -28,8 +28,8 @@ const ReportSidePanel = () => {
   };
 
   return (
-    <div className="w-64 border-r border-gray-200 dark:border-gray-800 px-4 py-6 h-screen sticky top-0 overflow-y-auto">
-      <h3 className="font-medium text-md mb-4">Business Plan</h3>
+    <div className="w-52 border-r border-gray-200 dark:border-gray-800 pr-2 h-screen sticky top-0 overflow-y-auto bg-background">
+      <h3 className="font-medium text-md mb-4 pl-4 pt-6">Business Plan</h3>
       <Separator className="mb-4" />
       <div className="space-y-1">
         {sections.map((section) => (

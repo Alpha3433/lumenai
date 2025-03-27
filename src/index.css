@@ -102,6 +102,15 @@
     border-radius: 20px;
   }
 
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+
   .animate-fade-in {
     animation: fadeIn 0.6s ease-in-out;
   }

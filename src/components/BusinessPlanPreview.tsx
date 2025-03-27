@@ -149,21 +149,21 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
         </div>
       </div>
 
-      {/* Fixed Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-lg z-50 border-t border-gray-200 dark:border-gray-800 backdrop-blur-md bg-white/90 dark:bg-gray-900/90">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-between py-2 overflow-x-auto custom-scrollbar">
-            <div className="flex space-x-1 md:space-x-3">
+      {/* Floating Bottom Navigation */}
+      <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
+        <div className="max-w-3xl w-11/12 mx-auto pointer-events-auto">
+          <div className="bg-white dark:bg-gray-900 rounded-full shadow-lg border border-gray-200 dark:border-gray-800 backdrop-blur-md bg-white/90 dark:bg-gray-900/90 py-1.5 px-2 animate-fade-in hover:shadow-xl transition-all">
+            <div className="flex items-center justify-between overflow-x-auto custom-scrollbar no-scrollbar gap-1">
               {sections.map((section) => (
                 <button
                   key={section.id}
                   onClick={() => scrollToSection(section.id)}
-                  className="flex flex-col items-center justify-center px-3 py-2 text-xs md:text-sm rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="flex flex-col items-center justify-center px-2 md:px-3 py-2 text-xs rounded-full transition-all hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105"
                 >
-                  <div className="bg-primary/10 dark:bg-primary/20 rounded-full p-1.5 mb-1">
+                  <div className="bg-primary/10 dark:bg-primary/20 rounded-full p-1.5 mb-1 transition-transform group-hover:scale-110">
                     {section.icon}
                   </div>
-                  <span className="whitespace-nowrap">{section.title}</span>
+                  <span className="whitespace-nowrap text-[10px] md:text-xs">{section.title}</span>
                 </button>
               ))}
             </div>

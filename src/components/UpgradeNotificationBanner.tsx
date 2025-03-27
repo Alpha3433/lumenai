@@ -13,7 +13,7 @@ const UpgradeNotificationBanner: React.FC<UpgradeNotificationBannerProps> = ({
   onUpgrade,
   onClose
 }) => {
-  const [isExpanded, setIsExpanded] = React.useState(false);
+  const [isExpanded, setIsExpanded] = React.useState(true);
 
   const toggleExpand = () => {
     setIsExpanded(prev => !prev);
@@ -24,7 +24,7 @@ const UpgradeNotificationBanner: React.FC<UpgradeNotificationBannerProps> = ({
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -100, opacity: 0 }}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center"
+      className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center"
     >
       <div className="relative">
         <motion.div

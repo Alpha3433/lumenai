@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Sparkles, BrainCircuit, Zap } from "lucide-react";
+import { Loader2, Sparkles, BrainCircuit, Zap, RefreshCw } from "lucide-react";
 
 interface IdeaGeneratorFormProps {
   generating: boolean;
@@ -75,14 +75,20 @@ const IdeaGeneratorForm: React.FC<IdeaGeneratorFormProps> = ({
               onChange={(e) => setInterests(e.target.value)}
               className="min-h-[80px]"
             />
+            <p className="text-xs text-gray-500 mt-1 italic">
+              Try different combinations of industries and interests to discover unique business ideas!
+            </p>
           </div>
         </TabsContent>
         
         <TabsContent value="surprise" className="text-center py-6">
           <Zap className="h-12 w-12 mx-auto mb-4 text-amber-500" />
           <p className="mb-2">Generate a completely random business idea!</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
             We'll analyze current market trends and suggest an innovative business concept.
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
+            <RefreshCw className="h-3 w-3" /> Each idea generated will be unique and different.
           </p>
         </TabsContent>
       </Tabs>

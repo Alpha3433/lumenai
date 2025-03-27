@@ -42,7 +42,7 @@ const BusinessIdeaGenerator: React.FC = () => {
       
       toast({
         title: "Idea Generated!",
-        description: "We've created a business idea based on your preferences."
+        description: "We've created a unique business idea based on your preferences."
       });
     } catch (error) {
       console.error("Error generating business idea:", error);
@@ -66,6 +66,16 @@ const BusinessIdeaGenerator: React.FC = () => {
         } 
       });
     }
+  };
+  
+  // Regenerate a new idea
+  const handleRegenerateIdea = () => {
+    setGeneratedIdea(null);
+    
+    // Add a small delay for better UX before auto-triggering generation
+    setTimeout(() => {
+      handleGenerateIdea();
+    }, 300);
   };
   
   return (
@@ -92,7 +102,7 @@ const BusinessIdeaGenerator: React.FC = () => {
         ) : (
           <GeneratedIdeaDisplay
             generatedIdea={generatedIdea}
-            onRegenerateIdea={() => setGeneratedIdea(null)}
+            onRegenerateIdea={handleRegenerateIdea}
             onUseIdea={handleUseIdea}
           />
         )}

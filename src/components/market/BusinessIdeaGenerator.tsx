@@ -73,7 +73,7 @@ const BusinessIdeaGenerator: React.FC = () => {
       <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30">
         <CardTitle className="flex items-center gap-2 text-xl">
           <LightbulbIcon className="h-5 w-5 text-amber-500" />
-          Need a Business Idea?
+          Business Idea Generator
         </CardTitle>
       </CardHeader>
       

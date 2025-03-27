@@ -4,7 +4,9 @@ import Navbar from '@/components/Navbar';
 import PlanCreator from '@/components/PlanCreator';
 import Footer from '@/components/Footer';
 import { useLocation } from 'react-router-dom';
-import BusinessIdeaGenerator from '@/components/market/BusinessIdeaGenerator';
+import { Button } from "@/components/ui/button";
+import { Lightbulb } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 const Create = () => {
   const location = useLocation();
@@ -15,9 +17,24 @@ const Create = () => {
       <Navbar />
       <div className="pt-20">
         <div className="container max-w-5xl mx-auto px-4 py-8">
-          <BusinessIdeaGenerator />
+          {!businessIdeaData && (
+            <div className="mb-8 bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg border border-blue-100 dark:border-blue-800 flex items-center justify-between">
+              <div>
+                <h3 className="font-medium flex items-center">
+                  <Lightbulb className="mr-2 h-4 w-4 text-amber-500" />
+                  Need a business idea?
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Generate innovative business ideas based on your interests or current trends
+                </p>
+              </div>
+              <Link to="/generate-idea">
+                <Button variant="outline" size="sm">Generate Ideas</Button>
+              </Link>
+            </div>
+          )}
+          <PlanCreator initialData={businessIdeaData} />
         </div>
-        <PlanCreator initialData={businessIdeaData} />
       </div>
       <Footer />
     </div>

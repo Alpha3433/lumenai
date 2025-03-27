@@ -6,8 +6,8 @@ const ScrollProgressBar = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const location = useLocation();
   
-  // Only show the progress bar on the create page
-  const shouldShowProgressBar = location.pathname === '/create';
+  // Show the progress bar on the create and generate-idea pages
+  const shouldShowProgressBar = location.pathname === '/create' || location.pathname === '/generate-idea';
   
   useEffect(() => {
     if (!shouldShowProgressBar) return;

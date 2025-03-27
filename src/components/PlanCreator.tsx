@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
@@ -15,6 +15,13 @@ interface BusinessPlanData {
   swotAnalysis: string;
 }
 
+interface PlanCreatorProps {
+  initialData?: {
+    businessName?: string;
+    businessDescription?: string;
+  } | null;
+}
+
 const defaultBusinessPlan: BusinessPlanData = {
   executiveSummary: '',
   marketAnalysis: '',
@@ -25,17 +32,34 @@ const defaultBusinessPlan: BusinessPlanData = {
   swotAnalysis: ''
 };
 
-const PlanCreator = () => {
+const PlanCreator = ({ initialData }: PlanCreatorProps) => {
   const [step, setStep] = useState(1);
   const [generating, setGenerating] = useState(false);
   const [generatingProgress, setGeneratingProgress] = useState(0);
   const [formData, setFormData] = useState({
-    businessName: '',
-    businessDescription: '',
+    businessName: initialData?.businessName || '',
+    businessDescription: initialData?.businessDescription || '',
     useAIV2: false
   });
   const [businessPlan, setBusinessPlan] = useState<BusinessPlanData>(defaultBusinessPlan);
   const [isPremium, setIsPremium] = useState(false);
+
+  // Set initial data if provided
+  useEffect(() => {
+    if (initialData?.businessName || initialData?.businessDescription) {
+      setFormData(prev => ({
+        ...prev,
+        businessName: initialData.businessName || prev.businessName,
+        businessDescription: initialData.businessDescription || prev.businessDescription
+      }));
+      
+      // Show toast notification when data is pre-filled
+      toast({
+        title: "Business Idea Loaded",
+        description: "We've pre-filled your form with the generated business idea."
+      });
+    }
+  }, [initialData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Settings, ChartBar, LogOut } from 'lucide-react';
@@ -148,6 +149,7 @@ const UserAuthSection: React.FC = () => {
           <RegisterModal
             isOpen={isRegisterModalOpen}
             onClose={() => setIsRegisterModalOpen(false)}
+            onLoginClick={openLoginModal}
           />
         </>
       )}

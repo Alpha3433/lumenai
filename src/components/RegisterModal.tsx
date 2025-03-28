@@ -14,9 +14,10 @@ import { X } from 'lucide-react';
 interface RegisterModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onLoginClick?: () => void;
 }
 
-export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
+export default function RegisterModal({ isOpen, onClose, onLoginClick }: RegisterModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -115,7 +116,7 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             Already have an account?{' '}
             <button 
               className="text-blue-600 hover:text-blue-800" 
-              onClick={onClose}
+              onClick={onLoginClick}
               type="button"
             >
               Login

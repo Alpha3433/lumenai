@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { X, Menu, Settings, FileText, ChartBar, LogOut } from 'lucide-react';
@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import NavLinks from './NavLinks';
 import UserProfileSection from './UserProfileSection';
+import LoginModal from '@/components/LoginModal';
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -16,6 +17,7 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const menuVariants = {
     closed: { opacity: 0, height: 0 },
@@ -33,6 +35,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
   };
 
   const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    setIsLoginModalOpen(true);
     setIsMenuOpen(false);
   };
 
@@ -80,11 +87,13 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
           <div className="flex flex-col space-y-2 pt-4 border-t border-gray-100 dark:border-gray-800">
             {!user ? (
               <>
-                <Link to="/login" onClick={closeMenu}>
-                  <Button variant="outline" className="border-gray-300 dark:border-gray-700 w-full rounded-md">
-                    Sign In
-                  </Button>
-                </Link>
+                <Button
+                  variant="outline"
+                  className="border-gray-300 dark:border-gray-700 w-full rounded-md"
+                  onClick={handleLoginClick}
+                >
+                  Sign In
+                </Button>
                 <Link to="/create" onClick={closeMenu}>
                   <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full rounded-md">
                     Get Started
@@ -104,6 +113,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
           </div>
         </div>
       </motion.div>
+
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </>
   );
 };

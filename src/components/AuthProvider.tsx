@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Session, User } from '@supabase/supabase-js';
 import { SubscriptionPlan, subscriptionService } from '@/utils/subscriptionService';
+import { useNavigate } from 'react-router-dom';
 
 type AuthContextType = {
   session: Session | null;
@@ -27,6 +28,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [subscriptionPlan, setSubscriptionPlan] = useState<SubscriptionPlan>('free');
+  const [previousAuthState, setPreviousAuthState] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getSession = async () => {
@@ -36,6 +39,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         setSession(session);
         setUser(session?.user || null);
+        setPreviousAuthState(!!session?.user);
         
         // Fetch subscription plan for the user
         if (session?.user) {
@@ -56,8 +60,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (newSession?.user) {
         const plan = await subscriptionService.getUserPlan(newSession.user.id);
         setSubscriptionPlan(plan);
+        
+        // Check if user just logged in (previously was not authenticated)
+        if (!previousAuthState) {
+          navigate('/reports');
+        }
+        
+        setPreviousAuthState(true);
       } else {
         setSubscriptionPlan('free');
+        setPreviousAuthState(false);
       }
       
       setLoading(false);
@@ -66,7 +78,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [navigate, previousAuthState]);
 
   const signOut = async () => {
     await supabase.auth.signOut();

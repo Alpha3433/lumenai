@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Settings, FileText, ChartBar, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
+import { getRandomAvatarIcon } from '@/utils/avatarUtils';
+import LoginModal from '@/components/LoginModal';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +18,7 @@ import {
 const UserAuthSection: React.FC = () => {
   const { user, signOut, subscriptionPlan } = useAuth();
   const navigate = useNavigate();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -68,11 +71,16 @@ const UserAuthSection: React.FC = () => {
           <div className="relative">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button 
-                  className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                >
-                  {user.email?.substring(0, 2).toUpperCase() || 'JD'}
-                </button>
+                {(() => {
+                  const AvatarIcon = getRandomAvatarIcon(user.email || 'user');
+                  return (
+                    <button 
+                      className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                    >
+                      <AvatarIcon size={16} />
+                    </button>
+                  );
+                })()}
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <DropdownMenuLabel className="font-normal">
@@ -111,16 +119,22 @@ const UserAuthSection: React.FC = () => {
         </div>
       ) : (
         <>
-          <Link to="/login">
-            <Button variant="outline" className="border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-              Sign In
-            </Button>
-          </Link>
+          <Button 
+            variant="outline" 
+            className="border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+            onClick={() => setIsLoginModalOpen(true)}
+          >
+            Sign In
+          </Button>
           <Link to="/create">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md">
               Get Started
             </Button>
           </Link>
+          <LoginModal 
+            isOpen={isLoginModalOpen} 
+            onClose={() => setIsLoginModalOpen(false)} 
+          />
         </>
       )}
     </div>

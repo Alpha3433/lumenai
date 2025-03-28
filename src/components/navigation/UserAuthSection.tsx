@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Settings, FileText, ChartBar, LogOut } from 'lucide-react';
@@ -94,12 +93,6 @@ const UserAuthSection: React.FC = () => {
                   <Link to="/dashboard" className="flex items-center cursor-pointer">
                     <ChartBar className="mr-2 h-4 w-4" />
                     <span>Dashboard</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/reports" className="flex items-center cursor-pointer">
-                    <FileText className="mr-2 h-4 w-4" />
-                    <span>Reports</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

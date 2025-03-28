@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { X, Menu, Settings, FileText, ChartBar, LogOut } from 'lucide-react';
+import { X, Menu, Settings, ChartBar, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import NavLinks from './NavLinks';
@@ -73,9 +73,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
                 <ChartBar className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
               </Link>
-              <Link to="/reports" onClick={closeMenu} className="flex items-center py-2 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-                <FileText className="mr-2 h-4 w-4" />
-                <span>Reports</span>
+              <Link to="/market-trends" onClick={closeMenu} className="flex items-center py-2 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                <ChartBar className="mr-2 h-4 w-4" />
+                <span>Business Hub</span>
               </Link>
               <Link to="/settings" onClick={closeMenu} className="flex items-center py-2 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 <Settings className="mr-2 h-4 w-4" />

@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import MarketTrends from "./pages/MarketTrends";
+import Settings from "./pages/Settings";
 import AuthProvider from "./components/AuthProvider";
 import ScrollProgressBar from "./components/ScrollProgressBar";
 import AdminTest from "./pages/AdminTest";
@@ -38,8 +39,8 @@ const App = () => (
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/market-trends" element={<MarketTrends />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/admin-test" element={<AdminTest />} />
-                <Route path="/reports" element={<Dashboard />} /> {/* Redirect to Dashboard temporarily */}
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

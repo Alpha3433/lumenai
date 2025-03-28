@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/components/AuthProvider';
 import { useTheme } from '@/components/ThemeProvider';
@@ -15,12 +14,14 @@ import { Separator } from "@/components/ui/separator";
 import { User, Bell, Shield, HelpCircle, Moon, Sun, EyeOff } from 'lucide-react';
 import { getRandomAvatarIcon } from '@/utils/avatarUtils';
 import { useToast } from "@/hooks/use-toast";
+import ManageSubscriptionDialog from '@/components/subscription/ManageSubscriptionDialog';
 
 const Settings: React.FC = () => {
   const { user, subscriptionPlan } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
   const AvatarIcon = user ? getRandomAvatarIcon(user.email || 'user') : User;
+  const [isSubscriptionDialogOpen, setIsSubscriptionDialogOpen] = useState(false);
 
   const handleDarkModeToggle = () => {
     toggleTheme();
@@ -133,7 +134,12 @@ const Settings: React.FC = () => {
                             : 'Free Plan'}
                       </p>
                     </div>
-                    <Button variant="outline">Manage Subscription</Button>
+                    <Button 
+                      variant="outline"
+                      onClick={() => setIsSubscriptionDialogOpen(true)}
+                    >
+                      Manage Subscription
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -243,6 +249,11 @@ const Settings: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      <ManageSubscriptionDialog 
+        isOpen={isSubscriptionDialogOpen}
+        onClose={() => setIsSubscriptionDialogOpen(false)}
+      />
     </div>
   );
 };

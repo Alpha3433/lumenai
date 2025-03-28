@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleDot, Settings, FileText, ChartBar, LogOut } from 'lucide-react';
+import { CircleDot, Settings, ChartBar, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import { getRandomAvatarIcon } from '@/utils/avatarUtils';
@@ -60,7 +60,7 @@ const UserAuthSection: React.FC = () => {
   const planDisplay = getPlanDisplay();
 
   return (
-    <div className="hidden md:flex items-center space-x-4">
+    <div className="flex items-center space-x-4">
       {user ? (
         <div className="flex items-center gap-3">
           <div className={`flex items-center gap-2 ${planDisplay.bgClass} px-3 py-1 rounded-full border ${planDisplay.borderClass}`}>

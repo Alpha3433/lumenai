@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Settings, ChartBar, LogOut } from 'lucide-react';
@@ -13,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from 'sonner';
 
 const UserAuthSection: React.FC = () => {
   const { user, signOut, subscriptionPlan } = useAuth();
@@ -22,9 +24,11 @@ const UserAuthSection: React.FC = () => {
   const handleSignOut = async () => {
     try {
       await signOut();
+      toast.success('Successfully signed out');
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
+      toast.error('Failed to sign out');
     }
   };
 

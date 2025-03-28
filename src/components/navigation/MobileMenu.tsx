@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Menu, X, LogOut } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import LoginModal from '@/components/LoginModal';
 import NavLinks from './NavLinks';
 import ThemeToggle from './ThemeToggle';
+import { toast } from 'sonner';
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -14,8 +15,21 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setIsMenuOpen(false);
+      toast.success('Successfully signed out');
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast.error('Failed to sign out');
+    }
+  };
 
   return (
     <>
@@ -48,7 +62,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
             <div className="flex-1 flex flex-col items-center justify-center space-y-8">
               <NavLinks isMobile onMobileClick={() => setIsMenuOpen(false)} />
               
-              {!user && (
+              {user ? (
+                <Button 
+                  variant="outline" 
+                  className="flex items-center gap-2 text-red-500 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20 mt-4"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign out</span>
+                </Button>
+              ) : (
                 <div className="flex flex-col w-full gap-4 mt-8">
                   <Button 
                     variant="outline" 

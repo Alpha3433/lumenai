@@ -1,6 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
+import React from 'react';
 import {
   Dialog,
   DialogContent,
@@ -9,10 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2 } from "lucide-react";
 import { useAuth } from '@/components/AuthProvider';
+import CurrentPlanCard from './CurrentPlanCard';
+import PlanFeaturesList from './PlanFeaturesList';
+import SubscriptionActions from './SubscriptionActions';
 
 interface ManageSubscriptionDialogProps {
   isOpen: boolean;
@@ -90,43 +90,18 @@ const ManageSubscriptionDialog: React.FC<ManageSubscriptionDialogProps> = ({
         </DialogHeader>
 
         <div className="my-6">
-          <div className={`p-4 rounded-lg ${planInfo.bgColor} ${planInfo.borderColor} border`}>
-            <div className="flex justify-between items-center mb-2">
-              <h3 className={`font-medium ${planInfo.color}`}>{planInfo.name}</h3>
-              <Badge variant="outline" className={`${planInfo.color} ${planInfo.bgColor} border-none`}>
-                Current Plan
-              </Badge>
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              <span className="font-bold text-lg">{planInfo.price}</span> billed {planInfo.billing}
-            </p>
-          </div>
+          <CurrentPlanCard planInfo={planInfo} />
 
           <Separator className="my-4" />
 
-          <div className="space-y-3">
-            <h4 className="font-medium">Plan Features:</h4>
-            <ul className="space-y-2">
-              {planInfo.features.map((feature, index) => (
-                <li key={index} className="flex items-center">
-                  <CheckCircle2 className="h-4 w-4 text-green-500 mr-2" />
-                  <span className="text-sm">{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <PlanFeaturesList features={planInfo.features} />
         </div>
 
-        <DialogFooter className="flex sm:flex-row sm:justify-between gap-4">
-          <Button variant="outline" onClick={onClose}>Close</Button>
-          {subscriptionPlan !== 'strategist' && (
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-              Upgrade Plan
-            </Button>
-          )}
-          {subscriptionPlan !== 'free' && (
-            <Button variant="destructive">Cancel Subscription</Button>
-          )}
+        <DialogFooter>
+          <SubscriptionActions 
+            subscriptionPlan={subscriptionPlan} 
+            onClose={onClose} 
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

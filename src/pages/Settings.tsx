@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/components/AuthProvider';
+import { useTheme } from '@/components/ThemeProvider';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -11,12 +12,24 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { User, Bell, Shield, HelpCircle, Moon, EyeOff } from 'lucide-react';
+import { User, Bell, Shield, HelpCircle, Moon, Sun, EyeOff } from 'lucide-react';
 import { getRandomAvatarIcon } from '@/utils/avatarUtils';
+import { useToast } from "@/hooks/use-toast";
 
 const Settings: React.FC = () => {
   const { user, subscriptionPlan } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const { toast } = useToast();
   const AvatarIcon = user ? getRandomAvatarIcon(user.email || 'user') : User;
+
+  const handleDarkModeToggle = () => {
+    toggleTheme();
+    toast({
+      title: theme === 'dark' ? 'Light mode activated' : 'Dark mode activated',
+      description: theme === 'dark' ? 'Switching to light mode' : 'Switching to dark mode',
+      duration: 2000,
+    });
+  };
 
   if (!user) {
     return (
@@ -62,7 +75,7 @@ const Settings: React.FC = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <Avatar className="h-20 w-20 bg-gray-200 flex items-center justify-center text-gray-700">
+                  <Avatar className="h-20 w-20 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-700 dark:text-gray-200">
                     <AvatarIcon size={36} />
                   </Avatar>
                   <div>
@@ -169,8 +182,16 @@ const Settings: React.FC = () => {
                       <p className="text-sm text-muted-foreground">Enable dark mode for the application</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Moon className="h-4 w-4 text-muted-foreground" />
-                      <Switch id="dark-mode" />
+                      {theme === 'dark' ? (
+                        <Sun className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <Moon className="h-4 w-4 text-muted-foreground" />
+                      )}
+                      <Switch 
+                        id="dark-mode" 
+                        checked={theme === 'dark'}
+                        onCheckedChange={handleDarkModeToggle}
+                      />
                     </div>
                   </div>
                   

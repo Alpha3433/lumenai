@@ -3,9 +3,26 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { PlusCircle, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from "@/hooks/use-toast";
 
-const MarketHubHeader: React.FC = () => {
+interface MarketHubHeaderProps {
+  onRefresh?: () => void;
+}
+
+const MarketHubHeader: React.FC<MarketHubHeaderProps> = ({ onRefresh }) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleRefresh = () => {
+    if (onRefresh) {
+      onRefresh();
+      toast({
+        title: "Refreshing data",
+        description: "Fetching the latest market insights for you",
+        duration: 3000,
+      });
+    }
+  };
   
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 mt-10 pt-4">
@@ -18,6 +35,7 @@ const MarketHubHeader: React.FC = () => {
           variant="outline" 
           className="flex items-center gap-2"
           size="sm"
+          onClick={handleRefresh}
         >
           <RefreshCw className="h-4 w-4" />
           <span>Refresh Data</span>

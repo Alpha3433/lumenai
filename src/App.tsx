@@ -18,36 +18,39 @@ import Settings from "./pages/Settings";
 import AuthProvider from "./components/AuthProvider";
 import ScrollProgressBar from "./components/ScrollProgressBar";
 import AdminTest from "./pages/AdminTest";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <Toaster />
-            <Sonner />
-            <ScrollProgressBar />
-            <AnimatePresence mode="wait">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/create" element={<Create />} />
-                <Route path="/generate-idea" element={<GenerateIdea />} />
-                <Route path="/examples" element={<Examples />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/market-trends" element={<MarketTrends />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/admin-test" element={<AdminTest />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </AnimatePresence>
-          </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <Toaster />
+              <Sonner />
+              <ScrollProgressBar />
+              <AnimatePresence mode="wait">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/create" element={<Create />} />
+                  <Route path="/generate-idea" element={<GenerateIdea />} />
+                  <Route path="/examples" element={<Examples />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/market-trends" element={<MarketTrends />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/admin-test" element={<AdminTest />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AnimatePresence>
+            </AuthProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

@@ -119,7 +119,7 @@ const UserAuthSection: React.FC = () => {
           >
             Sign In
           </Button>
-          <Link to="/create">
+          <Link to="/register">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md">
               Get Started
             </Button>

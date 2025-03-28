@@ -39,7 +39,7 @@ const NewHero = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
         >
-          <Link to="/create">
+          <Link to="/register">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
               Build Your Business Plan Now
               <ArrowRight className="ml-2 h-5 w-5" />

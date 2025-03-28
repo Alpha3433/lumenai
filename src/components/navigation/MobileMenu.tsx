@@ -60,7 +60,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
                   >
                     Sign In
                   </Button>
-                  <Link to="/create" onClick={() => setIsMenuOpen(false)} className="w-full">
+                  <Link to="/register" onClick={() => setIsMenuOpen(false)} className="w-full">
                     <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                       Get Started
                     </Button>

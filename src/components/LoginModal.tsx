@@ -50,7 +50,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogOverlay className="backdrop-blur-sm" />
+      <DialogOverlay className="backdrop-blur-sm bg-black/5 dark:bg-black/20" />
       <DialogContent className="sm:max-w-md">
         <button 
           onClick={onClose}

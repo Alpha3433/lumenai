@@ -5,6 +5,7 @@ import { Menu, X, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import LoginModal from '@/components/LoginModal';
+import RegisterModal from '@/components/RegisterModal';
 import NavLinks from './NavLinks';
 import ThemeToggle from './ThemeToggle';
 import { toast } from 'sonner';
@@ -17,6 +18,7 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) => {
   const { user, signOut } = useAuth();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -29,6 +31,18 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
       console.error('Error signing out:', error);
       toast.error('Failed to sign out');
     }
+  };
+
+  const openLoginModal = () => {
+    setIsMenuOpen(false);
+    setIsRegisterModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
+  const openRegisterModal = () => {
+    setIsMenuOpen(false);
+    setIsLoginModalOpen(false);
+    setIsRegisterModalOpen(true);
   };
 
   return (
@@ -76,18 +90,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
                   <Button 
                     variant="outline" 
                     className="w-full border-gray-300 dark:border-gray-700"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsLoginModalOpen(true);
-                    }}
+                    onClick={openLoginModal}
                   >
                     Sign In
                   </Button>
-                  <Link to="/register" onClick={() => setIsMenuOpen(false)} className="w-full">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                      Get Started
-                    </Button>
-                  </Link>
+                  <Button 
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={openRegisterModal}
+                  >
+                    Get Started
+                  </Button>
                 </div>
               )}
             </div>
@@ -97,7 +109,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
       
       <LoginModal 
         isOpen={isLoginModalOpen} 
-        onClose={() => setIsLoginModalOpen(false)} 
+        onClose={() => setIsLoginModalOpen(false)}
+        onRegisterClick={openRegisterModal}
+      />
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
       />
     </>
   );

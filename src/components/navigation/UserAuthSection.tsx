@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Settings, ChartBar, LogOut } from 'lucide-react';
@@ -6,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import { getRandomAvatarIcon } from '@/utils/avatarUtils';
 import LoginModal from '@/components/LoginModal';
+import RegisterModal from '@/components/RegisterModal';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +20,7 @@ const UserAuthSection: React.FC = () => {
   const { user, signOut, subscriptionPlan } = useAuth();
   const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -30,6 +31,16 @@ const UserAuthSection: React.FC = () => {
       console.error('Error signing out:', error);
       toast.error('Failed to sign out');
     }
+  };
+
+  const openLoginModal = () => {
+    setIsRegisterModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
+  const openRegisterModal = () => {
+    setIsLoginModalOpen(false);
+    setIsRegisterModalOpen(true);
   };
 
   const getPlanDisplay = () => {
@@ -119,18 +130,24 @@ const UserAuthSection: React.FC = () => {
           <Button 
             variant="outline" 
             className="border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
-            onClick={() => setIsLoginModalOpen(true)}
+            onClick={openLoginModal}
           >
             Sign In
           </Button>
-          <Link to="/register">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md">
-              Get Started
-            </Button>
-          </Link>
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+            onClick={openRegisterModal}
+          >
+            Get Started
+          </Button>
           <LoginModal 
             isOpen={isLoginModalOpen} 
-            onClose={() => setIsLoginModalOpen(false)} 
+            onClose={() => setIsLoginModalOpen(false)}
+            onRegisterClick={openRegisterModal}
+          />
+          <RegisterModal
+            isOpen={isRegisterModalOpen}
+            onClose={() => setIsRegisterModalOpen(false)}
           />
         </>
       )}

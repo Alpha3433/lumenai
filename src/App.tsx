@@ -11,7 +11,6 @@ import Create from "./pages/Create";
 import GenerateIdea from "./pages/GenerateIdea";
 import Examples from "./pages/Examples";
 import NotFound from "./pages/NotFound";
-import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import MarketTrends from "./pages/MarketTrends";
 import Settings from "./pages/Settings";
@@ -38,7 +37,6 @@ const App = () => (
                   <Route path="/create" element={<Create />} />
                   <Route path="/generate-idea" element={<GenerateIdea />} />
                   <Route path="/examples" element={<Examples />} />
-                  <Route path="/register" element={<Register />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/market-trends" element={<MarketTrends />} />
                   <Route path="/settings" element={<Settings />} />

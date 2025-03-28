@@ -11,25 +11,31 @@ import { useAuth } from '@/components/AuthProvider';
 import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
 
-interface LoginModalProps {
+interface RegisterModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onRegisterClick?: () => void;
 }
 
-export default function LoginModal({ isOpen, onClose, onRegisterClick }: LoginModalProps) {
+export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
       });
@@ -37,12 +43,11 @@ export default function LoginModal({ isOpen, onClose, onRegisterClick }: LoginMo
       if (error) {
         toast.error(error.message);
       } else {
-        toast.success('Logged in successfully!');
+        toast.success('Registration successful! Please check your email to confirm your account.');
         onClose();
-        navigate('/reports'); // Redirect to reports page after login
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Registration error:', error);
       toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -62,12 +67,12 @@ export default function LoginModal({ isOpen, onClose, onRegisterClick }: LoginMo
         </button>
         
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Login</CardTitle>
-          <CardDescription>Enter your email and password to login to your account</CardDescription>
+          <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
+          <CardDescription>Enter your email and password to create an account</CardDescription>
         </CardHeader>
         
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleRegister} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input 
@@ -80,9 +85,7 @@ export default function LoginModal({ isOpen, onClose, onRegisterClick }: LoginMo
               />
             </div>
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <Input 
                 id="password" 
                 type="password"
@@ -91,21 +94,31 @@ export default function LoginModal({ isOpen, onClose, onRegisterClick }: LoginMo
                 required
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input 
+                id="confirmPassword" 
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? 'Creating account...' : 'Register'}
             </Button>
           </form>
         </CardContent>
         
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
+            Already have an account?{' '}
             <button 
               className="text-blue-600 hover:text-blue-800" 
-              onClick={onRegisterClick}
+              onClick={onClose}
               type="button"
             >
-              Register
+              Login
             </button>
           </p>
         </CardFooter>

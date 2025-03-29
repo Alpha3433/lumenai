@@ -35,8 +35,8 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
   } catch (error) {
     console.error('Error in generateBusinessIdea:', error);
     
-    // No longer use mock data in production - we want to properly handle errors
-    if (import.meta.env.DEV && process.env.NODE_ENV === 'development') {
+    // Fall back to mock data in development mode
+    if (import.meta.env.DEV) {
       console.log('Using mock business idea in development mode');
       return generateMockBusinessIdea(preferences);
     }
@@ -137,6 +137,4 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
 }
 
 // Re-export the necessary types from the businessIdeas directory
-// Fix: Use 'export type' for type-only exports
 export type { BusinessIdeaPreferences, BusinessIdeaSuggestion };
-

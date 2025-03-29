@@ -1,9 +1,9 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { Loader2, Sparkles, Zap, RefreshCw } from 'lucide-react';
+import { Loader2, Sparkles, Zap, RefreshCw, AlertTriangle } from 'lucide-react';
 
 interface GeneratingDialogProps {
   open: boolean;
@@ -32,6 +32,34 @@ const getRandomAiActionMessage = () => {
 };
 
 const GeneratingDialog = ({ open, progress, useAIV2, isError, onRetry }: GeneratingDialogProps) => {
+  const [currentMessage, setCurrentMessage] = useState<string>(getRandomAiActionMessage());
+  const [retryAttempted, setRetryAttempted] = useState<boolean>(false);
+
+  // Update message periodically during generation for better user engagement
+  useEffect(() => {
+    if (open && !isError && progress < 100) {
+      const messageInterval = setInterval(() => {
+        setCurrentMessage(getRandomAiActionMessage());
+      }, 3500);
+      
+      return () => clearInterval(messageInterval);
+    }
+  }, [open, isError, progress]);
+
+  // Reset retry state when dialog reopens
+  useEffect(() => {
+    if (open) {
+      setRetryAttempted(false);
+    }
+  }, [open]);
+
+  const handleRetry = () => {
+    setRetryAttempted(true);
+    if (onRetry) {
+      onRetry();
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-md dialog-no-close-button">
@@ -39,7 +67,7 @@ const GeneratingDialog = ({ open, progress, useAIV2, isError, onRetry }: Generat
         <div className="space-y-6 py-6">
           <div className="text-center space-y-2">
             {isError ? (
-              <RefreshCw className="mx-auto h-16 w-16 text-destructive animate-pulse" />
+              <AlertTriangle className="mx-auto h-16 w-16 text-destructive animate-pulse" />
             ) : (
               <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />
             )}
@@ -61,16 +89,23 @@ const GeneratingDialog = ({ open, progress, useAIV2, isError, onRetry }: Generat
 
           {isError ? (
             <div className="text-center pt-2">
+              <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg mb-4">
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {retryAttempted 
+                    ? "We're still having trouble connecting to our AI service. This might be due to high demand or a temporary service disruption." 
+                    : "Our AI service is currently experiencing issues processing your request."}
+                </p>
+              </div>
+              
               <Button 
-                onClick={onRetry} 
+                onClick={handleRetry} 
                 className="bg-primary"
                 size="lg"
               >
                 <RefreshCw className="mr-2 h-4 w-4" /> Try Again
               </Button>
               <p className="text-xs text-muted-foreground mt-4">
-                This might happen due to temporary AI service disruptions. 
-                Retrying usually resolves the issue.
+                If the problem persists, try simplifying your business description or check back later.
               </p>
             </div>
           ) : (
@@ -81,10 +116,7 @@ const GeneratingDialog = ({ open, progress, useAIV2, isError, onRetry }: Generat
                   className="h-2 bg-gray-200 dark:bg-gray-700"
                 />
                 <p className="text-sm text-center text-muted-foreground">
-                  {progress < 33 && getRandomAiActionMessage()}
-                  {progress >= 33 && progress < 66 && getRandomAiActionMessage()}
-                  {progress >= 66 && progress < 99 && getRandomAiActionMessage()}
-                  {progress === 100 && "Complete! Preparing your results..."}
+                  {progress < 100 ? currentMessage : "Complete! Preparing your results..."}
                 </p>
               </div>
 

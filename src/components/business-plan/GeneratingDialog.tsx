@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from '@/components/ui/progress';
 import { Loader2, Sparkles, Zap } from 'lucide-react';
 
@@ -29,9 +29,25 @@ const getRandomAiActionMessage = () => {
 };
 
 const GeneratingDialog = ({ open, progress, useAIV2 }: GeneratingDialogProps) => {
+  const [currentMessage, setCurrentMessage] = useState("");
+  
+  // Update message based on progress changes
+  useEffect(() => {
+    if (progress < 33) {
+      setCurrentMessage(getRandomAiActionMessage());
+    } else if (progress >= 33 && progress < 66) {
+      setCurrentMessage(getRandomAiActionMessage());
+    } else if (progress >= 66 && progress < 99) {
+      setCurrentMessage(getRandomAiActionMessage());
+    } else if (progress === 100) {
+      setCurrentMessage("Complete! Preparing your results...");
+    }
+  }, [progress]);
+
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-md dialog-no-close-button">
+      <DialogContent className="sm:max-w-md">
+        <DialogTitle className="sr-only">Creating Your Business Plan</DialogTitle>
         <div className="space-y-6 py-6">
           <div className="text-center space-y-2">
             <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />
@@ -53,10 +69,7 @@ const GeneratingDialog = ({ open, progress, useAIV2 }: GeneratingDialogProps) =>
               className="h-2 bg-gray-200 dark:bg-gray-700"
             />
             <p className="text-sm text-center text-muted-foreground">
-              {progress < 33 && getRandomAiActionMessage()}
-              {progress >= 33 && progress < 66 && getRandomAiActionMessage()}
-              {progress >= 66 && progress < 99 && getRandomAiActionMessage()}
-              {progress === 100 && "Complete! Preparing your results..."}
+              {currentMessage}
             </p>
           </div>
 

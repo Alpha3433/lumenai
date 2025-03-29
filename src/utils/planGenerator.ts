@@ -1,3 +1,4 @@
+
 import { toast } from "@/components/ui/use-toast";
 import { generateSection } from "./planSections";
 import { 
@@ -45,47 +46,55 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   try {
     console.log(`Generating business plan sections with ${aiEngine} AI engine...`);
     
-    // We'll generate sections sequentially to provide better context between sections
-    const executiveSummary = await generateSection('executive summary', formData);
-    toast({
-      description: "Executive summary created...",
-    });
+    // Generate sections in parallel with individual error handling to ensure partial results can still be returned
+    const generateSectionSafely = async (sectionName: string) => {
+      try {
+        return await generateSection(sectionName, formData);
+      } catch (error) {
+        console.error(`Error generating ${sectionName}:`, error);
+        return ''; // Return empty string on failure
+      }
+    };
     
-    const [marketAnalysis, businessModel] = await Promise.all([
-      generateSection('market analysis', formData),
-      generateSection('business model', formData)
+    // Generate executive summary first and notify the user
+    console.log(`Generating executive summary with prompt...`);
+    let executiveSummary;
+    try {
+      executiveSummary = await generateSection('executive summary', formData);
+      toast({
+        description: "Executive summary created...",
+      });
+    } catch (error) {
+      console.error("Error generating executive summary:", error);
+      executiveSummary = generateExecutiveSummary(formData);
+    }
+    
+    // Generate other sections in parallel
+    const [marketAnalysis, businessModel, marketingPlan, financialProjections, riskAssessment, swotAnalysis] = await Promise.all([
+      generateSectionSafely('market analysis'),
+      generateSectionSafely('business model'),
+      generateSectionSafely('marketing plan'),
+      generateSectionSafely('financial and idea validation'),
+      generateSectionSafely('risk assessment'),
+      generateSectionSafely('swot analysis')
     ]);
-    toast({
-      description: "Market analysis completed...",
-    });
     
-    const [marketingPlan, financialProjections] = await Promise.all([
-      generateSection('marketing plan', formData),
-      generateSection('financial and idea validation', formData)
-    ]);
-    toast({
-      description: "Validating your business idea...",
-    });
-    
-    const [riskAssessment, swotAnalysis] = await Promise.all([
-      generateSection('risk assessment', formData),
-      generateSection('swot analysis', formData)
-    ]);
-    
+    // Use fallback data for any sections that failed to generate
     const plan: BusinessPlanData = {
-      executiveSummary,
-      marketAnalysis,
-      businessModel,
-      marketingPlan,
-      financialProjections,
-      riskAssessment,
-      swotAnalysis
+      executiveSummary: executiveSummary || generateExecutiveSummary(formData),
+      marketAnalysis: marketAnalysis || generateMarketAnalysis(formData),
+      businessModel: businessModel || generateBusinessModel(formData),
+      marketingPlan: marketingPlan || generateMarketingPlan(formData),
+      financialProjections: financialProjections || generateFinancialProjections(formData),
+      riskAssessment: riskAssessment || generateRiskAssessment(formData),
+      swotAnalysis: swotAnalysis || generateSwotAnalysis(formData)
     };
     
     toast({
       title: "Success",
       description: `Business plan generated with ${formData.useAIV2 ? 'enhanced' : 'standard'} AI analysis!`,
     });
+    
     return plan;
   } catch (error) {
     console.error("Error generating business plan:", error);

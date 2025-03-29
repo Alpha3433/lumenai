@@ -71,37 +71,24 @@ export const usePlanCreator = (initialData?: {
   const simulateProgress = () => {
     setGeneratingProgress(0);
     
-    const progressSteps = [
-      { target: 15, time: 1000 },
-      { target: 35, time: 2000 },
-      { target: 60, time: 2500 },
-      { target: 85, time: 2000 },
-      { target: 95, time: 1500 },
-    ];
+    // Adjusted progress simulation to ensure it reaches completion
+    const totalSimulationTime = 10000; // 10 seconds total
+    const updateInterval = 100; // Update every 100ms
+    const steps = totalSimulationTime / updateInterval;
+    const incrementPerStep = 95 / steps; // Only go to 95%, final 5% when generation completes
+
+    let currentProgress = 0;
     
-    let currentStep = 0;
-    
-    const runStep = () => {
-      if (currentStep < progressSteps.length) {
-        const { target, time } = progressSteps[currentStep];
-        
-        const smallStepTime = time / (target - generatingProgress);
-        const stepInterval = setInterval(() => {
-          setGeneratingProgress(prev => {
-            const next = prev + 1;
-            if (next >= target) {
-              clearInterval(stepInterval);
-              currentStep++;
-              setTimeout(runStep, 300);
-              return target;
-            }
-            return next;
-          });
-        }, smallStepTime);
+    const interval = setInterval(() => {
+      currentProgress += incrementPerStep;
+      setGeneratingProgress(Math.min(95, currentProgress));
+      
+      if (currentProgress >= 95) {
+        clearInterval(interval);
       }
-    };
+    }, updateInterval);
     
-    runStep();
+    return () => clearInterval(interval);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -126,21 +113,28 @@ export const usePlanCreator = (initialData?: {
     }
     
     setGenerating(true);
-    simulateProgress();
+    const clearProgressSimulation = simulateProgress();
     
     try {
+      // Generate the business plan
       const plan = await generateBusinessPlan({
         businessName: formData.businessName,
         businessDescription: formData.businessDescription,
         useAIV2: formData.useAIV2
       });
       
+      // Set the business plan data
       setBusinessPlan(plan);
+      
+      // Complete the progress
       setGeneratingProgress(100);
       
+      // Wait a short time to show the completion state
       setTimeout(() => {
         setStep(2);
+        setGenerating(false);
       }, 800);
+      
     } catch (error) {
       console.error('Error generating business plan:', error);
       toast({
@@ -148,11 +142,11 @@ export const usePlanCreator = (initialData?: {
         description: "There was an error generating your business plan. Please try again.",
         variant: "destructive"
       });
-    } finally {
-      setTimeout(() => {
-        setGenerating(false);
-      }, 800);
+      setGenerating(false);
     }
+    
+    // Clear the progress simulation when done
+    return () => clearProgressSimulation();
   };
 
   const downloadPlan = () => {

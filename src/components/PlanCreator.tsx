@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { usePlanCreator } from '@/hooks/usePlanCreator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
 import UpgradeNotificationBanner from './UpgradeNotificationBanner';
+import { AnimatePresence } from 'framer-motion';
 
 interface PlanCreatorProps {
   initialData?: {
@@ -19,7 +21,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     businessPlan,
     generating,
     generatingProgress,
-    generationError,
     isPremium,
     handleInputChange,
     handleToggleChange,
@@ -40,7 +41,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           formData={formData}
           generating={generating}
           generatingProgress={generatingProgress}
-          generationError={generationError}
           onChange={handleInputChange}
           onToggleChange={handleToggleChange}
           onSubmit={handleSubmit}

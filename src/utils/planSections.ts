@@ -1,6 +1,5 @@
-
 import { callOpenAI } from "./openaiService";
-import { BusinessFormData } from "@/types/businessPlan";
+import { BusinessFormData } from "./planGenerator";
 
 // Generate a section of the business plan using OpenAI
 export async function generateSection(section: string, formData: BusinessFormData): Promise<string> {

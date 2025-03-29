@@ -2,7 +2,6 @@
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from '@/components/AuthProvider';
-import { getRandomAvatarIcon } from '@/utils/avatarUtils';
 
 interface UserProfileSectionProps {
   onClose?: () => void;
@@ -34,12 +33,11 @@ const UserProfileSection: React.FC<UserProfileSectionProps> = ({ onClose }) => {
   };
 
   const planDisplay = getPlanDisplay();
-  const AvatarIcon = getRandomAvatarIcon(user.email || 'user');
 
   return (
     <div className="flex items-center gap-3 p-2 mb-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
       <div className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300">
-        <AvatarIcon size={16} />
+        {user.email?.substring(0, 2).toUpperCase() || 'JD'}
       </div>
       <div>
         <div className="flex items-center gap-2">

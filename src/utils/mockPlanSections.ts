@@ -1,4 +1,4 @@
-import { BusinessFormData } from "@/types/businessPlan";
+import { BusinessFormData } from "./planGenerator";
 
 // Extract details from business description
 function extractDetails(formData: BusinessFormData) {

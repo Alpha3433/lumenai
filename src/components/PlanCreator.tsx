@@ -29,6 +29,12 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     setStep
   } = usePlanCreator(initialData);
 
+  // Handle form submission properly
+  const onSubmitForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit(e);
+  };
+
   return (
     <div className={`${step === 2 ? 'max-w-full' : 'max-w-5xl'} mx-auto py-6 px-4`}>
       {step === 2 && !isPremium && (
@@ -43,7 +49,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           generationError={generationError}
           onChange={handleInputChange}
           onToggleChange={handleToggleChange}
-          onSubmit={handleSubmit}
+          onSubmit={onSubmitForm}
           isPremium={isPremium}
           onUpgrade={upgradeAccount}
         />

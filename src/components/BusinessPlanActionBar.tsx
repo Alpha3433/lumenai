@@ -14,6 +14,17 @@ const BusinessPlanActionBar: React.FC<BusinessPlanActionBarProps> = ({
   onStartOver,
   onDownload
 }) => {
+  // Add handlers with preventDefault
+  const handleStartOver = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onStartOver();
+  };
+
+  const handleDownload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onDownload();
+  };
+
   return (
     <div className="flex items-center justify-between">
       <div>
@@ -24,14 +35,16 @@ const BusinessPlanActionBar: React.FC<BusinessPlanActionBarProps> = ({
         <Button
           variant="outline"
           className="rounded-full flex items-center gap-2"
-          onClick={onStartOver}
+          onClick={handleStartOver}
+          type="button"
         >
           Start Over
         </Button>
         <Button
           variant="outline"
           className="rounded-full flex items-center gap-2"
-          onClick={onDownload}
+          onClick={handleDownload}
+          type="button"
         >
           <Download className="h-4 w-4" /> Download PDF
         </Button>

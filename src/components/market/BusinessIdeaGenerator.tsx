@@ -26,7 +26,7 @@ const BusinessIdeaGenerator: React.FC = () => {
         ? { industry, interests } 
         : { interests: "surprise me" };
       
-      // Validate inputs for guided approach
+      // Validate inputs for guided approach only if we're on the guided tab
       if (currentTab === "guided" && !industry) {
         toast({
           title: "Missing Information",

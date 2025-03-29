@@ -43,7 +43,7 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
 function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string {
   const { industry, interests } = preferences;
   
-  if (interests === 'surprise me' || (!industry && !interests)) {
+  if (interests === 'surprise me') {
     return `
       Generate an innovative business idea based on current market trends and opportunities.
       The business idea should be specific, practical, and have clear potential for profitability.
@@ -133,4 +133,3 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
 // Re-export the necessary types from the businessIdeas directory
 // Fix: Use 'export type' for type-only exports
 export type { BusinessIdeaPreferences, BusinessIdeaSuggestion };
-

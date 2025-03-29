@@ -73,14 +73,10 @@ const CTASection = () => {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mt-8">
             <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
               <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
               <span className="text-sm">30-day money-back guarantee</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
-              <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
-              <span className="text-sm">Cancel anytime</span>
             </div>
             <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
               <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />

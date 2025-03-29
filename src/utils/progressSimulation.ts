@@ -1,7 +1,7 @@
 
 // Utility for simulating progress during async operations
 export const simulateProgress = (
-  setProgressFn: (progress: number) => void,
+  setProgressFn: (progress: number | ((prev: number) => number)) => void,
   onComplete?: () => void
 ) => {
   setProgressFn(0);
@@ -23,7 +23,7 @@ export const simulateProgress = (
       
       const smallStepTime = time / (target - currentProgress);
       const stepInterval = setInterval(() => {
-        setProgressFn(prev => {
+        setProgressFn((prev: number) => {
           const next = prev + 1;
           if (next >= target) {
             clearInterval(stepInterval);

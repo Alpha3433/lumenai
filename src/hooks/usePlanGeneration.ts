@@ -41,8 +41,16 @@ export const usePlanGeneration = () => {
   const setGenerating = (generating: boolean) => 
     setState(prev => ({ ...prev, generating }));
   
-  const setGeneratingProgress = (generatingProgress: number) => 
-    setState(prev => ({ ...prev, generatingProgress }));
+  const setGeneratingProgress = (generatingProgress: number | ((prev: number) => number)) => {
+    if (typeof generatingProgress === 'function') {
+      setState(prev => ({ 
+        ...prev, 
+        generatingProgress: generatingProgress(prev.generatingProgress) 
+      }));
+    } else {
+      setState(prev => ({ ...prev, generatingProgress }));
+    }
+  };
   
   const setGenerationError = (generationError: boolean) => 
     setState(prev => ({ ...prev, generationError }));

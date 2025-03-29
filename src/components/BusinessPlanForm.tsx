@@ -118,7 +118,7 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
         progress={generatingProgress}
         useAIV2={formData.useAIV2}
         error={generationError}
-        onRetry={generateProgress => handleSubmit(new Event('submit') as unknown as React.FormEvent)}
+        onRetry={() => handleSubmit(new Event('submit') as unknown as React.FormEvent)}
       />
     </div>
   );

@@ -10,7 +10,7 @@ interface GeneratingDialogProps {
   progress: number;
   useAIV2: boolean;
   error?: string | null;
-  onRetry?: () => void;
+  onRetry?: () => void;  // Changed from (progress: number) => void to () => void
 }
 
 const aiActionMessages = [

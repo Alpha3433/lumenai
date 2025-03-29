@@ -1,4 +1,3 @@
-
 import { toast } from "@/components/ui/use-toast";
 import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
 import { callOpenAI } from "./openaiService";
@@ -102,3 +101,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   // Type assertion is safe here because we've either fully populated the plan or thrown an error
   return plan as BusinessPlanData;
 };
+
+// Export the BusinessFormData type so it can be imported by other files
+export type { BusinessFormData };

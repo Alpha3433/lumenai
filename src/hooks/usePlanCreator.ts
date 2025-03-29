@@ -1,23 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import { generateBusinessPlan } from '@/utils/planGenerator';
+import { generateBusinessPlan, BusinessPlanData, BusinessFormData } from '@/utils/planGenerator';
 import { toast } from '@/components/ui/use-toast';
-
-interface BusinessPlanData {
-  executiveSummary: string;
-  marketAnalysis: string;
-  businessModel: string;
-  marketingPlan: string;
-  financialProjections: string;
-  riskAssessment: string;
-  swotAnalysis: string;
-}
-
-interface FormData {
-  businessName: string;
-  businessDescription: string;
-  useAIV2: boolean;
-}
 
 const defaultBusinessPlan: BusinessPlanData = {
   executiveSummary: '',
@@ -38,7 +22,7 @@ export const usePlanCreator = (initialData?: {
   const [generatingProgress, setGeneratingProgress] = useState(0);
   const [generationError, setGenerationError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<BusinessFormData>({
     businessName: initialData?.businessName || '',
     businessDescription: initialData?.businessDescription || '',
     useAIV2: false
@@ -110,6 +94,8 @@ export const usePlanCreator = (initialData?: {
 
   const generatePlan = async () => {
     try {
+      console.log("Starting plan generation with form data:", formData);
+      
       const plan = await generateBusinessPlan({
         businessName: formData.businessName,
         businessDescription: formData.businessDescription,
@@ -147,7 +133,7 @@ export const usePlanCreator = (initialData?: {
     setGenerationError(false);
     simulateProgress(async () => {
       const success = await generatePlan();
-      if (!success && retryCount < 3) {
+      if (!success && retryCount >= 2) {
         // If we still fail after multiple retries, show a different error
         toast({
           title: "Generation issue",
@@ -183,6 +169,7 @@ export const usePlanCreator = (initialData?: {
     setGenerationError(false);
     setRetryCount(0);
     
+    // Start the progress simulation
     simulateProgress(async () => {
       await generatePlan();
     });

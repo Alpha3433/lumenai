@@ -1,5 +1,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
 
 interface OpenAIRequestParams {
   prompt: string;
@@ -16,11 +17,13 @@ interface OpenAIResponse {
 
 export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIResponse> => {
   try {
+    console.log(`Making OpenAI request with model: ${params.model}, prompt length: ${params.prompt.length} chars`);
+    
     // Call Supabase Edge Function for OpenAI
     const { data, error } = await supabase.functions.invoke('openai-completion', {
       body: {
         prompt: params.prompt,
-        model: params.model,
+        model: params.model || 'gpt-4o-mini',
         temperature: params.temperature || 0.7,
         max_tokens: params.maxTokens || 800
       }
@@ -28,9 +31,15 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
 
     if (error) {
       console.error('Error calling OpenAI through Supabase:', error);
-      throw error;
+      throw new Error(`Supabase function error: ${error.message}`);
     }
 
+    if (!data || !data.text) {
+      console.error('Invalid response format from OpenAI function:', data);
+      throw new Error('Received invalid response format from OpenAI API');
+    }
+
+    console.log('OpenAI API call successful, received response');
     return {
       text: data.text,
       success: true
@@ -38,26 +47,18 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   } catch (error) {
     console.error('Error in OpenAI call:', error);
     
-    // Only use mock response if in development or if there's an error
-    if (import.meta.env.DEV) {
-      console.log('Using mock response in development mode');
-      return {
-        text: generateMockResponse(params.prompt),
-        success: true
-      };
-    }
-    
+    // We no longer use mock responses as fallbacks - we want to surface errors
+    // to allow for proper error handling and retries
     return {
-      text: 'An error occurred while generating content. Please try again.',
+      text: '',
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error connecting to AI service'
     };
   }
 };
 
-// This function provides mock responses for development/testing
+// This function is kept for development/testing but we no longer use it as a fallback
 function generateMockResponse(prompt: string): string {
-  // In a real implementation, this would be the response from OpenAI
   if (prompt.includes('executive summary')) {
     return 'This is a mock executive summary generated based on your business information. It would provide a concise overview of your business concept, target market, and objectives.';
   } else if (prompt.includes('market analysis')) {

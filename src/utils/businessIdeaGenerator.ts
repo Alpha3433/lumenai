@@ -2,6 +2,7 @@
 import { callOpenAI } from './openaiService';
 import { BusinessIdeaPreferences, BusinessIdeaSuggestion } from './businessIdeas/types';
 import { generateMockBusinessIdea } from './businessIdeas';
+import { toast } from '@/components/ui/use-toast';
 
 // Function to generate a business idea using OpenAI
 export async function generateBusinessIdea(preferences: BusinessIdeaPreferences): Promise<BusinessIdeaSuggestion> {
@@ -21,6 +22,11 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
     
     if (!response.success) {
       console.error('Error generating business idea:', response.error);
+      toast({
+        title: "Generation Error",
+        description: response.error || "Failed to generate business idea. Please try again.",
+        variant: "destructive"
+      });
       throw new Error('Failed to generate business idea');
     }
     
@@ -29,8 +35,8 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
   } catch (error) {
     console.error('Error in generateBusinessIdea:', error);
     
-    // Return mock data if in development or if there's an error
-    if (import.meta.env.DEV) {
+    // No longer use mock data in production - we want to properly handle errors
+    if (import.meta.env.DEV && process.env.NODE_ENV === 'development') {
       console.log('Using mock business idea in development mode');
       return generateMockBusinessIdea(preferences);
     }

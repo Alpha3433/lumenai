@@ -1,5 +1,7 @@
+
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
+import { toast } from '@/components/ui/use-toast';
 
 // Generate a section of the business plan using OpenAI
 export async function generateSection(section: string, formData: BusinessFormData): Promise<string> {
@@ -9,14 +11,23 @@ export async function generateSection(section: string, formData: BusinessFormDat
     const prompt = createPromptForSection(section, formData);
     const response = await callOpenAI({
       prompt,
-      model: "gpt-4o-mini", // Using gpt-4o-mini for better quality responses
+      model: "gpt-4o-mini",
       temperature: 0.7,
-      maxTokens: 1000 // Increased for more detailed responses
+      maxTokens: 1000
     });
     
     if (!response.success) {
       console.error(`Error generating ${section}:`, response.error);
-      throw new Error(`Failed to generate ${section}`);
+      toast({
+        title: `Error generating ${section}`,
+        description: response.error || `Failed to generate ${section}. Please try again.`,
+        variant: "destructive"
+      });
+      throw new Error(`Failed to generate ${section}: ${response.error}`);
+    }
+    
+    if (!response.text || response.text.trim().length === 0) {
+      throw new Error(`Generated empty content for ${section}`);
     }
     
     return response.text;

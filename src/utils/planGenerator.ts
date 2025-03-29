@@ -115,9 +115,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     return plan;
   } catch (error) {
     console.error("Error generating business plan:", error);
-    
-    // Don't silently fall back to mock data - propagate the error so 
-    // the UI can show a retry option
-    throw new Error(`Failed to generate business plan: ${error.message}`);
+    throw error;
   }
 };

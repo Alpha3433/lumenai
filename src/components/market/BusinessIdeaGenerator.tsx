@@ -22,19 +22,24 @@ const BusinessIdeaGenerator: React.FC = () => {
     
     try {
       // Get preferences based on the current tab
-      const preferences = currentTab === "guided" 
-        ? { industry, interests } 
-        : { interests: "surprise me" };
+      let preferences;
       
-      // Validate inputs for guided approach
-      if (currentTab === "guided" && !industry) {
-        toast({
-          title: "Missing Information",
-          description: "Please select an industry to generate ideas.",
-          variant: "destructive"
-        });
-        setGenerating(false);
-        return;
+      if (currentTab === "guided") {
+        // For guided approach, validate inputs
+        if (!industry) {
+          toast({
+            title: "Missing Information",
+            description: "Please select an industry to generate ideas.",
+            variant: "destructive"
+          });
+          setGenerating(false);
+          return;
+        }
+        
+        preferences = { industry, interests };
+      } else {
+        // For surprise approach, use "surprise me" as interests
+        preferences = { interests: "surprise me" };
       }
       
       const idea = await generateBusinessIdea(preferences);

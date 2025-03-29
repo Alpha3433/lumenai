@@ -19,6 +19,8 @@ interface BusinessPlanFormProps {
   onToggleChange: (name: string, value: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
   onUpgrade: () => void;
+  generationError?: boolean;
+  onRetry: () => void;
 }
 
 const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
@@ -29,7 +31,9 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
   onChange,
   onToggleChange,
   onSubmit,
-  onUpgrade
+  onUpgrade,
+  generationError = false,
+  onRetry
 }) => {
   const [errors, setErrors] = useState<{
     businessName?: string;
@@ -115,6 +119,8 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
         open={generating}
         progress={generatingProgress}
         useAIV2={formData.useAIV2}
+        isError={generationError}
+        onRetry={onRetry}
       />
     </div>
   );

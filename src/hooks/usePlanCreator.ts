@@ -36,6 +36,8 @@ export const usePlanCreator = (initialData?: {
   const [step, setStep] = useState(1);
   const [generating, setGenerating] = useState(false);
   const [generatingProgress, setGeneratingProgress] = useState(0);
+  const [generationError, setGenerationError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     businessName: initialData?.businessName || '',
     businessDescription: initialData?.businessDescription || '',
@@ -68,7 +70,7 @@ export const usePlanCreator = (initialData?: {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const simulateProgress = () => {
+  const simulateProgress = (onComplete?: () => void) => {
     setGeneratingProgress(0);
     
     const progressSteps = [
@@ -98,10 +100,62 @@ export const usePlanCreator = (initialData?: {
             return next;
           });
         }, smallStepTime);
+      } else if (onComplete) {
+        onComplete();
       }
     };
     
     runStep();
+  };
+
+  const generatePlan = async () => {
+    try {
+      const plan = await generateBusinessPlan({
+        businessName: formData.businessName,
+        businessDescription: formData.businessDescription,
+        useAIV2: formData.useAIV2
+      });
+      
+      // Validate the plan to make sure all sections are populated
+      const hasAllSections = Object.values(plan).every(section => 
+        typeof section === 'string' && section.trim().length > 0
+      );
+      
+      if (!hasAllSections) {
+        throw new Error("Plan generation incomplete: Some sections are missing");
+      }
+      
+      setBusinessPlan(plan);
+      setGeneratingProgress(100);
+      setGenerationError(false);
+      
+      setTimeout(() => {
+        setStep(2);
+        setGenerating(false);
+      }, 800);
+      
+      return true;
+    } catch (error) {
+      console.error('Error generating business plan:', error);
+      setGenerationError(true);
+      return false;
+    }
+  };
+
+  const handleRetry = () => {
+    setRetryCount(prevCount => prevCount + 1);
+    setGenerationError(false);
+    simulateProgress(async () => {
+      const success = await generatePlan();
+      if (!success && retryCount < 3) {
+        // If we still fail after multiple retries, show a different error
+        toast({
+          title: "Generation issue",
+          description: "We're experiencing technical difficulties. Please try again in a few minutes.",
+          variant: "destructive"
+        });
+      }
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -126,33 +180,12 @@ export const usePlanCreator = (initialData?: {
     }
     
     setGenerating(true);
-    simulateProgress();
+    setGenerationError(false);
+    setRetryCount(0);
     
-    try {
-      const plan = await generateBusinessPlan({
-        businessName: formData.businessName,
-        businessDescription: formData.businessDescription,
-        useAIV2: formData.useAIV2
-      });
-      
-      setBusinessPlan(plan);
-      setGeneratingProgress(100);
-      
-      setTimeout(() => {
-        setStep(2);
-      }, 800);
-    } catch (error) {
-      console.error('Error generating business plan:', error);
-      toast({
-        title: "Error",
-        description: "There was an error generating your business plan. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setTimeout(() => {
-        setGenerating(false);
-      }, 800);
-    }
+    simulateProgress(async () => {
+      await generatePlan();
+    });
   };
 
   const downloadPlan = () => {
@@ -186,10 +219,12 @@ export const usePlanCreator = (initialData?: {
     businessPlan,
     generating,
     generatingProgress,
+    generationError,
     isPremium,
     handleInputChange,
     handleToggleChange,
     handleSubmit,
+    handleRetry,
     downloadPlan,
     upgradeAccount,
     setStep

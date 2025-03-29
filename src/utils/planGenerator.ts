@@ -1,14 +1,6 @@
+
 import { toast } from "@/components/ui/use-toast";
 import { generateSection } from "./planSections";
-import { 
-  generateExecutiveSummary,
-  generateMarketAnalysis,
-  generateBusinessModel,
-  generateMarketingPlan,
-  generateFinancialProjections,
-  generateRiskAssessment,
-  generateSwotAnalysis
-} from "./mockPlanSections";
 
 export interface BusinessFormData {
   businessName: string;
@@ -42,34 +34,58 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     throw new Error("Business name and description are required");
   }
   
+  console.log(`Generating business plan sections with ${aiEngine} AI engine...`);
+  
+  // We'll generate sections sequentially to provide better context between sections
+  const generateExecutiveSummary = async (retries = 2): Promise<string> => {
+    try {
+      return await generateSection('executive summary', formData);
+    } catch (error) {
+      if (retries > 0) {
+        console.log(`Retrying executive summary (${retries} attempts left)...`);
+        return generateExecutiveSummary(retries - 1);
+      }
+      throw new Error(`Failed to generate executive summary after multiple attempts: ${error}`);
+    }
+  };
+  
+  const generateWithRetries = async (sectionName: string, retries = 2): Promise<string> => {
+    try {
+      return await generateSection(sectionName, formData);
+    } catch (error) {
+      if (retries > 0) {
+        console.log(`Retrying ${sectionName} (${retries} attempts left)...`);
+        return generateWithRetries(sectionName, retries - 1);
+      }
+      throw new Error(`Failed to generate ${sectionName} after multiple attempts: ${error}`);
+    }
+  };
+  
   try {
-    console.log(`Generating business plan sections with ${aiEngine} AI engine...`);
-    
-    // We'll generate sections sequentially to provide better context between sections
-    const executiveSummary = await generateSection('executive summary', formData);
+    const executiveSummary = await generateExecutiveSummary();
     toast({
       description: "Executive summary created...",
     });
     
     const [marketAnalysis, businessModel] = await Promise.all([
-      generateSection('market analysis', formData),
-      generateSection('business model', formData)
+      generateWithRetries('market analysis'),
+      generateWithRetries('business model')
     ]);
     toast({
       description: "Market analysis completed...",
     });
     
     const [marketingPlan, financialProjections] = await Promise.all([
-      generateSection('marketing plan', formData),
-      generateSection('financial and idea validation', formData)
+      generateWithRetries('marketing plan'),
+      generateWithRetries('financial and idea validation')
     ]);
     toast({
       description: "Validating your business idea...",
     });
     
     const [riskAssessment, swotAnalysis] = await Promise.all([
-      generateSection('risk assessment', formData),
-      generateSection('swot analysis', formData)
+      generateWithRetries('risk assessment'),
+      generateWithRetries('swot analysis')
     ]);
     
     const plan: BusinessPlanData = {
@@ -86,24 +102,22 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       title: "Success",
       description: `Business plan generated with ${formData.useAIV2 ? 'enhanced' : 'standard'} AI analysis!`,
     });
+    
+    // Validate the plan data to make sure all sections are populated
+    const emptySection = Object.entries(plan).find(([_, content]) => 
+      typeof content !== 'string' || content.trim().length === 0
+    );
+    
+    if (emptySection) {
+      throw new Error(`Plan generation incomplete: ${emptySection[0]} section is empty or invalid`);
+    }
+    
     return plan;
   } catch (error) {
     console.error("Error generating business plan:", error);
-    toast({
-      title: "Error",
-      description: "Failed to generate business plan. Using placeholder data instead.",
-      variant: "destructive"
-    });
     
-    // Fallback to mock data
-    return {
-      executiveSummary: generateExecutiveSummary(formData),
-      marketAnalysis: generateMarketAnalysis(formData),
-      businessModel: generateBusinessModel(formData),
-      marketingPlan: generateMarketingPlan(formData),
-      financialProjections: generateFinancialProjections(formData),
-      riskAssessment: generateRiskAssessment(formData),
-      swotAnalysis: generateSwotAnalysis(formData)
-    };
+    // Don't silently fall back to mock data - propagate the error so 
+    // the UI can show a retry option
+    throw new Error(`Failed to generate business plan: ${error.message}`);
   }
 };

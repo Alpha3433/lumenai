@@ -1,22 +1,46 @@
-
 import { toast } from "@/components/ui/use-toast";
-import { generateSection } from "./planSections";
+import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
+import { callOpenAI } from "./openaiService";
 
-export interface BusinessFormData {
-  businessName: string;
-  businessDescription: string;
-  useAIV2?: boolean;
-}
+// Helper function to generate a complete section with retries
+export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 2): Promise<string> => {
+  const promptTemplate = `Create a detailed and professional ${sectionName} section for a business plan with the following details:
+  
+Business Name: ${formData.businessName}
+Business Description: ${formData.businessDescription}
 
-export interface BusinessPlanData {
-  executiveSummary: string;
-  marketAnalysis: string;
-  businessModel: string;
-  marketingPlan: string;
-  financialProjections: string;
-  riskAssessment: string;
-  swotAnalysis: string;
-}
+The ${sectionName} should be comprehensive, data-driven, and tailored specifically to this business concept.`;
+
+  const model = formData.useAIV2 ? 'gpt-4' : 'gpt-3.5-turbo';
+  
+  let attempts = 0;
+  let error = null;
+  
+  while (attempts <= retryCount) {
+    try {
+      const response = await callOpenAI({
+        prompt: promptTemplate,
+        model: model,
+        temperature: 0.7,
+        maxTokens: 1000
+      });
+      
+      if (response.success && response.text.length > 100) {
+        return response.text;
+      } else {
+        throw new Error(`Generated content for ${sectionName} is too short or incomplete`);
+      }
+    } catch (err) {
+      error = err;
+      attempts++;
+      console.log(`Attempt ${attempts} failed for ${sectionName}, retrying...`, err);
+      // Short delay before retry
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+  
+  throw error || new Error(`Failed to generate ${sectionName} after ${retryCount} attempts`);
+};
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
   const aiEngine = formData.useAIV2 ? 'Premium' : 'Standard';
@@ -34,87 +58,49 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     throw new Error("Business name and description are required");
   }
   
-  console.log(`Generating business plan sections with ${aiEngine} AI engine...`);
+  const plan: Partial<BusinessPlanData> = {};
   
-  // We'll generate sections sequentially to provide better context between sections
-  const generateExecutiveSummary = async (retries = 2): Promise<string> => {
+  // Generate sections sequentially with progress notifications
+  const sections = [
+    { key: 'executiveSummary', name: 'executive summary', message: 'Creating executive summary...' },
+    { key: 'marketAnalysis', name: 'market analysis', message: 'Analyzing market dynamics...' },
+    { key: 'businessModel', name: 'business model', message: 'Developing business model...' },
+    { key: 'marketingPlan', name: 'marketing plan', message: 'Building marketing strategy...' },
+    { key: 'financialProjections', name: 'financial and idea validation', message: 'Calculating financial projections...' },
+    { key: 'riskAssessment', name: 'risk assessment', message: 'Evaluating potential risks...' },
+    { key: 'swotAnalysis', name: 'swot analysis', message: 'Completing SWOT analysis...' },
+  ];
+  
+  for (const section of sections) {
+    toast({ description: section.message });
+    
     try {
-      return await generateSection('executive summary', formData);
+      const content = await generateSection(section.name, formData, 3);
+      plan[section.key] = content;
+      
+      console.log(`Generated ${section.key} successfully, length: ${content.length}`);
     } catch (error) {
-      if (retries > 0) {
-        console.log(`Retrying executive summary (${retries} attempts left)...`);
-        return generateExecutiveSummary(retries - 1);
-      }
-      throw new Error(`Failed to generate executive summary after multiple attempts: ${error}`);
+      console.error(`Error generating ${section.name}:`, error);
+      
+      // Instead of using mock data, we'll throw an error to be handled by the caller
+      toast({
+        title: "Error",
+        description: `Could not generate ${section.name}. Please try again.`,
+        variant: "destructive"
+      });
+      
+      throw new Error(`Failed to generate ${section.name}. Please try with a different description or try again later.`);
     }
-  };
-  
-  const generateWithRetries = async (sectionName: string, retries = 2): Promise<string> => {
-    try {
-      return await generateSection(sectionName, formData);
-    } catch (error) {
-      if (retries > 0) {
-        console.log(`Retrying ${sectionName} (${retries} attempts left)...`);
-        return generateWithRetries(sectionName, retries - 1);
-      }
-      throw new Error(`Failed to generate ${sectionName} after multiple attempts: ${error}`);
-    }
-  };
-  
-  try {
-    const executiveSummary = await generateExecutiveSummary();
-    toast({
-      description: "Executive summary created...",
-    });
-    
-    const [marketAnalysis, businessModel] = await Promise.all([
-      generateWithRetries('market analysis'),
-      generateWithRetries('business model')
-    ]);
-    toast({
-      description: "Market analysis completed...",
-    });
-    
-    const [marketingPlan, financialProjections] = await Promise.all([
-      generateWithRetries('marketing plan'),
-      generateWithRetries('financial and idea validation')
-    ]);
-    toast({
-      description: "Validating your business idea...",
-    });
-    
-    const [riskAssessment, swotAnalysis] = await Promise.all([
-      generateWithRetries('risk assessment'),
-      generateWithRetries('swot analysis')
-    ]);
-    
-    const plan: BusinessPlanData = {
-      executiveSummary,
-      marketAnalysis,
-      businessModel,
-      marketingPlan,
-      financialProjections,
-      riskAssessment,
-      swotAnalysis
-    };
-    
-    toast({
-      title: "Success",
-      description: `Business plan generated with ${formData.useAIV2 ? 'enhanced' : 'standard'} AI analysis!`,
-    });
-    
-    // Validate the plan data to make sure all sections are populated
-    const emptySection = Object.entries(plan).find(([_, content]) => 
-      typeof content !== 'string' || content.trim().length === 0
-    );
-    
-    if (emptySection) {
-      throw new Error(`Plan generation incomplete: ${emptySection[0]} section is empty or invalid`);
-    }
-    
-    return plan;
-  } catch (error) {
-    console.error("Error generating business plan:", error);
-    throw error;
   }
+  
+  toast({
+    title: "Success",
+    description: `Business plan generated with ${formData.useAIV2 ? 'enhanced' : 'standard'} AI analysis!`,
+  });
+  
+  // Type assertion is safe here because we've either fully populated the plan or thrown an error
+  return plan as BusinessPlanData;
 };
+
+// Export the BusinessFormData type so it can be imported by other files
+export type { BusinessFormData };

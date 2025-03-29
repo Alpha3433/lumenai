@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from '@/components/ui/progress';
+import { Loader2, Sparkles, Zap, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Loader2, Sparkles, Zap, RefreshCw, AlertTriangle } from 'lucide-react';
 
 interface GeneratingDialogProps {
   open: boolean;
   progress: number;
   useAIV2: boolean;
-  isError?: boolean;
-  onRetry?: () => void;
+  error?: string | null;
+  onRetry?: () => void;  // Changed from (progress: number) => void to () => void
 }
 
 const aiActionMessages = [
@@ -31,92 +31,90 @@ const getRandomAiActionMessage = () => {
   return aiActionMessages[randomIndex];
 };
 
-const GeneratingDialog = ({ open, progress, useAIV2, isError, onRetry }: GeneratingDialogProps) => {
-  const [currentMessage, setCurrentMessage] = useState<string>(getRandomAiActionMessage());
-  const [retryAttempted, setRetryAttempted] = useState<boolean>(false);
-
-  // Update message periodically during generation for better user engagement
+const GeneratingDialog = ({ 
+  open, 
+  progress, 
+  useAIV2, 
+  error, 
+  onRetry 
+}: GeneratingDialogProps) => {
+  const [currentMessage, setCurrentMessage] = useState("");
+  
+  // Update message based on progress changes
   useEffect(() => {
-    if (open && !isError && progress < 100) {
-      const messageInterval = setInterval(() => {
+    if (error) {
+      setCurrentMessage("Generation error encountered. You can try again.");
+      return;
+    }
+    
+    if (progress < 25) {
+      setCurrentMessage(getRandomAiActionMessage());
+    } else if (progress >= 25 && progress < 50) {
+      setCurrentMessage(getRandomAiActionMessage());
+    } else if (progress >= 50 && progress < 75) {
+      setCurrentMessage(getRandomAiActionMessage());
+    } else if (progress >= 75 && progress < 100) {
+      setCurrentMessage(getRandomAiActionMessage());
+    } else if (progress === 100) {
+      setCurrentMessage("Complete! Preparing your results...");
+    }
+  }, [progress, error]);
+
+  // Update message periodically to show activity
+  useEffect(() => {
+    if (open && !error && progress < 100) {
+      const interval = setInterval(() => {
         setCurrentMessage(getRandomAiActionMessage());
-      }, 3500);
+      }, 6000);
       
-      return () => clearInterval(messageInterval);
+      return () => clearInterval(interval);
     }
-  }, [open, isError, progress]);
-
-  // Reset retry state when dialog reopens
-  useEffect(() => {
-    if (open) {
-      setRetryAttempted(false);
-    }
-  }, [open]);
-
-  const handleRetry = () => {
-    setRetryAttempted(true);
-    if (onRetry) {
-      onRetry();
-    }
-  };
+  }, [open, error, progress]);
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-md dialog-no-close-button">
-        <DialogTitle className="sr-only">Creating Business Plan</DialogTitle>
+      <DialogContent className="sm:max-w-md">
+        <DialogTitle className="sr-only">Creating Your Business Plan</DialogTitle>
         <div className="space-y-6 py-6">
-          <div className="text-center space-y-2">
-            {isError ? (
-              <AlertTriangle className="mx-auto h-16 w-16 text-destructive animate-pulse" />
-            ) : (
-              <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />
-            )}
-            <h3 className="text-xl font-semibold">
-              {isError ? "Generation Error" : "Creating Your Business Plan"}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {isError 
-                ? "We encountered an issue while generating your business plan." 
-                : "We're analyzing your business concept and generating a comprehensive plan..."}
-            </p>
-            {useAIV2 && !isError && (
-              <p className="text-xs text-amber-500 font-medium mt-1">
-                <Zap className="inline-block h-3 w-3 mr-1" /> 
-                Using enhanced AI V2 engine for superior results
+          {error ? (
+            <div className="text-center space-y-4">
+              <AlertCircle className="mx-auto h-16 w-16 text-destructive animate-pulse" />
+              <h3 className="text-xl font-semibold">Generation Error</h3>
+              <p className="text-sm text-muted-foreground">
+                {error || "An error occurred during business plan generation. Please try again."}
               </p>
-            )}
-          </div>
-
-          {isError ? (
-            <div className="text-center pt-2">
-              <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg mb-4">
-                <p className="text-sm text-red-600 dark:text-red-400">
-                  {retryAttempted 
-                    ? "We're still having trouble connecting to our AI service. This might be due to high demand or a temporary service disruption." 
-                    : "Our AI service is currently experiencing issues processing your request."}
-                </p>
-              </div>
-              
-              <Button 
-                onClick={handleRetry} 
-                className="bg-primary"
-                size="lg"
-              >
-                <RefreshCw className="mr-2 h-4 w-4" /> Try Again
-              </Button>
-              <p className="text-xs text-muted-foreground mt-4">
-                If the problem persists, try simplifying your business description or check back later.
-              </p>
+              {onRetry && (
+                <Button 
+                  onClick={onRetry}
+                  className="mt-4"
+                >
+                  Try Again
+                </Button>
+              )}
             </div>
           ) : (
             <>
+              <div className="text-center space-y-2">
+                <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />
+                <h3 className="text-xl font-semibold">Creating Your Business Plan</h3>
+                <p className="text-sm text-muted-foreground">
+                  We're analyzing your business concept and generating a comprehensive plan...
+                </p>
+                {useAIV2 && (
+                  <p className="text-xs text-amber-500 font-medium mt-1">
+                    <Zap className="inline-block h-3 w-3 mr-1" /> 
+                    Using enhanced AI V2 engine for superior results
+                  </p>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <Progress 
                   value={progress} 
                   className="h-2 bg-gray-200 dark:bg-gray-700"
                 />
                 <p className="text-sm text-center text-muted-foreground">
-                  {progress < 100 ? currentMessage : "Complete! Preparing your results..."}
+                  {currentMessage}
                 </p>
               </div>
 

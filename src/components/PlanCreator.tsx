@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { toast } from '@/components/ui/use-toast';
 import { usePlanCreator } from '@/hooks/usePlanCreator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
@@ -25,7 +24,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     handleInputChange,
     handleToggleChange,
     handleSubmit,
-    handleRetry,
     downloadPlan,
     upgradeAccount,
     setStep
@@ -39,18 +37,13 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
       
       {step === 1 ? (
         <BusinessPlanForm
-          formData={{
-            businessName: formData.businessName,
-            businessDescription: formData.businessDescription,
-            useAIV2: formData.useAIV2
-          }}
+          formData={formData}
           generating={generating}
           generatingProgress={generatingProgress}
           generationError={generationError}
           onChange={handleInputChange}
           onToggleChange={handleToggleChange}
           onSubmit={handleSubmit}
-          onRetry={handleRetry}
           isPremium={isPremium}
           onUpgrade={upgradeAccount}
         />

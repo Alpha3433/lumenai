@@ -2,7 +2,6 @@
 import { callOpenAI } from './openaiService';
 import { BusinessIdeaPreferences, BusinessIdeaSuggestion } from './businessIdeas/types';
 import { generateMockBusinessIdea } from './businessIdeas';
-import { toast } from '@/components/ui/use-toast';
 
 // Function to generate a business idea using OpenAI
 export async function generateBusinessIdea(preferences: BusinessIdeaPreferences): Promise<BusinessIdeaSuggestion> {
@@ -22,11 +21,6 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
     
     if (!response.success) {
       console.error('Error generating business idea:', response.error);
-      toast({
-        title: "Generation Error",
-        description: response.error || "Failed to generate business idea. Please try again.",
-        variant: "destructive"
-      });
       throw new Error('Failed to generate business idea');
     }
     
@@ -35,7 +29,7 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
   } catch (error) {
     console.error('Error in generateBusinessIdea:', error);
     
-    // Fall back to mock data in development mode
+    // Return mock data if in development or if there's an error
     if (import.meta.env.DEV) {
       console.log('Using mock business idea in development mode');
       return generateMockBusinessIdea(preferences);
@@ -137,4 +131,6 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
 }
 
 // Re-export the necessary types from the businessIdeas directory
+// Fix: Use 'export type' for type-only exports
 export type { BusinessIdeaPreferences, BusinessIdeaSuggestion };
+

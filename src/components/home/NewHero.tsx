@@ -1,11 +1,34 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/components/AuthProvider';
+import LoginModal from '@/components/LoginModal';
+import RegisterModal from '@/components/RegisterModal';
 
 const NewHero = () => {
+  const { user } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+  const openLoginModal = () => {
+    setIsRegisterModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
+  const openRegisterModal = () => {
+    setIsLoginModalOpen(false);
+    setIsRegisterModalOpen(true);
+  };
+
+  const handleTryForFree = () => {
+    if (!user) {
+      openRegisterModal();
+    }
+  };
+
   return (
     <div className="py-24 md:py-32 px-4 max-w-7xl mx-auto">
       <div className="max-w-3xl mx-auto text-center">
@@ -39,12 +62,22 @@ const NewHero = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
         >
-          <Link to="/create">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
-              Build Your Business Plan Now
+          {user ? (
+            <Link to="/create">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
+                Try for Free
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          ) : (
+            <Button 
+              onClick={handleTryForFree}
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium"
+            >
+              Try for Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-          </Link>
+          )}
           <Link to="/market-trends">
             <Button variant="outline" className="rounded-md h-12 px-8 text-lg font-medium border-gray-300 dark:border-gray-700">
               See Market Trends
@@ -85,6 +118,17 @@ const NewHero = () => {
           />
         </div>
       </motion.div>
+
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)}
+        onRegisterClick={openRegisterModal}
+      />
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        onLoginClick={openLoginModal}
+      />
     </div>
   );
 };

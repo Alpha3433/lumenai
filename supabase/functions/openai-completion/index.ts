@@ -16,11 +16,7 @@ serve(async (req) => {
   }
   
   try {
-    // Parse the request body
-    const requestData = await req.json();
-    const { prompt, model, temperature, max_tokens } = requestData;
-    
-    console.log(`OpenAI request received for model: ${model || 'gpt-4o-mini'}`);
+    const { prompt, model, temperature, max_tokens } = await req.json();
     
     // Get the OpenAI API key from environment variables
     const apiKey = Deno.env.get('OPENAI_API_KEY');
@@ -28,22 +24,19 @@ serve(async (req) => {
     if (!apiKey) {
       console.error('OpenAI API key not configured');
       return new Response(
-        JSON.stringify({ 
-          error: 'OpenAI API key not configured in Supabase environment variables',
-          success: false 
-        }),
+        JSON.stringify({ error: 'OpenAI API key not configured' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
       );
     }
     
     if (!prompt) {
       return new Response(
-        JSON.stringify({ error: 'Prompt is required', success: false }),
+        JSON.stringify({ error: 'Prompt is required' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
       );
     }
     
-    console.log(`Calling OpenAI API with model: ${model || 'gpt-4o-mini'}, prompt length: ${prompt.length} chars`);
+    console.log(`Calling OpenAI API with model: ${model}`);
     
     // Check prompt type to add special formatting instructions
     const isValidationPrompt = prompt.toLowerCase().includes('financial and idea validation') || 
@@ -93,45 +86,16 @@ serve(async (req) => {
     if (!openAIResponse.ok) {
       const errorData = await openAIResponse.json();
       console.error('OpenAI API error:', errorData);
-      
-      // Extract useful error information
-      const errorMessage = errorData.error?.message || 'Unknown OpenAI API error';
-      const errorType = errorData.error?.type || 'unknown_error';
-      const errorCode = errorData.error?.code || 'unknown_code';
-      
-      return new Response(
-        JSON.stringify({ 
-          error: `OpenAI API error: ${errorMessage}`, 
-          errorType,
-          errorCode,
-          success: false 
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-      );
+      throw new Error(`OpenAI API error: ${JSON.stringify(errorData)}`);
     }
     
     const data = await openAIResponse.json();
-    console.log('OpenAI response received successfully');
-    
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      console.error('Invalid response format from OpenAI:', data);
-      return new Response(
-        JSON.stringify({ 
-          error: 'Invalid response format from OpenAI', 
-          success: false 
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-      );
-    }
-    
-    const text = data.choices[0].message.content || '';
+    const text = data.choices?.[0]?.message?.content || '';
     
     // Post-process the response to fix any remaining decimal formatting issues
     const fixedText = text
       .replace(/(\d+)\.\s+(\d+)/g, '$1.$2')
       .replace(/\$(\d+)\.\s+(\d+)/g, '\$$1.$2');
-    
-    console.log('Response successfully processed and returned');
     
     return new Response(
       JSON.stringify({ text: fixedText, success: true }),
@@ -140,10 +104,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in openai-completion function:', error);
     return new Response(
-      JSON.stringify({ 
-        error: error.message || 'An unexpected error occurred', 
-        success: false 
-      }),
+      JSON.stringify({ error: error.message, success: false }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     );
   }

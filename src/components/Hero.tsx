@@ -101,13 +101,14 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-10"
         >
-          <Button 
-            onClick={handleTryForFree}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-md h-14 px-8 text-lg font-medium transition-all shadow-md hover:shadow-lg"
-          >
-            Start Building Now
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          <Link to="/register">
+            <Button 
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-md h-14 px-8 text-lg font-medium transition-all shadow-md hover:shadow-lg"
+            >
+              Start Building Now
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
           <Link to="/examples">
             <Button variant="outline" className="rounded-md h-14 px-8 text-lg font-medium border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all">
               See Success Stories

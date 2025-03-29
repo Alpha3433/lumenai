@@ -10,7 +10,7 @@ interface GeneratingDialogProps {
   progress: number;
   useAIV2: boolean;
   error?: string | null;
-  onRetry?: () => void;  // Changed from (progress: number) => void to () => void
+  onRetry?: () => void;
 }
 
 const aiActionMessages = [
@@ -39,11 +39,41 @@ const GeneratingDialog = ({
   onRetry 
 }: GeneratingDialogProps) => {
   const [currentMessage, setCurrentMessage] = useState("");
+  const [stuckTimeout, setStuckTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [isStuck, setIsStuck] = useState(false);
+  
+  // Reset stuck state when dialog opens/closes or when progress changes
+  useEffect(() => {
+    setIsStuck(false);
+    if (stuckTimeout) {
+      clearTimeout(stuckTimeout);
+    }
+    
+    // Set a timeout to detect if generation is stuck
+    if (open && !error && progress > 0 && progress < 100) {
+      const timeout = setTimeout(() => {
+        if (progress < 100) {
+          setIsStuck(true);
+        }
+      }, 45000); // Consider stuck after 45 seconds without progress change
+      
+      setStuckTimeout(timeout);
+    }
+    
+    return () => {
+      if (stuckTimeout) clearTimeout(stuckTimeout);
+    };
+  }, [open, progress, error]);
   
   // Update message based on progress changes
   useEffect(() => {
     if (error) {
       setCurrentMessage("Generation error encountered. You can try again.");
+      return;
+    }
+    
+    if (isStuck) {
+      setCurrentMessage("Generation seems to be taking longer than expected. You may want to try again.");
       return;
     }
     
@@ -58,30 +88,30 @@ const GeneratingDialog = ({
     } else if (progress === 100) {
       setCurrentMessage("Complete! Preparing your results...");
     }
-  }, [progress, error]);
+  }, [progress, error, isStuck]);
 
   // Update message periodically to show activity
   useEffect(() => {
-    if (open && !error && progress < 100) {
+    if (open && !error && !isStuck && progress < 100) {
       const interval = setInterval(() => {
         setCurrentMessage(getRandomAiActionMessage());
       }, 6000);
       
       return () => clearInterval(interval);
     }
-  }, [open, error, progress]);
+  }, [open, error, isStuck, progress]);
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-md">
         <DialogTitle className="sr-only">Creating Your Business Plan</DialogTitle>
         <div className="space-y-6 py-6">
-          {error ? (
+          {error || isStuck ? (
             <div className="text-center space-y-4">
               <AlertCircle className="mx-auto h-16 w-16 text-destructive animate-pulse" />
-              <h3 className="text-xl font-semibold">Generation Error</h3>
+              <h3 className="text-xl font-semibold">{isStuck ? "Generation Taking Too Long" : "Generation Error"}</h3>
               <p className="text-sm text-muted-foreground">
-                {error || "An error occurred during business plan generation. Please try again."}
+                {error || "The business plan generation process seems to be taking longer than expected. This might be due to server load or connection issues."}
               </p>
               {onRetry && (
                 <Button 

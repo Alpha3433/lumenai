@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import { toast } from '@/components/ui/use-toast';
 import { BusinessPlanData } from '@/types/businessPlan';
@@ -35,6 +35,7 @@ export const usePlanCreator = (initialData?: {
   });
   const [businessPlan, setBusinessPlan] = useState<BusinessPlanData>(defaultBusinessPlan);
   const [isPremium, setIsPremium] = useState(false);
+  const generationAbortController = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (initialData?.businessName || initialData?.businessDescription) {
@@ -49,6 +50,13 @@ export const usePlanCreator = (initialData?: {
         description: "We've pre-filled your form with the generated business idea."
       });
     }
+    
+    // Cleanup function to abort any ongoing generation
+    return () => {
+      if (generationAbortController.current) {
+        generationAbortController.current.abort();
+      }
+    };
   }, [initialData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,30 +73,29 @@ export const usePlanCreator = (initialData?: {
     setGenerationError(null);
     
     // More reliable progress simulation
-    let currentProgress = 0;
     const sections = 7; // Total number of sections to generate
     const progressPerSection = 90 / sections; // Leave 10% for final processing
-    let sectionIndex = 0;
     
-    const updateProgress = () => {
-      // Each section has its own progress that goes from 0 to progressPerSection
-      sectionIndex++;
-      currentProgress = Math.min(sectionIndex * progressPerSection, 90);
-      setGeneratingProgress(currentProgress);
+    let currentProgress = 0;
+    const updateProgressInterval = 4000; // Update every 4 seconds
+    
+    const interval = setInterval(() => {
+      // Increment progress based on sections
+      currentProgress += progressPerSection / 3; // Divide by 3 to make multiple updates per section
       
-      if (currentProgress >= 90) {
+      // Ensure we don't exceed 90% until final completion
+      if (currentProgress > 90) {
+        currentProgress = 90;
         clearInterval(interval);
       }
-    };
-    
-    const interval = setInterval(updateProgress, 4000); // Update every 4 seconds, matching expected section generation time
+      
+      setGeneratingProgress(Math.min(Math.round(currentProgress), 90));
+    }, updateProgressInterval / 3);
     
     return () => {
       clearInterval(interval);
-      // Ensure we don't leave progress stuck if the process completes early
-      if (currentProgress < 100) {
-        setGeneratingProgress(100);
-      }
+      // Complete progress to 100% if needed
+      setGeneratingProgress(100);
     };
   };
 
@@ -113,16 +120,26 @@ export const usePlanCreator = (initialData?: {
       return;
     }
     
+    // Create new abort controller for this operation
+    if (generationAbortController.current) {
+      generationAbortController.current.abort();
+    }
+    generationAbortController.current = new AbortController();
+    
     setGenerating(true);
+    setGenerationError(null);
     const clearProgressSimulation = simulateProgress();
     
     try {
+      console.log('Starting business plan generation process...');
       // Generate the business plan
       const plan = await generateBusinessPlan({
         businessName: formData.businessName,
         businessDescription: formData.businessDescription,
         useAIV2: formData.useAIV2
       });
+      
+      console.log('Business plan generation completed successfully');
       
       // Set the business plan data
       setBusinessPlan(plan);
@@ -151,10 +168,11 @@ export const usePlanCreator = (initialData?: {
         setGenerating(false);
         setGeneratingProgress(0);
       }, 1500);
+    } finally {
+      // Always clear the progress simulation
+      clearProgressSimulation();
+      generationAbortController.current = null;
     }
-    
-    // Clear the progress simulation when done
-    return () => clearProgressSimulation();
   };
 
   const downloadPlan = () => {

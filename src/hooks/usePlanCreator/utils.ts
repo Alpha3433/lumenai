@@ -74,8 +74,8 @@ export const mockActions = {
     }, 1500);
   },
   
-  upgradeAccount: (setIsPremium: (value: boolean) => void) => {
-    setIsPremium(true);
+  // Removed setIsPremium parameter since it's not available in the context where this is called
+  upgradeAccount: () => {
     toast({
       title: "Success",
       description: "Premium access granted!",

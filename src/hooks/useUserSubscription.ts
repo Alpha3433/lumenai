@@ -70,7 +70,8 @@ export function useUserSubscription(userId?: string): SubscriptionStatus {
           toast({
             title: "Subscription Expiring Soon",
             description: `Your ${formatPlanName(plan)} subscription will expire in ${remaining} days.`,
-            variant: "warning"
+            // Fixed the variant to use a valid value
+            variant: "destructive"
           });
         }
         

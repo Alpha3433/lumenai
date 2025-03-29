@@ -94,7 +94,8 @@ export function usePlanCreator(initialData?: PlanCreatorInitialData | null) {
   };
 
   const upgradeAccount = () => {
-    mockActions.upgradeAccount(setIsPremium);
+    // Fixed the error - removing the setIsPremium parameter that was incorrectly referenced
+    mockActions.upgradeAccount();
   };
 
   return {

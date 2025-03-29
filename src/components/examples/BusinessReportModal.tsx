@@ -1,16 +1,12 @@
 
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { X, FileText, PieChart, CheckCircle, Globe, Scale, Activity, ShieldCheck } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { X, FileText, PieChart, CheckCircle, Globe, Activity, ShieldCheck } from 'lucide-react';
-import SwotDisplay from './SwotDisplay';
-import MarketAnalysisDisplay from './MarketAnalysisDisplay';
 import ExecutiveSummaryDisplay from './ExecutiveSummaryDisplay';
-import FinancialDisplay from './FinancialDisplay';
-import BusinessModelDisplay from './BusinessModelDisplay';
+import SwotDisplay from './SwotDisplay';
 
 interface BusinessReportModalProps {
   isOpen: boolean;
@@ -25,89 +21,92 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
 }) => {
   if (!company) return null;
   
+  const sections = [
+    { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-4 w-4" /> },
+    { id: 'dashboard', title: 'Summary', icon: <PieChart className="h-4 w-4" /> },
+    { id: 'swot-analysis', title: 'SWOT', icon: <CheckCircle className="h-4 w-4" /> },
+    { id: 'pestel-analysis', title: 'PESTEL', icon: <Globe className="h-4 w-4" /> },
+    { id: 'porter-five-forces', title: "Porter's", icon: <Scale className="h-4 w-4" /> },
+  ];
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl h-[90vh] p-0 overflow-hidden">
-        <div className="flex flex-col h-full">
-          <DialogHeader className="px-6 py-4 border-b">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-md bg-gray-100 dark:bg-gray-800 overflow-hidden">
-                  <img 
-                    src={company.logoUrl} 
-                    alt={company.name} 
-                    className="h-full w-full object-contain"
-                    onError={(e) => {
-                      e.currentTarget.src = "/placeholder.svg";
-                    }}
-                  />
-                </div>
-                <div>
-                  <DialogTitle className="text-xl font-bold">{company.name} Business Report</DialogTitle>
-                  <DialogDescription className="text-sm">AI-generated analysis based on mock data</DialogDescription>
-                </div>
+      <DialogContent className="max-w-5xl p-0 h-[90vh] overflow-hidden flex flex-col">
+        <DialogHeader className="px-6 py-4 border-b">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-md bg-gray-100 dark:bg-gray-800 overflow-hidden flex items-center justify-center">
+                <img 
+                  src={company.logoUrl} 
+                  alt={company.name} 
+                  className="h-8 w-8 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "/placeholder.svg";
+                  }}
+                />
               </div>
-              <Button variant="ghost" size="icon" onClick={onClose}>
-                <X className="h-4 w-4" />
-              </Button>
+              <div>
+                <DialogTitle className="text-xl font-bold">{company.name} Business Report</DialogTitle>
+                <DialogDescription className="text-sm">AI-generated analysis based on public data</DialogDescription>
+              </div>
             </div>
-          </DialogHeader>
-          
-          <div className="flex-1 overflow-y-auto p-6">
-            <Tabs defaultValue="executive-summary" className="w-full">
-              <TabsList className="grid grid-cols-5 mb-8">
-                <TabsTrigger value="executive-summary" className="flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  <span className="hidden md:inline">Executive Summary</span>
-                  <span className="md:hidden">Summary</span>
-                </TabsTrigger>
-                <TabsTrigger value="swot" className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  <span>SWOT</span>
-                </TabsTrigger>
-                <TabsTrigger value="market" className="flex items-center gap-2">
-                  <Globe className="h-4 w-4" />
-                  <span>Market</span>
-                </TabsTrigger>
-                <TabsTrigger value="financials" className="flex items-center gap-2">
-                  <PieChart className="h-4 w-4" />
-                  <span>Financials</span>
-                </TabsTrigger>
-                <TabsTrigger value="business-model" className="flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4" />
-                  <span>Business Model</span>
-                </TabsTrigger>
-              </TabsList>
-              
-              <Card className="border border-gray-200 dark:border-gray-800">
-                <CardContent className="p-6">
-                  <TabsContent value="executive-summary" className="mt-0">
-                    <ExecutiveSummaryDisplay company={company} />
-                  </TabsContent>
-                  
-                  <TabsContent value="swot" className="mt-0">
-                    <SwotDisplay company={company} />
-                  </TabsContent>
-                  
-                  <TabsContent value="market" className="mt-0">
-                    <MarketAnalysisDisplay company={company} />
-                  </TabsContent>
-                  
-                  <TabsContent value="financials" className="mt-0">
-                    <FinancialDisplay company={company} />
-                  </TabsContent>
-                  
-                  <TabsContent value="business-model" className="mt-0">
-                    <BusinessModelDisplay company={company} />
-                  </TabsContent>
-                </CardContent>
-              </Card>
-            </Tabs>
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <X className="h-4 w-4" />
+            </Button>
           </div>
-          
-          <div className="p-4 border-t flex justify-between items-center">
-            <span className="text-sm text-gray-500">This is a mock report for demonstration purposes</span>
-            <Button variant="outline" onClick={onClose}>Close</Button>
+        </DialogHeader>
+        
+        <div className="flex-1 overflow-y-auto">
+          <div className="space-y-10 p-6 pb-20">
+            <div className="max-w-6xl mx-auto">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent -z-10 rounded-3xl blur-xl opacity-50"></div>
+                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden bg-card/95 backdrop-blur-sm">
+                  <CardContent className="p-8">
+                    {/* Executive Summary */}
+                    <div id="executive-summary">
+                      <ExecutiveSummaryDisplay company={company} />
+                    </div>
+                    
+                    <Separator className="my-10" />
+                    
+                    {/* SWOT Analysis */}
+                    <div id="swot-analysis">
+                      <SwotDisplay company={company} />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Floating Bottom Navigator */}
+        <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
+          <div className="pointer-events-auto">
+            <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full shadow-xl border border-gray-200/50 dark:border-gray-800/50 flex items-center gap-1 py-1 px-2">
+              {sections.map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className="flex flex-col items-center justify-center px-3 py-2 rounded-full transition-all hover:bg-gray-100/70 dark:hover:bg-gray-800/50"
+                >
+                  <div className="bg-primary/5 dark:bg-primary/10 rounded-full p-2 mb-1 text-primary">
+                    {section.icon}
+                  </div>
+                  <span className="text-[10px] font-medium text-gray-700 dark:text-gray-300">
+                    {section.title}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </DialogContent>

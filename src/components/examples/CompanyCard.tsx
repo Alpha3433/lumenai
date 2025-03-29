@@ -12,11 +12,11 @@ interface CompanyCardProps {
 const CompanyCard: React.FC<CompanyCardProps> = ({ company, onViewReport }) => {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col border border-gray-200 dark:border-gray-800">
-      <div className="relative h-48 bg-gray-100 dark:bg-gray-800">
+      <div className="relative h-48 bg-gray-100 dark:bg-gray-800 flex items-center justify-center p-4">
         <img 
           src={company.logoUrl} 
           alt={`${company.name} logo`} 
-          className="w-full h-full object-cover object-center"
+          className="max-w-full max-h-full object-contain"
           onError={(e) => {
             e.currentTarget.src = "/placeholder.svg";
           }}

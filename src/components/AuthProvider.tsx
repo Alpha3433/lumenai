@@ -53,6 +53,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     getSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      console.log('Auth state changed:', event, !!newSession?.user);
       setSession(newSession);
       setUser(newSession?.user || null);
       
@@ -81,7 +82,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [navigate, previousAuthState]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    console.log('Signing out...');
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error);
+      throw error;
+    }
+    console.log('Signed out successfully');
     setSubscriptionPlan('free');
   };
 

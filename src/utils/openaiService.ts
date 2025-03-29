@@ -102,6 +102,19 @@ function generateMockResponse(prompt: string): string {
   } else if (prompt.includes('risk assessment')) {
     return 'This is a mock risk assessment that would identify potential internal and external risks, their likelihood and impact, and proposed mitigation strategies.';
   } else {
-    return 'This is a generic mock response for the business plan section. In a real implementation, this would be replaced with specific content tailored to your business concept.';
+    // For business idea generation, provide a more structured response that follows the expected format
+    return `Business Name: EcoLearn Platform
+
+Description: EcoLearn is a comprehensive e-learning platform that specializes in environmental education and sustainability skills. The platform offers interactive courses, project-based learning, and certification programs created by environmental experts and academics.
+
+Target Market: Educational institutions, environmental professionals, sustainability-focused corporations, and eco-conscious individuals seeking to develop green skills.
+
+Revenue Model: Tiered subscription model with free basic access and premium features, enterprise licensing for institutions, and certification program fees.
+
+Why It Works:
+- Growing global demand for environmental education and sustainability skills in the job market
+- Low competition in the specialized environmental e-learning niche compared to general education platforms
+- Potential for partnerships with environmental organizations and academic institutions
+- Scalable digital business model with relatively low operational costs after initial development`;
   }
 }

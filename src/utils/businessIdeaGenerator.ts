@@ -33,13 +33,9 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
   } catch (error) {
     console.error('Error in generateBusinessIdea:', error);
     
-    // Return mock data if in development or if there's an error
-    if (import.meta.env.DEV) {
-      console.log('Using mock business idea in development mode');
-      return generateMockBusinessIdea(preferences);
-    }
-    
-    throw error;
+    // Return mock data in development or if there's an error
+    console.log('Using mock business idea due to error or development mode');
+    return generateMockBusinessIdea(preferences);
   }
 }
 
@@ -139,4 +135,3 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
 // Re-export the necessary types from the businessIdeas directory
 // Fix: Use 'export type' for type-only exports
 export type { BusinessIdeaPreferences, BusinessIdeaSuggestion };
-

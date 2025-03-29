@@ -78,9 +78,9 @@ const NewHero = () => {
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           )}
-          <Link to="/market-trends">
+          <Link to="/examples">
             <Button variant="outline" className="rounded-md h-12 px-8 text-lg font-medium border-gray-300 dark:border-gray-700">
-              See Market Trends
+              See Examples
             </Button>
           </Link>
         </motion.div>

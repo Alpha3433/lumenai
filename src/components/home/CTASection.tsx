@@ -66,9 +66,9 @@ const CTASection = () => {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             )}
-            <Link to="/market-trends">
+            <Link to="/examples">
               <Button variant="outline" className="rounded-md h-12 px-8 text-base font-medium border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all">
-                Explore Market Trends
+                See Examples
               </Button>
             </Link>
           </div>

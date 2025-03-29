@@ -1,97 +1,117 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertTriangle, LogIn, Shuffle, Truck, Users, Swords } from 'lucide-react';
-import { PorterForce, ForcesLevel } from '@/utils/porter';
-import { cn } from '@/lib/utils';
+import { PorterForce } from '@/utils/porter';
+import { LogIn, Shuffle, Truck, Users, Swords } from 'lucide-react';
 
 interface PorterFiveForceCardProps {
   force: PorterForce;
+  companyName?: string;
+  industry?: string;
 }
 
-const PorterFiveForceCard: React.FC<PorterFiveForceCardProps> = ({ force }) => {
-  // Define level-specific styling and display names
-  const levelConfig: Record<ForcesLevel, { 
-    textColor: string, 
-    bgColor: string,
-    displayName?: string,
-    iconColor: string 
-  }> = {
-    'Low': {
-      textColor: 'text-green-700 dark:text-green-400',
-      bgColor: 'bg-green-50 dark:bg-green-900/20',
-      displayName: 'Low',
-      iconColor: 'text-green-500'
-    },
-    'Medium': {
-      textColor: 'text-orange-700 dark:text-orange-400',
-      bgColor: 'bg-orange-50 dark:bg-orange-900/20',
-      displayName: 'Moderate',
-      iconColor: 'text-orange-500'
-    },
-    'High': {
-      textColor: 'text-red-700 dark:text-red-400',
-      bgColor: 'bg-red-50 dark:bg-red-900/20',
-      displayName: 'High',
-      iconColor: 'text-red-500'
-    }
-  };
-
-  const getIcon = () => {
-    const iconProps = { 
-      className: `h-5 w-5 ${levelConfig[force.level].iconColor}`, 
-      "aria-hidden": true 
+const PorterFiveForceCard: React.FC<PorterFiveForceCardProps> = ({ 
+  force,
+  companyName,
+  industry
+}) => {
+  const getForceConfig = () => {
+    const threatLevel = force.level.toLowerCase();
+    
+    let config = {
+      icon: <LogIn className="h-5 w-5" />,
+      colorClass: 'text-gray-600 dark:text-gray-300',
+      bgClass: 'bg-gray-50 dark:bg-gray-800/50',
+      borderClass: 'border-gray-200 dark:border-gray-700/50',
+      threatBadgeClass: 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300'
     };
     
-    switch (force.icon) {
-      case 'log-in':
-        return <LogIn {...iconProps} />;
-      case 'shuffle':
-        return <Shuffle {...iconProps} />;
-      case 'truck':
-        return <Truck {...iconProps} />;
-      case 'users':
-        return <Users {...iconProps} />;
-      case 'swords':
-        return <Swords {...iconProps} />;
-      default:
-        return <AlertTriangle {...iconProps} className="h-5 w-5 text-yellow-500" />;
+    // Set icon based on force category
+    switch (force.category) {
+      case 'threat-new-entry':
+        config.icon = <LogIn className="h-5 w-5" />;
+        break;
+      case 'threat-substitution':
+        config.icon = <Shuffle className="h-5 w-5" />;
+        break;
+      case 'supplier-power':
+        config.icon = <Truck className="h-5 w-5" />;
+        break;
+      case 'buyer-power':
+        config.icon = <Users className="h-5 w-5" />;
+        break;
+      case 'competitive-rivalry':
+        config.icon = <Swords className="h-5 w-5" />;
+        break;
     }
+    
+    // Set colors based on threat level
+    switch (threatLevel) {
+      case 'high':
+        config.colorClass = 'text-red-600 dark:text-red-400';
+        config.bgClass = 'bg-red-50 dark:bg-red-900/10';
+        config.borderClass = 'border-red-100 dark:border-red-800/30';
+        config.threatBadgeClass = 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
+        break;
+      case 'medium':
+        config.colorClass = 'text-amber-600 dark:text-amber-400';
+        config.bgClass = 'bg-amber-50 dark:bg-amber-900/10';
+        config.borderClass = 'border-amber-100 dark:border-amber-800/30';
+        config.threatBadgeClass = 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
+        break;
+      case 'low':
+        config.colorClass = 'text-green-600 dark:text-green-400';
+        config.bgClass = 'bg-green-50 dark:bg-green-900/10';
+        config.borderClass = 'border-green-100 dark:border-green-800/30';
+        config.threatBadgeClass = 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
+        break;
+    }
+    
+    return config;
   };
+  
+  const config = getForceConfig();
 
-  const config = levelConfig[force.level];
-  const displayLevel = config.displayName || force.level;
+  // Ensure we have a consistent set of points (max 4)
+  const points = force.points.slice(0, 4).map(point => 
+    point.length > 120 ? `${point.substring(0, 120)}...` : point
+  );
+  
+  // Fill with empty space if less than 4 points
+  while (points.length < 4) {
+    points.push("");
+  }
+  
+  // Filter out empty points
+  const filteredPoints = points.filter(point => point.length > 0);
 
   return (
-    <Card className="border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200">
-      <CardContent className="p-6">
-        <div className="flex flex-col space-y-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              {getIcon()}
-              <h3 className="text-lg font-medium">{force.title}</h3>
-            </div>
-            <span className={cn(
-              "px-3 py-1 rounded-full text-xs font-medium",
-              config.textColor,
-              config.bgColor
-            )}>
-              {displayLevel}
-            </span>
+    <Card className={`${config.bgClass} ${config.borderClass} shadow-sm overflow-hidden`}>
+      <CardContent className="p-5">
+        <div className="flex items-start gap-4">
+          <div className={`p-2 rounded-full ${config.bgClass} ${config.colorClass} mt-1`}>
+            {config.icon}
           </div>
           
-          <ul className="space-y-2.5 mt-2">
-            {force.points.map((point, index) => (
-              <li key={index} className="flex items-start gap-2.5 text-sm">
-                <span className={cn(
-                  "mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0",
-                  force.level === 'Low' ? "bg-green-500" : 
-                  force.level === 'Medium' ? "bg-orange-500" : "bg-red-500"
-                )}></span>
-                <span className="text-gray-700 dark:text-gray-300">{point}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                {force.title}
+              </h3>
+              <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${config.threatBadgeClass}`}>
+                {force.level}
+              </span>
+            </div>
+            
+            <ul className="space-y-2 text-sm">
+              {filteredPoints.map((point, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className={`${config.colorClass} mt-1`}>•</span>
+                  <p className="text-gray-700 dark:text-gray-300">{point}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </CardContent>
     </Card>

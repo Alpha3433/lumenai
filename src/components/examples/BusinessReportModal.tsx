@@ -33,7 +33,6 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
   
   const sections = [
     { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-4 w-4" /> },
-    { id: 'dashboard', title: 'Summary', icon: <PieChart className="h-4 w-4" /> },
     { id: 'swot-analysis', title: 'SWOT', icon: <CheckCircle className="h-4 w-4" /> },
     { id: 'pestel-analysis', title: 'PESTEL', icon: <Globe className="h-4 w-4" /> },
     { id: 'porter-five-forces', title: "Porter's", icon: <Scale className="h-4 w-4" /> },
@@ -57,7 +56,7 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
               <div className="h-10 w-10 rounded-md bg-gray-100 dark:bg-gray-800 overflow-hidden flex items-center justify-center">
                 <img 
                   src={company.logoUrl} 
-                  alt={company.name} 
+                  alt={`${company.name} logo`} 
                   className="h-8 w-8 object-contain"
                   onError={(e) => {
                     e.currentTarget.src = "/placeholder.svg";
@@ -69,6 +68,7 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
                 <DialogDescription className="text-sm">AI-generated analysis based on public data</DialogDescription>
               </div>
             </div>
+            {/* Only one X button at the top right */}
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-4 w-4" />
             </Button>
@@ -98,14 +98,22 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
                     
                     {/* PESTEL Analysis */}
                     <div id="pestel-analysis">
-                      <PestelAnalysisSection pestelData={pestelData} />
+                      <PestelAnalysisSection 
+                        pestelData={pestelData} 
+                        companyName={company.name}
+                        industry={company.industry}
+                      />
                     </div>
                     
                     <Separator className="my-10" />
                     
                     {/* Porter's Five Forces Analysis */}
                     <div id="porter-five-forces">
-                      <PorterFiveForcesSection forcesData={forcesData} />
+                      <PorterFiveForcesSection 
+                        forcesData={forcesData} 
+                        companyName={company.name}
+                        industry={company.industry}
+                      />
                     </div>
                     
                     <Separator className="my-10" />
@@ -115,6 +123,7 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
                       <WebBusinessModelsSection 
                         businessName={company.name}
                         businessDescription={company.shortDescription}
+                        industry={company.industry}
                         isPremium={true}
                         onUpgrade={() => {}}
                       />
@@ -126,6 +135,8 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
                     <div id="marketing-plan">
                       <MarketingPlanSection 
                         marketingPlanText={company.marketingPlan || ''}
+                        companyName={company.name}
+                        industry={company.industry}
                         isPremium={true}
                         onUpgrade={() => {}}
                       />

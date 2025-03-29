@@ -117,7 +117,7 @@ const NewHero = () => {
             }}
           />
         </div>
-      </div>
+      </motion.div>
 
       <LoginModal 
         isOpen={isLoginModalOpen} 

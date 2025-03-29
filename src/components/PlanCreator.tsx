@@ -39,7 +39,11 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
       
       {step === 1 ? (
         <BusinessPlanForm
-          formData={formData}
+          formData={{
+            businessName: formData.businessName,
+            businessDescription: formData.businessDescription,
+            useAIV2: formData.useAIV2
+          }}
           generating={generating}
           generatingProgress={generatingProgress}
           generationError={generationError}

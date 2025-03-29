@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 import { BusinessPlanData } from '@/types/businessPlan';
 import { usePlanGeneration } from './usePlanGeneration';
 import { mockActions } from './utils';
-import { PlanCreatorFormData } from './types';
+import { PlanCreatorFormData, PlanCreatorState } from './types';
+import { useUserSubscription } from '@/hooks/useUserSubscription';
+import { useAuth } from '@/components/AuthProvider';
 
 interface PlanCreatorInitialData {
   businessName?: string;
@@ -21,14 +23,23 @@ const defaultBusinessPlan: BusinessPlanData = {
 };
 
 export function usePlanCreator(initialData?: PlanCreatorInitialData | null) {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<PlanCreatorState['step']>(1);
   const [formData, setFormData] = useState<PlanCreatorFormData>({
     businessName: initialData?.businessName || '',
     businessDescription: initialData?.businessDescription || '',
     useAIV2: false
   });
   const [businessPlan, setBusinessPlan] = useState<BusinessPlanData>(defaultBusinessPlan);
-  const [isPremium, setIsPremium] = useState(false);
+  
+  // Get user information from auth context
+  const { user } = useAuth();
+  
+  // Use the enhanced subscription hook to get detailed subscription information
+  const { 
+    isPremium, 
+    isTrialPeriod, 
+    isExpiringSoon 
+  } = useUserSubscription(user?.id);
 
   // Handle successful plan generation
   const handlePlanSuccess = (plan: BusinessPlanData) => {
@@ -94,6 +105,8 @@ export function usePlanCreator(initialData?: PlanCreatorInitialData | null) {
     generatingProgress,
     generationError,
     isPremium,
+    isTrialPeriod,
+    isExpiringSoon,
     handleInputChange,
     handleToggleChange,
     handleSubmit,

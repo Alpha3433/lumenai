@@ -1,7 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubscriptionPlan = 'free' | 'entrepreneur' | 'strategist';
+export type SubscriptionPlan = 'free' | 'entrepreneur' | 'strategist' | 'enterprise';
 
 export interface UserSubscription {
   id?: string;
@@ -10,6 +10,13 @@ export interface UserSubscription {
   is_active: boolean;
   created_at?: string;
   expires_at?: string | null;
+}
+
+export interface SubscriptionDetails {
+  plan: SubscriptionPlan;
+  expiresAt: string | null;
+  createdAt: string | null;
+  isActive: boolean;
 }
 
 export const subscriptionService = {
@@ -38,6 +45,55 @@ export const subscriptionService = {
     } catch (error) {
       console.error('Error in getUserPlan:', error);
       return 'free';
+    }
+  },
+  
+  async getUserSubscriptionDetails(userId: string): Promise<SubscriptionDetails> {
+    if (!userId) {
+      return {
+        plan: 'free',
+        expiresAt: null,
+        createdAt: null,
+        isActive: false
+      };
+    }
+    
+    try {
+      // Use type assertion to tell TypeScript this is okay
+      const { data, error } = await supabase
+        .from('user_subscriptions' as any)
+        .select('*')
+        .eq('user_id', userId)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      
+      if (error) {
+        console.log('Error fetching subscription:', error);
+        throw new Error(`Subscription fetch error: ${error.message}`);
+      }
+      
+      if (!data) {
+        return {
+          plan: 'free',
+          expiresAt: null,
+          createdAt: null,
+          isActive: false
+        };
+      }
+      
+      // Cast data to UserSubscription type
+      const subscription = data as unknown as UserSubscription;
+      return {
+        plan: subscription.plan,
+        expiresAt: subscription.expires_at || null,
+        createdAt: subscription.created_at || null,
+        isActive: subscription.is_active
+      };
+    } catch (error) {
+      console.error('Error in getUserSubscriptionDetails:', error);
+      throw error;
     }
   },
   
@@ -72,6 +128,30 @@ export const subscriptionService = {
     } catch (error) {
       console.error('Error in createTestAdmin:', error);
       return { user, error };
+    }
+  },
+  
+  async checkAndRenewSubscription(userId: string): Promise<boolean> {
+    if (!userId) return false;
+    
+    try {
+      const { plan, expiresAt, isActive } = await this.getUserSubscriptionDetails(userId);
+      
+      // If subscription has expired, update it as inactive
+      if (expiresAt && new Date(expiresAt) < new Date() && isActive) {
+        await supabase
+          .from('user_subscriptions' as any)
+          .update({ is_active: false })
+          .eq('user_id', userId)
+          .eq('expires_at', expiresAt);
+        
+        return false;
+      }
+      
+      return isActive && plan !== 'free';
+    } catch (error) {
+      console.error('Error in checkAndRenewSubscription:', error);
+      return false;
     }
   }
 };

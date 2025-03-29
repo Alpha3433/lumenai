@@ -15,4 +15,9 @@ export interface PlanCreatorState {
   formData: PlanCreatorFormData;
   businessPlan: BusinessPlanData;
   isPremium: boolean;
+  isTrialPeriod: boolean;
+  isExpiringSoon: boolean;
+  daysRemaining?: number | null;
+  isExpired?: boolean;
+  nextTier?: string | null;
 }

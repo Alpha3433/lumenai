@@ -14,6 +14,7 @@ interface BusinessPlanFormProps {
   };
   generating: boolean;
   generatingProgress: number;
+  generationError?: string | null;
   isPremium: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onToggleChange: (name: string, value: boolean) => void;
@@ -25,6 +26,7 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
   formData,
   generating,
   generatingProgress,
+  generationError,
   isPremium,
   onChange,
   onToggleChange,
@@ -115,6 +117,8 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
         open={generating}
         progress={generatingProgress}
         useAIV2={formData.useAIV2}
+        error={generationError}
+        onRetry={generateProgress => handleSubmit(new Event('submit') as unknown as React.FormEvent)}
       />
     </div>
   );

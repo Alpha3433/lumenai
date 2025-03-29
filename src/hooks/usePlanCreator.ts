@@ -2,16 +2,7 @@
 import { useState, useEffect } from 'react';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import { toast } from '@/components/ui/use-toast';
-
-interface BusinessPlanData {
-  executiveSummary: string;
-  marketAnalysis: string;
-  businessModel: string;
-  marketingPlan: string;
-  financialProjections: string;
-  riskAssessment: string;
-  swotAnalysis: string;
-}
+import { BusinessPlanData } from '@/types/businessPlan';
 
 interface FormData {
   businessName: string;
@@ -36,6 +27,7 @@ export const usePlanCreator = (initialData?: {
   const [step, setStep] = useState(1);
   const [generating, setGenerating] = useState(false);
   const [generatingProgress, setGeneratingProgress] = useState(0);
+  const [generationError, setGenerationError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     businessName: initialData?.businessName || '',
     businessDescription: initialData?.businessDescription || '',
@@ -70,25 +62,34 @@ export const usePlanCreator = (initialData?: {
 
   const simulateProgress = () => {
     setGeneratingProgress(0);
+    setGenerationError(null);
     
-    // Adjusted progress simulation to ensure it reaches completion
-    const totalSimulationTime = 10000; // 10 seconds total
-    const updateInterval = 100; // Update every 100ms
-    const steps = totalSimulationTime / updateInterval;
-    const incrementPerStep = 95 / steps; // Only go to 95%, final 5% when generation completes
-
+    // More reliable progress simulation
     let currentProgress = 0;
+    const sections = 7; // Total number of sections to generate
+    const progressPerSection = 90 / sections; // Leave 10% for final processing
+    let sectionIndex = 0;
     
-    const interval = setInterval(() => {
-      currentProgress += incrementPerStep;
-      setGeneratingProgress(Math.min(95, currentProgress));
+    const updateProgress = () => {
+      // Each section has its own progress that goes from 0 to progressPerSection
+      sectionIndex++;
+      currentProgress = Math.min(sectionIndex * progressPerSection, 90);
+      setGeneratingProgress(currentProgress);
       
-      if (currentProgress >= 95) {
+      if (currentProgress >= 90) {
         clearInterval(interval);
       }
-    }, updateInterval);
+    };
     
-    return () => clearInterval(interval);
+    const interval = setInterval(updateProgress, 4000); // Update every 4 seconds, matching expected section generation time
+    
+    return () => {
+      clearInterval(interval);
+      // Ensure we don't leave progress stuck if the process completes early
+      if (currentProgress < 100) {
+        setGeneratingProgress(100);
+      }
+    };
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -137,12 +138,19 @@ export const usePlanCreator = (initialData?: {
       
     } catch (error) {
       console.error('Error generating business plan:', error);
+      setGenerationError(error instanceof Error ? error.message : 'Unknown error occurred');
+      
       toast({
-        title: "Error",
-        description: "There was an error generating your business plan. Please try again.",
+        title: "Generation Failed",
+        description: "There was an error generating your business plan. Please try again with a different description.",
         variant: "destructive"
       });
-      setGenerating(false);
+      
+      // Wait a moment before allowing retry
+      setTimeout(() => {
+        setGenerating(false);
+        setGeneratingProgress(0);
+      }, 1500);
     }
     
     // Clear the progress simulation when done
@@ -180,6 +188,7 @@ export const usePlanCreator = (initialData?: {
     businessPlan,
     generating,
     generatingProgress,
+    generationError,
     isPremium,
     handleInputChange,
     handleToggleChange,

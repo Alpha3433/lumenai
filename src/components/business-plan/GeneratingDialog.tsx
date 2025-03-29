@@ -2,12 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Sparkles, Zap } from 'lucide-react';
+import { Loader2, Sparkles, Zap, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface GeneratingDialogProps {
   open: boolean;
   progress: number;
   useAIV2: boolean;
+  error?: string | null;
+  onRetry?: () => void;
 }
 
 const aiActionMessages = [
@@ -28,71 +31,115 @@ const getRandomAiActionMessage = () => {
   return aiActionMessages[randomIndex];
 };
 
-const GeneratingDialog = ({ open, progress, useAIV2 }: GeneratingDialogProps) => {
+const GeneratingDialog = ({ 
+  open, 
+  progress, 
+  useAIV2, 
+  error, 
+  onRetry 
+}: GeneratingDialogProps) => {
   const [currentMessage, setCurrentMessage] = useState("");
   
   // Update message based on progress changes
   useEffect(() => {
-    if (progress < 33) {
+    if (error) {
+      setCurrentMessage("Generation error encountered. You can try again.");
+      return;
+    }
+    
+    if (progress < 25) {
       setCurrentMessage(getRandomAiActionMessage());
-    } else if (progress >= 33 && progress < 66) {
+    } else if (progress >= 25 && progress < 50) {
       setCurrentMessage(getRandomAiActionMessage());
-    } else if (progress >= 66 && progress < 99) {
+    } else if (progress >= 50 && progress < 75) {
+      setCurrentMessage(getRandomAiActionMessage());
+    } else if (progress >= 75 && progress < 100) {
       setCurrentMessage(getRandomAiActionMessage());
     } else if (progress === 100) {
       setCurrentMessage("Complete! Preparing your results...");
     }
-  }, [progress]);
+  }, [progress, error]);
+
+  // Update message periodically to show activity
+  useEffect(() => {
+    if (open && !error && progress < 100) {
+      const interval = setInterval(() => {
+        setCurrentMessage(getRandomAiActionMessage());
+      }, 6000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [open, error, progress]);
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-md">
         <DialogTitle className="sr-only">Creating Your Business Plan</DialogTitle>
         <div className="space-y-6 py-6">
-          <div className="text-center space-y-2">
-            <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />
-            <h3 className="text-xl font-semibold">Creating Your Business Plan</h3>
-            <p className="text-sm text-muted-foreground">
-              We're analyzing your business concept and generating a comprehensive plan...
-            </p>
-            {useAIV2 && (
-              <p className="text-xs text-amber-500 font-medium mt-1">
-                <Zap className="inline-block h-3 w-3 mr-1" /> 
-                Using enhanced AI V2 engine for superior results
+          {error ? (
+            <div className="text-center space-y-4">
+              <AlertCircle className="mx-auto h-16 w-16 text-destructive animate-pulse" />
+              <h3 className="text-xl font-semibold">Generation Error</h3>
+              <p className="text-sm text-muted-foreground">
+                {error || "An error occurred during business plan generation. Please try again."}
               </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Progress 
-              value={progress} 
-              className="h-2 bg-gray-200 dark:bg-gray-700"
-            />
-            <p className="text-sm text-center text-muted-foreground">
-              {currentMessage}
-            </p>
-          </div>
-
-          <div className="bg-muted/50 p-4 rounded-lg space-y-3">
-            <div className="flex items-start space-x-3">
-              <div className="min-w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <Loader2 className="h-4 w-4 text-primary animate-spin" />
+              {onRetry && (
+                <Button 
+                  onClick={onRetry}
+                  className="mt-4"
+                >
+                  Try Again
+                </Button>
+              )}
+            </div>
+          ) : (
+            <>
+              <div className="text-center space-y-2">
+                <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />
+                <h3 className="text-xl font-semibold">Creating Your Business Plan</h3>
+                <p className="text-sm text-muted-foreground">
+                  We're analyzing your business concept and generating a comprehensive plan...
+                </p>
+                {useAIV2 && (
+                  <p className="text-xs text-amber-500 font-medium mt-1">
+                    <Zap className="inline-block h-3 w-3 mr-1" /> 
+                    Using enhanced AI V2 engine for superior results
+                  </p>
+                )}
               </div>
-              <div>
-                <p className="text-sm font-medium">Step {progress < 33 ? '1/4' : progress < 66 ? '2/4' : progress < 99 ? '3/4' : '4/4'}</p>
-                <p className="text-xs text-muted-foreground">
-                  {progress < 33 && "Market analysis and competitive landscape"}
-                  {progress >= 33 && progress < 66 && "Financial projections and business model"}
-                  {progress >= 66 && progress < 99 && "Risk assessment and SWOT analysis"}
-                  {progress === 100 && "Finalizing executive summary and recommendations"}
+
+              <div className="space-y-2">
+                <Progress 
+                  value={progress} 
+                  className="h-2 bg-gray-200 dark:bg-gray-700"
+                />
+                <p className="text-sm text-center text-muted-foreground">
+                  {currentMessage}
                 </p>
               </div>
-            </div>
-            
-            <p className="text-xs italic text-muted-foreground">
-              Our AI is working hard to create a tailored business plan
-            </p>
-          </div>
+
+              <div className="bg-muted/50 p-4 rounded-lg space-y-3">
+                <div className="flex items-start space-x-3">
+                  <div className="min-w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Step {progress < 33 ? '1/4' : progress < 66 ? '2/4' : progress < 99 ? '3/4' : '4/4'}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {progress < 33 && "Market analysis and competitive landscape"}
+                      {progress >= 33 && progress < 66 && "Financial projections and business model"}
+                      {progress >= 66 && progress < 99 && "Risk assessment and SWOT analysis"}
+                      {progress === 100 && "Finalizing executive summary and recommendations"}
+                    </p>
+                  </div>
+                </div>
+                
+                <p className="text-xs italic text-muted-foreground">
+                  Our AI is working hard to create a tailored business plan
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

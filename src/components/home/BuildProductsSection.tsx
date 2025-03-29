@@ -1,11 +1,34 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/components/AuthProvider';
+import LoginModal from '@/components/LoginModal';
+import RegisterModal from '@/components/RegisterModal';
 
 const BuildProductsSection = () => {
+  const { user } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+  const openLoginModal = () => {
+    setIsRegisterModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
+  const openRegisterModal = () => {
+    setIsLoginModalOpen(false);
+    setIsRegisterModalOpen(true);
+  };
+
+  const handleTryForFree = () => {
+    if (!user) {
+      openRegisterModal();
+    }
+  };
+
   return (
     <section className="py-24 px-4 bg-gradient-to-b from-white to-blue-50 dark:from-gray-950 dark:to-gray-900">
       <div className="max-w-5xl mx-auto text-center">
@@ -43,12 +66,22 @@ const BuildProductsSection = () => {
               Be part of a unique app that lets us build a business system that works for you.
             </p>
             
-            <Link to="/register">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
+            {user ? (
+              <Link to="/create">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
+                  Try for FREE
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            ) : (
+              <Button 
+                onClick={handleTryForFree}
+                className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium"
+              >
                 Try for FREE
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </Link>
+            )}
             
             <div className="flex flex-wrap justify-center gap-6 mt-8">
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
@@ -67,6 +100,17 @@ const BuildProductsSection = () => {
           </div>
         </motion.div>
       </div>
+
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)}
+        onRegisterClick={openRegisterModal}
+      />
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        onLoginClick={openLoginModal}
+      />
     </section>
   );
 };

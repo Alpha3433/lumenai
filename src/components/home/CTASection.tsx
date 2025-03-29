@@ -4,8 +4,32 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/components/AuthProvider';
+import { useState } from 'react';
+import LoginModal from '@/components/LoginModal';
+import RegisterModal from '@/components/RegisterModal';
 
 const CTASection = () => {
+  const { user } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+  const openLoginModal = () => {
+    setIsRegisterModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
+  const openRegisterModal = () => {
+    setIsLoginModalOpen(false);
+    setIsRegisterModalOpen(true);
+  };
+
+  const handleTryForFree = () => {
+    if (!user) {
+      openRegisterModal();
+    }
+  };
+
   return (
     <section className="py-20 px-4 relative overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -26,12 +50,22 @@ const CTASection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link to="/register">
-              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-md h-12 px-8 text-base font-medium">
-                Build Your Business Plan Now
+            {user ? (
+              <Link to="/create">
+                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-md h-12 px-8 text-base font-medium">
+                  Try for Free
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            ) : (
+              <Button 
+                onClick={handleTryForFree}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-md h-12 px-8 text-base font-medium"
+              >
+                Try for Free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-            </Link>
+            )}
             <Link to="/market-trends">
               <Button variant="outline" className="rounded-md h-12 px-8 text-base font-medium border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all">
                 Explore Market Trends
@@ -55,6 +89,17 @@ const CTASection = () => {
           </div>
         </motion.div>
       </div>
+
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)}
+        onRegisterClick={openRegisterModal}
+      />
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        onLoginClick={openLoginModal}
+      />
     </section>
   );
 };

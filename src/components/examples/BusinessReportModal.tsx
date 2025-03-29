@@ -7,6 +7,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import ExecutiveSummaryDisplay from './ExecutiveSummaryDisplay';
 import SwotDisplay from './SwotDisplay';
+import PestelAnalysisSection from '../pestel/PestelAnalysisSection';
+import PorterFiveForcesSection from '../porter/PorterFiveForcesSection';
+import WebBusinessModelsSection from '../WebBusinessModelsSection';
+import MarketingPlanSection from '../MarketingPlanSection';
+import { extractPestelData } from '@/utils/pestel';
+import { extractPorterFiveForcesData } from '@/utils/porter';
 
 interface BusinessReportModalProps {
   isOpen: boolean;
@@ -21,12 +27,18 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
 }) => {
   if (!company) return null;
   
+  // Generate company-specific analysis data
+  const pestelData = extractPestelData(company.pestelAnalysis || '');
+  const forcesData = extractPorterFiveForcesData(company.porterAnalysis || '');
+  
   const sections = [
     { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-4 w-4" /> },
     { id: 'dashboard', title: 'Summary', icon: <PieChart className="h-4 w-4" /> },
     { id: 'swot-analysis', title: 'SWOT', icon: <CheckCircle className="h-4 w-4" /> },
     { id: 'pestel-analysis', title: 'PESTEL', icon: <Globe className="h-4 w-4" /> },
     { id: 'porter-five-forces', title: "Porter's", icon: <Scale className="h-4 w-4" /> },
+    { id: 'business-models', title: "Models", icon: <ShieldCheck className="h-4 w-4" /> },
+    { id: 'marketing-plan', title: "Marketing", icon: <Activity className="h-4 w-4" /> },
   ];
 
   const scrollToSection = (id: string) => {
@@ -80,6 +92,43 @@ const BusinessReportModal: React.FC<BusinessReportModalProps> = ({
                     {/* SWOT Analysis */}
                     <div id="swot-analysis">
                       <SwotDisplay company={company} />
+                    </div>
+                    
+                    <Separator className="my-10" />
+                    
+                    {/* PESTEL Analysis */}
+                    <div id="pestel-analysis">
+                      <PestelAnalysisSection pestelData={pestelData} />
+                    </div>
+                    
+                    <Separator className="my-10" />
+                    
+                    {/* Porter's Five Forces Analysis */}
+                    <div id="porter-five-forces">
+                      <PorterFiveForcesSection forcesData={forcesData} />
+                    </div>
+                    
+                    <Separator className="my-10" />
+                    
+                    {/* Web Business Models */}
+                    <div id="business-models">
+                      <WebBusinessModelsSection 
+                        businessName={company.name}
+                        businessDescription={company.shortDescription}
+                        isPremium={true}
+                        onUpgrade={() => {}}
+                      />
+                    </div>
+                    
+                    <Separator className="my-10" />
+                    
+                    {/* Marketing Plan */}
+                    <div id="marketing-plan">
+                      <MarketingPlanSection 
+                        marketingPlanText={company.marketingPlan || ''}
+                        isPremium={true}
+                        onUpgrade={() => {}}
+                      />
                     </div>
                   </CardContent>
                 </Card>

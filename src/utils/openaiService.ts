@@ -15,6 +15,25 @@ interface OpenAIResponse {
   error?: string;
 }
 
+export const testOpenAI = async (): Promise<OpenAIResponse> => {
+  try {
+    console.log('Testing OpenAI connection...');
+    return await callOpenAI({
+      prompt: 'Say "OpenAI connection is working!" if you can read this message.',
+      model: 'gpt-4o-mini',
+      temperature: 0.7,
+      maxTokens: 50
+    });
+  } catch (error) {
+    console.error('OpenAI test failed:', error);
+    return {
+      text: '',
+      success: false,
+      error: error instanceof Error ? error.message : 'OpenAI test failed'
+    };
+  }
+};
+
 export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIResponse> => {
   try {
     console.log(`Making OpenAI request with model: ${params.model}, prompt length: ${params.prompt.length} chars`);

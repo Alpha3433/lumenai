@@ -11,12 +11,16 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
     
     console.log('Generating business idea with prompt:', prompt);
     
+    // Determine if premium model should be used
+    const model = preferences.usePremiumModel ? "gpt-4o" : "gpt-4o-mini";
+    console.log(`Using ${preferences.usePremiumModel ? 'premium' : 'standard'} model: ${model}`);
+    
     // Call OpenAI API
     const response = await callOpenAI({
       prompt,
-      model: "gpt-4o-mini",
+      model,
       temperature: 0.7,
-      maxTokens: 800
+      maxTokens: preferences.usePremiumModel ? 1200 : 800 // More tokens for premium users
     });
     
     if (!response.success) {
@@ -41,13 +45,14 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
 
 // Create a prompt for the OpenAI API based on user preferences
 function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string {
-  const { industry, interests } = preferences;
+  const { industry, interests, usePremiumModel } = preferences;
   
   if (interests === 'surprise me') {
     return `
       Generate an innovative business idea based on current market trends and opportunities.
       The business idea should be specific, practical, and have clear potential for profitability.
       Make it unique, creative, and different from common business ideas.
+      ${usePremiumModel ? 'Provide more depth and nuanced market insights in your response.' : ''}
       
       Format your response as follows:
       Business Name: [catchy and relevant name]
@@ -64,6 +69,7 @@ function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string 
     Generate an innovative business idea in the ${industry || 'any'} industry.
     ${interests ? `The founder has interests/expertise in: ${interests}` : ''}
     Make it unique, creative, and different from common business ideas.
+    ${usePremiumModel ? 'Include more detailed market insights and business model analysis in your response.' : ''}
     
     Format your response as follows:
     Business Name: [catchy and relevant name]
@@ -133,3 +139,4 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
 // Re-export the necessary types from the businessIdeas directory
 // Fix: Use 'export type' for type-only exports
 export type { BusinessIdeaPreferences, BusinessIdeaSuggestion };
+

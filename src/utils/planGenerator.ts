@@ -12,20 +12,26 @@ Business Description: ${formData.businessDescription}
 
 The ${sectionName} should be comprehensive, data-driven, and tailored specifically to this business concept.`;
 
+  // Enhanced model selection:
+  // - For useAIV2 (premium users who selected enhanced AI): Use gpt-4o (most powerful)
+  // - For regular users: Use gpt-4o-mini (standard model)
   const model = formData.useAIV2 ? 'gpt-4o' : 'gpt-4o-mini';
+  
+  // Adjust token limits based on model capability
+  const maxTokens = formData.useAIV2 ? 1500 : 1000;
   
   let attempts = 0;
   let error = null;
   
   while (attempts <= retryCount) {
     try {
-      console.log(`Generating ${sectionName}, attempt ${attempts + 1}/${retryCount + 1}`);
+      console.log(`Generating ${sectionName}, attempt ${attempts + 1}/${retryCount + 1} using model: ${model}`);
       
       const response = await callOpenAI({
         prompt: promptTemplate,
         model: model,
         temperature: 0.7,
-        maxTokens: 1000
+        maxTokens: maxTokens
       });
       
       if (response.success && response.text.length > 100) {
@@ -67,7 +73,8 @@ The ${sectionName} should be comprehensive, data-driven, and tailored specifical
 };
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
-  const aiEngine = formData.useAIV2 ? 'Premium' : 'Standard';
+  // Use more specific description of the AI engine based on the useAIV2 flag
+  const aiEngine = formData.useAIV2 ? 'Advanced GPT-4o' : 'Standard GPT-4o-mini';
   
   toast({
     description: `Analyzing your business concept with ${aiEngine} AI engine...`,

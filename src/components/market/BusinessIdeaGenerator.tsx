@@ -8,23 +8,39 @@ import { BusinessIdeaSuggestion, generateBusinessIdea } from '@/utils/businessId
 import IdeaGeneratorForm from './IdeaGeneratorForm';
 import GeneratedIdeaDisplay from './GeneratedIdeaDisplay';
 
-const BusinessIdeaGenerator: React.FC = () => {
+interface BusinessIdeaGeneratorProps {
+  isPremium?: boolean;
+}
+
+const BusinessIdeaGenerator: React.FC<BusinessIdeaGeneratorProps> = ({ isPremium = false }) => {
   const navigate = useNavigate();
   const [generating, setGenerating] = useState(false);
   const [interests, setInterests] = useState("");
   const [industry, setIndustry] = useState("");
   const [currentTab, setCurrentTab] = useState("guided");
   const [generatedIdea, setGeneratedIdea] = useState<BusinessIdeaSuggestion | null>(null);
+  const [useAIV2, setUseAIV2] = useState(false);
   
   // Handle the generation of a business idea
   const handleGenerateIdea = async () => {
     setGenerating(true);
     
     try {
+      // Check if premium features are available
+      if (useAIV2 && !isPremium) {
+        toast({
+          title: "Premium Feature",
+          description: "Enhanced AI engine is only available for premium users",
+          variant: "destructive"
+        });
+        setGenerating(false);
+        return;
+      }
+      
       // Get preferences based on the current tab
       const preferences = currentTab === "guided" 
-        ? { industry, interests } 
-        : { interests: "surprise me" };
+        ? { industry, interests, usePremiumModel: useAIV2 } 
+        : { interests: "surprise me", usePremiumModel: useAIV2 };
       
       // Validate inputs for guided approach only if we're on the guided tab
       if (currentTab === "guided" && !industry) {
@@ -98,6 +114,9 @@ const BusinessIdeaGenerator: React.FC = () => {
             currentTab={currentTab}
             setCurrentTab={setCurrentTab}
             onGenerateIdea={handleGenerateIdea}
+            isPremium={isPremium}
+            useAIV2={useAIV2}
+            setUseAIV2={setUseAIV2}
           />
         ) : (
           <GeneratedIdeaDisplay

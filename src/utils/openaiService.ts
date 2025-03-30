@@ -36,7 +36,8 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
         prompt: params.prompt,
         model: params.model,
         temperature: params.temperature || 0.7,
-        max_tokens: params.maxTokens || 800
+        max_tokens: params.maxTokens || 800,
+        isAuthenticated: params.isAuthenticated // Pass authentication status to edge function
       }
     });
     

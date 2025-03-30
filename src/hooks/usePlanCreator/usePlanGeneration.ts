@@ -5,6 +5,7 @@ import { generateBusinessPlan } from '@/utils/planGenerator';
 import { toast } from '@/components/ui/use-toast';
 import { PlanCreatorFormData } from './types';
 import { simulateProgress, validateFormInput } from './utils';
+import { useAuth } from '@/components/AuthProvider';
 
 interface UsePlanGenerationProps {
   formData: PlanCreatorFormData;
@@ -23,6 +24,7 @@ export const usePlanGeneration = ({
   const [generatingProgress, setGeneratingProgress] = useState(0);
   const [generationError, setGenerationError] = useState<string | null>(null);
   const generationAbortController = useRef<AbortController | null>(null);
+  const { user } = useAuth();
 
   const handleGenerate = async (e?: React.FormEvent) => {
     if (e) {
@@ -47,11 +49,14 @@ export const usePlanGeneration = ({
     
     try {
       console.log('Starting business plan generation process...');
-      // Generate the business plan
+      console.log('User authenticated:', !!user);
+      
+      // Generate the business plan, passing user authentication status
       const plan = await generateBusinessPlan({
         businessName: formData.businessName,
         businessDescription: formData.businessDescription,
-        useAIV2: true // Always use the advanced model for everyone
+        useAIV2: true, // Always use the advanced model for everyone
+        isAuthenticated: !!user // Pass authentication status to prioritize requests
       });
       
       console.log('Business plan generation completed successfully');

@@ -62,7 +62,7 @@ export const simulateProgress = (
   };
 };
 
-// Mock actions that would normally involve backend services
+// Actions that would normally involve backend services
 export const mockActions = {
   downloadPlan: () => {
     toast({
@@ -76,7 +76,7 @@ export const mockActions = {
     }, 1500);
   },
   
-  // Removed setIsPremium parameter since it's not available in the context where this is called
+  // Updated to support authenticated users
   upgradeAccount: () => {
     toast({
       title: "Success",

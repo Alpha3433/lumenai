@@ -4,6 +4,9 @@ import { usePlanCreator } from '@/hooks/usePlanCreator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
 import { AlertTriangle } from 'lucide-react';
+import { useAuth } from '@/components/AuthProvider';
+import { Navigate } from 'react-router-dom';
+import { toast } from '@/components/ui/use-toast';
 
 interface PlanCreatorProps {
   initialData?: {
@@ -13,6 +16,8 @@ interface PlanCreatorProps {
 }
 
 const PlanCreator = ({ initialData }: PlanCreatorProps) => {
+  const { user } = useAuth();
+  
   const {
     step,
     formData,
@@ -30,6 +35,17 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     upgradeAccount,
     setStep
   } = usePlanCreator(initialData);
+
+  // Check if user is authenticated
+  if (!user) {
+    // Show toast notification and redirect to login
+    toast({
+      title: "Authentication Required",
+      description: "Please log in to create a business plan",
+      variant: "destructive"
+    });
+    return <Navigate to="/login" />;
+  }
 
   // Handle form submission properly
   const onSubmitForm = (e: React.FormEvent) => {

@@ -36,8 +36,8 @@ serve(async (req) => {
       );
     }
     
-    // Always use gpt-4o for reliability
-    const useModel = 'gpt-4o';
+    // Use the requested model or default to gpt-4o
+    const useModel = model || 'gpt-4o';
     
     console.log(`Calling OpenAI API with model: ${useModel}`);
     console.log(`Request priority: ${priority || 'normal'}`);

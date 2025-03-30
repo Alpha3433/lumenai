@@ -4,8 +4,8 @@ import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
 import { callOpenAI } from "./openaiService";
 import { createPromptForSection } from "./planSections";
 
-// Optimized version with improved error handling and mock data fallbacks
-export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 2): Promise<string> => {
+// Generate a section of the business plan
+export const generateSection = async (sectionName: string, formData: BusinessFormData): Promise<string> => {
   // Use the improved prompt templates
   const promptTemplate = createPromptForSection(sectionName, formData);
   
@@ -17,52 +17,31 @@ export const generateSection = async (sectionName: string, formData: BusinessFor
                    sectionName.includes('swot') ? 1500 : 
                    sectionName.includes('market') ? 2000 : 1500;
   
-  let attempts = 0;
-  let lastError = null;
-  let backoffTime = 1000; // Reduced initial backoff time
-  
-  while (attempts < retryCount) {
-    try {
-      console.log(`Generating ${sectionName} with ${model}, attempt ${attempts + 1}/${retryCount}`);
-      
-      const response = await callOpenAI({
-        prompt: promptTemplate,
-        model: model,
-        temperature: 0.7,
-        maxTokens: maxTokens,
-        forceLiveResponse: true,
-        isAuthenticated: formData.isAuthenticated
-      });
-      
-      // Accept any non-empty response
-      if (response.success && response.text) {
-        console.log(`Successfully generated ${sectionName} (${response.text.length} chars)`);
-        return response.text;
-      } else if (response.text && response.text.includes("taking longer")) {
-        // If we got the fallback message about timeouts, wait shorter before retry
-        console.warn(`AI service timeout for ${sectionName}, waiting before retry...`);
-        lastError = new Error(`AI service timeout. Try again later.`);
-      } else if (!response.success) {
-        console.warn(`Failed to generate content: ${response.error}`);
-        throw new Error(response.error || `Failed to generate ${sectionName}`);
-      }
-    } catch (err) {
-      lastError = err;
-      console.log(`Attempt ${attempts + 1} failed for ${sectionName}, retrying...`, err);
-    }
+  try {
+    console.log(`Generating ${sectionName} with ${model}`);
     
-    attempts++;
+    const response = await callOpenAI({
+      prompt: promptTemplate,
+      model: model,
+      temperature: 0.7,
+      maxTokens: maxTokens,
+      forceLiveResponse: true,
+      isAuthenticated: formData.isAuthenticated
+    });
     
-    // Shorter backoff before retry
-    if (attempts < retryCount) {
-      await new Promise(resolve => setTimeout(resolve, backoffTime));
-      backoffTime = Math.min(backoffTime * 1.5, 5000); // Shorter maximum backoff
+    // Accept any non-empty response
+    if (response.success && response.text) {
+      console.log(`Successfully generated ${sectionName} (${response.text.length} chars)`);
+      return response.text;
+    } else {
+      console.warn(`Failed to generate content: ${response.error}`);
+      throw new Error(response.error || `Failed to generate ${sectionName}`);
     }
+  } catch (err) {
+    console.error(`Failed to generate ${sectionName}:`, err);
+    // Return fallback content on error
+    return getFallbackContent(sectionName, formData);
   }
-  
-  console.log(`All ${retryCount} attempts failed for ${sectionName}, using fallback content`);
-  // Return fallback content instead of throwing error
-  return getFallbackContent(sectionName, formData);
 };
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
@@ -108,8 +87,8 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       toast({ description: section.message });
       
       try {
-        // Try to generate each section with reduced retry count
-        const content = await generateSection(section.name, formData, 2);
+        // Generate each section
+        const content = await generateSection(section.name, formData);
         
         // If we get a valid response, add it to the plan
         if (content && content.length > 0) {

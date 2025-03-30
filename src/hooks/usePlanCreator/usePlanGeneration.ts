@@ -31,9 +31,14 @@ export const usePlanGeneration = ({
       e.preventDefault();
     }
     
-    // For testing: Always validate as if premium and always treat the user as authenticated
-    const validationError = validateFormInput(formData, true);
+    // Validate form input
+    const validationError = validateFormInput(formData, isPremium);
     if (validationError) {
+      toast({
+        title: "Form Error",
+        description: validationError,
+        variant: "destructive"
+      });
       return;
     }
     
@@ -49,14 +54,14 @@ export const usePlanGeneration = ({
     
     try {
       console.log('Starting business plan generation process...');
-      console.log('User authenticated: true (forced for testing)');
+      console.log(`User authenticated: ${!!user}`);
       
-      // Generate the business plan, always passing true for authentication during testing
+      // Generate the business plan with the user's authentication status
       const plan = await generateBusinessPlan({
         businessName: formData.businessName,
         businessDescription: formData.businessDescription,
-        useAIV2: true, // Always use the advanced model for everyone
-        isAuthenticated: true // Always treat as authenticated for testing
+        useAIV2: formData.useAIV2,
+        isAuthenticated: !!user // Real authentication check
       });
       
       console.log('Business plan generation completed successfully');

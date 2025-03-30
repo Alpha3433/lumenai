@@ -3,29 +3,30 @@ import { toast } from "@/components/ui/use-toast";
 import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
 import { callOpenAI } from "./openaiService";
 
-// Helper function to generate a complete section with retries
-export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 3): Promise<string> => {
-  const promptTemplate = `Create a detailed and professional ${sectionName} section for a business plan with the following details:
+// Optimized version that reduces token count and improves performance
+export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 2): Promise<string> => {
+  // Optimized prompt that focuses on essential information only
+  const promptTemplate = `Create a professional ${sectionName} section for a business plan with these details:
   
-Business Name: ${formData.businessName}
-Business Description: ${formData.businessDescription}
+Business: ${formData.businessName}
+Description: ${formData.businessDescription}
 
-The ${sectionName} should be comprehensive, data-driven, and tailored specifically to this business concept.`;
+Make the ${sectionName} comprehensive, data-driven, and specific to this business concept.`;
 
-  // Always use gpt-4o for all users (free and premium)
-  const model = 'gpt-4o';
+  // Always use gpt-4o-mini for faster responses (except financial and SWOT which need gpt-4o)
+  const model = sectionName.includes('financial') || sectionName.includes('swot') ? 'gpt-4o' : 'gpt-4o-mini';
   
-  // Adjust token limits for detailed responses
-  const maxTokens = 1500;
+  // Adjust token limits based on section importance
+  const maxTokens = sectionName.includes('executive') ? 800 : 
+                   sectionName.includes('financial') ? 1500 : 1000;
   
   let attempts = 0;
   let error = null;
   
   while (attempts <= retryCount) {
     try {
-      console.log(`Generating ${sectionName}, attempt ${attempts + 1}/${retryCount + 1} using model: ${model}`);
+      console.log(`Generating ${sectionName} with ${model}, attempt ${attempts + 1}/${retryCount + 1}`);
       
-      // Always force live response
       const response = await callOpenAI({
         prompt: promptTemplate,
         model: model,
@@ -35,11 +36,11 @@ The ${sectionName} should be comprehensive, data-driven, and tailored specifical
         isAuthenticated: formData.isAuthenticated
       });
       
-      if (response.success && response.text.length > 100) {
+      if (response.success && response.text.length > 50) {
         console.log(`Successfully generated ${sectionName} (${response.text.length} chars)`);
         return response.text;
       } else {
-        console.warn(`Generated content for ${sectionName} is too short or incomplete: ${response.text.length} chars`);
+        console.warn(`Generated content too short: ${response.text?.length || 0} chars`);
         throw new Error(`Generated content for ${sectionName} is too short or incomplete`);
       }
     } catch (err) {
@@ -47,22 +48,22 @@ The ${sectionName} should be comprehensive, data-driven, and tailored specifical
       attempts++;
       console.log(`Attempt ${attempts} failed for ${sectionName}, retrying...`, err);
       
-      // Increased delay before retry to give APIs more time to recover
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Short delay before retry to avoid overwhelming the API
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
   
-  // After all attempts fail, throw the error instead of falling back to mock data
+  // After all attempts fail, throw the error
   console.error(`All ${retryCount + 1} attempts failed for ${sectionName}`);
   throw error || new Error(`Failed to generate ${sectionName} after ${retryCount} attempts`);
 };
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
-  // Always use GPT-4o regardless of plan
-  const aiEngine = 'GPT-4o';
+  // Always use GPT-4o-mini for most sections to improve speed
+  const aiEngine = 'Enhanced AI';
   
   toast({
-    description: `Analyzing your business concept with ${aiEngine} AI engine...`,
+    description: `Creating your business plan with ${aiEngine}...`,
   });
   
   if (!formData.businessName || !formData.businessDescription) {
@@ -81,7 +82,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   
   const plan: Partial<BusinessPlanData> = {};
   
-  // Generate sections sequentially with progress notifications
+  // Generate multiple sections in parallel to speed up the process
   const sections = [
     { key: 'executiveSummary', name: 'executive summary', message: 'Creating executive summary...' },
     { key: 'marketAnalysis', name: 'market analysis', message: 'Analyzing market dynamics...' },
@@ -92,38 +93,62 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     { key: 'swotAnalysis', name: 'swot analysis', message: 'Completing SWOT analysis...' },
   ];
   
-  for (const section of sections) {
-    toast({ description: section.message });
+  toast({ description: 'Processing your business information...' });
+  
+  try {
+    // Generate sections in parallel with a concurrency limit of 3 to avoid rate limiting
+    const generateSectionsInBatches = async () => {
+      // Create batches of 3 sections to run concurrently
+      const batches = [];
+      for (let i = 0; i < sections.length; i += 3) {
+        batches.push(sections.slice(i, i + 3));
+      }
+      
+      // Process each batch sequentially, but sections within a batch in parallel
+      for (const batch of batches) {
+        const batchResults = await Promise.all(batch.map(async (section) => {
+          toast({ description: section.message });
+          try {
+            const content = await generateSection(section.name, formData, 2);
+            return { section, content, error: null };
+          } catch (error) {
+            console.error(`Error generating ${section.name}:`, error);
+            return { section, content: null, error };
+          }
+        }));
+        
+        // Process results from this batch
+        for (const result of batchResults) {
+          if (result.error) {
+            toast({
+              title: "Error",
+              description: `Failed to generate ${result.section.name}. Please try again.`,
+              variant: "destructive"
+            });
+            throw result.error;
+          }
+          
+          plan[result.section.key] = result.content;
+          console.log(`Generated ${result.section.key} successfully, length: ${result.content.length} chars`);
+        }
+      }
+    };
     
-    try {
-      // Allow up to 3 retries for each section
-      const content = await generateSection(section.name, formData, 3);
-      plan[section.key] = content;
-      
-      console.log(`Generated ${section.key} successfully, length: ${content.length} chars`);
-    } catch (error) {
-      console.error(`Error generating ${section.name}:`, error);
-      
-      toast({
-        title: "Error",
-        description: `Failed to generate ${section.name}. Please try again later.`,
-        variant: "destructive"
-      });
-      
-      // Throw the error instead of falling back to mock data
-      throw new Error(`Failed to generate ${section.name}: ${error.message}`);
-    }
+    await generateSectionsInBatches();
+    
+    toast({
+      title: "Success",
+      description: `Business plan generated successfully!`,
+    });
+    
+    console.log('Business plan generation completed successfully');
+    
+    // Type assertion is safe here because we've fully populated the plan
+    return plan as BusinessPlanData;
+  } catch (error) {
+    console.error('Business plan generation failed:', error);
+    throw error;
   }
-  
-  toast({
-    title: "Success",
-    description: `Business plan generated with GPT-4o AI analysis!`,
-  });
-  
-  console.log('Business plan generation completed successfully');
-  
-  // Type assertion is safe here because we've fully populated the plan
-  return plan as BusinessPlanData;
 };
 
 // Export the BusinessFormData type so it can be imported by other files

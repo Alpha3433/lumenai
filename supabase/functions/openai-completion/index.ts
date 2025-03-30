@@ -16,7 +16,7 @@ serve(async (req) => {
   }
   
   try {
-    const { prompt, model, temperature, max_tokens } = await req.json();
+    const { prompt, model, temperature, max_tokens, isAuthenticated, priority } = await req.json();
     
     // Get the OpenAI API key from environment variables
     const apiKey = Deno.env.get('OPENAI_API_KEY');
@@ -36,9 +36,12 @@ serve(async (req) => {
       );
     }
     
-    // Always use gpt-4o regardless of what was requested
-    const useModel = 'gpt-4o';
+    // Use the requested model (either gpt-4o-mini or gpt-4o)
+    // This allows us to optimize by using gpt-4o-mini for faster responses on most sections
+    const useModel = model === 'gpt-4o-mini' ? 'gpt-4o-mini' : 'gpt-4o';
+    
     console.log(`Calling OpenAI API with model: ${useModel} (requested: ${model})`);
+    console.log(`Request priority: ${priority || 'normal'}`);
     
     // Enhanced system messages for all requests
     let systemMessage = '';
@@ -68,7 +71,7 @@ serve(async (req) => {
       systemMessage = `You are a renowned business strategist with expertise in business planning and market analysis that generates business plan content. When including numbers with decimal points, always ensure there is no space between the number and the decimal point (use 4.5 not 4. 5). Since this is a premium analysis, provide more strategic depth, industry-specific insights, and actionable recommendations based on current market trends and competitive dynamics.`;
     }
     
-    // Call OpenAI API using Chat Completions endpoint (newer API)
+    // Call OpenAI API with optimized parameters
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -82,7 +85,9 @@ serve(async (req) => {
           { role: 'user', content: prompt }
         ],
         temperature: temperature || 0.7,
-        max_tokens: max_tokens || 1500 // Increased token limit for more detailed responses
+        max_tokens: max_tokens || 1000,
+        presence_penalty: 0.1,  // Slight presence penalty to make responses more creative
+        frequency_penalty: 0.1, // Slight frequency penalty to reduce repetition
       })
     });
     

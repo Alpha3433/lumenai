@@ -28,7 +28,8 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
       model,
       temperature: 0.7,
       maxTokens: preferences.usePremiumModel ? 1200 : 800, // More tokens for premium users
-      isAuthenticated
+      isAuthenticated,
+      forceLiveResponse: true // Force live API response for business idea generation too
     });
     
     if (!response.success) {

@@ -7,6 +7,7 @@ interface OpenAIRequestParams {
   temperature?: number;
   maxTokens?: number;
   isAuthenticated?: boolean;
+  forceLiveResponse?: boolean; // New parameter to force live API response
 }
 
 interface OpenAIResponse {
@@ -19,9 +20,10 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   try {
     console.log(`Calling OpenAI with model: ${params.model}, prompt length: ${params.prompt.length} chars`);
     console.log(`User authenticated: ${params.isAuthenticated ? 'Yes' : 'No'}`);
+    console.log(`Force live response: ${params.forceLiveResponse ? 'Yes' : 'No'}`);
     
-    // For unauthenticated users or in development, use mock data instead of calling the API
-    if (process.env.NODE_ENV === 'development' || !params.isAuthenticated) {
+    // Only use mock data if not forcing live response AND (development environment OR unauthenticated)
+    if (!params.forceLiveResponse && (process.env.NODE_ENV === 'development' || !params.isAuthenticated)) {
       console.log('Using mock response due to development environment or unauthenticated user');
       return {
         text: generateMockResponse(params.prompt),
@@ -62,11 +64,20 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   } catch (error) {
     console.error('Error in OpenAI call:', error);
     
-    // Always use mock response if there's an error
-    console.log('Using mock response due to error');
+    // Only use mock response if not forcing live response
+    if (!params.forceLiveResponse) {
+      console.log('Using mock response due to error');
+      return {
+        text: generateMockResponse(params.prompt),
+        success: true
+      };
+    }
+    
+    // If forcing live response, return the error
     return {
-      text: generateMockResponse(params.prompt),
-      success: true
+      text: '',
+      success: false,
+      error: error.message || 'Unknown error occurred'
     };
   }
 };

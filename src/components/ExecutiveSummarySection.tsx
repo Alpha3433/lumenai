@@ -15,6 +15,11 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
   businessName, 
   marketAnalysis 
 }) => {
+  // Check if summaryText is empty or undefined, and provide fallback
+  const displaySummary = summaryText && summaryText.trim() !== '' 
+    ? summaryText 
+    : `${businessName} is a promising business venture with strong growth potential. Our focus on innovation and customer satisfaction positions us well in the competitive landscape.`;
+
   // Extract only the industry overview content from the market analysis
   // This ensures we're not showing the entire market analysis in the industry section
   const industryOverviewText = marketAnalysis ? extractIndustryOverviewOnly(marketAnalysis) : '';
@@ -24,7 +29,7 @@ const ExecutiveSummarySection: React.FC<ExecutiveSummarySectionProps> = ({
       {/* Business Summary */}
       <BusinessSummarySection 
         businessName={businessName}
-        summaryText={summaryText}
+        summaryText={displaySummary}
       />
       
       <Separator className="my-8" />

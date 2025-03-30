@@ -34,7 +34,8 @@ export const generateSection = async (
       model,
       temperature: 0.7,
       maxTokens,
-      isAuthenticated: formData.isAuthenticated
+      isAuthenticated: formData.isAuthenticated,
+      forceLiveResponse: sectionName === 'executive summary' // Force live response for executive summary
     });
     
     // Accept any non-empty response

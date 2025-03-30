@@ -1,4 +1,3 @@
-
 import { BusinessFormData } from "./types";
 
 // Function to generate fallback content based on section and business info

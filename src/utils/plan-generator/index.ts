@@ -43,8 +43,29 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   toast({ description: 'Processing your business information...' });
   
   try {
-    // Generate sections SEQUENTIALLY to avoid API rate limits
-    for (const section of sections) {
+    // Generate executive summary first - this is critical
+    const executiveSummarySection = sections[0];
+    try {
+      toast({ description: executiveSummarySection.message });
+      console.log(`Generating ${executiveSummarySection.name}...`);
+      
+      const result = await generateSection(executiveSummarySection.name, formData, 0, 2);
+      
+      if (!result.content || result.content.trim() === '') {
+        console.error(`Generated empty ${executiveSummarySection.name}, using fallback`);
+        plan[executiveSummarySection.key] = getFallbackContent(executiveSummarySection.name, formData);
+      } else {
+        plan[executiveSummarySection.key] = result.content;
+        console.log(`Generated ${executiveSummarySection.key} successfully, length: ${result.content.length} chars`);
+      }
+    } catch (error) {
+      console.error(`Error generating ${executiveSummarySection.name}:`, error);
+      plan[executiveSummarySection.key] = getFallbackContent(executiveSummarySection.name, formData);
+    }
+    
+    // Generate remaining sections SEQUENTIALLY to avoid API rate limits
+    for (let i = 1; i < sections.length; i++) {
+      const section = sections[i];
       toast({ description: section.message });
       
       try {
@@ -66,8 +87,8 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
           variant: "destructive"
         });
         
-        // Add simplified content for the section
-        plan[section.key] = `Error generating ${section.name}. Please try again later.`;
+        // Add fallback content for the section
+        plan[section.key] = getFallbackContent(section.name, formData);
       }
     }
     

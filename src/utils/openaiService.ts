@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 interface OpenAIRequestParams {
   prompt: string;
   model: string;
+  systemPrompt?: string;
   temperature?: number;
   maxTokens?: number;
   isAuthenticated?: boolean;
@@ -21,17 +22,23 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
     console.log(`Calling OpenAI with model: ${params.model}, prompt length: ${params.prompt.length} chars`);
     console.log(`User authenticated: ${params.isAuthenticated ? 'Yes' : 'No'}`);
     
-    // Use the improved endpoint to call OpenAI via our Supabase Edge Function
+    const requestStartTime = Date.now();
+    
+    // Call OpenAI via our Supabase Edge Function
     const { data, error } = await supabase.functions.invoke('openai-completion', {
       body: {
         prompt: params.prompt,
         model: params.model,
+        systemPrompt: params.systemPrompt,
         temperature: params.temperature || 0.7,
-        max_tokens: params.maxTokens || 1500,
+        max_tokens: params.maxTokens || 2000,
         isAuthenticated: params.isAuthenticated,
         forceLiveResponse: params.forceLiveResponse
       }
     });
+    
+    const requestDuration = Date.now() - requestStartTime;
+    console.log(`OpenAI request completed in ${requestDuration}ms`);
     
     if (error) {
       console.error('Error calling OpenAI via edge function:', error);
@@ -51,18 +58,24 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   } catch (error: any) {
     console.error('Error in OpenAI call:', error);
     
-    // Improved error handling
+    // Improved error handling with specific error messages
     if (error.message && error.message.includes('timed out')) {
       return {
-        text: "The AI service is taking longer than expected. Please try again with a shorter business description.",
+        text: "The AI service is taking longer than expected. Please try again with a shorter description.",
         success: false,
-        error: error.message || 'Request timed out'
+        error: 'Request timed out'
       };
     } else if (error.message && error.message.includes('rate limit')) {
       return {
         text: "We've reached our API rate limit. Please wait a minute before trying again.",
         success: false,
-        error: error.message || 'Rate limit exceeded'
+        error: 'Rate limit exceeded'
+      };
+    } else if (error.message && error.message.includes('API key')) {
+      return {
+        text: "There was an issue with the API configuration. Our team has been notified.",
+        success: false,
+        error: 'API configuration error'
       };
     }
     

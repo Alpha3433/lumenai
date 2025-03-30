@@ -71,10 +71,13 @@ export const useBusinessModels = (
       
       Ensure the models are diverse and specific to this business. Focus on practical, revenue-generating approaches.`;
       
+      const systemPrompt = "You are a business model expert generating practical, innovative revenue models in a structured JSON format.";
+      
       // Call OpenAI API
       const response = await callOpenAI({
         prompt,
-        model: 'gpt-4o',
+        systemPrompt,
+        model: isPremium ? 'gpt-4o' : 'gpt-4o-mini',
         temperature: 0.7,
         maxTokens: 1500,
         isAuthenticated: isPremium,

@@ -2,15 +2,16 @@
 import { toast } from "@/components/ui/use-toast";
 import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
 import { callOpenAI } from "./openaiService";
-import { createPromptForSection } from "./planSections";
+import { createPromptForSection, getSystemPromptForSection } from "./planSections";
 
 // Generate a section of the business plan
 export const generateSection = async (sectionName: string, formData: BusinessFormData): Promise<string> => {
   // Use the improved prompt templates
   const promptTemplate = createPromptForSection(sectionName, formData);
+  const systemPrompt = getSystemPromptForSection(sectionName);
   
   // Always use gpt-4o for better quality and reliability
-  const model = 'gpt-4o';
+  const model = formData.useAIV2 ? 'gpt-4o' : 'gpt-4o-mini';
   
   // Adjust token limits based on section complexity
   const maxTokens = sectionName.includes('financial') ? 2000 : 
@@ -22,6 +23,7 @@ export const generateSection = async (sectionName: string, formData: BusinessFor
     
     const response = await callOpenAI({
       prompt: promptTemplate,
+      systemPrompt: systemPrompt,
       model: model,
       temperature: 0.7,
       maxTokens: maxTokens,
@@ -45,8 +47,8 @@ export const generateSection = async (sectionName: string, formData: BusinessFor
 };
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
-  // Always use GPT-4o for most reliable results
-  const aiEngine = 'Enhanced AI';
+  // Set AI model based on user preference
+  const aiEngine = formData.useAIV2 ? 'Enhanced AI (GPT-4o)' : 'Standard AI (GPT-4o-mini)';
   
   toast({
     description: `Creating your business plan with ${aiEngine}...`,
@@ -87,18 +89,40 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       toast({ description: section.message });
       
       try {
-        // Generate each section
-        const content = await generateSection(section.name, formData);
+        // Generate each section with retry mechanism
+        let content = '';
+        let retryCount = 0;
+        const maxRetries = 2;
         
-        // If we get a valid response, add it to the plan
-        if (content && content.length > 0) {
-          plan[section.key] = content;
-          console.log(`✅ Generated ${section.key} successfully, length: ${content.length} chars`);
-        } else {
-          // This should never happen due to fallbacks in generateSection
-          console.warn(`⚠️ Empty content for ${section.key}, using fallback`);
-          plan[section.key] = getFallbackContent(section.name, formData);
+        while (retryCount <= maxRetries) {
+          try {
+            content = await generateSection(section.name, formData);
+            
+            // If we got valid content, break the retry loop
+            if (content && content.length > 0) {
+              break;
+            }
+          } catch (error) {
+            console.error(`Error generating ${section.name} (attempt ${retryCount + 1}):`, error);
+            
+            // On last retry, use fallback
+            if (retryCount === maxRetries) {
+              content = getFallbackContent(section.name, formData);
+              console.log(`Using fallback content for ${section.name} after ${maxRetries} failed attempts`);
+            }
+          }
+          
+          retryCount++;
+          
+          // Wait briefly before retrying to avoid rate limits
+          if (retryCount <= maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
         }
+        
+        // Add the content to the plan
+        plan[section.key] = content;
+        console.log(`✅ Generated ${section.key} successfully, length: ${content.length} chars`);
       } catch (error) {
         console.error(`❌ Error generating ${section.name}:`, error);
         

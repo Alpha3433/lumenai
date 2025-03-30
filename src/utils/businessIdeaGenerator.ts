@@ -23,17 +23,19 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
     
     // Create prompt based on user preferences
     const prompt = createBusinessIdeaPrompt(preferences);
+    const systemPrompt = "You are a business idea generator creating innovative, practical, and marketable business concepts with specific details on target market, revenue model, and competitive advantages.";
     
     console.log('Calling OpenAI with business idea prompt');
     
-    // Always use gpt-4o for all users
-    const model = "gpt-4o";
+    // Use model based on premium status
+    const model = preferences.usePremiumModel ? "gpt-4o" : "gpt-4o-mini";
     
     // Call OpenAI API
     const response = await callOpenAI({
       prompt,
+      systemPrompt,
       model,
-      temperature: 0.7,
+      temperature: 0.8, // Slightly higher temperature for more creativity
       maxTokens: 1200,
       isAuthenticated,
       forceLiveResponse: true

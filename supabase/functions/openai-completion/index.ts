@@ -16,7 +16,7 @@ serve(async (req) => {
   }
   
   try {
-    const { prompt, model, temperature, max_tokens, isAuthenticated, forceLiveResponse } = await req.json();
+    const { prompt, model, temperature, max_tokens, isAuthenticated, systemPrompt, forceLiveResponse } = await req.json();
     
     // Get the OpenAI API key from environment variables
     const apiKey = Deno.env.get('OPENAI_API_KEY');
@@ -41,7 +41,10 @@ serve(async (req) => {
     
     console.log(`Calling OpenAI API with model: ${useModel}`);
     
-    // Call OpenAI API with optimized parameters for reliability
+    // Create default system message if none provided
+    const defaultSystemPrompt = 'You are a helpful business planning assistant that provides thorough, accurate, and detailed responses.';
+    
+    // Call OpenAI API with provided parameters
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -51,11 +54,11 @@ serve(async (req) => {
       body: JSON.stringify({
         model: useModel,
         messages: [
-          { role: 'system', content: 'You are a helpful assistant.' },
+          { role: 'system', content: systemPrompt || defaultSystemPrompt },
           { role: 'user', content: prompt }
         ],
         temperature: temperature || 0.7,
-        max_tokens: max_tokens || 1500,
+        max_tokens: max_tokens || 2000,
       })
     });
     

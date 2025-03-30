@@ -2,6 +2,7 @@
 import { toast } from "@/components/ui/use-toast";
 import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
 import { generateSection } from "./sectionGenerator";
+import { getFallbackContent } from "./fallbackContent";
 
 /**
  * Generates a complete business plan with all sections

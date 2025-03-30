@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center">
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
-                Lumen AI Business Builder
+                Luman AI
               </span>
             </Link>
             <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm">
@@ -93,7 +93,7 @@ const Footer = () => {
         
         <div className="border-t border-gray-200 dark:border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-600 dark:text-gray-400 text-sm">
-            © {new Date().getFullYear()} Lumen AI Business Builder. All rights reserved.
+            © {new Date().getFullYear()} Luman AI. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
             <ul className="flex space-x-6">

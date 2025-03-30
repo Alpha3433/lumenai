@@ -4,7 +4,7 @@ export interface ExampleCompany {
   name: string;
   description: string;
   industry: string;
-  logoIcon: string; // Changed to string
+  logoIcon: string;
   executiveSummary: string;
   marketAnalysis: string;
   businessModel: string;
@@ -21,7 +21,7 @@ export const exampleCompanies: ExampleCompany[] = [
     name: "Tesla, Inc.",
     description: "Electric vehicle and clean energy company focused on manufacturing electric vehicles, battery energy storage, and solar products.",
     industry: "Automotive & Energy",
-    logoIcon: "Zap", // Now as string
+    logoIcon: "Zap",
     executiveSummary: "Tesla is an American electric vehicle and clean energy company that designs and manufactures electric cars, battery energy storage from home to grid-scale, solar panels and solar roof tiles, and related products and services. Tesla is one of the world's most valuable companies and remains the world's most valuable automaker with a market capitalization of more than US$600 billion.",
     marketAnalysis: "The electric vehicle market is projected to grow at a CAGR of 21.7% from 2022 to 2030. Tesla maintains a significant market share in the premium electric vehicle segment, with key competitors including traditional automakers like Ford, GM, and Volkswagen, as well as new entrants like Rivian and Lucid Motors. The global shift toward renewable energy and sustainable transportation is creating tailwinds for Tesla's core business segments.",
     businessModel: "Tesla operates a direct-to-consumer sales model, bypassing traditional dealerships. Revenue streams include vehicle sales, energy products, services, and regulatory credits. The company's vertical integration strategy encompasses battery production, charging infrastructure, and advanced software development.",
@@ -35,7 +35,7 @@ export const exampleCompanies: ExampleCompany[] = [
     name: "Apple Inc.",
     description: "Technology company that designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories.",
     industry: "Technology & Consumer Electronics",
-    logoIcon: "Apple", // Now as string 
+    logoIcon: "Apple",
     executiveSummary: "Apple Inc. is an American multinational technology company that specializes in consumer electronics, software, and online services. Apple is the largest technology company by revenue and has been the world's most valuable company since 2022, with a market capitalization of over US$3 trillion.",
     marketAnalysis: "The global smartphone market is projected to reach $784 billion by 2028, with Apple maintaining premium market share and profitability. The company has strong positions in personal computing, tablets, and wearables, while expanding its services ecosystem. Key competitors include Samsung, Xiaomi, and Google in hardware, and various specialized competitors across its software and services businesses.",
     businessModel: "Apple generates revenue primarily through hardware sales, with growing contributions from services including the App Store, iCloud, Apple Music, Apple TV+, and Apple Pay. The company's ecosystem strategy creates high switching costs and customer loyalty, with seamless integration across devices and services driving recurring revenue.",
@@ -49,7 +49,7 @@ export const exampleCompanies: ExampleCompany[] = [
     name: "Amazon.com, Inc.",
     description: "E-commerce, cloud computing, digital streaming, and artificial intelligence company.",
     industry: "E-commerce & Technology",
-    logoIcon: "ShoppingCart", // Now as string
+    logoIcon: "ShoppingCart",
     executiveSummary: "Amazon.com, Inc. is an American multinational technology company focusing on e-commerce, cloud computing, online advertising, digital streaming, and artificial intelligence. It has been referred to as one of the most influential economic and cultural forces in the world, and is one of the world's most valuable brands.",
     marketAnalysis: "The global e-commerce market is expected to reach $58.74 trillion by 2028, growing at a CAGR of 14.7%. Amazon leads in North America and has significant presence in Europe and Asia. AWS continues to dominate the cloud computing market with approximately 32% market share. Key competitors include Walmart and Alibaba in retail, and Microsoft and Google in cloud services.",
     businessModel: "Amazon operates multiple business models including direct retail, marketplace platform, subscription services (Prime), cloud computing (AWS), digital advertising, and entertainment production. The company prioritizes customer experience and long-term growth over short-term profitability, utilizing data-driven optimization and economies of scale.",
@@ -57,5 +57,47 @@ export const exampleCompanies: ExampleCompany[] = [
     swotAnalysis: "Strengths: Global scale, customer-centric approach, technological infrastructure, diversified revenue streams. Weaknesses: Workplace controversies, thin margins in retail, regulatory scrutiny. Opportunities: International expansion, healthcare services, physical retail innovation. Threats: Antitrust regulation, rising logistics costs, labor organization efforts.",
     financialProjections: "Amazon reported $134.4 billion in net sales for Q2 2023, with AWS generating $22.1 billion. Operating income was $7.7 billion, with AWS contributing $5.4 billion. The company continues to invest heavily in fulfillment capacity, content creation, and new business ventures while maintaining positive free cash flow.",
     riskAssessment: "Key risks include regulatory actions related to market dominance, labor relations challenges, international trade complications, and cybersecurity threats. Amazon's diversified business model, technical capabilities, and scale provide significant risk mitigation."
+  },
+  {
+    id: "microsoft",
+    name: "Microsoft Corporation",
+    description: "Technology company that develops, licenses, and supports software, services, devices, and solutions.",
+    industry: "Software & Cloud Computing",
+    logoIcon: "Workflow",
+    executiveSummary: "Microsoft Corporation is an American multinational technology corporation that produces computer software, consumer electronics, personal computers, and related services. Microsoft is one of the Big Five American information technology companies, alongside Google, Amazon, Apple, and Meta.",
+    marketAnalysis: "The global cloud computing market is expected to reach $1.6 trillion by 2030, growing at a CAGR of 17.9%. Microsoft's Azure platform holds approximately 22% market share, second only to AWS. The company's diversified product portfolio spans operating systems, productivity software, gaming, and hardware. Key competitors include AWS and Google in cloud services, and Google and Apple in various software categories.",
+    businessModel: "Microsoft generates revenue through software licenses, cloud services subscriptions, gaming sales, hardware devices, and advertising. The company has successfully transitioned from a traditional software licensing model to a cloud-based subscription model, particularly with Microsoft 365 and Azure services.",
+    marketingPlan: "Microsoft's marketing strategy focuses on business solutions, productivity enhancements, and digital transformation. The company positions itself as an essential partner for enterprises undergoing digital transformation, with integrated campaigns across digital channels, industry events, and partner ecosystems.",
+    swotAnalysis: "Strengths: Diverse product portfolio, enterprise relationships, cloud infrastructure, strong financials. Weaknesses: Legacy systems complexity, hardware market challenges. Opportunities: AI integration, metaverse development, security solutions expansion. Threats: Cybersecurity challenges, competitive cloud market, regulatory scrutiny.",
+    financialProjections: "Microsoft reported $56.2 billion in revenue for Q4 FY2023, with Intelligent Cloud (including Azure) generating $24 billion. The company continues to demonstrate strong profitability with operating margins above 40% across most business segments.",
+    riskAssessment: "Key risks include cybersecurity threats, rapid technological change, regulatory compliance challenges, and intense competition in cloud services. Microsoft's diversified business model, technical expertise, and financial resources provide significant risk mitigation factors."
+  },
+  {
+    id: "netflix",
+    name: "Netflix, Inc.",
+    description: "Subscription streaming service and production company.",
+    industry: "Entertainment & Media",
+    logoIcon: "MonitorPlay",
+    executiveSummary: "Netflix, Inc. is an American subscription video on-demand streaming service and production company. The company offers a library of films, television series, and games through distribution deals and its own productions, known as Netflix Originals.",
+    marketAnalysis: "The global video streaming market is projected to reach $330 billion by 2030, growing at a CAGR of 21.3%. Netflix maintains a leading position with approximately 240 million subscribers worldwide. The streaming landscape has become increasingly competitive with entries from major media companies. Key competitors include Disney+, Amazon Prime Video, HBO Max, and numerous regional streaming services.",
+    businessModel: "Netflix operates on a subscription-based revenue model, offering tiered pricing plans with different features. The company invests heavily in original content production and licensing, with a strategic shift toward creating owned intellectual property. International expansion and localized content development represent key growth vectors.",
+    marketingPlan: "Netflix's marketing approach combines content-centric promotion, algorithmic personalization, and limited traditional advertising. The company leverages sophisticated data analytics to target potential subscribers, recommend content to existing users, and reduce churn. Social media engagement, cultural moment creation, and exclusive previews form core elements of their marketing strategy.",
+    swotAnalysis: "Strengths: Content library depth, brand recognition, recommendation algorithm, international presence. Weaknesses: High content costs, subscription-only model, regional content gaps. Opportunities: Gaming expansion, advertising tier growth, merchandise licensing. Threats: Subscription fatigue, intensifying competition, content production disruptions.",
+    financialProjections: "Netflix reported $8.2 billion in revenue for Q2 2023, with paid memberships reaching 238.4 million globally. The company's operating margin was 22.3%, with a focus on balancing content investment with profitability goals.",
+    riskAssessment: "Primary risks include increasing content costs, intense streaming competition, subscriber growth challenges in mature markets, and potential regulatory changes affecting digital services. Netflix's established brand, technical infrastructure, and global scale provide meaningful risk mitigation."
+  },
+  {
+    id: "meta",
+    name: "Meta Platforms, Inc.",
+    description: "Technology company focusing on social media, digital advertising, and metaverse technologies.",
+    industry: "Social Media & Technology",
+    logoIcon: "Share2",
+    executiveSummary: "Meta Platforms, Inc. (formerly Facebook, Inc.) is an American multinational technology conglomerate that owns Facebook, Instagram, WhatsApp, and Oculus, among other products and services. The company has rebranded to focus on developing the metaverse, a collective virtual shared space.",
+    marketAnalysis: "The global social media market is valued at approximately $230 billion in 2023 and is expected to reach $710 billion by 2030. Meta maintains dominant positions with Facebook and Instagram, reaching billions of users worldwide. The digital advertising market, Meta's primary revenue source, continues to grow despite increased competition and privacy challenges. Key competitors include TikTok, Snapchat, Google, and emerging metaverse players.",
+    businessModel: "Meta generates revenue primarily through digital advertising on its family of apps, with nascent revenue streams from virtual reality hardware, digital goods, and enterprise metaverse solutions. The company leverages its massive user data to deliver highly targeted advertising capabilities to marketers.",
+    marketingPlan: "Meta's marketing strategy focuses on platform growth, developer ecosystem expansion, and metaverse adoption. The company invests in brand campaigns highlighting connectivity, creativity, and future technologies. Business marketing emphasizes advertising effectiveness, while developer outreach centers on platform tools and monetization opportunities.",
+    swotAnalysis: "Strengths: Massive user base, advertising technology, engineering talent, financial resources. Weaknesses: Privacy concerns, regulatory scrutiny, metaverse investment uncertainty. Opportunities: Metaverse development, business messaging expansion, e-commerce integration. Threats: User engagement challenges, regulatory actions, competition from short-form video platforms.",
+    financialProjections: "Meta reported $32 billion in revenue for Q2 2023, primarily from advertising. The company continues to invest heavily in Reality Labs (metaverse division) despite the segment operating at a loss. Overall company operating margin was approximately 29%, reflecting strong core business performance offsetting metaverse investments.",
+    riskAssessment: "Key risks include regulatory actions related to privacy and competition, declining engagement among younger users, advertising measurement challenges due to privacy changes, and uncertainty around metaverse adoption timelines. Meta's established platforms, technical capabilities, and financial strength provide risk mitigation."
   }
 ];

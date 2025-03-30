@@ -1,5 +1,6 @@
 
 import { PorterFiveForcesData } from './types';
+import { extractIndustryKeywords, extractProductType } from './bulletPointsUtils';
 
 // Default result structure with empty values
 export const getDefaultForcesData = (): PorterFiveForcesData => ({
@@ -65,7 +66,8 @@ const extractCompetitors = (text: string): string[] => {
   if (competitors.length === 0) {
     const competitorPhrases = [
       /competitors(?:\s+include|\s+are|\s+such\s+as)[^.]*((?:[A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*){0,2})(?:,\s+(?:[A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*){0,2})){0,5})/i,
-      /main players in this market include[^.]*((?:[A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*){0,2})(?:,\s+(?:[A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*){0,2})){0,5})/i
+      /main players in this market include[^.]*((?:[A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*){0,2})(?:,\s+(?:[A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*){0,2})){0,5})/i,
+      /(?:major|key|main) competitors (?:are|include)[^.]*((?:[A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*){0,2})(?:,\s+(?:[A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*){0,2})){0,5})/i
     ];
     
     for (const phrase of competitorPhrases) {
@@ -96,47 +98,59 @@ export const getFallbackPoints = (
   const competitor1 = competitors[0] || "established competitors";
   const competitor2 = competitors[1] || "major players";
   
+  // Extract industry keywords if none provided
+  const industryKeywords = industry ? [industry] : extractIndustryKeywords(analysisText);
+  const primaryIndustry = industryKeywords[0] || "technology";
+  
   // Determine business type (product vs service)
-  const isProduct = /product|device|hardware|equipment|tool|app|software|platform/i.test(analysisText);
-  const offerType = isProduct ? "product" : "service";
+  const productType = extractProductType(analysisText);
   
   // Extract price point indicators
   const isPremium = /premium|luxury|high-end|upscale/i.test(analysisText);
   const pricePoint = isPremium ? "premium" : "standard";
   
-  // Default industry if not found
-  const businessIndustry = industry || (isProduct ? "technology" : "services");
+  // Look for market growth indicators
+  const isGrowingMarket = /growing|emerging|expanding|rise|increasing|booming/i.test(analysisText);
+  const marketTrend = isGrowingMarket ? "growing" : "mature";
+  
+  // Look for regulation indicators
+  const hasRegulations = /regulation|compliance|certification|license|standard|law|legal requirement/i.test(analysisText);
   
   switch (category) {
     case 'threat-new-entry':
       return [
-        `New entrants to the ${businessIndustry} market face significant technical expertise requirements and development costs.`,
-        `${businessName ? businessName : "The business"} benefits from first-mover advantage with established ${pricePoint} ${offerType} offerings.`,
-        `Regulatory compliance and certifications create barriers for new competitors entering this space.`
+        `New entrants to the ${primaryIndustry} market face ${isPremium ? 'high' : 'significant'} ${productType === 'software' ? 'technical expertise requirements' : 'capital investment requirements'} and ${productType === 'service' ? 'brand development' : 'development'} costs.`,
+        `${businessName ? businessName : "The business"} benefits from ${isGrowingMarket ? 'early mover' : 'established market'} advantage with ${pricePoint} ${productType} offerings that have built customer loyalty.`,
+        `${hasRegulations ? 'Regulatory compliance and certifications' : 'Intellectual property protections and patents'} create barriers for new competitors entering the ${primaryIndustry} space.`,
+        `The ${marketTrend} market requires new entrants to secure ${productType === 'service' ? 'skilled talent' : 'distribution channels'} which existing players have already established.`
       ];
     case 'threat-substitution':
       return [
-        `Alternative ${offerType}s like ${isProduct ? "traditional manual methods" : "in-house solutions"} offer lower costs but reduced functionality.`,
-        `${competitor1} offers a competing ${offerType} at a ${isPremium ? "lower price point" : "higher price with additional features"}.`,
-        `Customers may hesitate to switch due to integration costs and learning curves associated with new ${offerType}s.`
+        `Alternative ${productType}s like ${productType === 'software' ? 'traditional manual methods' : productType === 'service' ? 'self-service options' : 'simpler alternatives'} offer lower costs but reduced ${productType === 'service' ? 'quality' : 'functionality'}.`,
+        `${competitor1} offers a competing ${productType} at a ${isPremium ? 'lower price point' : 'higher price with additional features'}, attracting price-sensitive segments of the market.`,
+        `Customers may hesitate to switch due to ${productType === 'software' ? 'integration costs and learning curves' : productType === 'service' ? 'relationship switching costs' : 'compatibility issues'} associated with new ${productType}s.`,
+        `The unique ${isPremium ? 'premium features' : 'value proposition'} of this ${productType} limits viable substitutes in the ${primaryIndustry} sector.`
       ];
     case 'supplier-power':
       return [
-        `Key technology providers and ${isProduct ? "component manufacturers" : "platform providers"} have moderate leverage over operational costs.`,
-        `Multiple sourcing options for ${isProduct ? "raw materials and components" : "essential services and tools"} reduce dependency on any single supplier.`,
-        `Long-term contracts with suppliers help mitigate short-term price fluctuations in the ${businessIndustry} sector.`
+        `Key ${productType === 'software' ? 'technology providers' : productType === 'service' ? 'talent and skilled workers' : 'component manufacturers'} have ${isGrowingMarket ? 'increasing' : 'moderate'} leverage over operational costs in the ${primaryIndustry} sector.`,
+        `Multiple sourcing options for ${productType === 'software' ? 'development tools and cloud services' : productType === 'service' ? 'service delivery resources' : 'raw materials and components'} reduce dependency on any single supplier.`,
+        `${isPremium ? 'Quality-focused' : 'Long-term'} contracts with suppliers help mitigate ${isPremium ? 'quality inconsistencies' : 'short-term price fluctuations'} in the ${primaryIndustry} supply chain.`,
+        `The ${marketTrend} ${primaryIndustry} market gives ${marketTrend === 'growing' ? 'businesses more options' : 'suppliers more negotiating power'} as ${marketTrend === 'growing' ? 'new suppliers emerge' : 'consolidation occurs'}.`
       ];
     case 'buyer-power':
       return [
-        `${isPremium ? "High-value clients" : "Price-sensitive customers"} have significant influence on pricing and feature expectations.`,
-        `The ${offerType}'s unique value proposition reduces price sensitivity among the target demographic.`,
-        `Customer acquisition costs in the ${businessIndustry} sector require competitive pricing and retention strategies.`
+        `${isPremium ? 'High-value clients' : 'Price-sensitive customers'} have significant influence on ${isPremium ? 'service expectations' : 'pricing and feature expectations'} in the ${primaryIndustry} market.`,
+        `The ${productType}'s ${isPremium ? 'premium positioning' : 'unique value proposition'} reduces price sensitivity among the ${isPremium ? 'high-end' : 'target'} demographic.`,
+        `${productType === 'software' ? 'User acquisition' : productType === 'service' ? 'Client acquisition' : 'Customer acquisition'} costs in the ${primaryIndustry} sector require ${isPremium ? 'value-based' : 'competitive'} pricing and retention strategies.`,
+        `${competitors.length > 0 ? 'The presence of alternatives like ' + competitor1 : 'Multiple competing options'} ${isGrowingMarket ? 'in this growing market' : ''} increases buyer negotiating power for ${productType} offerings.`
       ];
     case 'competitive-rivalry':
       return [
-        `Direct competition with ${competitor1}${competitor2 ? ` and ${competitor2}` : ""} in the ${businessIndustry} space affects market share and pricing strategies.`,
-        `The rapidly ${/growing|emerging|expanding/i.test(analysisText) ? "growing" : "maturing"} ${businessIndustry} market ${/growing|emerging|expanding/i.test(analysisText) ? "reduces" : "intensifies"} competitive pressure through market expansion.`,
-        `Product differentiation and innovation are critical competitive factors in this ${businessIndustry} segment.`
+        `Direct competition with ${competitor1}${competitor2 ? ` and ${competitor2}` : ""} in the ${primaryIndustry} space affects market share and pricing strategies.`,
+        `The ${marketTrend} ${primaryIndustry} market ${marketTrend === 'growing' ? 'reduces' : 'intensifies'} competitive pressure through ${marketTrend === 'growing' ? 'market expansion' : 'market saturation'}.`,
+        `${productType === 'software' ? 'Feature innovation' : productType === 'service' ? 'Service quality' : 'Product differentiation'} and ${isPremium ? 'premium positioning' : 'cost efficiency'} are critical competitive factors in this ${primaryIndustry} segment.`,
+        `${hasRegulations ? 'Regulatory compliance capabilities' : 'Brand recognition and customer loyalty'} provide competitive advantages for established players like ${competitor1 || 'market leaders'}.`
       ];
   }
 };

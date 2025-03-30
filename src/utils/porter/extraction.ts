@@ -1,7 +1,7 @@
 
 import { PorterFiveForcesData, PorterForce } from './types';
 import { determineThreatLevel } from './threatLevelUtils';
-import { extractBulletPoints } from './bulletPointsUtils';
+import { extractBulletPoints, extractIndustryKeywords, extractProductType } from './bulletPointsUtils';
 import { getDefaultForcesData, getFallbackPoints } from './defaultValues';
 
 // Main function to extract Porter's Five Forces from analysis text
@@ -34,22 +34,23 @@ export const extractPorterFiveForcesData = (analysisText: string): PorterFiveFor
   };
   
   // Look for the business name and industry to help with fallbacks if needed
-  const businessNameMatch = analysisText.match(/Business Name:\s*([^\n]+)/i);
+  const businessNameMatch = analysisText.match(/(?:Business Name|company name|venture name):\s*([^\n]+)/i);
   const businessName = businessNameMatch ? businessNameMatch[1].trim() : '';
   
-  const industryMatch = analysisText.match(/(?:in the|within the)\s+([^\n.,]+(?:\s+[^\n.,]+){0,3})\s+(?:industry|market|sector)/i);
-  const industry = industryMatch ? industryMatch[1].trim() : '';
+  // Extract industry keywords
+  const industryKeywords = extractIndustryKeywords(analysisText);
+  const industry = industryKeywords.length > 0 ? industryKeywords[0] : '';
   
   // Handle Porter's Five Forces section specifically if it exists
-  if (analysisText.includes("Porter's Five Forces") || analysisText.includes("Porters Five Forces")) {
+  if (analysisText.includes("Porter's Five Forces") || analysisText.includes("Porters Five Forces") || analysisText.includes("Five Forces")) {
     // Try to find the Porter's section and parse it
-    const porterSectionMatch = analysisText.match(/(?:Porter's|Porters) Five Forces(?:.|\n)*?(?=(?:\n\n|\n#|\n<h))/i);
+    const porterSectionMatch = analysisText.match(/(?:Porter's|Porters|PORTER'S)(?:\s+Five|\s+5)(?:\s+Forces)(?:.|\n)*?(?=(?:\n\n|\n#|\n<h|\n\*\*))/i);
     
     if (porterSectionMatch) {
       const porterSection = porterSectionMatch[0];
       
       // Split the Porter's section into subsections for each force
-      const forceBlocks = porterSection.split(/\n\s*(?=(?:Threat|Bargaining|Competitive))/i);
+      const forceBlocks = porterSection.split(/\n\s*(?=(?:Threat|Bargaining|Competitive|Supplier|Buyer))/i);
       
       forceBlocks.forEach(block => {
         // For each block, identify which force it describes
@@ -88,7 +89,7 @@ export const extractPorterFiveForcesData = (analysisText: string): PorterFiveFor
     });
   }
   
-  // Generate fallback content if needed
+  // Generate fallback content if needed, using context from the analysis
   Object.keys(result).forEach(key => {
     const category = key as PorterForce['category'];
     if (result[category].points.length === 0) {

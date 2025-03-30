@@ -21,18 +21,18 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
     console.log(`Calling OpenAI with model: ${params.model}, prompt length: ${params.prompt.length} chars`);
     console.log(`User authenticated: ${params.isAuthenticated ? 'Yes' : 'No'}`);
     
-    // Even longer timeout of 180 seconds for complex generations
+    // Extend timeout to 5 minutes for complex generations
     const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('OpenAI request timed out after 180 seconds')), 180000);
+      setTimeout(() => reject(new Error('OpenAI request timed out after 300 seconds')), 300000);
     });
     
-    // Enhanced request with optimized parameters and more detailed instructions
+    // Enhanced request with optimized parameters
     const responsePromise = supabase.functions.invoke('openai-completion', {
       body: {
         prompt: params.prompt,
-        model: params.model,
+        model: params.model || 'gpt-4o',
         temperature: params.temperature || 0.7,
-        max_tokens: params.maxTokens || 1500, // Increased token limit
+        max_tokens: params.maxTokens || 2000, // Increased token limit
         isAuthenticated: params.isAuthenticated,
         priority: params.isAuthenticated ? 'high' : 'normal', // Prioritize authenticated users
         forceLiveResponse: true // Always use live responses
@@ -49,13 +49,13 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
 
     console.log('OpenAI response received, success:', response.data?.success);
     
-    // Verify the response quality
-    if (!response.data.text || response.data.text.length < 50) {
-      console.warn('OpenAI returned an unusually short response:', response.data.text);
+    // More lenient response validation - only check if text exists
+    if (!response.data?.text) {
+      console.warn('OpenAI returned an empty response');
       return {
-        text: "The AI service returned an incomplete response. Please try again.",
+        text: "The AI service returned an empty response. Please try again.",
         success: false,
-        error: 'Response too short'
+        error: 'Empty response'
       };
     }
     
@@ -70,7 +70,7 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
     if (error.message && error.message.includes('timed out')) {
       // Better user-friendly message for timeout errors
       return {
-        text: "The AI service is currently experiencing high demand. Please try again in a few moments or try with a shorter business description.",
+        text: "The AI service is taking longer than expected. Please try again with a shorter business description.",
         success: false,
         error: error.message || 'Request timed out'
       };

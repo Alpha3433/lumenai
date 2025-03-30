@@ -76,8 +76,8 @@ export const usePlanGeneration = ({
       setGenerationError(errorMessage);
       
       toast({
-        title: "Generation Failed",
-        description: "There was an error generating your business plan. Please try again with a different description.",
+        title: "Generation Issue",
+        description: "There was a problem generating some sections of your business plan. You can try again or use what we've generated so far.",
         variant: "destructive"
       });
       

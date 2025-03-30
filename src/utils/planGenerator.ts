@@ -4,26 +4,26 @@ import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
 import { callOpenAI } from "./openaiService";
 import { createPromptForSection } from "./planSections";
 
-// Optimized version that reduces token count and improves performance
-export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 3): Promise<string> => {
-  // Use the improved prompt templates from planSections.ts
+// Optimized version with improved error handling and retries
+export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 5): Promise<string> => {
+  // Use the improved prompt templates
   const promptTemplate = createPromptForSection(sectionName, formData);
   
   // Always use gpt-4o for better quality and reliability
-  // This is more expensive but produces more reliable results
   const model = 'gpt-4o';
   
   // Adjust token limits based on section complexity
-  const maxTokens = sectionName.includes('financial') ? 1500 : 
-                   sectionName.includes('swot') ? 1200 : 1000;
+  const maxTokens = sectionName.includes('financial') ? 2000 : 
+                   sectionName.includes('swot') ? 1500 : 
+                   sectionName.includes('market') ? 2000 : 1500;
   
   let attempts = 0;
-  let error = null;
-  let backoffTime = 2000; // Start with 2 seconds backoff
+  let lastError = null;
+  let backoffTime = 3000; // Start with 3 seconds backoff
   
-  while (attempts <= retryCount) {
+  while (attempts < retryCount) {
     try {
-      console.log(`Generating ${sectionName} with ${model}, attempt ${attempts + 1}/${retryCount + 1}`);
+      console.log(`Generating ${sectionName} with ${model}, attempt ${attempts + 1}/${retryCount}`);
       
       const response = await callOpenAI({
         prompt: promptTemplate,
@@ -34,32 +34,34 @@ export const generateSection = async (sectionName: string, formData: BusinessFor
         isAuthenticated: formData.isAuthenticated
       });
       
-      // More stringent check for content quality
-      if (response.success && response.text.length > 100) {
+      // Accept any non-empty response
+      if (response.success && response.text) {
         console.log(`Successfully generated ${sectionName} (${response.text.length} chars)`);
         return response.text;
-      } else if (response.text && response.text.includes("high demand")) {
-        // If we got the fallback message about high demand, wait longer before retry
-        console.warn(`AI service busy for ${sectionName}, waiting before retry...`);
-        error = new Error(`AI service is busy. Try again later.`);
-      } else if (!response.success || response.text.length <= 100) {
-        console.warn(`Generated content too short or failed: ${response.text?.length || 0} chars`);
-        throw new Error(`Generated content for ${sectionName} is too short or incomplete`);
+      } else if (response.text && response.text.includes("taking longer")) {
+        // If we got the fallback message about timeouts, wait longer before retry
+        console.warn(`AI service timeout for ${sectionName}, waiting before retry...`);
+        lastError = new Error(`AI service timeout. Try again later.`);
+      } else if (!response.success) {
+        console.warn(`Failed to generate content: ${response.error}`);
+        throw new Error(response.error || `Failed to generate ${sectionName}`);
       }
     } catch (err) {
-      error = err;
-      attempts++;
-      console.log(`Attempt ${attempts} failed for ${sectionName}, retrying...`, err);
-      
-      // Longer exponential backoff before retry
+      lastError = err;
+      console.log(`Attempt ${attempts + 1} failed for ${sectionName}, retrying...`, err);
+    }
+    
+    attempts++;
+    
+    // Exponential backoff before retry
+    if (attempts < retryCount) {
       await new Promise(resolve => setTimeout(resolve, backoffTime));
-      backoffTime = Math.min(backoffTime * 2, 15000); // Double the backoff time, max 15 seconds
+      backoffTime = Math.min(backoffTime * 1.5, 30000); // Increase backoff time with a cap at 30 seconds
     }
   }
   
-  // After all attempts fail, throw the error
-  console.error(`All ${retryCount + 1} attempts failed for ${sectionName}`);
-  throw error || new Error(`Failed to generate ${sectionName} after ${retryCount} attempts`);
+  console.error(`All ${retryCount} attempts failed for ${sectionName}`);
+  throw lastError || new Error(`Failed to generate ${sectionName} after ${retryCount} attempts`);
 };
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
@@ -86,7 +88,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   
   const plan: Partial<BusinessPlanData> = {};
   
-  // Generate sections one at a time with reduced parallelism to ensure reliability
+  // Define all sections that need to be generated
   const sections = [
     { key: 'executiveSummary', name: 'executive summary', message: 'Creating executive summary...' },
     { key: 'marketAnalysis', name: 'market analysis', message: 'Analyzing market dynamics...' },
@@ -100,24 +102,34 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   toast({ description: 'Processing your business information...' });
   
   try {
-    // Generate sections sequentially to avoid timeouts and rate limits
-    // Sequential generation reduces likelihood of API timeouts and increases reliability
+    // Generate sections SEQUENTIALLY to avoid API rate limits
     for (const section of sections) {
       toast({ description: section.message });
       
       try {
-        // Generate each section with increased retry limit
-        const content = await generateSection(section.name, formData, 4);
-        plan[section.key] = content;
-        console.log(`Generated ${section.key} successfully, length: ${content.length} chars`);
+        // Try to generate each section with increased retry count
+        const content = await generateSection(section.name, formData, 5);
+        
+        // If we get a valid response, add it to the plan
+        if (content && content.length > 0) {
+          plan[section.key] = content;
+          console.log(`✅ Generated ${section.key} successfully, length: ${content.length} chars`);
+        } else {
+          // Fallback content if generation fails
+          console.warn(`⚠️ Using fallback content for ${section.key}`);
+          plan[section.key] = `We couldn't generate the ${section.name} section at this time. Please try again later.`;
+        }
       } catch (error) {
-        console.error(`Error generating ${section.name}:`, error);
+        console.error(`❌ Error generating ${section.name}:`, error);
+        
+        // Provide a fallback response even on error
+        plan[section.key] = `We couldn't generate the ${section.name} section at this time. Please try again later.`;
+        
         toast({
-          title: "Error",
-          description: `Failed to generate ${section.name}. Please try again.`,
+          title: "Warning",
+          description: `Some sections may be incomplete. You can regenerate the plan if needed.`,
           variant: "destructive"
         });
-        throw error;
       }
     }
     
@@ -126,9 +138,9 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       description: `Business plan generated successfully!`,
     });
     
-    console.log('Business plan generation completed successfully');
+    console.log('Business plan generation completed');
     
-    // Type assertion is safe here because we've fully populated the plan
+    // Return the plan - even if some sections have fallback content
     return plan as BusinessPlanData;
   } catch (error) {
     console.error('Business plan generation failed:', error);
@@ -136,5 +148,4 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   }
 };
 
-// Export the BusinessFormData type so it can be imported by other files
 export type { BusinessFormData };

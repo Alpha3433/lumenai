@@ -36,13 +36,12 @@ serve(async (req) => {
       );
     }
     
-    // Only use gpt-4o for better reliability
+    // Always use gpt-4o for reliability
     const useModel = 'gpt-4o';
     
-    console.log(`Calling OpenAI API with model: ${useModel} (requested: ${model})`);
+    console.log(`Calling OpenAI API with model: ${useModel}`);
     console.log(`Request priority: ${priority || 'normal'}`);
     
-    // Enhanced system messages with improved instructions
     let systemMessage = 'You are a world-class business analyst and planner that generates comprehensive, detailed business plan content. ';
     
     // Check prompt type to add special formatting instructions
@@ -50,25 +49,23 @@ serve(async (req) => {
                                prompt.toLowerCase().includes('viability score');
     
     const isSwotPrompt = prompt.toLowerCase().includes('swot analysis');
-
     const isMarketAnalysisPrompt = prompt.toLowerCase().includes('market analysis');
-    
     const isExecutiveSummaryPrompt = prompt.toLowerCase().includes('executive summary');
     
-    // Add special detailed system instructions based on prompt type
+    // Add detailed system instructions based on prompt type
     if (isValidationPrompt) {
-      systemMessage += `For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL FOR PROPER DISPLAY of the report. Provide significantly more detailed analysis and use real-world examples from relevant industries. Include specific metrics and benchmarks based on current market conditions.`;
+      systemMessage += `For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. ALWAYS PROVIDE A COMPLETE ANALYSIS - DO NOT CUT YOUR RESPONSE SHORT FOR ANY REASON. Include specific metrics and benchmarks based on current market conditions.`;
     } else if (isMarketAnalysisPrompt) {
-      systemMessage += `For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, age demographics, and identify real competitor companies with estimates of their market share and revenue. Include more granular market segments, detailed competitor analysis with at least 5 specific companies, and provide nuanced insights about market entry barriers with industry-specific regulations and compliance requirements.`;
+      systemMessage += `For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, and identify at least 3 real competitor companies. PROVIDE A COMPLETE ANALYSIS - NEVER CUT YOUR RESPONSE SHORT. Include all sections requested in the prompt and ensure each section is fully developed. DO NOT TRUNCATE YOUR RESPONSE FOR ANY REASON.`;
     } else if (isSwotPrompt) {
-      systemMessage += `When creating a SWOT analysis, structure the response with clear headings for Strengths, Weaknesses, Opportunities, and Threats. For each category, provide 4 distinct and complete bullet points. IMPORTANT: Make sure each bullet point is a COMPLETE statement that stands on its own. DO NOT split a single strength, weakness, opportunity, or threat across multiple bullet points. Each bullet point should express one complete idea. Format your response exactly as follows (including the bullet points and whitespace):\n\n**Strengths**\n• [Complete strength 1]\n• [Complete strength 2]\n• [Complete strength 3]\n• [Complete strength 4]\n\n**Weaknesses**\n• [Complete weakness 1]\n• [Complete weakness 2]\n• [Complete weakness 3]\n• [Complete weakness 4]\n\n**Opportunities**\n• [Complete opportunity 1]\n• [Complete opportunity 2]\n• [Complete opportunity 3]\n• [Complete opportunity 4]\n\n**Threats**\n• [Complete threat 1]\n• [Complete threat 2]\n• [Complete threat 3]\n• [Complete threat 4]`;
+      systemMessage += `When creating a SWOT analysis, structure your response with clear headings for Strengths, Weaknesses, Opportunities, and Threats. For each category, provide EXACTLY 4 distinct and complete bullet points. IMPORTANT: Make sure each bullet point is a COMPLETE statement that stands on its own. DO NOT TRUNCATE YOUR RESPONSE FOR ANY REASON.`;
     } else if (isExecutiveSummaryPrompt) {
-      systemMessage += `Create a concise and compelling executive summary with EXACTLY TWO PARAGRAPHS. The first paragraph should introduce the business concept, value proposition, and target market. The second paragraph should highlight the market opportunity, business model, and competitive advantage. Be specific, clear, and compelling. Include actual numbers, percentages, and concrete details where relevant. The summary must be COMPLETE and COHERENT.`;
+      systemMessage += `Create a concise and compelling executive summary with EXACTLY TWO PARAGRAPHS. The first paragraph should introduce the business concept, value proposition, and target market. The second paragraph should highlight the market opportunity, business model, and competitive advantage. Be specific, clear, and compelling. Include actual numbers, percentages, and concrete details where relevant. The summary must be COMPLETE and COHERENT. DO NOT TRUNCATE YOUR RESPONSE.`;
     } else {
-      systemMessage += `When including numbers with decimal points, always ensure there is no space between the number and the decimal point (use 4.5 not 4. 5). Provide strategic depth, industry-specific insights, and actionable recommendations based on current market trends and competitive dynamics. ALWAYS provide complete, comprehensive responses. Never cut your response short.`;
+      systemMessage += `PROVIDE A COMPLETE AND COMPREHENSIVE RESPONSE - DO NOT TRUNCATE OR CUT YOUR ANSWER SHORT FOR ANY REASON. Always provide strategic depth, industry-specific insights, and actionable recommendations based on current market trends and competitive dynamics.`;
     }
     
-    // Call OpenAI API with optimized parameters
+    // Call OpenAI API with optimized parameters for reliability
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -82,9 +79,9 @@ serve(async (req) => {
           { role: 'user', content: prompt }
         ],
         temperature: temperature || 0.7,
-        max_tokens: max_tokens || 2000, // Increased token limit for more thorough responses
-        presence_penalty: 0.1,  // Slight presence penalty to make responses more creative
-        frequency_penalty: 0.1, // Slight frequency penalty to reduce repetition
+        max_tokens: max_tokens || 2500, // Increased token limit for more thorough responses
+        presence_penalty: 0.0,  // Reduced penalties for more reliable responses
+        frequency_penalty: 0.0,
       })
     });
     
@@ -97,19 +94,10 @@ serve(async (req) => {
     const data = await openAIResponse.json();
     const text = data.choices?.[0]?.message?.content || '';
     
-    // Validate that the response is substantial
-    if (text.length < 100) {
-      console.error('OpenAI response was too short:', text);
-      throw new Error('The generated content was too short or incomplete. Please try again.');
-    }
-    
-    // Post-process the response to fix any remaining decimal formatting issues
-    const fixedText = text
-      .replace(/(\d+)\.\s+(\d+)/g, '$1.$2')
-      .replace(/\$(\d+)\.\s+(\d+)/g, '\$$1.$2');
+    console.log(`OpenAI response length: ${text.length} characters`);
     
     return new Response(
-      JSON.stringify({ text: fixedText, success: true }),
+      JSON.stringify({ text: text, success: true }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {

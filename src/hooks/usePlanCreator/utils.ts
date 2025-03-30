@@ -13,6 +13,16 @@ export const validateFormInput = (formData: PlanCreatorFormData, isPremium: bool
     return "Missing required fields";
   }
   
+  // Check if description is too long, which might cause OpenAI to timeout
+  if (formData.businessDescription.length > 2000) {
+    toast({
+      title: "Error",
+      description: "Your business description is too long. Please limit it to 2000 characters for better results.",
+      variant: "destructive"
+    });
+    return "Description too long";
+  }
+  
   // Premium check is no longer needed as all users get GPT-4o
   // This code is kept but effectively disabled by passing isPremium=true from the caller
   if (formData.useAIV2 && !isPremium) {
@@ -35,16 +45,18 @@ export const simulateProgress = (
   setGeneratingProgress(0);
   setGenerationError(null);
   
-  // More reliable progress simulation for GPT-4o which takes longer
-  const sections = 7; // Total number of sections to generate
-  const progressPerSection = 90 / sections; // Leave 10% for final processing
+  // More realistic progress simulation for GPT-4o which takes longer
+  const totalTime = 180000; // 3 minutes expected total time
+  const updateInterval = 5000; // Update every 5 seconds
+  const updates = totalTime / updateInterval;
+  const progressPerUpdate = 90 / updates; // Reserve 10% for final processing
   
   let currentProgress = 0;
-  const updateProgressInterval = 6000; // Update every 6 seconds since GPT-4o takes longer
   
   const interval = setInterval(() => {
-    // Increment progress based on sections
-    currentProgress += progressPerSection / 3; // Divide by 3 to make multiple updates per section
+    // Add a small random factor to make progress look more natural
+    const randomFactor = Math.random() * 0.5 + 0.75; // Between 0.75 and 1.25
+    currentProgress += progressPerUpdate * randomFactor;
     
     // Ensure we don't exceed 90% until final completion
     if (currentProgress > 90) {
@@ -53,7 +65,7 @@ export const simulateProgress = (
     }
     
     setGeneratingProgress(Math.min(Math.round(currentProgress), 90));
-  }, updateProgressInterval / 3);
+  }, updateInterval);
   
   return () => {
     clearInterval(interval);

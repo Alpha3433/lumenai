@@ -15,10 +15,9 @@ export const useBusinessModels = (
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    if (isPremium) {
-      generateBusinessModels();
-    }
-  }, [isPremium, businessName, businessDescription]);
+    // Generate business models for all users, not just premium
+    generateBusinessModels();
+  }, [businessName, businessDescription]);
 
   const generateBusinessModels = async () => {
     setLoading(true);
@@ -50,9 +49,10 @@ export const useBusinessModels = (
 
       const response = await callOpenAI({
         prompt,
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o', // Use GPT-4o for everyone
         temperature: 0.7,
-        maxTokens: 1000
+        maxTokens: 1000,
+        forceLiveResponse: true // Always use live responses
       });
 
       if (response.success) {

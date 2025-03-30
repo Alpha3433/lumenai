@@ -3,7 +3,6 @@ import React from 'react';
 import { usePlanCreator } from '@/hooks/usePlanCreator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
-import UpgradeNotificationBanner from './UpgradeNotificationBanner';
 import { AlertTriangle } from 'lucide-react';
 
 interface PlanCreatorProps {
@@ -62,10 +61,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
         </div>
       )}
       
-      {step === 2 && !isPremium && (
-        <UpgradeNotificationBanner onUpgrade={upgradeAccount} />
-      )}
-      
       {step === 1 ? (
         <BusinessPlanForm
           formData={formData}
@@ -75,7 +70,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           onChange={handleInputChange}
           onToggleChange={handleToggleChange}
           onSubmit={onSubmitForm}
-          isPremium={isPremium}
+          isPremium={true} // Always show as premium since everyone gets GPT-4o
           onUpgrade={upgradeAccount}
         />
       ) : (
@@ -83,7 +78,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           businessName={formData.businessName}
           businessDescription={formData.businessDescription}
           businessPlan={businessPlan}
-          isPremium={isPremium}
+          isPremium={true} // Always show as premium since everyone gets GPT-4o
           onStartOver={() => setStep(1)}
           onDownload={downloadPlan}
           onUpgrade={upgradeAccount}

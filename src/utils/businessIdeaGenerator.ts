@@ -1,7 +1,6 @@
 
 import { callOpenAI } from './openaiService';
 import { BusinessIdeaPreferences, BusinessIdeaSuggestion } from './businessIdeas/types';
-import { generateMockBusinessIdea } from './businessIdeas';
 import { supabase } from '@/integrations/supabase/client';
 
 // Function to generate a business idea using OpenAI
@@ -18,18 +17,18 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
     
     console.log('Generating business idea with prompt:', prompt);
     
-    // Determine if premium model should be used
-    const model = preferences.usePremiumModel ? "gpt-4o" : "gpt-4o-mini";
-    console.log(`Using ${preferences.usePremiumModel ? 'premium' : 'standard'} model: ${model}`);
+    // Always use gpt-4o for all users
+    const model = "gpt-4o";
+    console.log(`Using model: ${model}`);
     
     // Call OpenAI API with a timeout
     const response = await callOpenAI({
       prompt,
       model,
       temperature: 0.7,
-      maxTokens: preferences.usePremiumModel ? 1200 : 800, // More tokens for premium users
+      maxTokens: 1200, // More tokens for detailed outputs
       isAuthenticated,
-      forceLiveResponse: true // Force live API response for business idea generation too
+      forceLiveResponse: true // Always force live API response
     });
     
     if (!response.success) {
@@ -44,22 +43,21 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
   } catch (error) {
     console.error('Error in generateBusinessIdea:', error);
     
-    // Return mock data in development or if there's an error
-    console.log('Using mock business idea due to error or development mode');
-    return generateMockBusinessIdea(preferences);
+    // Re-throw the error instead of falling back to mock data
+    throw new Error(`Failed to generate business idea: ${error.message}`);
   }
 }
 
 // Create a prompt for the OpenAI API based on user preferences
 function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string {
-  const { industry, interests, usePremiumModel } = preferences;
+  const { industry, interests } = preferences;
   
   if (interests === 'surprise me') {
     return `
       Generate an innovative business idea based on current market trends and opportunities.
       The business idea should be specific, practical, and have clear potential for profitability.
       Make it unique, creative, and different from common business ideas.
-      ${usePremiumModel ? 'Provide more depth and nuanced market insights in your response.' : ''}
+      Provide more depth and nuanced market insights in your response.
       
       Format your response as follows:
       Business Name: [catchy and relevant name]
@@ -76,7 +74,7 @@ function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string 
     Generate an innovative business idea in the ${industry || 'any'} industry.
     ${interests ? `The founder has interests/expertise in: ${interests}` : ''}
     Make it unique, creative, and different from common business ideas.
-    ${usePremiumModel ? 'Include more detailed market insights and business model analysis in your response.' : ''}
+    Include more detailed market insights and business model analysis in your response.
     
     Format your response as follows:
     Business Name: [catchy and relevant name]
@@ -123,12 +121,7 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
     
     // Ensure we have at least one reason if parsing failed
     if (whyItWorks.length === 0) {
-      whyItWorks = [
-        "Addresses a growing market need",
-        "Leverages current technology trends",
-        "Has multiple revenue streams",
-        "Low startup costs relative to potential returns"
-      ];
+      throw new Error('Failed to parse Why It Works section');
     }
     
     return {
@@ -140,8 +133,8 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
     };
   } catch (error) {
     console.error('Error parsing business idea response:', error, 'Raw text:', text);
-    // Return a fallback structure
-    return generateMockBusinessIdea({ industry: "technology" });
+    // Re-throw the error instead of returning a fallback
+    throw new Error(`Failed to parse business idea response: ${error.message}`);
   }
 }
 

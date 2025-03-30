@@ -29,8 +29,8 @@ export const usePlanGeneration = ({
       e.preventDefault();
     }
     
-    // Validate form data
-    const validationError = validateFormInput(formData, isPremium);
+    // Validate form data - but ignore premium check since all users get GPT-4o now
+    const validationError = validateFormInput(formData, true);
     if (validationError) {
       return;
     }
@@ -51,7 +51,7 @@ export const usePlanGeneration = ({
       const plan = await generateBusinessPlan({
         businessName: formData.businessName,
         businessDescription: formData.businessDescription,
-        useAIV2: formData.useAIV2
+        useAIV2: true // Always use the advanced model for everyone
       });
       
       console.log('Business plan generation completed successfully');

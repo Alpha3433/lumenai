@@ -13,6 +13,8 @@ export const validateFormInput = (formData: PlanCreatorFormData, isPremium: bool
     return "Missing required fields";
   }
   
+  // Premium check is no longer needed as all users get GPT-4o
+  // This code is kept but effectively disabled by passing isPremium=true from the caller
   if (formData.useAIV2 && !isPremium) {
     toast({
       title: "Premium Feature",
@@ -33,12 +35,12 @@ export const simulateProgress = (
   setGeneratingProgress(0);
   setGenerationError(null);
   
-  // More reliable progress simulation
+  // More reliable progress simulation for GPT-4o which takes longer
   const sections = 7; // Total number of sections to generate
   const progressPerSection = 90 / sections; // Leave 10% for final processing
   
   let currentProgress = 0;
-  const updateProgressInterval = 4000; // Update every 4 seconds
+  const updateProgressInterval = 6000; // Update every 6 seconds since GPT-4o takes longer
   
   const interval = setInterval(() => {
     // Increment progress based on sections

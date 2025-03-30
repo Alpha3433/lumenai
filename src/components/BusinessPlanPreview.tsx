@@ -8,7 +8,7 @@ import SwotAnalysis from './SwotAnalysis';
 import MarketingPlanSection from './MarketingPlanSection';
 import WebBusinessModelsSection from './WebBusinessModelsSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
-import PestelAnalysisSection from './PestelAnalysisSection';
+import PestelAnalysisSection from './pestel/PestelAnalysisSection';
 import PorterFiveForcesSection from './PorterFiveForcesSection';
 import { 
   FileText, 
@@ -111,7 +111,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               {/* PESTEL Analysis */}
               <div id="pestel-analysis">
-                <PestelAnalysisSection analysisText={businessPlan.marketAnalysis} />
+                <PestelAnalysisSection pestelData={null} analysisText={businessPlan.marketAnalysis} />
               </div>
               
               <Separator className="my-10" />

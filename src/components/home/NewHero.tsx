@@ -62,8 +62,8 @@ const NewHero = () => {
         <div className="p-3">
           <div className="flex items-center justify-between p-2 mb-4">
             <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white h-8 w-8 rounded-md flex items-center justify-center font-bold">VP</div>
-              <div className="text-sm font-medium">Visionary Plans</div>
+              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white h-8 w-8 rounded-md flex items-center justify-center font-bold">LA</div>
+              <div className="text-sm font-medium">Lumen AI</div>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <span className="px-2.5 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">PRO features</span>

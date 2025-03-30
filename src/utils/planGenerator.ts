@@ -4,7 +4,7 @@ import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
 import { callOpenAI } from "./openaiService";
 
 // Optimized version that reduces token count and improves performance
-export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 2): Promise<string> => {
+export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 3): Promise<string> => {
   // Optimized prompt that focuses on essential information only
   const promptTemplate = `Create a professional ${sectionName} section for a business plan with these details:
   
@@ -22,6 +22,7 @@ Make the ${sectionName} comprehensive, data-driven, and specific to this busines
   
   let attempts = 0;
   let error = null;
+  let backoffTime = 1000; // Start with 1 second backoff
   
   while (attempts <= retryCount) {
     try {
@@ -39,6 +40,10 @@ Make the ${sectionName} comprehensive, data-driven, and specific to this busines
       if (response.success && response.text.length > 50) {
         console.log(`Successfully generated ${sectionName} (${response.text.length} chars)`);
         return response.text;
+      } else if (response.text && response.text.includes("high demand")) {
+        // If we got the fallback message about high demand, we should wait a bit longer
+        console.warn(`AI service busy for ${sectionName}, waiting before retry...`);
+        error = new Error(`AI service is busy. Try again later.`);
       } else {
         console.warn(`Generated content too short: ${response.text?.length || 0} chars`);
         throw new Error(`Generated content for ${sectionName} is too short or incomplete`);
@@ -48,8 +53,9 @@ Make the ${sectionName} comprehensive, data-driven, and specific to this busines
       attempts++;
       console.log(`Attempt ${attempts} failed for ${sectionName}, retrying...`, err);
       
-      // Short delay before retry to avoid overwhelming the API
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Exponential backoff before retry to avoid overwhelming the API
+      await new Promise(resolve => setTimeout(resolve, backoffTime));
+      backoffTime = Math.min(backoffTime * 2, 10000); // Double the backoff time, max 10 seconds
     }
   }
   
@@ -96,12 +102,12 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   toast({ description: 'Processing your business information...' });
   
   try {
-    // Generate sections in parallel with a concurrency limit of 3 to avoid rate limiting
+    // Generate sections in parallel with a concurrency limit of 2 to avoid rate limiting
     const generateSectionsInBatches = async () => {
-      // Create batches of 3 sections to run concurrently
+      // Create batches of 2 sections to run concurrently (reduced from 3 to avoid timeouts)
       const batches = [];
-      for (let i = 0; i < sections.length; i += 3) {
-        batches.push(sections.slice(i, i + 3));
+      for (let i = 0; i < sections.length; i += 2) {
+        batches.push(sections.slice(i, i + 2));
       }
       
       // Process each batch sequentially, but sections within a batch in parallel
@@ -109,7 +115,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
         const batchResults = await Promise.all(batch.map(async (section) => {
           toast({ description: section.message });
           try {
-            const content = await generateSection(section.name, formData, 2);
+            const content = await generateSection(section.name, formData, 3); // Increased retries
             return { section, content, error: null };
           } catch (error) {
             console.error(`Error generating ${section.name}:`, error);

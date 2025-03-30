@@ -21,9 +21,9 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
     console.log(`Calling OpenAI with model: ${params.model}, prompt length: ${params.prompt.length} chars`);
     console.log(`User authenticated: ${params.isAuthenticated ? 'Yes' : 'No'}`);
     
-    // Set a shorter timeout of 60 seconds which is sufficient for most requests
+    // Set a longer timeout of 120 seconds for more complex generations
     const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('OpenAI request timed out after 60 seconds')), 60000);
+      setTimeout(() => reject(new Error('OpenAI request timed out after 120 seconds')), 120000);
     });
     
     // Enhanced request with optimized parameters
@@ -54,6 +54,16 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
     };
   } catch (error) {
     console.error('Error in OpenAI call:', error);
+    
+    // If it's a timeout error, provide a more helpful error message
+    if (error.message && error.message.includes('timed out')) {
+      // Fallback to a simple response for timeout errors
+      return {
+        text: "The AI service is currently experiencing high demand. Please try again in a few moments.",
+        success: false,
+        error: error.message || 'Request timed out'
+      };
+    }
     
     return {
       text: '',

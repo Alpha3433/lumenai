@@ -2,27 +2,24 @@
 import { toast } from "@/components/ui/use-toast";
 import { BusinessPlanData, BusinessFormData } from "@/types/businessPlan";
 import { callOpenAI } from "./openaiService";
+import { createPromptForSection } from "./planSections";
 
 // Optimized version that reduces token count and improves performance
 export const generateSection = async (sectionName: string, formData: BusinessFormData, retryCount = 3): Promise<string> => {
-  // Optimized prompt that focuses on essential information only
-  const promptTemplate = `Create a professional ${sectionName} section for a business plan with these details:
+  // Use the improved prompt templates from planSections.ts
+  const promptTemplate = createPromptForSection(sectionName, formData);
   
-Business: ${formData.businessName}
-Description: ${formData.businessDescription}
-
-Make the ${sectionName} comprehensive, data-driven, and specific to this business concept.`;
-
-  // Always use gpt-4o-mini for faster responses (except financial and SWOT which need gpt-4o)
-  const model = sectionName.includes('financial') || sectionName.includes('swot') ? 'gpt-4o' : 'gpt-4o-mini';
+  // Always use gpt-4o for better quality and reliability
+  // This is more expensive but produces more reliable results
+  const model = 'gpt-4o';
   
-  // Adjust token limits based on section importance
-  const maxTokens = sectionName.includes('executive') ? 800 : 
-                   sectionName.includes('financial') ? 1500 : 1000;
+  // Adjust token limits based on section complexity
+  const maxTokens = sectionName.includes('financial') ? 1500 : 
+                   sectionName.includes('swot') ? 1200 : 1000;
   
   let attempts = 0;
   let error = null;
-  let backoffTime = 1000; // Start with 1 second backoff
+  let backoffTime = 2000; // Start with 2 seconds backoff
   
   while (attempts <= retryCount) {
     try {
@@ -37,15 +34,16 @@ Make the ${sectionName} comprehensive, data-driven, and specific to this busines
         isAuthenticated: formData.isAuthenticated
       });
       
-      if (response.success && response.text.length > 50) {
+      // More stringent check for content quality
+      if (response.success && response.text.length > 100) {
         console.log(`Successfully generated ${sectionName} (${response.text.length} chars)`);
         return response.text;
       } else if (response.text && response.text.includes("high demand")) {
-        // If we got the fallback message about high demand, we should wait a bit longer
+        // If we got the fallback message about high demand, wait longer before retry
         console.warn(`AI service busy for ${sectionName}, waiting before retry...`);
         error = new Error(`AI service is busy. Try again later.`);
-      } else {
-        console.warn(`Generated content too short: ${response.text?.length || 0} chars`);
+      } else if (!response.success || response.text.length <= 100) {
+        console.warn(`Generated content too short or failed: ${response.text?.length || 0} chars`);
         throw new Error(`Generated content for ${sectionName} is too short or incomplete`);
       }
     } catch (err) {
@@ -53,9 +51,9 @@ Make the ${sectionName} comprehensive, data-driven, and specific to this busines
       attempts++;
       console.log(`Attempt ${attempts} failed for ${sectionName}, retrying...`, err);
       
-      // Exponential backoff before retry to avoid overwhelming the API
+      // Longer exponential backoff before retry
       await new Promise(resolve => setTimeout(resolve, backoffTime));
-      backoffTime = Math.min(backoffTime * 2, 10000); // Double the backoff time, max 10 seconds
+      backoffTime = Math.min(backoffTime * 2, 15000); // Double the backoff time, max 15 seconds
     }
   }
   
@@ -65,7 +63,7 @@ Make the ${sectionName} comprehensive, data-driven, and specific to this busines
 };
 
 export const generateBusinessPlan = async (formData: BusinessFormData): Promise<BusinessPlanData> => {
-  // Always use GPT-4o-mini for most sections to improve speed
+  // Always use GPT-4o for most reliable results
   const aiEngine = 'Enhanced AI';
   
   toast({
@@ -88,7 +86,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   
   const plan: Partial<BusinessPlanData> = {};
   
-  // Generate multiple sections in parallel to speed up the process
+  // Generate sections one at a time with reduced parallelism to ensure reliability
   const sections = [
     { key: 'executiveSummary', name: 'executive summary', message: 'Creating executive summary...' },
     { key: 'marketAnalysis', name: 'market analysis', message: 'Analyzing market dynamics...' },
@@ -102,45 +100,26 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   toast({ description: 'Processing your business information...' });
   
   try {
-    // Generate sections in parallel with a concurrency limit of 2 to avoid rate limiting
-    const generateSectionsInBatches = async () => {
-      // Create batches of 2 sections to run concurrently (reduced from 3 to avoid timeouts)
-      const batches = [];
-      for (let i = 0; i < sections.length; i += 2) {
-        batches.push(sections.slice(i, i + 2));
-      }
+    // Generate sections sequentially to avoid timeouts and rate limits
+    // Sequential generation reduces likelihood of API timeouts and increases reliability
+    for (const section of sections) {
+      toast({ description: section.message });
       
-      // Process each batch sequentially, but sections within a batch in parallel
-      for (const batch of batches) {
-        const batchResults = await Promise.all(batch.map(async (section) => {
-          toast({ description: section.message });
-          try {
-            const content = await generateSection(section.name, formData, 3); // Increased retries
-            return { section, content, error: null };
-          } catch (error) {
-            console.error(`Error generating ${section.name}:`, error);
-            return { section, content: null, error };
-          }
-        }));
-        
-        // Process results from this batch
-        for (const result of batchResults) {
-          if (result.error) {
-            toast({
-              title: "Error",
-              description: `Failed to generate ${result.section.name}. Please try again.`,
-              variant: "destructive"
-            });
-            throw result.error;
-          }
-          
-          plan[result.section.key] = result.content;
-          console.log(`Generated ${result.section.key} successfully, length: ${result.content.length} chars`);
-        }
+      try {
+        // Generate each section with increased retry limit
+        const content = await generateSection(section.name, formData, 4);
+        plan[section.key] = content;
+        console.log(`Generated ${section.key} successfully, length: ${content.length} chars`);
+      } catch (error) {
+        console.error(`Error generating ${section.name}:`, error);
+        toast({
+          title: "Error",
+          description: `Failed to generate ${section.name}. Please try again.`,
+          variant: "destructive"
+        });
+        throw error;
       }
-    };
-    
-    await generateSectionsInBatches();
+    }
     
     toast({
       title: "Success",

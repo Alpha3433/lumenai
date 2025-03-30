@@ -16,7 +16,7 @@ serve(async (req) => {
   }
   
   try {
-    const { prompt, model, temperature, max_tokens, isAuthenticated, priority } = await req.json();
+    const { prompt, model, temperature, max_tokens, isAuthenticated, priority, forceLiveResponse } = await req.json();
     
     // Get the OpenAI API key from environment variables
     const apiKey = Deno.env.get('OPENAI_API_KEY');
@@ -36,39 +36,36 @@ serve(async (req) => {
       );
     }
     
-    // Use the requested model (either gpt-4o-mini or gpt-4o)
-    // This allows us to optimize by using gpt-4o-mini for faster responses on most sections
-    const useModel = model === 'gpt-4o-mini' ? 'gpt-4o-mini' : 'gpt-4o';
+    // Only use gpt-4o for better reliability
+    const useModel = 'gpt-4o';
     
     console.log(`Calling OpenAI API with model: ${useModel} (requested: ${model})`);
     console.log(`Request priority: ${priority || 'normal'}`);
     
-    // Enhanced system messages for all requests
-    let systemMessage = '';
+    // Enhanced system messages with improved instructions
+    let systemMessage = 'You are a world-class business analyst and planner that generates comprehensive, detailed business plan content. ';
     
     // Check prompt type to add special formatting instructions
     const isValidationPrompt = prompt.toLowerCase().includes('financial and idea validation') || 
                                prompt.toLowerCase().includes('viability score');
     
-    const isIndustryOverviewPrompt = prompt.toLowerCase().includes('industry overview');
-    
     const isSwotPrompt = prompt.toLowerCase().includes('swot analysis');
 
     const isMarketAnalysisPrompt = prompt.toLowerCase().includes('market analysis');
     
-    // Add special system instructions based on prompt type
+    const isExecutiveSummaryPrompt = prompt.toLowerCase().includes('executive summary');
+    
+    // Add special detailed system instructions based on prompt type
     if (isValidationPrompt) {
-      systemMessage = `You are a world-class business analyst and venture capitalist with decades of experience that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL FOR PROPER DISPLAY of the report. Provide significantly more detailed analysis and use real-world examples from relevant industries. Include specific metrics and benchmarks based on current market conditions.`;
+      systemMessage += `For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL FOR PROPER DISPLAY of the report. Provide significantly more detailed analysis and use real-world examples from relevant industries. Include specific metrics and benchmarks based on current market conditions.`;
     } else if (isMarketAnalysisPrompt) {
-      systemMessage = `You are a leading industry expert with access to comprehensive market research and data analytics tools that generates business plan content. For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, age demographics, and identify real competitor companies with estimates of their market share and revenue. Since this is a premium analysis, include more granular market segments, more detailed competitor analysis with at least 5-7 specific companies, and provide more nuanced insights about market entry barriers with industry-specific regulations and compliance requirements.`;
-    } else if (isIndustryOverviewPrompt) {
-      systemMessage = `You are a detailed industry expert with access to comprehensive market research and data analytics tools that generates detailed industry overviews for business plans. Your task is to create ONLY an industry overview section that focuses exclusively on industry trends, market size, growth rates, and industry-specific information. Start with a heading "Industry Overview" and then provide 12-15 detailed sentences about the industry itself. Include specific metrics like total market size in dollars (e.g., $4.5 billion), compound annual growth rate percentages, technological trends, regulatory considerations, and consumer behavior patterns in the industry. IMPORTANT: When writing decimals in dollar amounts or percentages, make sure there is NO SPACE between the number and decimal point (use $4.5 not $4. 5). Do NOT include any information about competitors, Porter's Five Forces, or business-specific strategies. Focus ONLY on the industry as a whole. Use specific numbers, percentages, and factual market information throughout. For this premium analysis, include detailed geographic breakdowns of the market, identify industry-specific supply chain considerations, and highlight niche segments with high growth potential.`;
+      systemMessage += `For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, age demographics, and identify real competitor companies with estimates of their market share and revenue. Include more granular market segments, detailed competitor analysis with at least 5 specific companies, and provide nuanced insights about market entry barriers with industry-specific regulations and compliance requirements.`;
     } else if (isSwotPrompt) {
-      systemMessage = `You are a renowned business strategist with expertise in business planning and market analysis that generates SWOT analyses for business plans. When creating a SWOT analysis, structure the response with clear headings for Strengths, Weaknesses, Opportunities, and Threats. For each category, provide 4 distinct and complete bullet points. IMPORTANT: Make sure each bullet point is a COMPLETE statement that stands on its own. DO NOT split a single strength, weakness, opportunity, or threat across multiple bullet points. Each bullet point should express one complete idea. Format your response exactly as follows (including the bullet points and whitespace):\n\n**Strengths**\n• [Complete strength 1]\n• [Complete strength 2]\n• [Complete strength 3]\n• [Complete strength 4]\n\n**Weaknesses**\n• [Complete weakness 1]\n• [Complete weakness 2]\n• [Complete weakness 3]\n• [Complete weakness 4]\n\n**Opportunities**\n• [Complete opportunity 1]\n• [Complete opportunity 2]\n• [Complete opportunity 3]\n• [Complete opportunity 4]\n\n**Threats**\n• [Complete threat 1]\n• [Complete threat 2]\n• [Complete threat 3]\n• [Complete threat 4] For this premium SWOT analysis, ensure that each point is highly specific with actual industry references, market statistics, and references to relevant technological or economic factors.`;
-    } else if (prompt.toLowerCase().includes('executive summary')) {
-      systemMessage = `You are a renowned business strategist with expertise in business planning and market analysis that generates business plan content. Create a concise and compelling executive summary with exactly two paragraphs. The first paragraph should introduce the business concept, value proposition, and target market. The second paragraph should highlight the market opportunity, business model, and competitive advantage. For this premium executive summary, include more strategic insights and specific market positioning details while maintaining the concise two-paragraph format.`;
+      systemMessage += `When creating a SWOT analysis, structure the response with clear headings for Strengths, Weaknesses, Opportunities, and Threats. For each category, provide 4 distinct and complete bullet points. IMPORTANT: Make sure each bullet point is a COMPLETE statement that stands on its own. DO NOT split a single strength, weakness, opportunity, or threat across multiple bullet points. Each bullet point should express one complete idea. Format your response exactly as follows (including the bullet points and whitespace):\n\n**Strengths**\n• [Complete strength 1]\n• [Complete strength 2]\n• [Complete strength 3]\n• [Complete strength 4]\n\n**Weaknesses**\n• [Complete weakness 1]\n• [Complete weakness 2]\n• [Complete weakness 3]\n• [Complete weakness 4]\n\n**Opportunities**\n• [Complete opportunity 1]\n• [Complete opportunity 2]\n• [Complete opportunity 3]\n• [Complete opportunity 4]\n\n**Threats**\n• [Complete threat 1]\n• [Complete threat 2]\n• [Complete threat 3]\n• [Complete threat 4]`;
+    } else if (isExecutiveSummaryPrompt) {
+      systemMessage += `Create a concise and compelling executive summary with EXACTLY TWO PARAGRAPHS. The first paragraph should introduce the business concept, value proposition, and target market. The second paragraph should highlight the market opportunity, business model, and competitive advantage. Be specific, clear, and compelling. Include actual numbers, percentages, and concrete details where relevant. The summary must be COMPLETE and COHERENT.`;
     } else {
-      systemMessage = `You are a renowned business strategist with expertise in business planning and market analysis that generates business plan content. When including numbers with decimal points, always ensure there is no space between the number and the decimal point (use 4.5 not 4. 5). Since this is a premium analysis, provide more strategic depth, industry-specific insights, and actionable recommendations based on current market trends and competitive dynamics.`;
+      systemMessage += `When including numbers with decimal points, always ensure there is no space between the number and the decimal point (use 4.5 not 4. 5). Provide strategic depth, industry-specific insights, and actionable recommendations based on current market trends and competitive dynamics. ALWAYS provide complete, comprehensive responses. Never cut your response short.`;
     }
     
     // Call OpenAI API with optimized parameters
@@ -85,7 +82,7 @@ serve(async (req) => {
           { role: 'user', content: prompt }
         ],
         temperature: temperature || 0.7,
-        max_tokens: max_tokens || 1000,
+        max_tokens: max_tokens || 2000, // Increased token limit for more thorough responses
         presence_penalty: 0.1,  // Slight presence penalty to make responses more creative
         frequency_penalty: 0.1, // Slight frequency penalty to reduce repetition
       })
@@ -99,6 +96,12 @@ serve(async (req) => {
     
     const data = await openAIResponse.json();
     const text = data.choices?.[0]?.message?.content || '';
+    
+    // Validate that the response is substantial
+    if (text.length < 100) {
+      console.error('OpenAI response was too short:', text);
+      throw new Error('The generated content was too short or incomplete. Please try again.');
+    }
     
     // Post-process the response to fix any remaining decimal formatting issues
     const fixedText = text

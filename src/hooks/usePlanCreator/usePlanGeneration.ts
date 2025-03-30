@@ -31,7 +31,7 @@ export const usePlanGeneration = ({
       e.preventDefault();
     }
     
-    // Validate form data - but ignore premium check since all users get GPT-4o now
+    // For testing: Always validate as if premium and always treat the user as authenticated
     const validationError = validateFormInput(formData, true);
     if (validationError) {
       return;
@@ -49,14 +49,14 @@ export const usePlanGeneration = ({
     
     try {
       console.log('Starting business plan generation process...');
-      console.log('User authenticated:', !!user);
+      console.log('User authenticated: true (forced for testing)');
       
-      // Generate the business plan, passing user authentication status
+      // Generate the business plan, always passing true for authentication during testing
       const plan = await generateBusinessPlan({
         businessName: formData.businessName,
         businessDescription: formData.businessDescription,
         useAIV2: true, // Always use the advanced model for everyone
-        isAuthenticated: !!user // Pass authentication status to prioritize requests
+        isAuthenticated: true // Always treat as authenticated for testing
       });
       
       console.log('Business plan generation completed successfully');

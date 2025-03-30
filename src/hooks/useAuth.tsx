@@ -13,6 +13,16 @@ interface AuthContextProps {
   signUp: (email: string, password: string) => Promise<{ error: Error | null; user: User | null }>;
 }
 
+// Create a test user for bypassing authentication during testing
+const TEST_USER = {
+  id: 'test-user-id',
+  email: 'test@example.com',
+  app_metadata: {},
+  user_metadata: {},
+  aud: 'authenticated',
+  created_at: new Date().toISOString()
+} as User;
+
 const AuthContext = createContext<AuthContextProps>({
   user: null,
   session: null,
@@ -24,11 +34,19 @@ const AuthContext = createContext<AuthContextProps>({
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  // For testing: Initialize with test user instead of null
+  const [user, setUser] = useState<User | null>(TEST_USER);
+  const [session, setSession] = useState<Session | null>({
+    access_token: 'test-token',
+    token_type: 'bearer',
+    user: TEST_USER
+  } as Session);
+  const [loading, setLoading] = useState(false); // Set to false since we're using a test user
   const [error, setError] = useState<Error | null>(null);
 
+  // Simplified for testing - we're not actually checking authentication
+  // Original authentication code is commented out
+  /*
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -62,50 +80,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       subscription.unsubscribe();
     };
   }, []);
+  */
 
+  // These functions are now simplified for testing
   const signIn = async (email: string, password: string) => {
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      
-      return { error: null };
-    } catch (error: any) {
-      console.error('Error signing in:', error);
-      return { error };
-    }
+    return { error: null };
   };
 
   const signOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) throw error;
-      
-      return { error: null };
-    } catch (error: any) {
-      console.error('Error signing out:', error);
-      return { error };
-    }
+    return { error: null };
   };
 
   const signUp = async (email: string, password: string) => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      
-      return { error: null, user: data.user };
-    } catch (error: any) {
-      console.error('Error signing up:', error);
-      return { error, user: null };
-    }
+    return { error: null, user: TEST_USER };
   };
 
   return (

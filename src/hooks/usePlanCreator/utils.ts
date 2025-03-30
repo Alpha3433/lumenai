@@ -23,17 +23,7 @@ export const validateFormInput = (formData: PlanCreatorFormData, isPremium: bool
     return "Description too long";
   }
   
-  // Premium check is no longer needed as all users get GPT-4o
-  // This code is kept but effectively disabled by passing isPremium=true from the caller
-  if (formData.useAIV2 && !isPremium) {
-    toast({
-      title: "Premium Feature",
-      description: "Enhanced AI engine is only available for premium users. Upgrade to access this feature.",
-      variant: "destructive"
-    });
-    return "Premium feature not available";
-  }
-  
+  // For testing: Always treat as premium
   return null;
 };
 

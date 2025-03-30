@@ -12,17 +12,13 @@ interface PorterFiveForcesSectionProps {
 const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ forcesData, marketAnalysis }) => {
   // Ensure forcesData is defined before trying to access its properties
   if (!forcesData) {
-    console.warn('PorterFiveForcesSection: forcesData is undefined');
     return (
       <section className="mb-12 animate-fade-in space-y-6">
-        <div className="flex flex-col items-center gap-4 mb-6">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <FileBarChart className="h-6 w-6 text-blue-500" />
-            Porter's Five Forces Analysis
-          </h2>
-          <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full">
-            Competitive industry assessment
+        <div className="flex items-center gap-2 mb-4">
+          <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+            <FileBarChart className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           </div>
+          <span className="text-lg font-medium">Porter's Five Forces Analysis</span>
         </div>
         <div className="text-center py-8 text-gray-500">
           Analysis data is being processed...
@@ -33,14 +29,11 @@ const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ force
 
   return (
     <section className="mb-12 animate-fade-in space-y-6">
-      <div className="flex flex-col items-center gap-4 mb-6">
-        <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
-          <FileBarChart className="h-6 w-6 text-blue-500" />
-          Porter's Five Forces Analysis
-        </h2>
-        <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full">
-          Competitive industry assessment
+      <div className="flex items-center gap-2 mb-4">
+        <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+          <FileBarChart className="h-5 w-5 text-blue-600 dark:text-blue-400" />
         </div>
+        <span className="text-lg font-medium">Porter's Five Forces Analysis</span>
       </div>
 
       <div className="space-y-4">

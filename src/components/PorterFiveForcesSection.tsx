@@ -1,9 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { extractPorterFiveForcesData } from '@/utils/porter';
-import { callOpenAI } from '@/utils/openaiService';
 import PorterFiveForcesSectionComponent from './porter/PorterFiveForcesSection';
-import { PorterFiveForcesData } from '@/utils/porter';
 
 interface PorterFiveForcesSectionProps {
   marketAnalysis: string;
@@ -12,8 +10,8 @@ interface PorterFiveForcesSectionProps {
 const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ marketAnalysis }) => {
   // Extract Porter's Five Forces data from market analysis text
   const forcesData = useMemo(() => {
-    const data = extractPorterFiveForcesData(marketAnalysis);
-    return data;
+    if (!marketAnalysis) return undefined;
+    return extractPorterFiveForcesData(marketAnalysis);
   }, [marketAnalysis]);
 
   return <PorterFiveForcesSectionComponent forcesData={forcesData} marketAnalysis={marketAnalysis} />;

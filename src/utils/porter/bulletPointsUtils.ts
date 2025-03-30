@@ -1,3 +1,4 @@
+
 // Extracts bullet points from text sections
 export const extractBulletPoints = (text: string): string[] => {
   // First, remove any titles or headers that contain the force name
@@ -19,7 +20,8 @@ export const extractBulletPoints = (text: string): string[] => {
                           line.length < 60 && 
                           !(/specific|percent|%|\$|[0-9]+|brand name|company name|\bapp\b|\bapps\b/i.test(line));
         return !isGeneric && line.length > 0;
-      });
+      })
+      .slice(0, 4); // Limit to max 4 points
   }
   
   // If no bullet points, split by sentences and take up to 4

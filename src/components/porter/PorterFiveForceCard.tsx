@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertTriangle, LogIn, Shuffle, Truck, Users, Swords } from 'lucide-react';
+import { LogIn, Shuffle, Truck, Users, Swords } from 'lucide-react';
 import { PorterForce, ForcesLevel } from '@/utils/porter';
 import { cn } from '@/lib/utils';
 
@@ -14,60 +14,52 @@ const PorterFiveForceCard: React.FC<PorterFiveForceCardProps> = ({ force }) => {
   const levelConfig: Record<ForcesLevel, { 
     textColor: string, 
     bgColor: string,
-    displayName?: string,
-    iconColor: string 
+    displayName: string 
   }> = {
     'Low': {
       textColor: 'text-green-700 dark:text-green-400',
       bgColor: 'bg-green-50 dark:bg-green-900/20',
-      displayName: 'Low',
-      iconColor: 'text-green-500'
+      displayName: 'Low'
     },
     'Medium': {
       textColor: 'text-orange-700 dark:text-orange-400',
       bgColor: 'bg-orange-50 dark:bg-orange-900/20',
-      displayName: 'Moderate',
-      iconColor: 'text-orange-500'
+      displayName: 'Moderate'
     },
     'High': {
       textColor: 'text-red-700 dark:text-red-400',
       bgColor: 'bg-red-50 dark:bg-red-900/20',
-      displayName: 'High',
-      iconColor: 'text-red-500'
+      displayName: 'High'
     }
   };
 
   const getIcon = () => {
-    const iconProps = { 
-      className: `h-5 w-5 ${levelConfig[force.level].iconColor}`, 
-      "aria-hidden": true 
-    };
+    const className = "h-5 w-5 text-primary";
     
     switch (force.icon) {
       case 'log-in':
-        return <LogIn {...iconProps} />;
+        return <LogIn className={className} />;
       case 'shuffle':
-        return <Shuffle {...iconProps} />;
+        return <Shuffle className={className} />;
       case 'truck':
-        return <Truck {...iconProps} />;
+        return <Truck className={className} />;
       case 'users':
-        return <Users {...iconProps} />;
+        return <Users className={className} />;
       case 'swords':
-        return <Swords {...iconProps} />;
+        return <Swords className={className} />;
       default:
-        return <AlertTriangle {...iconProps} className="h-5 w-5 text-yellow-500" />;
+        return <LogIn className={className} />;
     }
   };
 
   const config = levelConfig[force.level];
-  const displayLevel = config.displayName || force.level;
 
   return (
-    <Card className="border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200">
-      <CardContent className="p-6">
-        <div className="flex flex-col space-y-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
+    <Card className="border border-gray-200 dark:border-gray-800 shadow-sm rounded-lg overflow-hidden">
+      <CardContent className="p-0">
+        <div className="flex flex-col">
+          <div className="flex justify-between items-center border-b p-4">
+            <div className="flex items-center gap-2 text-primary">
               {getIcon()}
               <h3 className="text-lg font-medium">{force.title}</h3>
             </div>
@@ -76,22 +68,20 @@ const PorterFiveForceCard: React.FC<PorterFiveForceCardProps> = ({ force }) => {
               config.textColor,
               config.bgColor
             )}>
-              {displayLevel}
+              {config.displayName}
             </span>
           </div>
           
-          <ul className="space-y-2.5 mt-2">
-            {force.points.map((point, index) => (
-              <li key={index} className="flex items-start gap-2.5 text-sm">
-                <span className={cn(
-                  "mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0",
-                  force.level === 'Low' ? "bg-green-500" : 
-                  force.level === 'Medium' ? "bg-orange-500" : "bg-red-500"
-                )}></span>
-                <span className="text-gray-700 dark:text-gray-300">{point}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="p-4">
+            <ul className="space-y-3">
+              {force.points.map((point, index) => (
+                <li key={index} className="flex items-start gap-3 text-sm">
+                  <span className="mt-1 h-2 w-2 rounded-full bg-orange-500 flex-shrink-0"></span>
+                  <span className="text-gray-700 dark:text-gray-300">{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -88,7 +88,7 @@ export const extractPorterFiveForcesData = (analysisText: string): PorterFiveFor
     });
   }
   
-  // Only use fallback content if absolutely no points were found
+  // Generate fallback content if needed
   Object.keys(result).forEach(key => {
     const category = key as PorterForce['category'];
     if (result[category].points.length === 0) {

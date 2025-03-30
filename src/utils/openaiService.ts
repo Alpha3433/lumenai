@@ -8,6 +8,7 @@ interface OpenAIRequestParams {
   temperature?: number;
   maxTokens?: number;
   isAuthenticated?: boolean;
+  forceLiveResponse?: boolean; // Added missing property
 }
 
 interface OpenAIResponse {
@@ -28,7 +29,8 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
         systemPrompt: params.systemPrompt,
         temperature: params.temperature || 0.7,
         max_tokens: params.maxTokens || 2000,
-        isAuthenticated: params.isAuthenticated
+        isAuthenticated: params.isAuthenticated,
+        forceLiveResponse: params.forceLiveResponse // Pass the new property to the edge function
       }
     });
     

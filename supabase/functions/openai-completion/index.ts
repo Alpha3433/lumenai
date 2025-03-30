@@ -15,7 +15,7 @@ serve(async (req) => {
   }
   
   try {
-    const { prompt, model, temperature, max_tokens, systemPrompt } = await req.json();
+    const { prompt, model, temperature, max_tokens, systemPrompt, forceLiveResponse } = await req.json();
     
     // Get the OpenAI API key from environment variables
     const apiKey = Deno.env.get('OPENAI_API_KEY');
@@ -40,6 +40,7 @@ serve(async (req) => {
     
     console.log(`Calling OpenAI API with model: ${useModel}`);
     console.log(`Prompt length: ${prompt.length} characters`);
+    console.log(`Force live response: ${forceLiveResponse ? 'yes' : 'no'}`);
     
     // Create default system message if none provided
     const defaultSystemPrompt = 'You are a helpful business planning assistant that provides thorough, accurate, and detailed responses.';

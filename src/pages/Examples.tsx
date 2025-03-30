@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ExamplesListView from '@/components/examples/ExamplesListView';
 import CompanyReportView from '@/components/examples/CompanyReportView';
-import { exampleCompanies } from '@/data/exampleCompanies';
+import { exampleCompanies, ExampleCompany } from '@/data/exampleCompanies';
 import { toast } from 'sonner';
 
 const Examples = () => {

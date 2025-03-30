@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/card';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button'; // Fixed import
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Download, Zap, Apple, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -20,7 +20,7 @@ interface CompanyData {
   name: string;
   description: string;
   industry: string;
-  logoIcon: string;
+  logoIcon: string; // Changed to match ExampleCard interface
   executiveSummary: string;
   marketAnalysis: string;
   businessModel: string;

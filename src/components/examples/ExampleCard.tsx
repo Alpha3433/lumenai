@@ -10,7 +10,7 @@ interface ExampleCompany {
   name: string;
   description: string;
   industry: string;
-  logoIcon: string;
+  logoIcon: string; // Consistently defined as string
 }
 
 interface ExampleCardProps {

@@ -1,18 +1,10 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import ExampleCard from './ExampleCard';
-
-interface ExampleCompany {
-  id: string;
-  name: string;
-  description: string;
-  industry: string;
-  logoIcon: string;
-}
+import { ExampleCompany } from '@/data/exampleCompanies';
 
 interface ExamplesListViewProps {
   companies: ExampleCompany[];
@@ -44,7 +36,6 @@ const ExamplesListView: React.FC<ExamplesListViewProps> = ({
       transition={{ duration: 0.5 }}
     >
       <div className="relative max-w-7xl mx-auto">
-        {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-3xl blur-3xl opacity-50 -z-10"></div>
         
         <div className="text-center mb-16 max-w-3xl mx-auto">

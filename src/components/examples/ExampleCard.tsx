@@ -23,19 +23,19 @@ const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
   const getLogo = () => {
     switch(company.logoIcon) {
       case 'Zap':
-        return <Zap className="h-20 w-20 text-blue-500" />;
+        return <Zap className="h-12 w-12 text-blue-500" />;
       case 'Apple':
-        return <Apple className="h-20 w-20 text-gray-800 dark:text-white" />;
+        return <Apple className="h-12 w-12 text-gray-800 dark:text-white" />;
       case 'ShoppingCart':
-        return <ShoppingCart className="h-20 w-20 text-orange-500" />;
+        return <ShoppingCart className="h-12 w-12 text-orange-500" />;
       case 'Workflow':
-        return <Workflow className="h-20 w-20 text-blue-600" />;
+        return <Workflow className="h-12 w-12 text-blue-600" />;
       case 'MonitorPlay':
-        return <MonitorPlay className="h-20 w-20 text-red-600" />;
+        return <MonitorPlay className="h-12 w-12 text-red-600" />;
       case 'Share2':
-        return <Share2 className="h-20 w-20 text-blue-400" />;
+        return <Share2 className="h-12 w-12 text-blue-400" />;
       default:
-        return <ExternalLink className="h-20 w-20 text-primary" />;
+        return <ExternalLink className="h-12 w-12 text-primary" />;
     }
   };
 
@@ -61,30 +61,30 @@ const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
 
   return (
     <motion.div
-      whileHover={{ y: -8, scale: 1.02 }}
+      whileHover={{ y: -5, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300 }}
       className="h-full"
     >
       <Card 
-        className={`h-full bg-gradient-to-br ${getCardGradient()} hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-800 overflow-hidden cursor-pointer`}
+        className={`h-full bg-gradient-to-br ${getCardGradient()} hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-800 overflow-hidden cursor-pointer`}
         onClick={() => onSelect(company.id)}
       >
-        <CardContent className="p-8 flex flex-col items-center h-full">
-          <div className="mb-8 mt-4 flex justify-center">
-            <div className="w-40 h-40 rounded-full bg-white dark:bg-gray-900 flex items-center justify-center shadow-lg p-4">
+        <CardContent className="p-4 flex flex-col items-center h-full">
+          <div className="mb-4 mt-2 flex justify-center">
+            <div className="w-24 h-24 rounded-full bg-white dark:bg-gray-900 flex items-center justify-center shadow-md p-3">
               {getLogo()}
             </div>
           </div>
-          <h3 className="text-2xl font-bold text-center mb-3">{company.name}</h3>
-          <p className="text-sm font-medium text-primary dark:text-primary-foreground text-center mb-4 inline-block px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/20">
+          <h3 className="text-xl font-bold text-center mb-2">{company.name}</h3>
+          <p className="text-xs font-medium text-primary dark:text-primary-foreground text-center mb-3 inline-block px-2 py-1 rounded-full bg-primary/10 dark:bg-primary/20">
             {company.industry}
           </p>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-6 text-center flex-grow">
+          <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 text-center line-clamp-3">
             {company.description}
           </p>
-          <div className="flex justify-center">
-            <Button className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg">
-              View Business Report <ExternalLink className="ml-2 h-4 w-4" />
+          <div className="flex justify-center mt-auto">
+            <Button size="sm" className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-sm hover:shadow-md text-xs">
+              View Report <ExternalLink className="ml-1 h-3 w-3" />
             </Button>
           </div>
         </CardContent>

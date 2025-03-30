@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Zap, Apple, ShoppingCart, Workflow, MonitorPlay, Share2 } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ExampleCompany {
@@ -19,23 +19,17 @@ interface ExampleCardProps {
 }
 
 const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
-  // Map company logoIcon string to the actual Lucide icon component
-  const getLogo = () => {
-    switch(company.logoIcon) {
-      case 'Zap':
-        return <Zap className="h-12 w-12 text-blue-500" />;
-      case 'Apple':
-        return <Apple className="h-12 w-12 text-gray-800 dark:text-white" />;
-      case 'ShoppingCart':
-        return <ShoppingCart className="h-12 w-12 text-orange-500" />;
-      case 'Workflow':
-        return <Workflow className="h-12 w-12 text-blue-600" />;
-      case 'MonitorPlay':
-        return <MonitorPlay className="h-12 w-12 text-red-600" />;
-      case 'Share2':
-        return <Share2 className="h-12 w-12 text-blue-400" />;
+  // Get the appropriate logo image based on company.id
+  const getLogoImage = () => {
+    switch(company.id) {
+      case 'tesla':
+        return '/lovable-uploads/0e5dc4b2-34c2-4fcf-9c1c-877e2501390d.png';
+      case 'apple':
+        return '/lovable-uploads/1fcba80c-9322-462e-a894-f9028ee6eb2c.png';
+      case 'amazon':
+        return '/lovable-uploads/7ffe4f40-f73e-49b5-a23c-f0c590ae7f83.png';
       default:
-        return <ExternalLink className="h-12 w-12 text-primary" />;
+        return null;
     }
   };
 
@@ -59,6 +53,8 @@ const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
     }
   };
 
+  const logoImage = getLogoImage();
+
   return (
     <motion.div
       whileHover={{ y: -5, scale: 1.02 }}
@@ -72,7 +68,17 @@ const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
         <CardContent className="p-4 flex flex-col items-center h-full">
           <div className="mb-4 mt-2 flex justify-center">
             <div className="w-24 h-24 rounded-full bg-white dark:bg-gray-900 flex items-center justify-center shadow-md p-3">
-              {getLogo()}
+              {logoImage ? (
+                <img 
+                  src={logoImage} 
+                  alt={`${company.name} logo`} 
+                  className="w-16 h-16 object-contain"
+                />
+              ) : (
+                <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">{company.name[0]}</span>
+                </div>
+              )}
             </div>
           </div>
           <h3 className="text-xl font-bold text-center mb-2">{company.name}</h3>

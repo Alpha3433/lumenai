@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -65,7 +66,7 @@ const ExamplesListView: React.FC<ExamplesListViewProps> = ({
           </motion.div>
         </div>
         
-        <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
           {featuredCompanies.map((company, index) => (
             <motion.div
               key={company.id}
@@ -83,7 +84,7 @@ const ExamplesListView: React.FC<ExamplesListViewProps> = ({
           ))}
         </div>
         
-        <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-12">
           {otherCompanies.map((company, index) => (
             <motion.div
               key={company.id}

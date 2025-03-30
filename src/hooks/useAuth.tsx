@@ -34,56 +34,20 @@ const AuthContext = createContext<AuthContextProps>({
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  // For testing: Initialize with test user instead of null
+  // Always initialize with test user and don't try to contact any external service
   const [user, setUser] = useState<User | null>(TEST_USER);
   const [session, setSession] = useState<Session | null>({
     access_token: 'test-token',
     token_type: 'bearer',
     user: TEST_USER
   } as Session);
-  const [loading, setLoading] = useState(false); // Set to false since we're using a test user
+  const [loading, setLoading] = useState(false); // Set to false since we're bypassing auth
   const [error, setError] = useState<Error | null>(null);
 
-  // Simplified for testing - we're not actually checking authentication
-  // Original authentication code is commented out
-  /*
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          throw error;
-        }
-        
-        setSession(session);
-        setUser(session?.user || null);
-      } catch (error: any) {
-        setError(error);
-        console.error('Error fetching session:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Removed all external auth state checks entirely
 
-    fetchSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user || null);
-      setLoading(false);
-      
-      console.info('Auth state changed:', _event, !!session);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-  */
-
-  // These functions are now simplified for testing
-  const signIn = async (email: string, password: string) => {
+  // Simplified functions that do nothing but return success
+  const signIn = async () => {
     return { error: null };
   };
 
@@ -91,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: null };
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async () => {
     return { error: null, user: TEST_USER };
   };
 

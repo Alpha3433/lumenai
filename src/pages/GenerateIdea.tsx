@@ -11,7 +11,8 @@ import { useUserSubscription } from '@/hooks/useUserSubscription';
 
 const GenerateIdea: React.FC = () => {
   const { user } = useAuth();
-  const { isPremium } = useUserSubscription(user?.id);
+  // Always treat as premium for testing
+  const isPremium = true;
   
   return (
     <div className="min-h-screen bg-background flex flex-col">

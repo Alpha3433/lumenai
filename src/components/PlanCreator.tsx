@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { usePlanCreator } from '@/hooks/usePlanCreator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
 import { AlertTriangle } from 'lucide-react';
-import { useAuth } from '@/components/AuthProvider';
-import { Navigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+// Remove Navigate import since we won't be redirecting
 import { toast } from '@/components/ui/use-toast';
 
 interface PlanCreatorProps {
@@ -36,16 +35,8 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     setStep
   } = usePlanCreator(initialData);
 
-  // Check if user is authenticated
-  if (!user) {
-    // Show toast notification and redirect to login
-    toast({
-      title: "Authentication Required",
-      description: "Please log in to create a business plan",
-      variant: "destructive"
-    });
-    return <Navigate to="/login" />;
-  }
+  // Remove auth check and redirect for testing
+  // We'll always assume the user is authenticated
 
   // Handle form submission properly
   const onSubmitForm = (e: React.FormEvent) => {
@@ -86,7 +77,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           onChange={handleInputChange}
           onToggleChange={handleToggleChange}
           onSubmit={onSubmitForm}
-          isPremium={true} // Always show as premium since everyone gets GPT-4o
+          isPremium={true} // Always show as premium
           onUpgrade={upgradeAccount}
         />
       ) : (
@@ -94,7 +85,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           businessName={formData.businessName}
           businessDescription={formData.businessDescription}
           businessPlan={businessPlan}
-          isPremium={true} // Always show as premium since everyone gets GPT-4o
+          isPremium={true} // Always show as premium
           onStartOver={() => setStep(1)}
           onDownload={downloadPlan}
           onUpgrade={upgradeAccount}

@@ -24,13 +24,19 @@ export const generateSection = async (
     console.log(`🔍 [DIAGNOSIS] ${sectionName} prompt length: ${promptTemplate.length} chars`);
     console.log(`🔍 [DIAGNOSIS] ${sectionName} system prompt length: ${systemPrompt.length} chars`);
     
-    // Set model based on user preference
-    const model = formData.useAIV2 ? 'gpt-4o' : 'gpt-4o-mini';
+    // Set model based on user preference and section complexity
+    // For smaller/simpler sections, always use gpt-4o-mini for speed
+    let model = formData.useAIV2 ? 'gpt-4o' : 'gpt-4o-mini';
+    
+    // For smaller/simpler sections like executive summary, always use gpt-4o-mini for speed
+    if (['executive summary', 'risk assessment'].includes(sectionName.toLowerCase())) {
+      model = 'gpt-4o-mini';
+    }
     
     // Adjust token limits based on section complexity
-    const maxTokens = sectionName.includes('financial') ? 2000 : 
-                     sectionName.includes('swot') ? 1500 : 
-                     sectionName.includes('market') ? 2000 : 1500;
+    const maxTokens = sectionName.includes('financial') ? 1500 : 
+                     sectionName.includes('swot') ? 1200 : 
+                     sectionName.includes('market') ? 1500 : 1000;
     
     console.log(`🔍 [DIAGNOSIS] Generating ${sectionName} with ${model}, max tokens: ${maxTokens}, user is ${formData.isAuthenticated ? 'authenticated' : 'not authenticated'}`);
     
@@ -64,12 +70,20 @@ export const generateSection = async (
   } catch (error: any) {
     console.error(`❌ [DIAGNOSIS] Failed to generate ${sectionName} (attempt ${retryCount + 1}):`, error);
     
-    // If we haven't reached max retries, try again
+    // If we haven't reached max retries, try again with a shorter prompt and simpler model
     if (retryCount < maxRetries) {
       // Wait briefly before retrying to avoid rate limits
-      console.log(`🔍 [DIAGNOSIS] Retrying ${sectionName} generation after 1000ms delay...`);
+      console.log(`🔍 [DIAGNOSIS] Retrying ${sectionName} generation after 1000ms delay with simplified prompt...`);
       await new Promise(resolve => setTimeout(resolve, 1000));
-      return generateSection(sectionName, formData, retryCount + 1, maxRetries);
+      
+      // For retries, always use gpt-4o-mini for reliability and speed
+      const simplifiedFormData = {
+        ...formData,
+        useAIV2: false, // Force simpler model for retries
+        businessDescription: formData.businessDescription.substring(0, 500) // Truncate description
+      };
+      
+      return generateSection(sectionName, simplifiedFormData, retryCount + 1, maxRetries);
     }
     
     // Return fallback content on final failure

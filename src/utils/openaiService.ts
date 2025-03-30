@@ -27,11 +27,30 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
       console.warn(`⚠️ [DIAGNOSIS] Warning: Large prompt (${params.prompt.length} chars) may cause timeouts`);
     }
     
+    // Add additional logging info
+    console.log(`🔍 [DIAGNOSIS] Request details:
+      - Model: ${params.model}
+      - Temperature: ${params.temperature || 0.7}
+      - Max tokens: ${params.maxTokens || 2000}
+      - System prompt length: ${params.systemPrompt?.length || 0} chars
+      - Is authenticated: ${params.isAuthenticated ? 'yes' : 'no'}
+      - Force live response: ${params.forceLiveResponse ? 'yes' : 'no'}
+    `);
+    
     // Call OpenAI via our Supabase Edge Function
     console.log(`🔍 [DIAGNOSIS] Invoking edge function 'openai-completion'`);
     console.time('openai_edge_function_call');
     
-    const { data, error } = await supabase.functions.invoke('openai-completion', {
+    // Set a client-side timeout wrapper around the edge function call
+    const edgeFunctionTimeoutMs = 65000; // 65 seconds
+    const timeoutPromise = new Promise<{ data: null, error: Error }>((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(`Client timeout: Edge function call exceeded ${edgeFunctionTimeoutMs/1000} seconds`));
+      }, edgeFunctionTimeoutMs);
+    });
+    
+    // Actual edge function call
+    const functionCallPromise = supabase.functions.invoke('openai-completion', {
       body: {
         prompt: params.prompt,
         model: params.model,
@@ -42,6 +61,12 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
         forceLiveResponse: params.forceLiveResponse
       }
     });
+    
+    // Race between the function call and the timeout
+    const { data, error } = await Promise.race([
+      functionCallPromise,
+      timeoutPromise
+    ]);
     
     console.timeEnd('openai_edge_function_call');
     const callDuration = Date.now() - startTime;

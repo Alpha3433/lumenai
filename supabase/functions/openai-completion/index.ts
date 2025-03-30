@@ -20,7 +20,7 @@ serve(async (req) => {
   
   try {
     console.log(`🔍 [DIAGNOSIS] Parsing request body`);
-    const { prompt, model, temperature, max_tokens, systemPrompt, forceLiveResponse } = await req.json();
+    const { prompt, model, temperature, max_tokens, systemPrompt, forceLiveResponse, isAuthenticated } = await req.json();
     
     // Log request parameters
     console.log(`🔍 [DIAGNOSIS] Request parameters:
@@ -30,6 +30,7 @@ serve(async (req) => {
       - Temperature: ${temperature || 0.7}
       - Max tokens: ${max_tokens || 2000}
       - Force live response: ${forceLiveResponse ? 'yes' : 'no'}
+      - Is authenticated: ${isAuthenticated ? 'yes' : 'no'}
     `);
     
     // Get the OpenAI API key from environment variables
@@ -61,22 +62,31 @@ serve(async (req) => {
     // Create default system message if none provided
     const defaultSystemPrompt = 'You are a helpful business planning assistant that provides thorough, accurate, and detailed responses.';
     
-    // Set request timeout to 45 seconds (Supabase default is 60s, giving us 15s buffer)
+    // Increased timeout from 45s to 60s - this is the maximum for Supabase Edge Functions
     const abortController = new AbortController();
     const timeoutId = setTimeout(() => {
-      console.error(`❌ [DIAGNOSIS] Request timeout - aborting after 45 seconds`);
-      abortController.abort('Request timeout after 45 seconds');
-    }, 45000);
+      console.error(`❌ [DIAGNOSIS] Request timeout - aborting after 60 seconds`);
+      abortController.abort('Request timeout after 60 seconds');
+    }, 60000);
     
     console.time('openai_api_call');
     console.log(`🔍 [DIAGNOSIS] Starting OpenAI API call at ${new Date().toISOString()}`);
+    
+    // Print the detailed model params for diagnostics
+    console.log(`🔍 [DIAGNOSIS] OpenAI request parameters:
+      - Model: ${useModel}
+      - Temperature: ${temperature || 0.7}
+      - Max tokens: ${max_tokens || 2000}
+      - System prompt (first 50 chars): ${(systemPrompt || defaultSystemPrompt).substring(0, 50)}...
+    `);
     
     // Call OpenAI API with provided parameters and abort controller
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey}`,
+        'OpenAI-Beta': 'assistants=v1'  // Add latest OpenAI beta features
       },
       body: JSON.stringify({
         model: useModel,
@@ -86,6 +96,7 @@ serve(async (req) => {
         ],
         temperature: temperature || 0.7,
         max_tokens: max_tokens || 2000,
+        timeout: 55  // Set an OpenAI-specific timeout (if supported)
       }),
       signal: abortController.signal
     });
@@ -137,7 +148,7 @@ serve(async (req) => {
     let errorStatus = 500;
     
     if (error.name === 'AbortError') {
-      errorMessage = 'Request timed out after 45 seconds';
+      errorMessage = 'Request timed out after 60 seconds';
       errorStatus = 504; // Gateway Timeout
       console.error(`❌ [DIAGNOSIS] Request aborted: ${errorMessage}`);
     }

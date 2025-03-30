@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Sparkles, Zap, AlertCircle } from 'lucide-react';
+import { Loader2, Sparkles, Zap, AlertCircle, ArrowClockwise } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface GeneratingDialogProps {
@@ -41,6 +41,8 @@ const GeneratingDialog = ({
   const [currentMessage, setCurrentMessage] = useState("");
   const [stuckTimeout, setStuckTimeout] = useState<NodeJS.Timeout | null>(null);
   const [isStuck, setIsStuck] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [logMessages, setLogMessages] = useState<string[]>([]);
   
   // Reset stuck state when dialog opens/closes or when progress changes
   useEffect(() => {
@@ -100,13 +102,39 @@ const GeneratingDialog = ({
       return () => clearInterval(interval);
     }
   }, [open, error, isStuck, progress]);
+  
+  // Time tracker for diagnostics
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (open && progress < 100 && !error) {
+      timer = setInterval(() => {
+        setTimeElapsed(prev => prev + 1);
+        // Add a diagnostic log message every 15 seconds
+        if (timeElapsed > 0 && timeElapsed % 15 === 0) {
+          const newLogMessage = `${timeElapsed}s elapsed, progress at ${progress}%`;
+          setLogMessages(prev => [...prev, newLogMessage]);
+        }
+      }, 1000);
+    }
+    
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [open, progress, error, timeElapsed]);
+
+  // Format time as minutes:seconds
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-md" aria-describedby="generating-dialog-description">
-        <DialogTitle className="sr-only">Creating Your Business Plan</DialogTitle>
-        <DialogDescription id="generating-dialog-description" className="sr-only">
-          Dialog showing the progress of business plan generation
+      <DialogContent className="sm:max-w-md">
+        <DialogTitle>Creating Your Business Plan</DialogTitle>
+        <DialogDescription id="generating-dialog-description">
+          We're analyzing your business concept and generating a comprehensive plan...
         </DialogDescription>
         <div className="space-y-6 py-6">
           {error || isStuck ? (
@@ -116,12 +144,34 @@ const GeneratingDialog = ({
               <p className="text-sm text-muted-foreground">
                 {error || "The business plan generation process seems to be taking longer than expected. This might be due to server load or connection issues."}
               </p>
+              
+              {/* Technical diagnostics section for debugging */}
+              <div className="mt-4 p-3 bg-muted/50 rounded-md text-left">
+                <p className="text-xs font-mono mb-2">Diagnostic Information:</p>
+                <div className="text-xs font-mono">
+                  <p>• Time elapsed: {formatTime(timeElapsed)}</p>
+                  <p>• Progress reached: {progress}%</p>
+                  <p>• Model: {useAIV2 ? 'gpt-4o' : 'gpt-4o-mini'}</p>
+                  {logMessages.length > 0 && (
+                    <div className="mt-2 border-t border-muted-foreground/20 pt-2">
+                      <p className="mb-1">Progress log:</p>
+                      <div className="max-h-24 overflow-y-auto">
+                        {logMessages.map((msg, i) => (
+                          <p key={i} className="text-xs opacity-80">{msg}</p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
               {onRetry && (
                 <Button 
                   onClick={onRetry}
                   className="mt-4"
                 >
-                  Try Again
+                  <ArrowClockwise className="mr-2 h-4 w-4" />
+                  Try Again with Simpler Settings
                 </Button>
               )}
             </div>
@@ -139,6 +189,9 @@ const GeneratingDialog = ({
                     Using enhanced AI V2 engine for superior results
                   </p>
                 )}
+                <p className="text-xs text-muted-foreground">
+                  Time elapsed: {formatTime(timeElapsed)}
+                </p>
               </div>
 
               <div className="space-y-2">

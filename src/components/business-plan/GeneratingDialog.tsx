@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Sparkles, Zap, AlertCircle, ArrowClockwise } from 'lucide-react';
+import { Loader2, Sparkles, Zap, AlertCircle, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface GeneratingDialogProps {
@@ -170,7 +170,7 @@ const GeneratingDialog = ({
                   onClick={onRetry}
                   className="mt-4"
                 >
-                  <ArrowClockwise className="mr-2 h-4 w-4" />
+                  <RotateCcw className="mr-2 h-4 w-4" />
                   Try Again with Simpler Settings
                 </Button>
               )}

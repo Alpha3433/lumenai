@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -111,7 +110,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               {/* PESTEL Analysis */}
               <div id="pestel-analysis">
-                <PestelAnalysisSection pestelData={null} analysisText={businessPlan.marketAnalysis} />
+                <PestelAnalysisSection analysisText={businessPlan.marketAnalysis} />
               </div>
               
               <Separator className="my-10" />
@@ -143,13 +142,11 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
                   onUpgrade={onUpgrade}
                 />
               </div>
-              
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Floating Bottom Navigator - Sleek & Minimalistic Redesign */}
       <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
         <div className="pointer-events-auto">
           <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full shadow-xl border border-gray-200/50 dark:border-gray-800/50 flex items-center gap-1 py-1 px-2">

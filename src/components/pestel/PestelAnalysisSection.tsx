@@ -3,12 +3,20 @@ import React from 'react';
 import { Globe } from 'lucide-react';
 import { PestelData } from '@/utils/pestel';
 import PestelAnalysisCategoryGrid from './PestelAnalysisCategoryGrid';
+import { usePestelData } from '@/hooks/usePestelData';
 
 interface PestelAnalysisSectionProps {
-  pestelData: PestelData;
+  pestelData?: PestelData | null;
+  analysisText?: string;
 }
 
-const PestelAnalysisSection: React.FC<PestelAnalysisSectionProps> = ({ pestelData }) => {
+const PestelAnalysisSection: React.FC<PestelAnalysisSectionProps> = ({ pestelData: providedPestelData, analysisText }) => {
+  // If pestelData is not provided but analysisText is, use the hook to extract data
+  const extractedPestelData = analysisText ? usePestelData(analysisText) : null;
+  
+  // Use provided pestelData if available, otherwise use the extracted data
+  const finalPestelData = providedPestelData || extractedPestelData;
+
   return (
     <section className="mb-12 animate-fade-in space-y-6">
       <div className="flex items-center gap-2 mb-4">
@@ -17,7 +25,7 @@ const PestelAnalysisSection: React.FC<PestelAnalysisSectionProps> = ({ pestelDat
         </div>
         <span className="text-lg font-medium">PESTEL Analysis</span>
       </div>
-      <PestelAnalysisCategoryGrid pestelData={pestelData} />
+      {finalPestelData && <PestelAnalysisCategoryGrid pestelData={finalPestelData} />}
     </section>
   );
 };

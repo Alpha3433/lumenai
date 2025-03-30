@@ -8,7 +8,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// This function handles OpenAI API calls securely from the backend
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -16,7 +15,7 @@ serve(async (req) => {
   }
   
   try {
-    const { prompt, model, temperature, max_tokens, isAuthenticated, systemPrompt, forceLiveResponse } = await req.json();
+    const { prompt, model, temperature, max_tokens, systemPrompt } = await req.json();
     
     // Get the OpenAI API key from environment variables
     const apiKey = Deno.env.get('OPENAI_API_KEY');
@@ -36,12 +35,11 @@ serve(async (req) => {
       );
     }
     
-    // Use the requested model or default to gpt-4o
-    const useModel = model || 'gpt-4o';
+    // Use the requested model or default to gpt-4o-mini
+    const useModel = model || 'gpt-4o-mini';
     
     console.log(`Calling OpenAI API with model: ${useModel}`);
-    console.log(`API Key available: ${apiKey ? 'Yes' : 'No'}`);
-    console.log(`Force live response: ${forceLiveResponse ? 'Yes' : 'No'}`);
+    console.log(`Prompt length: ${prompt.length} characters`);
     
     // Create default system message if none provided
     const defaultSystemPrompt = 'You are a helpful business planning assistant that provides thorough, accurate, and detailed responses.';
@@ -73,7 +71,7 @@ serve(async (req) => {
     const data = await openAIResponse.json();
     const text = data.choices?.[0]?.message?.content || '';
     
-    console.log(`OpenAI response length: ${text.length} characters`);
+    console.log(`OpenAI response received, length: ${text.length} characters`);
     
     return new Response(
       JSON.stringify({ text: text, success: true }),

@@ -3,10 +3,9 @@ import { useState, useEffect } from 'react';
 import { callOpenAI } from '@/utils/openaiService';
 import { toast } from '@/components/ui/use-toast';
 import { BusinessModel } from './types';
-import { getFallbackContent } from '@/utils/plan-generator';
-import { BusinessFormData } from '@/utils/plan-generator/types';
+import { useAuth } from '@/components/AuthProvider';
 
-// Sample business model data to use as fallback
+// Sample business model data to use as fallback only in case of error
 const getFallbackBusinessModels = (businessName: string): BusinessModel[] => [
   {
     name: "Subscription Service",
@@ -40,6 +39,7 @@ export const useBusinessModels = (
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     // Only generate business models if we have enough information
@@ -53,14 +53,6 @@ export const useBusinessModels = (
     setError('');
 
     try {
-      // Create a business form data object using the new structure
-      const formData: BusinessFormData = {
-        businessName,
-        businessDescription,
-        useAIV2: isPremium,
-        isAuthenticated: isPremium
-      };
-
       // Create a prompt for the business model generation
       const prompt = `Generate 3 viable business models for the following business:
       Business Name: ${businessName}
@@ -83,7 +75,7 @@ export const useBusinessModels = (
       
       const systemPrompt = "You are a business model expert generating practical, innovative revenue models in a structured JSON format.";
       
-      console.log("Calling OpenAI API for business models generation");
+      console.log("Calling OpenAI API for business models generation with authentication:", !!user);
       
       // Call OpenAI API
       const response = await callOpenAI({
@@ -92,8 +84,7 @@ export const useBusinessModels = (
         model: isPremium ? 'gpt-4o' : 'gpt-4o-mini',
         temperature: 0.7,
         maxTokens: 1500,
-        isAuthenticated: isPremium,
-        forceLiveResponse: true
+        isAuthenticated: !!user
       });
       
       console.log("OpenAI API response received:", response.success ? "Success" : "Failed");
@@ -109,6 +100,8 @@ export const useBusinessModels = (
             if (parsedData.models && Array.isArray(parsedData.models)) {
               setBusinessModels(parsedData.models);
               console.log('Successfully generated business models from API');
+              setLoading(false);
+              setRefreshing(false);
               return;
             }
           }

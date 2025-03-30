@@ -26,7 +26,6 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   console.log(`Starting business plan generation for: ${formData.businessName}`);
   console.log(`Description length: ${formData.businessDescription.length} chars`);
   console.log(`Using AI engine: ${aiEngine}`);
-  console.log(`User authenticated: ${formData.isAuthenticated ? 'Yes' : 'No'}`);
   
   const plan: Partial<BusinessPlanData> = {};
   
@@ -36,7 +35,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     { key: 'marketAnalysis', name: 'market analysis', message: 'Analyzing market dynamics...' },
     { key: 'businessModel', name: 'business model', message: 'Developing business model...' },
     { key: 'marketingPlan', name: 'marketing plan', message: 'Building marketing strategy...' },
-    { key: 'financialProjections', name: 'financial and idea validation', message: 'Calculating financial projections...' },
+    { key: 'financialProjections', name: 'financial projections', message: 'Calculating financial projections...' },
     { key: 'riskAssessment', name: 'risk assessment', message: 'Evaluating potential risks...' },
     { key: 'swotAnalysis', name: 'swot analysis', message: 'Completing SWOT analysis...' },
   ];
@@ -50,25 +49,25 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       
       try {
         // Generate each section with built-in retry mechanism
+        console.log(`Generating ${section.name}...`);
         const result = await generateSection(section.name, formData);
         
         // Add the content to the plan
         plan[section.key] = result.content;
-        console.log(`✅ Generated ${section.key} successfully, length: ${result.content.length} chars`);
+        console.log(`Generated ${section.key} successfully, length: ${result.content.length} chars`);
         
-        // If generation wasn't successful (used fallback), show a warning but continue
-        if (!result.success) {
-          console.warn(`⚠️ Used fallback content for ${section.key}`);
-        }
       } catch (error) {
-        console.error(`❌ Error generating ${section.name}:`, error);
+        console.error(`Error generating ${section.name}:`, error);
         
-        // Show warning toast for fallback usage
+        // Show warning toast for errors
         toast({
           title: "Warning",
-          description: `Some sections may be using example content. You can regenerate the plan if needed.`,
+          description: `Error generating ${section.name}. Using simplified content.`,
           variant: "destructive"
         });
+        
+        // Add simplified content for the section
+        plan[section.key] = `Error generating ${section.name}. Please try again later.`;
       }
     }
     
@@ -79,7 +78,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     
     console.log('Business plan generation completed');
     
-    // Return the plan - even if some sections have fallback content
+    // Return the plan
     return plan as BusinessPlanData;
   } catch (error) {
     console.error('Business plan generation failed:', error);

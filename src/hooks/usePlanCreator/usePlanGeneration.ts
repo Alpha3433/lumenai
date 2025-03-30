@@ -60,7 +60,7 @@ export const usePlanGeneration = ({
         businessName: formData.businessName,
         businessDescription: formData.businessDescription,
         useAIV2: formData.useAIV2,
-        isAuthenticated: !!user // Real authentication check
+        isAuthenticated: !!user // Pass authentication status
       });
       
       console.log('Business plan generation completed successfully');
@@ -81,7 +81,7 @@ export const usePlanGeneration = ({
       
       toast({
         title: "Generation Issue",
-        description: "There was a problem generating some sections of your business plan. You can try again or use what we've generated so far.",
+        description: "There was a problem generating your business plan. Please try again.",
         variant: "destructive"
       });
       

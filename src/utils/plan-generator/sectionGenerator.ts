@@ -1,5 +1,5 @@
 
-import { BusinessFormData, GenerationOptions, SectionGenerationResult } from "./types";
+import { BusinessFormData, SectionGenerationResult } from "./types";
 import { callOpenAI } from "@/utils/openaiService";
 import { createPromptForSection, getSystemPromptForSection } from "@/utils/planSections";
 import { getFallbackContent } from "./fallbackContent";
@@ -11,7 +11,7 @@ export const generateSection = async (
   sectionName: string, 
   formData: BusinessFormData,
   retryCount = 0,
-  maxRetries = 2
+  maxRetries = 1
 ): Promise<SectionGenerationResult> => {
   try {
     // Use the improved prompt templates
@@ -26,7 +26,7 @@ export const generateSection = async (
                      sectionName.includes('swot') ? 1500 : 
                      sectionName.includes('market') ? 2000 : 1500;
     
-    console.log(`Generating ${sectionName} with ${model}`);
+    console.log(`Generating ${sectionName} with ${model}, user is ${formData.isAuthenticated ? 'authenticated' : 'not authenticated'}`);
     
     const response = await callOpenAI({
       prompt: promptTemplate,
@@ -34,7 +34,6 @@ export const generateSection = async (
       model,
       temperature: 0.7,
       maxTokens,
-      forceLiveResponse: true,
       isAuthenticated: formData.isAuthenticated
     });
     

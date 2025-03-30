@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { callOpenAI } from '@/utils/openaiService';
 import { toast } from '@/components/ui/use-toast';
 import { BusinessModel } from './types';
+import { getFallbackContent } from '@/utils/plan-generator';
+import { BusinessFormData } from '@/utils/plan-generator/types';
 
 // Sample business model data to use as fallback
 const getFallbackBusinessModels = (businessName: string): BusinessModel[] => [
@@ -51,6 +53,14 @@ export const useBusinessModels = (
     setError('');
 
     try {
+      // Create a business form data object using the new structure
+      const formData: BusinessFormData = {
+        businessName,
+        businessDescription,
+        useAIV2: isPremium,
+        isAuthenticated: isPremium
+      };
+
       // Create a prompt for the business model generation
       const prompt = `Generate 3 viable business models for the following business:
       Business Name: ${businessName}

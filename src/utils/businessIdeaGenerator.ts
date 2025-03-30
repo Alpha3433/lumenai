@@ -2,60 +2,40 @@
 import { callOpenAI } from './openaiService';
 import { BusinessIdeaPreferences, BusinessIdeaSuggestion } from './businessIdeas/types';
 import { generateMockBusinessIdea } from './businessIdeas';
-import { supabase } from '@/integrations/supabase/client';
 
 // Function to generate a business idea using OpenAI
 export async function generateBusinessIdea(preferences: BusinessIdeaPreferences): Promise<BusinessIdeaSuggestion> {
   try {
-    console.log('Starting business idea generation with preferences:', preferences);
-    
-    // Check for authentication if needed for RLS
-    const { data: sessionData } = await supabase.auth.getSession();
-    const isAuthenticated = !!sessionData.session;
-    
-    console.log('User authentication status:', isAuthenticated ? 'Authenticated' : 'Not authenticated');
-    
-    // Special handling for "surprise me" mode to avoid potential API issues
-    if (preferences.interests === "surprise me") {
-      console.log('Generating surprise business idea');
-      return generateMockBusinessIdea(preferences);
-    }
-    
     // Create prompt based on user preferences
     const prompt = createBusinessIdeaPrompt(preferences);
-    const systemPrompt = "You are a business idea generator creating innovative, practical, and marketable business concepts with specific details on target market, revenue model, and competitive advantages.";
     
-    console.log('Calling OpenAI with business idea prompt');
-    
-    // Use model based on premium status
-    const model = preferences.usePremiumModel ? "gpt-4o" : "gpt-4o-mini";
+    console.log('Generating business idea with prompt:', prompt);
     
     // Call OpenAI API
     const response = await callOpenAI({
       prompt,
-      systemPrompt,
-      model,
-      temperature: 0.8, // Slightly higher temperature for more creativity
-      maxTokens: 1200,
-      isAuthenticated,
-      forceLiveResponse: true
+      model: "gpt-4o-mini",
+      temperature: 0.7,
+      maxTokens: 800
     });
     
     if (!response.success) {
-      console.error('Error from OpenAI service:', response.error);
+      console.error('Error generating business idea:', response.error);
       throw new Error('Failed to generate business idea');
     }
     
     // Parse the response
-    const parsedIdea = parseBusinessIdeaResponse(response.text);
-    console.log('Successfully parsed business idea:', parsedIdea.businessName);
-    return parsedIdea;
+    return parseBusinessIdeaResponse(response.text);
   } catch (error) {
     console.error('Error in generateBusinessIdea:', error);
     
-    // Fall back to mock data for better user experience
-    console.log('Falling back to mock business idea');
-    return generateMockBusinessIdea(preferences);
+    // Return mock data if in development or if there's an error
+    if (import.meta.env.DEV) {
+      console.log('Using mock business idea in development mode');
+      return generateMockBusinessIdea(preferences);
+    }
+    
+    throw error;
   }
 }
 
@@ -63,12 +43,11 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
 function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string {
   const { industry, interests } = preferences;
   
-  if (interests === 'surprise me') {
+  if (interests === 'surprise me' || (!industry && !interests)) {
     return `
       Generate an innovative business idea based on current market trends and opportunities.
       The business idea should be specific, practical, and have clear potential for profitability.
       Make it unique, creative, and different from common business ideas.
-      Provide more depth and nuanced market insights in your response.
       
       Format your response as follows:
       Business Name: [catchy and relevant name]
@@ -85,7 +64,6 @@ function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string 
     Generate an innovative business idea in the ${industry || 'any'} industry.
     ${interests ? `The founder has interests/expertise in: ${interests}` : ''}
     Make it unique, creative, and different from common business ideas.
-    Include more detailed market insights and business model analysis in your response.
     
     Format your response as follows:
     Business Name: [catchy and relevant name]
@@ -102,8 +80,6 @@ function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string 
 // Parse the OpenAI response into a structured business idea
 function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
   try {
-    console.log('Parsing response text:', text.substring(0, 100) + '...');
-    
     // Extract business name
     const businessNameMatch = text.match(/Business Name:?\s*(.+?)(?:\n|$)/);
     const businessName = businessNameMatch ? businessNameMatch[1].trim() : "Innovative Startup";
@@ -134,9 +110,9 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
     if (whyItWorks.length === 0) {
       whyItWorks = [
         "Addresses a growing market need",
-        "Scalable business model",
-        "Low startup costs",
-        "Clear path to profitability"
+        "Leverages current technology trends",
+        "Has multiple revenue streams",
+        "Low startup costs relative to potential returns"
       ];
     }
     
@@ -148,22 +124,13 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
       whyItWorks
     };
   } catch (error) {
-    console.error('Error parsing business idea response:', error, 'Raw text:', text);
-    // Return a fallback response instead of throwing an error
-    return {
-      businessName: "Fallback Business Idea",
-      description: "A modern business addressing current market needs with innovative solutions.",
-      targetMarket: "Tech-savvy consumers and businesses looking for efficiency improvements.",
-      revenueModel: "Subscription-based service with premium features and add-ons.",
-      whyItWorks: [
-        "Addresses a growing market need",
-        "Scalable business model",
-        "Low startup costs",
-        "Clear path to profitability"
-      ]
-    };
+    console.error('Error parsing business idea response:', error);
+    // Return a fallback structure
+    return generateMockBusinessIdea({ industry: "technology" });
   }
 }
 
 // Re-export the necessary types from the businessIdeas directory
+// Fix: Use 'export type' for type-only exports
 export type { BusinessIdeaPreferences, BusinessIdeaSuggestion };
+

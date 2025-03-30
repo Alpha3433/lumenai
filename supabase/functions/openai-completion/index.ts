@@ -8,36 +8,21 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// This function handles OpenAI API calls securely from the backend
 serve(async (req) => {
-  // Start timing the edge function execution
-  const startTime = Date.now();
-  console.log(`🔍 [DIAGNOSIS] Edge function 'openai-completion' started at ${new Date().toISOString()}`);
-  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
   
   try {
-    console.log(`🔍 [DIAGNOSIS] Parsing request body`);
-    const { prompt, model, temperature, max_tokens, systemPrompt, forceLiveResponse, isAuthenticated } = await req.json();
-    
-    // Log request parameters
-    console.log(`🔍 [DIAGNOSIS] Request parameters:
-      - Model: ${model || 'Not specified (will use default)'}
-      - Prompt length: ${prompt?.length || 0} chars
-      - System prompt length: ${systemPrompt?.length || 0} chars
-      - Temperature: ${temperature || 0.7}
-      - Max tokens: ${max_tokens || 2000}
-      - Force live response: ${forceLiveResponse ? 'yes' : 'no'}
-      - Is authenticated: ${isAuthenticated ? 'yes' : 'no'}
-    `);
+    const { prompt, model, temperature, max_tokens } = await req.json();
     
     // Get the OpenAI API key from environment variables
-    const apiKey = "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";
+    const apiKey = Deno.env.get('OPENAI_API_KEY');
     
     if (!apiKey) {
-      console.error('❌ [DIAGNOSIS] OpenAI API key not configured');
+      console.error('OpenAI API key not configured');
       return new Response(
         JSON.stringify({ error: 'OpenAI API key not configured' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
@@ -45,129 +30,82 @@ serve(async (req) => {
     }
     
     if (!prompt) {
-      console.error('❌ [DIAGNOSIS] Prompt is required but was not provided');
       return new Response(
         JSON.stringify({ error: 'Prompt is required' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
       );
     }
     
-    // Use the requested model or default to gpt-4o-mini
-    const useModel = model || 'gpt-4o-mini';
+    console.log(`Calling OpenAI API with model: ${model}`);
     
-    console.log(`🔍 [DIAGNOSIS] Calling OpenAI API with model: ${useModel}`);
-    console.log(`🔍 [DIAGNOSIS] Prompt length: ${prompt.length} characters`);
-    console.log(`🔍 [DIAGNOSIS] Force live response: ${forceLiveResponse ? 'yes' : 'no'}`);
+    // Check prompt type to add special formatting instructions
+    const isValidationPrompt = prompt.toLowerCase().includes('financial and idea validation') || 
+                               prompt.toLowerCase().includes('viability score');
     
-    // Create default system message if none provided
-    const defaultSystemPrompt = 'You are a helpful business planning assistant that provides thorough, accurate, and detailed responses.';
+    const isIndustryOverviewPrompt = prompt.toLowerCase().includes('industry overview');
     
-    // Increased timeout from 60s to 75s - pushing to the limit
-    const abortController = new AbortController();
-    const timeoutId = setTimeout(() => {
-      console.error(`❌ [DIAGNOSIS] Request timeout - aborting after 75 seconds`);
-      abortController.abort('Request timeout after 75 seconds');
-    }, 75000);
+    const isSwotPrompt = prompt.toLowerCase().includes('swot analysis');
+
+    const isMarketAnalysisPrompt = prompt.toLowerCase().includes('market analysis');
     
-    console.time('openai_api_call');
-    console.log(`🔍 [DIAGNOSIS] Starting OpenAI API call at ${new Date().toISOString()}`);
+    // Add special system instructions based on prompt type
+    let systemMessage = '';
     
-    // Print the detailed model params for diagnostics
-    console.log(`🔍 [DIAGNOSIS] OpenAI request parameters:
-      - Model: ${useModel}
-      - Temperature: ${temperature || 0.7}
-      - Max tokens: ${max_tokens || 2000}
-      - System prompt (first 50 chars): ${(systemPrompt || defaultSystemPrompt).substring(0, 50)}...
-    `);
-    
-    // Progress check logging
-    const progressCheckId = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      console.log(`🔍 [DIAGNOSIS] OpenAI call in progress - ${Math.floor(elapsed/1000)}s elapsed`);
-    }, 10000);
-    
-    try {
-      // Call OpenAI API with provided parameters and abort controller
-      const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-          'OpenAI-Beta': 'assistants=v1'  // Add latest OpenAI beta features
-        },
-        body: JSON.stringify({
-          model: useModel,
-          messages: [
-            { role: 'system', content: systemPrompt || defaultSystemPrompt },
-            { role: 'user', content: prompt }
-          ],
-          temperature: temperature || 0.7,
-          max_tokens: max_tokens || 2000,
-        }),
-        signal: abortController.signal
-      });
-      
-      // Clear the interval and timeout since we got a response
-      clearInterval(progressCheckId);
-      clearTimeout(timeoutId);
-      
-      console.timeEnd('openai_api_call');
-      const apiCallDuration = Date.now() - startTime;
-      console.log(`🔍 [DIAGNOSIS] OpenAI API response received after ${apiCallDuration}ms`);
-      
-      if (!openAIResponse.ok) {
-        const errorData = await openAIResponse.json();
-        console.error('❌ [DIAGNOSIS] OpenAI API error:', errorData);
-        console.error('❌ [DIAGNOSIS] Status:', openAIResponse.status, openAIResponse.statusText);
-        
-        // Check for specific error types
-        if (openAIResponse.status === 429) {
-          console.error('❌ [DIAGNOSIS] Rate limit exceeded or quota reached');
-        } else if (openAIResponse.status === 502) {
-          console.error('❌ [DIAGNOSIS] Bad gateway - OpenAI API may be having issues');
-        } else if (openAIResponse.status >= 500) {
-          console.error('❌ [DIAGNOSIS] OpenAI server error');
-        } else if (openAIResponse.status === 401) {
-          console.error('❌ [DIAGNOSIS] Authentication error - check API key');
-        }
-        
-        throw new Error(`OpenAI API error: ${JSON.stringify(errorData)}`);
-      }
-      
-      // Parse the response
-      console.log(`🔍 [DIAGNOSIS] Parsing OpenAI response`);
-      const data = await openAIResponse.json();
-      const text = data.choices?.[0]?.message?.content || '';
-      
-      console.log(`🔍 [DIAGNOSIS] OpenAI response received, length: ${text.length} characters`);
-      console.log(`🔍 [DIAGNOSIS] Total edge function execution time: ${Date.now() - startTime}ms`);
-      
-      return new Response(
-        JSON.stringify({ text: text, success: true }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    } catch (fetchError) {
-      clearInterval(progressCheckId);
-      clearTimeout(timeoutId);
-      throw fetchError; // Rethrow to be caught by outer try/catch
+    if (isValidationPrompt) {
+      systemMessage = 'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL FOR PROPER DISPLAY of the report.';
+    } else if (isMarketAnalysisPrompt) {
+      systemMessage = 'You are a helpful assistant that generates business plan content. For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, age demographics, and identify real competitor companies with estimates of their market share and revenue. Format any statistics with numbers and percentages clearly. IMPORTANT: Make sure to write decimal numbers correctly WITHOUT SPACES between the number and decimal point (write 10.5% not 10. 5%). Include a dedicated section titled "Key Competitors" with detailed information on at least 4-5 specific real companies in this industry. For each competitor, use this format: "Company: [Name], Market Share: [percentage], Founded: [year], Revenue: [$amount], Strength: [main strength], Weakness: [main weakness]". Always include these exact fields for each competitor. ALSO INCLUDE a section titled "Porter\'s Five Forces Analysis" with subsections for each of the five forces: "Threat of New Entrants", "Threat of Substitution", "Bargaining Power of Suppliers", "Bargaining Power of Buyers", and "Competitive Rivalry". For each force, indicate whether it is HIGH, MEDIUM, or LOW, and provide 3-4 SPECIFIC, DETAILED bullet points explaining why. These bullet points should be HIGHLY SPECIFIC to the business described in the prompt, including precise details such as specific technologies, competitors\' names, supplier relationships, buyer demographics, or regulatory factors. DO NOT use generic statements that could apply to any business - each point should clearly relate to the specific business and industry described in the prompt. ALSO INCLUDE a section titled "PESTEL Analysis" that looks at all the Political, Economic, Social, Technological, Environmental, and Legal factors affecting this business. For each PESTEL factor, provide 3-4 SPECIFIC bullet points relating to the business context.';
+    } else if (isIndustryOverviewPrompt) {
+      systemMessage = 'You are a helpful assistant that generates detailed industry overviews for business plans. Your task is to create ONLY an industry overview section that focuses exclusively on industry trends, market size, growth rates, and industry-specific information. Start with a heading "Industry Overview" and then provide 12-15 detailed sentences about the industry itself. Include specific metrics like total market size in dollars (e.g., $4.5 billion), compound annual growth rate percentages, technological trends, regulatory considerations, and consumer behavior patterns in the industry. IMPORTANT: When writing decimals in dollar amounts or percentages, make sure there is NO SPACE between the number and decimal point (use $4.5 not $4. 5). Do NOT include any information about competitors, Porter\'s Five Forces, or business-specific strategies. Focus ONLY on the industry as a whole. Use specific numbers, percentages, and factual market information throughout.';
+    } else if (isSwotPrompt) {
+      systemMessage = 'You are a helpful assistant that generates SWOT analyses for business plans. When creating a SWOT analysis, structure the response with clear headings for Strengths, Weaknesses, Opportunities, and Threats. For each category, provide 4 distinct and complete bullet points. IMPORTANT: Make sure each bullet point is a COMPLETE statement that stands on its own. DO NOT split a single strength, weakness, opportunity, or threat across multiple bullet points. Each bullet point should express one complete idea. Format your response exactly as follows (including the bullet points and whitespace):\n\n**Strengths**\n• [Complete strength 1]\n• [Complete strength 2]\n• [Complete strength 3]\n• [Complete strength 4]\n\n**Weaknesses**\n• [Complete weakness 1]\n• [Complete weakness 2]\n• [Complete weakness 3]\n• [Complete weakness 4]\n\n**Opportunities**\n• [Complete opportunity 1]\n• [Complete opportunity 2]\n• [Complete opportunity 3]\n• [Complete opportunity 4]\n\n**Threats**\n• [Complete threat 1]\n• [Complete threat 2]\n• [Complete threat 3]\n• [Complete threat 4]';
+    } else if (prompt.toLowerCase().includes('executive summary')) {
+      systemMessage = 'You are a helpful assistant that generates business plan content. Create a concise and compelling executive summary with exactly two paragraphs. The first paragraph should introduce the business concept, value proposition, and target market. The second paragraph should highlight the market opportunity, business model, and competitive advantage.';
+    } else {
+      systemMessage = 'You are a helpful assistant that generates business plan content. When including numbers with decimal points, always ensure there is no space between the number and the decimal point (use 4.5 not 4. 5).';
     }
-  } catch (error) {
-    const executionTime = Date.now() - startTime;
-    console.error(`❌ [DIAGNOSIS] Error in openai-completion function after ${executionTime}ms:`, error);
     
-    // Check if the error was an abort error
-    let errorMessage = error.message || 'Unknown error';
-    let errorStatus = 500;
+    // Call OpenAI API using Chat Completions endpoint (newer API)
+    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: model || 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemMessage },
+          { role: 'user', content: prompt }
+        ],
+        temperature: temperature || 0.7,
+        max_tokens: max_tokens || 1000
+      })
+    });
     
-    if (error.name === 'AbortError') {
-      errorMessage = 'Request timed out after 75 seconds. You should try using a smaller business description or the simpler AI model.';
-      errorStatus = 504; // Gateway Timeout
-      console.error(`❌ [DIAGNOSIS] Request aborted: ${errorMessage}`);
+    if (!openAIResponse.ok) {
+      const errorData = await openAIResponse.json();
+      console.error('OpenAI API error:', errorData);
+      throw new Error(`OpenAI API error: ${JSON.stringify(errorData)}`);
     }
+    
+    const data = await openAIResponse.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    
+    // Post-process the response to fix any remaining decimal formatting issues
+    const fixedText = text
+      .replace(/(\d+)\.\s+(\d+)/g, '$1.$2')
+      .replace(/\$(\d+)\.\s+(\d+)/g, '\$$1.$2');
     
     return new Response(
-      JSON.stringify({ error: errorMessage, success: false }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: errorStatus }
+      JSON.stringify({ text: fixedText, success: true }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    console.error('Error in openai-completion function:', error);
+    return new Response(
+      JSON.stringify({ error: error.message, success: false }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     );
   }
 });

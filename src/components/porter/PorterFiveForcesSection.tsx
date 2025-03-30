@@ -5,18 +5,11 @@ import { PorterFiveForcesData } from '@/utils/porter';
 import PorterFiveForceCard from './PorterFiveForceCard';
 
 interface PorterFiveForcesSectionProps {
-  forcesData?: PorterFiveForcesData;
   marketAnalysis?: string;
-  companyName?: string;
-  industry?: string;
+  forcesData?: PorterFiveForcesData;
 }
 
-const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ 
-  forcesData, 
-  marketAnalysis,
-  companyName = "",
-  industry = ""
-}) => {
+const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({ forcesData, marketAnalysis }) => {
   // Ensure forcesData is defined before trying to access its properties
   if (!forcesData) {
     console.warn('PorterFiveForcesSection: forcesData is undefined');
@@ -43,43 +36,19 @@ const PorterFiveForcesSection: React.FC<PorterFiveForcesSectionProps> = ({
       <div className="flex flex-col items-center gap-4 mb-6">
         <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
           <FileBarChart className="h-6 w-6 text-blue-500" />
-          {companyName 
-            ? `Porter's Five Forces Analysis for ${companyName}`
-            : "Porter's Five Forces Analysis"}
+          Porter's Five Forces Analysis
         </h2>
         <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full">
-          {industry 
-            ? `Competitive assessment for ${industry} industry` 
-            : "Competitive industry assessment"}
+          Competitive industry assessment
         </div>
       </div>
 
       <div className="space-y-4">
-        <PorterFiveForceCard 
-          force={forcesData['threat-new-entry']} 
-          companyName={companyName}
-          industry={industry}
-        />
-        <PorterFiveForceCard 
-          force={forcesData['threat-substitution']} 
-          companyName={companyName}
-          industry={industry}
-        />
-        <PorterFiveForceCard 
-          force={forcesData['supplier-power']} 
-          companyName={companyName}
-          industry={industry}
-        />
-        <PorterFiveForceCard 
-          force={forcesData['buyer-power']} 
-          companyName={companyName}
-          industry={industry}
-        />
-        <PorterFiveForceCard 
-          force={forcesData['competitive-rivalry']} 
-          companyName={companyName}
-          industry={industry}
-        />
+        <PorterFiveForceCard force={forcesData['threat-new-entry']} />
+        <PorterFiveForceCard force={forcesData['threat-substitution']} />
+        <PorterFiveForceCard force={forcesData['supplier-power']} />
+        <PorterFiveForceCard force={forcesData['buyer-power']} />
+        <PorterFiveForceCard force={forcesData['competitive-rivalry']} />
       </div>
     </section>
   );

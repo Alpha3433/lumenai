@@ -3,32 +3,6 @@ import { useState, useEffect } from 'react';
 import { callOpenAI } from '@/utils/openaiService';
 import { toast } from '@/components/ui/use-toast';
 import { BusinessModel } from './types';
-import { useAuth } from '@/components/AuthProvider';
-
-// Sample business model data to use as fallback only in case of error
-const getFallbackBusinessModels = (businessName: string): BusinessModel[] => [
-  {
-    name: "Subscription Service",
-    description: `A recurring revenue model where customers pay monthly or annual fees to access ${businessName}'s platform and services.`,
-    fitScore: 8,
-    keyBenefits: ["Predictable revenue", "Higher customer lifetime value", "Scalable growth model"],
-    implementationComplexity: "Medium"
-  },
-  {
-    name: "Freemium Model",
-    description: `Offer basic ${businessName} services for free, with premium features and functionality available for paying customers.`,
-    fitScore: 7,
-    keyBenefits: ["Large user acquisition potential", "Upsell opportunities", "Lower barrier to entry"],
-    implementationComplexity: "Medium"
-  },
-  {
-    name: "Marketplace Platform",
-    description: `Connect buyers and sellers within the ${businessName} ecosystem, taking a commission on transactions or charging listing fees.`,
-    fitScore: 9,
-    keyBenefits: ["Network effects", "Multiple revenue streams", "Scalable with minimal inventory"],
-    implementationComplexity: "High"
-  }
-];
 
 export const useBusinessModels = (
   businessName: string, 
@@ -39,84 +13,69 @@ export const useBusinessModels = (
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-  const { user } = useAuth();
 
   useEffect(() => {
-    // Only generate business models if we have enough information
-    if (businessName && businessDescription) {
+    if (isPremium) {
       generateBusinessModels();
     }
-  }, [businessName, businessDescription]);
+  }, [isPremium, businessName, businessDescription]);
 
   const generateBusinessModels = async () => {
     setLoading(true);
     setError('');
 
     try {
-      // Create a prompt for the business model generation
-      const prompt = `Generate 3 viable business models for the following business:
-      Business Name: ${businessName}
-      Business Description: ${businessDescription}
+      const prompt = `Based on the business named "${businessName}" with the following description: "${businessDescription}", 
+      suggest 3 optimal web-based business models that would work well for this concept. 
       
-      For each business model, provide the following in JSON format:
-      {
-        "models": [
-          {
-            "name": "Name of the model",
-            "description": "Detailed description of how this model works for ${businessName}",
-            "fitScore": A number from 1-10 indicating how well this model fits the business,
-            "keyBenefits": ["Benefit 1", "Benefit 2", "Benefit 3"],
-            "implementationComplexity": "Low, Medium, or High"
-          }
-        ]
-      }
+      For each model, include:
+      1. A name for the business model
+      2. A brief description (30-40 words)
+      3. A fit score from 1-10 indicating how well it matches the business concept
+      4. 2-3 key benefits of this model for this specific business
+      5. Implementation complexity (Low, Medium, or High)
       
-      Ensure the models are diverse and specific to this business. Focus on practical, revenue-generating approaches.`;
+      Format your response as a JSON array like this:
+      [
+        {
+          "name": "Model Name",
+          "description": "Brief description...",
+          "fitScore": 8,
+          "keyBenefits": ["Benefit 1", "Benefit 2"],
+          "implementationComplexity": "Medium"
+        }
+      ]
       
-      const systemPrompt = "You are a business model expert generating practical, innovative revenue models in a structured JSON format.";
-      
-      console.log("Calling OpenAI API for business models generation with authentication:", !!user);
-      
-      // Call OpenAI API
+      Only include these fields in your response, formatted as valid JSON that can be parsed directly.`;
+
       const response = await callOpenAI({
         prompt,
-        systemPrompt,
-        model: isPremium ? 'gpt-4o' : 'gpt-4o-mini',
+        model: 'gpt-4o-mini',
         temperature: 0.7,
-        maxTokens: 1500,
-        isAuthenticated: !!user
+        maxTokens: 1000
       });
-      
-      console.log("OpenAI API response received:", response.success ? "Success" : "Failed");
-      
-      if (response.success && response.text) {
+
+      if (response.success) {
         try {
-          // Extract the JSON object from the response
-          const jsonMatch = response.text.match(/\{[\s\S]*\}/);
-          const jsonString = jsonMatch ? jsonMatch[0] : null;
-          
-          if (jsonString) {
-            const parsedData = JSON.parse(jsonString);
-            if (parsedData.models && Array.isArray(parsedData.models)) {
-              setBusinessModels(parsedData.models);
-              console.log('Successfully generated business models from API');
-              setLoading(false);
-              setRefreshing(false);
-              return;
-            }
-          }
-          
-          // If parsing fails, throw error to use fallback
-          throw new Error('Failed to parse API response');
+          // Parse the JSON response
+          const modelData = JSON.parse(response.text);
+          setBusinessModels(modelData);
         } catch (parseError) {
-          console.warn('Error parsing business models JSON, using fallback:', parseError);
-          // If we can't parse the response, use fallback data
-          setBusinessModels(getFallbackBusinessModels(businessName));
+          console.error('Error parsing business models JSON:', parseError);
+          setError('Failed to parse business models data');
+          toast({
+            title: "Error",
+            description: "Failed to parse business models data",
+            variant: "destructive"
+          });
         }
       } else {
-        // If API call fails, use fallback data
-        console.warn('API response unsuccessful, using fallback data. Error:', response.error);
-        setBusinessModels(getFallbackBusinessModels(businessName));
+        setError('Failed to generate business models');
+        toast({
+          title: "Error",
+          description: "Failed to generate business models",
+          variant: "destructive"
+        });
       }
     } catch (e) {
       console.error('Error generating business models:', e);
@@ -126,9 +85,6 @@ export const useBusinessModels = (
         description: "An error occurred while generating business models",
         variant: "destructive"
       });
-      
-      // Even on error, set fallback models
-      setBusinessModels(getFallbackBusinessModels(businessName));
     } finally {
       setLoading(false);
       setRefreshing(false);

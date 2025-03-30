@@ -13,5 +13,4 @@ export interface BusinessFormData {
   businessName: string;
   businessDescription: string;
   useAIV2: boolean;
-  isAuthenticated?: boolean;
 }

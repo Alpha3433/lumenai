@@ -1,11 +1,11 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { usePlanCreator } from '@/hooks/usePlanCreator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
-import { AlertTriangle } from 'lucide-react';
-import { useAuth } from '@/components/AuthProvider';
-import { toast } from '@/components/ui/use-toast';
+import UpgradeNotificationBanner from './UpgradeNotificationBanner';
+import { AnimatePresence } from 'framer-motion';
 
 interface PlanCreatorProps {
   initialData?: {
@@ -15,18 +15,13 @@ interface PlanCreatorProps {
 }
 
 const PlanCreator = ({ initialData }: PlanCreatorProps) => {
-  const { user } = useAuth();
-  
   const {
     step,
     formData,
     businessPlan,
     generating,
     generatingProgress,
-    generationError,
     isPremium,
-    isTrialPeriod,
-    isExpiringSoon,
     handleInputChange,
     handleToggleChange,
     handleSubmit,
@@ -35,55 +30,10 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     setStep
   } = usePlanCreator(initialData);
 
-  // Handle form submission properly
-  const onSubmitForm = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to generate a business plan.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    handleSubmit(e);
-  };
-
   return (
     <div className={`${step === 2 ? 'max-w-full' : 'max-w-5xl'} mx-auto py-6 px-4`}>
-      {isTrialPeriod && isPremium && (
-        <div className="sticky top-20 z-40 w-full max-w-5xl mx-auto mb-4">
-          <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 p-3 rounded-lg shadow-sm flex items-center gap-2">
-            <AlertTriangle className="text-amber-500 dark:text-amber-400 h-5 w-5 flex-shrink-0" />
-            <p className="text-sm text-amber-700 dark:text-amber-300">
-              You're currently in a trial period with premium features. Upgrade to maintain premium access.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {isExpiringSoon && isPremium && !isTrialPeriod && (
-        <div className="sticky top-20 z-40 w-full max-w-5xl mx-auto mb-4">
-          <div className="bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-700/50 p-3 rounded-lg shadow-sm flex items-center gap-2">
-            <AlertTriangle className="text-orange-500 dark:text-orange-400 h-5 w-5 flex-shrink-0" />
-            <p className="text-sm text-orange-700 dark:text-orange-300">
-              Your premium subscription is expiring soon. Renew to maintain premium access.
-            </p>
-          </div>
-        </div>
-      )}
-      
-      {!user && (
-        <div className="w-full max-w-5xl mx-auto mb-4">
-          <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700/50 p-3 rounded-lg shadow-sm flex items-center gap-2">
-            <AlertTriangle className="text-blue-500 dark:text-blue-400 h-5 w-5 flex-shrink-0" />
-            <p className="text-sm text-blue-700 dark:text-blue-300">
-              Log in to generate complete, customized business plans and save your work.
-            </p>
-          </div>
-        </div>
+      {step === 2 && !isPremium && (
+        <UpgradeNotificationBanner onUpgrade={upgradeAccount} />
       )}
       
       {step === 1 ? (
@@ -91,10 +41,9 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           formData={formData}
           generating={generating}
           generatingProgress={generatingProgress}
-          generationError={generationError}
           onChange={handleInputChange}
           onToggleChange={handleToggleChange}
-          onSubmit={onSubmitForm}
+          onSubmit={handleSubmit}
           isPremium={isPremium}
           onUpgrade={upgradeAccount}
         />

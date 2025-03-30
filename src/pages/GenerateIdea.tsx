@@ -1,47 +1,44 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BusinessIdeaGenerator from '@/components/market/BusinessIdeaGenerator';
-import { useAuth } from '@/hooks/useAuth';
-import { useUserSubscription } from '@/hooks/useUserSubscription';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
-const GenerateIdea: React.FC = () => {
-  const { user } = useAuth();
-  // Always treat as premium for testing
-  const isPremium = true;
+const GenerateIdea = () => {
+  const navigate = useNavigate();
   
+  // Function to navigate back to the plan creation page
+  const handleBackToPlanCreation = () => {
+    navigate('/create');
+  };
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="flex-1 container max-w-4xl mx-auto px-4 py-24">
-        <div className="mb-6 flex items-center">
-          <Link to="/">
-            <Button variant="ghost" size="sm" className="flex items-center gap-1">
+      <div className="pt-20">
+        <div className="container max-w-5xl mx-auto px-4 py-8">
+          <div className="mb-6">
+            <Button 
+              variant="outline"
+              onClick={handleBackToPlanCreation}
+              className="flex items-center gap-2"
+            >
               <ArrowLeft className="h-4 w-4" />
-              Back to Home
+              Back to Plan Creation
             </Button>
-          </Link>
-        </div>
-        
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold mb-4">Business Idea Generator</h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Get inspired with innovative business ideas tailored to your interests and industry preferences.
-          </p>
-        </div>
-        
-        <BusinessIdeaGenerator isPremium={isPremium} />
-        
-        <div className="mt-12 text-center">
-          <Link to="/create">
-            <Button variant="outline">
-              Have your own idea? Create a business plan
-            </Button>
-          </Link>
+          </div>
+          
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <h1 className="text-3xl font-bold mb-2">Generate Business Ideas</h1>
+            <p className="text-gray-600 dark:text-gray-300">
+              Generate innovative business ideas based on your interests or current market trends.
+            </p>
+          </div>
+          
+          <BusinessIdeaGenerator />
         </div>
       </div>
       <Footer />

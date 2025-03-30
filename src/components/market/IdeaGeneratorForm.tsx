@@ -1,29 +1,21 @@
 
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, Sparkles, Zap } from "lucide-react";
-import { Switch } from '@/components/ui/switch';
-
-// Add industry options
-const industries = [
-  "Technology", "Health & Wellness", "Education", "Food & Beverage", 
-  "E-commerce", "Finance", "Entertainment", "Sustainability", "Fashion"
-];
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Loader2, Sparkles, BrainCircuit, Zap, RefreshCw } from "lucide-react";
 
 interface IdeaGeneratorFormProps {
   generating: boolean;
   interests: string;
-  setInterests: (interests: string) => void;
+  setInterests: (value: string) => void;
   industry: string;
-  setIndustry: (industry: string) => void;
+  setIndustry: (value: string) => void;
   currentTab: string;
   setCurrentTab: (tab: string) => void;
   onGenerateIdea: () => void;
-  isPremium?: boolean;
-  useAIV2: boolean;
-  setUseAIV2: (value: boolean) => void;
 }
 
 const IdeaGeneratorForm: React.FC<IdeaGeneratorFormProps> = ({
@@ -34,117 +26,91 @@ const IdeaGeneratorForm: React.FC<IdeaGeneratorFormProps> = ({
   setIndustry,
   currentTab,
   setCurrentTab,
-  onGenerateIdea,
-  isPremium = false,
-  useAIV2,
-  setUseAIV2
+  onGenerateIdea
 }) => {
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onGenerateIdea();
-  };
-
-  // Handle tab change
-  const handleTabChange = (value: string) => {
-    setCurrentTab(value);
-    // Reset industry when switching to surprise tab
-    if (value === "surprise") {
-      setIndustry("");
-    }
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
+    <div className="space-y-6">
+      <p className="text-gray-600 dark:text-gray-300">
+        Not sure what business to start? Let our AI help you discover promising niches based on market trends and your interests.
+      </p>
+      
+      <Tabs defaultValue="guided" value={currentTab} onValueChange={setCurrentTab}>
         <TabsList className="grid grid-cols-2 mb-4">
-          <TabsTrigger value="guided">Guided</TabsTrigger>
-          <TabsTrigger value="surprise">Surprise Me</TabsTrigger>
+          <TabsTrigger value="guided">
+            <BrainCircuit className="h-4 w-4 mr-2" />
+            Guided
+          </TabsTrigger>
+          <TabsTrigger value="surprise">
+            <Sparkles className="h-4 w-4 mr-2" />
+            Surprise Me
+          </TabsTrigger>
         </TabsList>
         
         <TabsContent value="guided" className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5">
-              Industry
-            </label>
-            <select
-              value={industry}
-              onChange={(e) => setIndustry(e.target.value)}
-              className="w-full px-3 py-2 bg-background border border-input rounded-md text-sm"
-              disabled={generating}
-            >
-              <option value="">Select an industry</option>
-              {industries.map((ind) => (
-                <option key={ind} value={ind}>{ind}</option>
-              ))}
-            </select>
+            <Label htmlFor="industry">Industry</Label>
+            <Select value={industry} onValueChange={setIndustry}>
+              <SelectTrigger id="industry">
+                <SelectValue placeholder="Select an industry" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="technology">Technology</SelectItem>
+                <SelectItem value="healthcare">Healthcare</SelectItem>
+                <SelectItem value="education">Education</SelectItem>
+                <SelectItem value="finance">Finance</SelectItem>
+                <SelectItem value="ecommerce">E-commerce</SelectItem>
+                <SelectItem value="food">Food & Beverage</SelectItem>
+                <SelectItem value="sustainability">Sustainability</SelectItem>
+                <SelectItem value="entertainment">Entertainment</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-1.5">
-              Your Interests or Expertise (Optional)
-            </label>
-            <Input
+            <Label htmlFor="interests">Your Interests (Optional)</Label>
+            <Textarea 
+              id="interests" 
+              placeholder="Tell us about your skills, passions, or areas of expertise..."
               value={interests}
               onChange={(e) => setInterests(e.target.value)}
-              placeholder="e.g., mobile apps, fitness, cooking"
-              disabled={generating}
+              className="min-h-[80px]"
             />
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="surprise" className="space-y-4">
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-            <p className="text-sm">
-              We'll generate a completely random business idea for you based on current market trends and opportunities.
-              Just click the button below to see what we come up with!
+            <p className="text-xs text-gray-500 mt-1 italic">
+              Try different combinations of industries and interests to discover unique business ideas!
             </p>
           </div>
         </TabsContent>
         
-        {/* AI Engine Selector */}
-        <div className="mt-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg p-3 border border-blue-100 dark:border-blue-800">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <h3 className="text-sm font-medium flex items-center">
-                <Zap className="mr-1.5 h-3.5 w-3.5 text-amber-500" />
-                Enhanced AI Engine
-              </h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                {isPremium ? 'Use our advanced AI model for better results' : 'Unlock premium AI features'}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs">Standard</span>
-              <Switch
-                checked={useAIV2}
-                onCheckedChange={setUseAIV2}
-                disabled={!isPremium || generating}
-              />
-              <span className="text-xs font-medium">Premium {!isPremium && '🔒'}</span>
-            </div>
-          </div>
-        </div>
-        
-        <Button
-          type="submit"
-          className="w-full mt-4"
-          disabled={generating}
-        >
-          {generating ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Generating...
-            </>
-          ) : (
-            <>
-              <Sparkles className="mr-2 h-4 w-4" />
-              Generate Business Idea
-            </>
-          )}
-        </Button>
+        <TabsContent value="surprise" className="text-center py-6">
+          <Zap className="h-12 w-12 mx-auto mb-4 text-amber-500" />
+          <p className="mb-2">Generate a completely random business idea!</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            We'll analyze current market trends and suggest an innovative business concept.
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
+            <RefreshCw className="h-3 w-3" /> Each idea generated will be unique and different.
+          </p>
+        </TabsContent>
       </Tabs>
-    </form>
+      
+      <Button 
+        onClick={onGenerateIdea} 
+        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+        disabled={generating}
+      >
+        {generating ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Generating Idea...
+          </>
+        ) : (
+          <>
+            <Sparkles className="mr-2 h-4 w-4" />
+            Generate Business Idea
+          </>
+        )}
+      </Button>
+    </div>
   );
 };
 

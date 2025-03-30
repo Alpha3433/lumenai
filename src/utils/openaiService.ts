@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 
 interface OpenAIRequestParams {
@@ -30,9 +31,9 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
       };
     }
     
-    // Increased timeout from 15 to 30 seconds
+    // Increased timeout from 30 seconds to 120 seconds (2 minutes)
     const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('OpenAI request timed out after 30 seconds')), 30000);
+      setTimeout(() => reject(new Error('OpenAI request timed out after 120 seconds')), 120000);
     });
     
     // Call Supabase Edge Function for OpenAI

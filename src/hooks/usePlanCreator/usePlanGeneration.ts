@@ -1,7 +1,7 @@
 
 import { useState, useRef } from 'react';
 import { BusinessPlanData } from '@/types/businessPlan';
-import { generateBusinessPlan } from '@/utils/planGenerator';
+import { generateBusinessPlan } from '@/utils/plan-generator';
 import { toast } from '@/components/ui/use-toast';
 import { PlanCreatorFormData } from './types';
 import { simulateProgress, validateFormInput } from './utils';

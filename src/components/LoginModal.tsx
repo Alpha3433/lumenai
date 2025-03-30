@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '@/components/AuthProvider';
-import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogOverlay, DialogDescription } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
 
 interface LoginModalProps {
@@ -52,7 +52,10 @@ export default function LoginModal({ isOpen, onClose, onRegisterClick }: LoginMo
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogOverlay className="backdrop-blur-[2px] bg-black/5 dark:bg-black/10" />
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" aria-describedby="login-description">
+        <DialogDescription id="login-description" className="sr-only">
+          Login form to access your account
+        </DialogDescription>
         <button 
           onClick={onClose}
           className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none"

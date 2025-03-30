@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Progress } from '@/components/ui/progress';
 import { Loader2, Sparkles, Zap, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -103,8 +103,11 @@ const GeneratingDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" aria-describedby="generating-dialog-description">
         <DialogTitle className="sr-only">Creating Your Business Plan</DialogTitle>
+        <DialogDescription id="generating-dialog-description" className="sr-only">
+          Dialog showing the progress of business plan generation
+        </DialogDescription>
         <div className="space-y-6 py-6">
           {error || isStuck ? (
             <div className="text-center space-y-4">

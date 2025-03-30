@@ -83,6 +83,8 @@ export const useBusinessModels = (
       
       const systemPrompt = "You are a business model expert generating practical, innovative revenue models in a structured JSON format.";
       
+      console.log("Calling OpenAI API for business models generation");
+      
       // Call OpenAI API
       const response = await callOpenAI({
         prompt,
@@ -93,6 +95,8 @@ export const useBusinessModels = (
         isAuthenticated: isPremium,
         forceLiveResponse: true
       });
+      
+      console.log("OpenAI API response received:", response.success ? "Success" : "Failed");
       
       if (response.success && response.text) {
         try {
@@ -118,7 +122,7 @@ export const useBusinessModels = (
         }
       } else {
         // If API call fails, use fallback data
-        console.warn('API response unsuccessful, using fallback data');
+        console.warn('API response unsuccessful, using fallback data. Error:', response.error);
         setBusinessModels(getFallbackBusinessModels(businessName));
       }
     } catch (e) {

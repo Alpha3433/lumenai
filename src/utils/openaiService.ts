@@ -21,6 +21,7 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   try {
     console.log(`Calling OpenAI with model: ${params.model}, prompt length: ${params.prompt.length} chars`);
     console.log(`User authenticated: ${params.isAuthenticated ? 'Yes' : 'No'}`);
+    console.log(`Force live response: ${params.forceLiveResponse ? 'Yes' : 'No'}`);
     
     const requestStartTime = Date.now();
     

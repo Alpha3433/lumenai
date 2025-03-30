@@ -40,6 +40,8 @@ serve(async (req) => {
     const useModel = model || 'gpt-4o';
     
     console.log(`Calling OpenAI API with model: ${useModel}`);
+    console.log(`API Key available: ${apiKey ? 'Yes' : 'No'}`);
+    console.log(`Force live response: ${forceLiveResponse ? 'Yes' : 'No'}`);
     
     // Create default system message if none provided
     const defaultSystemPrompt = 'You are a helpful business planning assistant that provides thorough, accurate, and detailed responses.';

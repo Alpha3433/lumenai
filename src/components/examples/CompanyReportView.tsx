@@ -1,8 +1,10 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/card';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { ArrowLeft, Download, Zap, Apple, ShoppingCart } from 'lucide-react';
+import { motion } from 'framer-motion';
 import BusinessPlanActionBar from '@/components/BusinessPlanActionBar';
 import ExecutiveSummarySection from '@/components/ExecutiveSummarySection';
 import SwotAnalysis from '@/components/SwotAnalysis';
@@ -18,6 +20,7 @@ interface CompanyData {
   name: string;
   description: string;
   industry: string;
+  logoIcon: string;
   executiveSummary: string;
   marketAnalysis: string;
   businessModel: string;
@@ -49,19 +52,64 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
     swotAnalysis: company.swotAnalysis
   };
 
+  // Get the appropriate logo based on the company
+  const getCompanyLogo = () => {
+    switch(company.logoIcon) {
+      case 'Zap':
+        return <Zap className="h-16 w-16 text-blue-500" />;
+      case 'Apple':
+        return <Apple className="h-16 w-16 text-gray-800" />;
+      case 'ShoppingCart':
+        return <ShoppingCart className="h-16 w-16 text-orange-500" />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="container mx-auto max-w-full py-8 px-4 mt-16">
-      <div className="mb-6">
+    <motion.div 
+      className="container mx-auto max-w-full py-8 px-4 mt-16"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className="mb-6 sticky top-20 z-10 bg-background/80 backdrop-blur-sm py-2">
         <Button 
           variant="outline" 
-          className="mb-6" 
+          className="mb-2" 
           onClick={onBackToList}
         >
-          ← Back to Examples
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Examples
         </Button>
       </div>
 
       <div className="space-y-10 animate-fade-in pb-20">
+        {/* Company Header with Logo */}
+        <motion.div 
+          className="max-w-6xl mx-auto mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <div className="flex flex-col md:flex-row items-center justify-between p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800">
+            <div className="flex items-center mb-4 md:mb-0">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 flex items-center justify-center mr-6">
+                {getCompanyLogo()}
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold">{company.name}</h1>
+                <p className="text-gray-600 dark:text-gray-300">{company.industry}</p>
+              </div>
+            </div>
+            <Button 
+              onClick={onDownload}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+            >
+              <Download className="mr-2 h-4 w-4" /> Download Report
+            </Button>
+          </div>
+        </motion.div>
+
         <BusinessPlanActionBar 
           businessName={company.name}
           onStartOver={onBackToList}
@@ -147,7 +195,7 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

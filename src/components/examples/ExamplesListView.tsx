@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import ExampleCard from './ExampleCard';
 
 interface ExampleCompany {
@@ -11,6 +11,7 @@ interface ExampleCompany {
   name: string;
   description: string;
   industry: string;
+  logoIcon: string;
 }
 
 interface ExamplesListViewProps {
@@ -22,38 +23,85 @@ const ExamplesListView: React.FC<ExamplesListViewProps> = ({
   companies, 
   onSelectCompany 
 }) => {
+  const fadeInUpVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    })
+  };
+
   return (
     <motion.main 
-      className="flex-1 container max-w-7xl mx-auto px-4 py-20"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      className="flex-1 w-full mx-auto px-4 py-24"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="text-center mb-16 max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold tracking-tight mb-4">Example Business Intelligence Reports</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300">
-          Explore comprehensive business analysis reports for top global companies
-        </p>
-      </div>
-      
-      <div className="grid md:grid-cols-3 gap-6 mb-16">
-        {companies.map((company) => (
-          <ExampleCard 
-            key={company.id} 
-            company={company} 
-            onSelect={onSelectCompany} 
-          />
-        ))}
-      </div>
-      
-      <div className="text-center">
-        <p className="text-lg mb-6">Ready to generate your own business intelligence report?</p>
-        <Link to="/create">
-          <Button size="lg" className="bg-black hover:bg-black/90 text-white">
-            Create Your Business Plan
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </Link>
+      <div className="relative max-w-7xl mx-auto">
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-3xl blur-3xl opacity-50 -z-10"></div>
+        
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <span className="inline-block px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 font-medium text-sm mb-4">
+              <Sparkles className="inline-block h-4 w-4 mr-2" />
+              Expert Business Analysis
+            </span>
+            <h1 className="text-5xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+              Example Business Reports
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Explore in-depth business intelligence reports for industry-leading companies
+            </p>
+          </motion.div>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+          {companies.map((company, index) => (
+            <motion.div
+              key={company.id}
+              custom={index}
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUpVariants}
+            >
+              <ExampleCard 
+                company={company} 
+                onSelect={onSelectCompany} 
+              />
+            </motion.div>
+          ))}
+        </div>
+        
+        <motion.div 
+          className="text-center max-w-3xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
+          <div className="p-8 rounded-2xl bg-white dark:bg-gray-900 shadow-xl border border-gray-100 dark:border-gray-800">
+            <h2 className="text-2xl font-bold mb-4">Ready to generate your own report?</h2>
+            <p className="text-lg mb-6 text-gray-600 dark:text-gray-300">
+              Our AI-powered platform can analyze your business and provide customized intelligence and recommendations.
+            </p>
+            <Link to="/create">
+              <Button size="lg" className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg px-8 py-6 h-auto">
+                Create Your Business Plan
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        </motion.div>
       </div>
     </motion.main>
   );

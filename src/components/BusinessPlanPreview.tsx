@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -117,7 +118,11 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               {/* Porter's Five Forces Analysis */}
               <div id="porter-five-forces">
-                <PorterFiveForcesSection marketAnalysis={businessPlan.marketAnalysis} />
+                <PorterFiveForcesSection 
+                  marketAnalysis={businessPlan.marketAnalysis}
+                  businessName={businessName}
+                  businessDescription={businessDescription}
+                />
               </div>
               
               <Separator className="my-10" />

@@ -45,9 +45,18 @@ const IdeaGeneratorForm: React.FC<IdeaGeneratorFormProps> = ({
     onGenerateIdea();
   };
 
+  // Handle tab change
+  const handleTabChange = (value: string) => {
+    setCurrentTab(value);
+    // Reset industry when switching to surprise tab
+    if (value === "surprise") {
+      setIndustry("");
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
-      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
+      <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
         <TabsList className="grid grid-cols-2 mb-4">
           <TabsTrigger value="guided">Guided</TabsTrigger>
           <TabsTrigger value="surprise">Surprise Me</TabsTrigger>
@@ -88,6 +97,7 @@ const IdeaGeneratorForm: React.FC<IdeaGeneratorFormProps> = ({
           <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
             <p className="text-sm">
               We'll generate a completely random business idea for you based on current market trends and opportunities.
+              Just click the button below to see what we come up with!
             </p>
           </div>
         </TabsContent>

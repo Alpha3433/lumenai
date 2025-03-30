@@ -14,9 +14,15 @@ export const generateSection = async (
   maxRetries = 1
 ): Promise<SectionGenerationResult> => {
   try {
+    console.log(`🔍 [DIAGNOSIS] generateSection started for ${sectionName}, retry ${retryCount}/${maxRetries}`);
+    
     // Use the improved prompt templates
     const promptTemplate = createPromptForSection(sectionName, formData);
     const systemPrompt = getSystemPromptForSection(sectionName);
+    
+    // Log prompt length for diagnostics
+    console.log(`🔍 [DIAGNOSIS] ${sectionName} prompt length: ${promptTemplate.length} chars`);
+    console.log(`🔍 [DIAGNOSIS] ${sectionName} system prompt length: ${systemPrompt.length} chars`);
     
     // Set model based on user preference
     const model = formData.useAIV2 ? 'gpt-4o' : 'gpt-4o-mini';
@@ -26,7 +32,10 @@ export const generateSection = async (
                      sectionName.includes('swot') ? 1500 : 
                      sectionName.includes('market') ? 2000 : 1500;
     
-    console.log(`Generating ${sectionName} with ${model}, user is ${formData.isAuthenticated ? 'authenticated' : 'not authenticated'}`);
+    console.log(`🔍 [DIAGNOSIS] Generating ${sectionName} with ${model}, max tokens: ${maxTokens}, user is ${formData.isAuthenticated ? 'authenticated' : 'not authenticated'}`);
+    
+    // Record the start time to measure API response time
+    const apiCallStartTime = Date.now();
     
     const response = await callOpenAI({
       prompt: promptTemplate,
@@ -38,28 +47,33 @@ export const generateSection = async (
       forceLiveResponse: sectionName === 'executive summary' // Force live response for executive summary
     });
     
+    const apiCallDuration = Date.now() - apiCallStartTime;
+    console.log(`🔍 [DIAGNOSIS] OpenAI API call for ${sectionName} completed in ${apiCallDuration}ms`);
+    
     // Accept any non-empty response
     if (response.success && response.text) {
-      console.log(`Successfully generated ${sectionName} (${response.text.length} chars)`);
+      console.log(`🔍 [DIAGNOSIS] Successfully generated ${sectionName} (${response.text.length} chars)`);
       return {
         content: response.text,
         success: true
       };
     } else {
-      console.warn(`Failed to generate content: ${response.error}`);
+      console.warn(`❌ [DIAGNOSIS] Failed to generate content for ${sectionName}: ${response.error}`);
       throw new Error(response.error || `Failed to generate ${sectionName}`);
     }
   } catch (error: any) {
-    console.error(`Failed to generate ${sectionName} (attempt ${retryCount + 1}):`, error);
+    console.error(`❌ [DIAGNOSIS] Failed to generate ${sectionName} (attempt ${retryCount + 1}):`, error);
     
     // If we haven't reached max retries, try again
     if (retryCount < maxRetries) {
       // Wait briefly before retrying to avoid rate limits
+      console.log(`🔍 [DIAGNOSIS] Retrying ${sectionName} generation after 1000ms delay...`);
       await new Promise(resolve => setTimeout(resolve, 1000));
       return generateSection(sectionName, formData, retryCount + 1, maxRetries);
     }
     
     // Return fallback content on final failure
+    console.log(`❌ [DIAGNOSIS] Max retries (${maxRetries}) reached for ${sectionName}, using fallback content`);
     return {
       content: getFallbackContent(sectionName, formData),
       success: false,

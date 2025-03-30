@@ -11,11 +11,15 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   // Set AI model based on user preference
   const aiEngine = formData.useAIV2 ? 'Enhanced AI (GPT-4o)' : 'Standard AI (GPT-4o-mini)';
   
+  const startTime = Date.now();
+  console.log(`🔍 [DIAGNOSIS] generateBusinessPlan started at ${new Date().toISOString()}`);
+  
   toast({
     description: `Creating your business plan with ${aiEngine}...`,
   });
   
   if (!formData.businessName || !formData.businessDescription) {
+    console.log("🔍 [DIAGNOSIS] Missing required fields");
     toast({
       title: "Error",
       description: "Business name and description are required",
@@ -24,9 +28,9 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     throw new Error("Business name and description are required");
   }
   
-  console.log(`Starting business plan generation for: ${formData.businessName}`);
-  console.log(`Description length: ${formData.businessDescription.length} chars`);
-  console.log(`Using AI engine: ${aiEngine}`);
+  console.log(`🔍 [DIAGNOSIS] Starting business plan generation for: ${formData.businessName}`);
+  console.log(`🔍 [DIAGNOSIS] Description length: ${formData.businessDescription.length} chars`);
+  console.log(`🔍 [DIAGNOSIS] Using AI engine: ${aiEngine}`);
   
   const plan: Partial<BusinessPlanData> = {};
   
@@ -48,19 +52,22 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
     const executiveSummarySection = sections[0];
     try {
       toast({ description: executiveSummarySection.message });
-      console.log(`Generating ${executiveSummarySection.name}...`);
+      console.log(`🔍 [DIAGNOSIS] Generating ${executiveSummarySection.name}...`);
+      console.time(`generate_${executiveSummarySection.key}`);
       
       const result = await generateSection(executiveSummarySection.name, formData, 0, 2);
       
+      console.timeEnd(`generate_${executiveSummarySection.key}`);
+      
       if (!result.content || result.content.trim() === '') {
-        console.error(`Generated empty ${executiveSummarySection.name}, using fallback`);
+        console.error(`❌ [DIAGNOSIS] Generated empty ${executiveSummarySection.name}, using fallback`);
         plan[executiveSummarySection.key] = getFallbackContent(executiveSummarySection.name, formData);
       } else {
         plan[executiveSummarySection.key] = result.content;
-        console.log(`Generated ${executiveSummarySection.key} successfully, length: ${result.content.length} chars`);
+        console.log(`🔍 [DIAGNOSIS] Generated ${executiveSummarySection.key} successfully, length: ${result.content.length} chars`);
       }
     } catch (error) {
-      console.error(`Error generating ${executiveSummarySection.name}:`, error);
+      console.error(`❌ [DIAGNOSIS] Error generating ${executiveSummarySection.name}:`, error);
       plan[executiveSummarySection.key] = getFallbackContent(executiveSummarySection.name, formData);
     }
     
@@ -71,15 +78,20 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       
       try {
         // Generate each section with built-in retry mechanism
-        console.log(`Generating ${section.name}...`);
+        console.log(`🔍 [DIAGNOSIS] Generating ${section.name}...`);
+        console.time(`generate_${section.key}`);
+        
         const result = await generateSection(section.name, formData);
+        
+        console.timeEnd(`generate_${section.key}`);
         
         // Add the content to the plan
         plan[section.key] = result.content;
-        console.log(`Generated ${section.key} successfully, length: ${result.content.length} chars`);
+        console.log(`🔍 [DIAGNOSIS] Generated ${section.key} successfully, length: ${result.content.length} chars`);
         
       } catch (error) {
-        console.error(`Error generating ${section.name}:`, error);
+        console.timeEnd(`generate_${section.key}`);
+        console.error(`❌ [DIAGNOSIS] Error generating ${section.name}:`, error);
         
         // Show warning toast for errors
         toast({
@@ -93,17 +105,19 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       }
     }
     
+    const totalTime = Date.now() - startTime;
+    console.log(`🔍 [DIAGNOSIS] Business plan generation completed in ${totalTime}ms`);
+    
     toast({
       title: "Success",
       description: `Business plan generated successfully!`,
     });
     
-    console.log('Business plan generation completed');
-    
     // Return the plan
     return plan as BusinessPlanData;
   } catch (error) {
-    console.error('Business plan generation failed:', error);
+    const totalTime = Date.now() - startTime;
+    console.error(`❌ [DIAGNOSIS] Business plan generation failed after ${totalTime}ms:`, error);
     throw error;
   }
 };

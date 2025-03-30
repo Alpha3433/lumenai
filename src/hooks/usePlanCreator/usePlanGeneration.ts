@@ -31,9 +31,12 @@ export const usePlanGeneration = ({
       e.preventDefault();
     }
     
+    console.log("🔍 [DIAGNOSIS] usePlanGeneration.handleGenerate started", new Date().toISOString());
+    
     // Validate form input
     const validationError = validateFormInput(formData, isPremium);
     if (validationError) {
+      console.log("🔍 [DIAGNOSIS] Form validation error:", validationError);
       toast({
         title: "Form Error",
         description: validationError,
@@ -45,6 +48,7 @@ export const usePlanGeneration = ({
     // Create new abort controller for this operation
     if (generationAbortController.current) {
       generationAbortController.current.abort();
+      console.log("🔍 [DIAGNOSIS] Aborted previous generation request");
     }
     generationAbortController.current = new AbortController();
     
@@ -53,7 +57,8 @@ export const usePlanGeneration = ({
     const clearProgressSimulation = simulateProgress(setGeneratingProgress, setGenerationError);
     
     try {
-      console.log('Starting business plan generation process...');
+      console.log("🔍 [DIAGNOSIS] Starting business plan generation with model:", formData.useAIV2 ? "gpt-4o" : "gpt-4o-mini");
+      console.time("businessPlanGeneration");
       
       // Generate the business plan with the user's authentication status
       const plan = await generateBusinessPlan({
@@ -63,7 +68,8 @@ export const usePlanGeneration = ({
         isAuthenticated: !!user // Pass authentication status
       });
       
-      console.log('Business plan generation completed successfully');
+      console.timeEnd("businessPlanGeneration");
+      console.log("🔍 [DIAGNOSIS] Business plan generation completed successfully");
       
       // Set the business plan data
       setGeneratingProgress(100);
@@ -75,7 +81,22 @@ export const usePlanGeneration = ({
       }, 800);
       
     } catch (error: any) {
-      console.error('Error generating business plan:', error);
+      console.timeEnd("businessPlanGeneration");
+      console.error("❌ [DIAGNOSIS] Error generating business plan:", error);
+      
+      // Create detailed error analysis
+      let errorDetails = '';
+      if (error instanceof Error) {
+        errorDetails = `${error.name}: ${error.message}`;
+        if (error.stack) {
+          console.error("❌ [DIAGNOSIS] Error stack:", error.stack);
+        }
+      } else {
+        errorDetails = String(error);
+      }
+      
+      console.log("❌ [DIAGNOSIS] Error details:", errorDetails);
+      
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setGenerationError(errorMessage);
       

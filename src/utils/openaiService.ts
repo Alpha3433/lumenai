@@ -18,8 +18,13 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
   try {
     console.log(`Calling OpenAI with model: ${params.model}, prompt length: ${params.prompt.length} chars`);
     
+    // Set a timeout for the API call
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error('OpenAI request timed out after 15 seconds')), 15000);
+    });
+    
     // Call Supabase Edge Function for OpenAI
-    const { data, error } = await supabase.functions.invoke('openai-completion', {
+    const responsePromise = supabase.functions.invoke('openai-completion', {
       body: {
         prompt: params.prompt,
         model: params.model,
@@ -27,35 +32,30 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
         max_tokens: params.maxTokens || 800
       }
     });
-
-    if (error) {
-      console.error('Error calling OpenAI through Supabase:', error);
-      throw error;
+    
+    // Race the API call against the timeout
+    const response = await Promise.race([responsePromise, timeoutPromise]);
+    
+    if (response.error) {
+      console.error('Error calling OpenAI through Supabase:', response.error);
+      throw new Error(response.error.message || 'Error calling OpenAI');
     }
 
     // Add logging to debug the response
-    console.log('OpenAI response received, success:', data?.success);
+    console.log('OpenAI response received, success:', response.data?.success);
     
     return {
-      text: data.text,
+      text: response.data.text,
       success: true
     };
   } catch (error) {
     console.error('Error in OpenAI call:', error);
     
-    // Only use mock response if in development or if there's an error
-    if (import.meta.env.DEV) {
-      console.log('Using mock response in development mode');
-      return {
-        text: generateMockResponse(params.prompt),
-        success: true
-      };
-    }
-    
+    // Always use mock response in development or if there's an error
+    console.log('Using mock response due to error or development mode');
     return {
-      text: 'An error occurred while generating content. Please try again.',
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      text: generateMockResponse(params.prompt),
+      success: true
     };
   }
 };

@@ -15,7 +15,7 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
     const model = preferences.usePremiumModel ? "gpt-4o" : "gpt-4o-mini";
     console.log(`Using ${preferences.usePremiumModel ? 'premium' : 'standard'} model: ${model}`);
     
-    // Call OpenAI API
+    // Call OpenAI API with a timeout
     const response = await callOpenAI({
       prompt,
       model,
@@ -29,7 +29,9 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
     }
     
     // Parse the response
-    return parseBusinessIdeaResponse(response.text);
+    const parsedIdea = parseBusinessIdeaResponse(response.text);
+    console.log('Successfully parsed business idea:', parsedIdea.businessName);
+    return parsedIdea;
   } catch (error) {
     console.error('Error in generateBusinessIdea:', error);
     
@@ -82,6 +84,8 @@ function createBusinessIdeaPrompt(preferences: BusinessIdeaPreferences): string 
 // Parse the OpenAI response into a structured business idea
 function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
   try {
+    console.log('Parsing response text:', text.substring(0, 100) + '...');
+    
     // Extract business name
     const businessNameMatch = text.match(/Business Name:?\s*(.+?)(?:\n|$)/);
     const businessName = businessNameMatch ? businessNameMatch[1].trim() : "Innovative Startup";
@@ -126,12 +130,11 @@ function parseBusinessIdeaResponse(text: string): BusinessIdeaSuggestion {
       whyItWorks
     };
   } catch (error) {
-    console.error('Error parsing business idea response:', error);
+    console.error('Error parsing business idea response:', error, 'Raw text:', text);
     // Return a fallback structure
     return generateMockBusinessIdea({ industry: "technology" });
   }
 }
 
 // Re-export the necessary types from the businessIdeas directory
-// Fix: Use 'export type' for type-only exports
 export type { BusinessIdeaPreferences, BusinessIdeaSuggestion };

@@ -23,6 +23,8 @@ const BusinessIdeaGenerator: React.FC<BusinessIdeaGeneratorProps> = ({ isPremium
   
   // Handle the generation of a business idea
   const handleGenerateIdea = async () => {
+    if (generating) return; // Prevent multiple clicks
+    
     setGenerating(true);
     
     try {
@@ -53,7 +55,46 @@ const BusinessIdeaGenerator: React.FC<BusinessIdeaGeneratorProps> = ({ isPremium
         return;
       }
       
+      // Add a timeout to ensure the process doesn't hang
+      const timeoutId = setTimeout(() => {
+        if (generating) {
+          toast({
+            title: "Taking longer than expected",
+            description: "We'll use a pre-generated idea if this continues",
+          });
+          
+          // After another 5 seconds, fall back to mock data
+          setTimeout(() => {
+            if (generating) {
+              const mockIdea = { 
+                businessName: "Timeout Fallback - EcoShare Platform",
+                description: "A platform that allows users to rent environmentally friendly products, reducing waste and promoting sustainability.",
+                targetMarket: "Environmentally conscious consumers looking to reduce waste",
+                revenueModel: "Transaction fees and premium subscriptions",
+                whyItWorks: [
+                  "Growing environmental awareness",
+                  "Sharing economy trend",
+                  "Low startup costs",
+                  "Scalable business model"
+                ]
+              };
+              setGeneratedIdea(mockIdea);
+              setGenerating(false);
+              
+              toast({
+                title: "Generated with fallback data",
+                description: "Network issue detected, but we've provided you with a quality idea to explore."
+              });
+            }
+          }, 5000);
+        }
+      }, 10000);
+      
+      console.log('Starting business idea generation with preferences:', preferences);
       const idea = await generateBusinessIdea(preferences);
+      clearTimeout(timeoutId);
+      
+      console.log('Idea generation complete:', idea.businessName);
       setGeneratedIdea(idea);
       
       toast({
@@ -62,10 +103,26 @@ const BusinessIdeaGenerator: React.FC<BusinessIdeaGeneratorProps> = ({ isPremium
       });
     } catch (error) {
       console.error("Error generating business idea:", error);
+      
+      // Create a fallback idea for a better user experience
+      const fallbackIdea = { 
+        businessName: "Error Fallback - Digital Learning Hub",
+        description: "An interactive platform offering personalized learning experiences through AI-driven content recommendations and progress tracking.",
+        targetMarket: "Students, professionals, and lifelong learners",
+        revenueModel: "Freemium model with subscription tiers and enterprise licensing",
+        whyItWorks: [
+          "Growing demand for personalized education",
+          "Remote learning trend acceleration post-pandemic",
+          "Scalable content delivery model",
+          "Multiple revenue streams from various user segments"
+        ]
+      };
+      
+      setGeneratedIdea(fallbackIdea);
+      
       toast({
-        title: "Generation Failed",
-        description: "There was an error generating your business idea. Please try again.",
-        variant: "destructive"
+        title: "Generated with fallback data",
+        description: "We encountered an issue but created a quality business idea for you."
       });
     } finally {
       setGenerating(false);

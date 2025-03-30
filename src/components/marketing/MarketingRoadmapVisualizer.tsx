@@ -12,7 +12,8 @@ import {
   BarChart,
   Presentation,
   Globe,
-  HeartHandshake
+  HeartHandshake,
+  ChevronRight
 } from 'lucide-react';
 
 interface MarketingRoadmapVisualizerProps {
@@ -167,25 +168,30 @@ const MarketingRoadmapVisualizer = ({ businessName, marketingPlanText }: Marketi
   const roadmapStages = generateCustomRoadmap(marketingPlanText, businessName);
   
   return (
-    <Card className="border border-gray-200 dark:border-gray-800 shadow-md mb-6 bg-card/95">
-      <CardContent className="py-4">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-2 overflow-x-auto">
-          {roadmapStages.map((stage, index) => (
-            <React.Fragment key={index}>
-              <div className="flex flex-col items-center text-center max-w-[150px]">
-                <div className={`rounded-full p-3 mb-2 bg-${stage.color}/10 text-${stage.color}`}>
-                  {stage.icon}
+    <Card className="border border-gray-200 dark:border-gray-800 shadow-md mb-8 bg-card/95 overflow-hidden">
+      <CardContent className="p-0">
+        <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-950/20 dark:to-indigo-900/20 py-2 px-4 border-b border-indigo-100 dark:border-indigo-800/30">
+          <h3 className="font-medium text-sm">Marketing Roadmap</h3>
+        </div>
+        <div className="py-6 px-4">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between overflow-x-auto relative">
+            {roadmapStages.map((stage, index) => (
+              <React.Fragment key={index}>
+                <div className="flex flex-col items-center text-center p-2 min-w-[140px]">
+                  <div className={`rounded-full p-3 mb-3 bg-${stage.color}/10 text-${stage.color} shadow-sm`}>
+                    {stage.icon}
+                  </div>
+                  <h3 className="font-semibold text-sm mb-1">{stage.title}</h3>
+                  <p className="text-xs text-muted-foreground">{stage.description}</p>
                 </div>
-                <h3 className="font-semibold text-sm">{stage.title}</h3>
-                <p className="text-xs text-muted-foreground mt-1">{stage.description}</p>
-              </div>
-              {index < roadmapStages.length - 1 && (
-                <div className="mx-2 my-4 md:my-0">
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                </div>
-              )}
-            </React.Fragment>
-          ))}
+                {index < roadmapStages.length - 1 && (
+                  <div className="mx-0 my-4 md:my-0 md:mx-1 text-muted-foreground">
+                    <ChevronRight className="h-5 w-5 md:rotate-0 rotate-90" />
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>

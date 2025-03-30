@@ -37,6 +37,8 @@ const ExamplesListView: React.FC<ExamplesListViewProps> = ({
     !['tesla', 'apple', 'amazon'].includes(company.id)
   );
 
+  console.log('Featured companies:', featuredCompanies);
+
   return (
     <motion.main 
       className="flex-1 w-full mx-auto px-4 py-16"

@@ -21,6 +21,9 @@ interface ExampleCardProps {
 const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
   // Get the appropriate logo image based on company.id
   const getLogoImage = () => {
+    // Let's add console logs to help debug
+    console.log('Company ID:', company.id);
+    
     switch(company.id) {
       case 'tesla':
         return '/lovable-uploads/0e5dc4b2-34c2-4fcf-9c1c-877e2501390d.png';
@@ -29,6 +32,7 @@ const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
       case 'amazon':
         return '/lovable-uploads/7ffe4f40-f73e-49b5-a23c-f0c590ae7f83.png';
       default:
+        // For other companies, use first letter as fallback
         return null;
     }
   };
@@ -54,6 +58,8 @@ const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
   };
 
   const logoImage = getLogoImage();
+  // Debug log for the logo image path
+  console.log('Logo image path:', logoImage);
 
   return (
     <motion.div
@@ -73,6 +79,12 @@ const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
                   src={logoImage} 
                   alt={`${company.name} logo`} 
                   className="w-16 h-16 object-contain"
+                  onError={(e) => {
+                    console.error(`Error loading image for ${company.name}:`, logoImage);
+                    // Replace with fallback on error
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><text x="50%" y="50%" font-family="system-ui" font-size="10" text-anchor="middle" dominant-baseline="middle">${company.name[0]}</text></svg>`;
+                  }}
                 />
               ) : (
                 <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">

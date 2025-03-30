@@ -40,7 +40,6 @@ serve(async (req) => {
     const useModel = model || 'gpt-4o';
     
     console.log(`Calling OpenAI API with model: ${useModel}`);
-    console.log(`Request priority: ${priority || 'normal'}`);
     
     let systemMessage = 'You are a world-class business analyst and planner that generates comprehensive, detailed business plan content. ';
     

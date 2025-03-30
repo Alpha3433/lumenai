@@ -48,7 +48,7 @@ export const callOpenAI = async (params: OpenAIRequestParams): Promise<OpenAIRes
       text: data.text,
       success: true
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in OpenAI call:', error);
     
     // Improved error handling

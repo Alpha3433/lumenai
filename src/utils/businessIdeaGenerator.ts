@@ -7,12 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 // Function to generate a business idea using OpenAI
 export async function generateBusinessIdea(preferences: BusinessIdeaPreferences): Promise<BusinessIdeaSuggestion> {
   try {
-    // For testing purposes, immediately check if this is a "surprise me" request
-    if (preferences.interests === "surprise me") {
-      console.log('Generating surprise business idea with mock data');
-      // Use the mock data for surprise me to avoid API call failures
-      return generateMockBusinessIdea(preferences);
-    }
+    console.log('Starting business idea generation with preferences:', preferences);
     
     // Check for authentication if needed for RLS
     const { data: sessionData } = await supabase.auth.getSession();
@@ -20,27 +15,32 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
     
     console.log('User authentication status:', isAuthenticated ? 'Authenticated' : 'Not authenticated');
     
+    // Special handling for "surprise me" mode to avoid potential API issues
+    if (preferences.interests === "surprise me") {
+      console.log('Generating surprise business idea');
+      return generateMockBusinessIdea(preferences);
+    }
+    
     // Create prompt based on user preferences
     const prompt = createBusinessIdeaPrompt(preferences);
     
-    console.log('Generating business idea with prompt:', prompt);
+    console.log('Calling OpenAI with business idea prompt');
     
     // Always use gpt-4o for all users
     const model = "gpt-4o";
-    console.log(`Using model: ${model}`);
     
-    // Call OpenAI API with a timeout
+    // Call OpenAI API
     const response = await callOpenAI({
       prompt,
       model,
       temperature: 0.7,
-      maxTokens: 1200, // More tokens for detailed outputs
+      maxTokens: 1200,
       isAuthenticated,
-      forceLiveResponse: true // Always force live API response
+      forceLiveResponse: true
     });
     
     if (!response.success) {
-      console.error('Error generating business idea:', response.error);
+      console.error('Error from OpenAI service:', response.error);
       throw new Error('Failed to generate business idea');
     }
     
@@ -51,7 +51,7 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
   } catch (error) {
     console.error('Error in generateBusinessIdea:', error);
     
-    // Always fall back to mock data for better user experience
+    // Fall back to mock data for better user experience
     console.log('Falling back to mock business idea');
     return generateMockBusinessIdea(preferences);
   }

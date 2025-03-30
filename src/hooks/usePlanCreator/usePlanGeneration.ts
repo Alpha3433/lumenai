@@ -75,7 +75,7 @@ export const usePlanGeneration = ({
         setGenerating(false);
       }, 800);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating business plan:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setGenerationError(errorMessage);

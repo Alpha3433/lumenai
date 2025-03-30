@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -32,17 +33,17 @@ interface BusinessPlanData {
 interface BusinessPlanPreviewProps {
   businessName: string;
   businessPlan: BusinessPlanData;
-  isPremium: boolean;
+  isPremium?: boolean;
   onStartOver: () => void;
   onDownload: () => void;
-  onUpgrade: () => void;
+  onUpgrade?: () => void;
   businessDescription?: string;
 }
 
 const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   businessName,
   businessPlan,
-  isPremium,
+  isPremium = true,
   onStartOver,
   onDownload,
   onUpgrade,
@@ -133,9 +134,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               {/* Marketing Plan */}
               <div id="marketing-plan">
                 <MarketingPlanSection 
-                  marketingPlanText={businessPlan.marketingPlan} 
-                  isPremium={isPremium}
-                  onUpgrade={onUpgrade}
+                  marketingPlanText={businessPlan.marketingPlan}
                 />
               </div>
               
@@ -146,8 +145,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
                 <WebBusinessModelsSection 
                   businessName={businessName}
                   businessDescription={businessDescription}
-                  isPremium={isPremium}
-                  onUpgrade={onUpgrade}
                 />
               </div>
             </CardContent>

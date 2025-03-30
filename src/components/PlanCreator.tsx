@@ -4,7 +4,6 @@ import { toast } from '@/components/ui/use-toast';
 import { usePlanCreator } from '@/hooks/usePlanCreator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
-import UpgradeNotificationBanner from './UpgradeNotificationBanner';
 import { AnimatePresence } from 'framer-motion';
 
 interface PlanCreatorProps {
@@ -32,10 +31,6 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
 
   return (
     <div className={`${step === 2 ? 'max-w-full' : 'max-w-5xl'} mx-auto py-6 px-4`}>
-      {step === 2 && !isPremium && (
-        <UpgradeNotificationBanner onUpgrade={upgradeAccount} />
-      )}
-      
       {step === 1 ? (
         <BusinessPlanForm
           formData={formData}
@@ -44,7 +39,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           onChange={handleInputChange}
           onToggleChange={handleToggleChange}
           onSubmit={handleSubmit}
-          isPremium={isPremium}
+          isPremium={true}
           onUpgrade={upgradeAccount}
         />
       ) : (
@@ -52,10 +47,9 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           businessName={formData.businessName}
           businessDescription={formData.businessDescription}
           businessPlan={businessPlan}
-          isPremium={isPremium}
+          isPremium={true}
           onStartOver={() => setStep(1)}
           onDownload={downloadPlan}
-          onUpgrade={upgradeAccount}
         />
       )}
     </div>

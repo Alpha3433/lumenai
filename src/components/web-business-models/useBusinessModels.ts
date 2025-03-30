@@ -7,7 +7,7 @@ import { BusinessModel } from './types';
 export const useBusinessModels = (
   businessName: string, 
   businessDescription: string,
-  isPremium: boolean
+  isPremium: boolean = true
 ) => {
   const [businessModels, setBusinessModels] = useState<BusinessModel[]>([]);
   const [loading, setLoading] = useState(false);
@@ -15,10 +15,9 @@ export const useBusinessModels = (
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    if (isPremium) {
-      generateBusinessModels();
-    }
-  }, [isPremium, businessName, businessDescription]);
+    // Always generate business models regardless of premium status
+    generateBusinessModels();
+  }, [businessName, businessDescription]);
 
   const generateBusinessModels = async () => {
     setLoading(true);

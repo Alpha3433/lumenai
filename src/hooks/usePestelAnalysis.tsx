@@ -13,7 +13,7 @@ export const usePestelAnalysis = (
   
   useEffect(() => {
     const generateAnalysis = async () => {
-      // Use AI generation when business name and description are available
+      // Always try to use AI generation when business name and description are available
       if (businessName && businessDescription) {
         setIsLoading(true);
         try {

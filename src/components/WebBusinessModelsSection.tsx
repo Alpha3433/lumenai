@@ -28,7 +28,7 @@ const WebBusinessModelsSection: React.FC<WebBusinessModelsSectionProps> = ({
     refreshing,
     generateBusinessModels,
     handleRefresh
-  } = useBusinessModels(businessName, businessDescription, true);
+  } = useBusinessModels(businessName, businessDescription, true); // Always passing true for isPremium
 
   return (
     <section className="mb-12">

@@ -1,3 +1,4 @@
+
 import { callOpenAI } from "./openaiService";
 import { BusinessFormData } from "./planGenerator";
 
@@ -101,7 +102,42 @@ Include the following details in your response:
 
     'marketing plan': `Develop a comprehensive marketing plan for a business with these characteristics:${baseContext}
     
-The marketing plan should outline target audience segmentation, positioning strategy, marketing channels, promotional activities, and customer acquisition strategies. Include digital and traditional approaches as appropriate.`,
+Create a well-structured marketing plan with the following key sections clearly separated by headings:
+
+1. Target Audience Segmentation
+- Identify 3-4 distinct audience segments that would be interested in this business
+- For each segment, provide specific demographic and psychographic details
+- Format each audience segment as a bullet point starting with "-"
+
+2. Positioning Strategy
+- Develop a clear positioning statement for the business
+- Explain how the business will differentiate itself from competitors
+- Identify the unique value proposition
+
+3. Marketing Channels
+- List 4-5 specific marketing channels that would be most effective for this business
+- For each channel, explain why it's appropriate for this business
+- Format each channel as a bullet point starting with "-"
+
+4. Promotional Activities
+- Suggest 4-5 specific promotional activities or campaigns
+- Include at least one digital marketing activity and one event/experiential marketing activity
+- Format each activity as a bullet point starting with "-"
+
+5. Customer Acquisition Strategies
+- Outline 4-5 specific strategies to acquire new customers
+- Include specific tactics, potential partners, or methods
+- Format each strategy as a bullet point starting with "-"
+
+IMPORTANT FORMATTING INSTRUCTIONS:
+- Start each section with a clear heading (e.g., "Target Audience")
+- Use bullet points with the "-" character for lists
+- Keep the writing style professional but accessible
+- Include specific details relevant to this particular business
+- Do not use generic marketing advice that could apply to any business
+- Make suggestions that are realistic and implementable
+
+The marketing plan should be comprehensive but focused specifically on this business and its unique characteristics.`,
 
     'financial and idea validation': `Provide a critical evaluation of this business idea, with the following details:${baseContext}
     

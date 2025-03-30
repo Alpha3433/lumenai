@@ -135,6 +135,8 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <div id="marketing-plan">
                 <MarketingPlanSection 
                   marketingPlanText={businessPlan.marketingPlan}
+                  businessName={businessName}
+                  businessDescription={businessDescription}
                 />
               </div>
               

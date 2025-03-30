@@ -1,21 +1,29 @@
 
-import React from 'react';
-import { Activity, Sparkles, Flag, ArrowRight, CheckCircle, Star, Calendar, Users, Megaphone, CircleCheck } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Activity, Sparkles, Flag, CircleCheck, Star, Calendar, Users, Megaphone, Target } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
+import MarketingRoadmapVisualizer from './marketing/MarketingRoadmapVisualizer';
+import { useMarketingPlan } from '@/hooks/useMarketingPlan';
 
 interface MarketingPlanSectionProps {
   marketingPlanText: string;
-  isPremium?: boolean;
-  onUpgrade?: () => void;
+  businessName?: string;
+  businessDescription?: string;
 }
 
 const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({ 
   marketingPlanText, 
-  isPremium = true, 
-  onUpgrade 
+  businessName = "Business",
+  businessDescription = ""
 }) => {
+  const { parsedData, loading, error } = useMarketingPlan(
+    businessName,
+    businessDescription,
+    marketingPlanText
+  );
+  
   // Function to extract sections from marketing plan text
   const extractSections = (text: string) => {
     const sections: Record<string, string[]> = {
@@ -88,35 +96,6 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
     return bulletPoints.length > 0 ? bulletPoints : [text];
   };
   
-  // Marketing roadmap stages
-  const roadmapStages = [
-    { 
-      title: "Research & Planning", 
-      icon: <Users className="h-5 w-5 text-blue-500" />,
-      description: "Understand target audience and market dynamics"
-    },
-    { 
-      title: "Brand Positioning", 
-      icon: <Star className="h-5 w-5 text-amber-500" />,
-      description: "Establish unique market position and messaging"
-    },
-    { 
-      title: "Channel Development", 
-      icon: <Megaphone className="h-5 w-5 text-indigo-500" />,
-      description: "Create presence across key marketing channels"
-    },
-    { 
-      title: "Campaign Launch", 
-      icon: <Calendar className="h-5 w-5 text-green-500" />,
-      description: "Execute promotional activities and campaigns"
-    },
-    { 
-      title: "Growth & Scaling", 
-      icon: <Activity className="h-5 w-5 text-red-500" />,
-      description: "Optimize acquisition strategies for sustainable growth"
-    }
-  ];
-  
   return (
     <section className="mb-12">
       <div className="flex items-center justify-center gap-2 mb-6">
@@ -127,40 +106,10 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
       </div>
       
       {/* Marketing Roadmap Visualization */}
-      <Card className="border border-gray-200 dark:border-gray-800 shadow-md mb-6 bg-card/95">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Flag className="h-5 w-5 text-indigo-500" />
-            Marketing Roadmap
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-2 overflow-x-auto">
-            {roadmapStages.map((stage, index) => (
-              <React.Fragment key={index}>
-                <div className="flex flex-col items-center text-center max-w-[150px]">
-                  <div className={`rounded-full p-3 mb-2 ${
-                    index === 0 ? "bg-blue-100 dark:bg-blue-900/30" :
-                    index === 1 ? "bg-amber-100 dark:bg-amber-900/30" :
-                    index === 2 ? "bg-indigo-100 dark:bg-indigo-900/30" :
-                    index === 3 ? "bg-green-100 dark:bg-green-900/30" :
-                    "bg-red-100 dark:bg-red-900/30"
-                  }`}>
-                    {stage.icon}
-                  </div>
-                  <h3 className="font-semibold text-sm">{stage.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{stage.description}</p>
-                </div>
-                {index < roadmapStages.length - 1 && (
-                  <div className="mx-2 my-4 md:my-0">
-                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <MarketingRoadmapVisualizer 
+        businessName={businessName}
+        marketingPlanText={marketingPlanText}
+      />
       
       {/* Main Marketing Plan Content */}
       <Card className={cn(
@@ -175,7 +124,22 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Target Audience Section */}
-            {sections.audience.length > 0 && (
+            {parsedData?.targetAudience && parsedData.targetAudience.length > 0 ? (
+              <div className="space-y-4">
+                <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                  <Target className="h-4 w-4" />
+                  Target Audience
+                </h4>
+                <div className="space-y-2">
+                  {parsedData.targetAudience.map((point, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <CircleCheck className="h-4 w-4 text-indigo-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{point}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : sections.audience.length > 0 ? (
               <div className="space-y-4">
                 <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
                   <Users className="h-4 w-4" />
@@ -194,10 +158,24 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
             
             {/* Positioning Section */}
-            {sections.positioning.length > 0 && (
+            {parsedData?.positioningStrategy && parsedData.positioningStrategy.length > 0 ? (
+              <div className="space-y-4">
+                <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                  <Star className="h-4 w-4" />
+                  Positioning Strategy
+                </h4>
+                <div className="space-y-2">
+                  {parsedData.positioningStrategy.map((paragraph, idx) => (
+                    <p key={idx} className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ) : sections.positioning.length > 0 ? (
               <div className="space-y-4">
                 <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
                   <Star className="h-4 w-4" />
@@ -211,14 +189,29 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
           
           <Separator className="my-6" />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Marketing Channels Section */}
-            {sections.channels.length > 0 && (
+            {parsedData?.marketingChannels && parsedData.marketingChannels.length > 0 ? (
+              <div className="space-y-4">
+                <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                  <Megaphone className="h-4 w-4" />
+                  Marketing Channels
+                </h4>
+                <div className="space-y-2">
+                  {parsedData.marketingChannels.map((point, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <CircleCheck className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{point}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : sections.channels.length > 0 ? (
               <div className="space-y-4">
                 <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
                   <Megaphone className="h-4 w-4" />
@@ -237,10 +230,25 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
             
             {/* Promotional Activities Section */}
-            {sections.promotional.length > 0 && (
+            {parsedData?.promotionalActivities && parsedData.promotionalActivities.length > 0 ? (
+              <div className="space-y-4">
+                <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                  <Calendar className="h-4 w-4" />
+                  Promotional Activities
+                </h4>
+                <div className="space-y-2">
+                  {parsedData.promotionalActivities.map((point, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <CircleCheck className="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{point}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : sections.promotional.length > 0 ? (
               <div className="space-y-4">
                 <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
                   <Calendar className="h-4 w-4" />
@@ -259,10 +267,25 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
             
             {/* Customer Acquisition Section */}
-            {sections.acquisition.length > 0 && (
+            {parsedData?.customerAcquisition && parsedData.customerAcquisition.length > 0 ? (
+              <div className="space-y-4">
+                <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                  <Activity className="h-4 w-4" />
+                  Customer Acquisition
+                </h4>
+                <div className="space-y-2">
+                  {parsedData.customerAcquisition.map((point, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <CircleCheck className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{point}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : sections.acquisition.length > 0 ? (
               <div className="space-y-4">
                 <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
                   <Activity className="h-4 w-4" />
@@ -281,7 +304,7 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
           
           {/* Any general/remaining sections */}

@@ -31,7 +31,8 @@ The ${sectionName} should be comprehensive, data-driven, and tailored specifical
         model: model,
         temperature: 0.7,
         maxTokens: maxTokens,
-        forceLiveResponse: true
+        forceLiveResponse: true,
+        isAuthenticated: formData.isAuthenticated
       });
       
       if (response.success && response.text.length > 100) {
@@ -76,6 +77,7 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   console.log(`Starting business plan generation for: ${formData.businessName}`);
   console.log(`Description length: ${formData.businessDescription.length} chars`);
   console.log(`Using AI engine: ${aiEngine}`);
+  console.log(`User authenticated: ${formData.isAuthenticated ? 'Yes' : 'No'}`);
   
   const plan: Partial<BusinessPlanData> = {};
   

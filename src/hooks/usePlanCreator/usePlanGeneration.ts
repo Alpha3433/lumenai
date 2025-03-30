@@ -54,7 +54,6 @@ export const usePlanGeneration = ({
     
     try {
       console.log('Starting business plan generation process...');
-      console.log(`User authenticated: ${!!user}`);
       
       // Generate the business plan with the user's authentication status
       const plan = await generateBusinessPlan({

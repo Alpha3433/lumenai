@@ -53,7 +53,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     getSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-      console.log('Auth state changed:', event, !!newSession?.user);
+      // Removed the console.log that was here
       setSession(newSession);
       setUser(newSession?.user || null);
       

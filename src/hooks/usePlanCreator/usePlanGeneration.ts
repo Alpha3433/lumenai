@@ -71,14 +71,14 @@ export const usePlanGeneration = ({
       console.timeEnd("businessPlanGeneration");
       console.log("🔍 [DIAGNOSIS] Business plan generation completed successfully");
       
-      // Set the business plan data
-      setGeneratingProgress(100);
+      // Clear simulation and set to completion
+      clearProgressSimulation();
       
       // Wait a short time to show the completion state
       setTimeout(() => {
         onSuccess(plan);
         setGenerating(false);
-      }, 800);
+      }, 1000);
       
     } catch (error: any) {
       console.timeEnd("businessPlanGeneration");
@@ -108,15 +108,12 @@ export const usePlanGeneration = ({
       
       onError(errorMessage);
       
-      // Wait a moment before allowing retry
+      // Clear progress simulation and wait a moment before allowing retry
+      clearProgressSimulation();
       setTimeout(() => {
         setGenerating(false);
         setGeneratingProgress(0);
       }, 1500);
-    } finally {
-      // Always clear the progress simulation
-      clearProgressSimulation();
-      generationAbortController.current = null;
     }
   };
 

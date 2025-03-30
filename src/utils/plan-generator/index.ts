@@ -48,39 +48,17 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
   toast({ description: 'Processing your business information...' });
   
   try {
-    // Generate executive summary first - this is critical
-    const executiveSummarySection = sections[0];
-    try {
-      toast({ description: executiveSummarySection.message });
-      console.log(`🔍 [DIAGNOSIS] Generating ${executiveSummarySection.name}...`);
-      console.time(`generate_${executiveSummarySection.key}`);
-      
-      const result = await generateSection(executiveSummarySection.name, formData, 0, 2);
-      
-      console.timeEnd(`generate_${executiveSummarySection.key}`);
-      
-      if (!result.content || result.content.trim() === '') {
-        console.error(`❌ [DIAGNOSIS] Generated empty ${executiveSummarySection.name}, using fallback`);
-        plan[executiveSummarySection.key] = getFallbackContent(executiveSummarySection.name, formData);
-      } else {
-        plan[executiveSummarySection.key] = result.content;
-        console.log(`🔍 [DIAGNOSIS] Generated ${executiveSummarySection.key} successfully, length: ${result.content.length} chars`);
-      }
-    } catch (error) {
-      console.error(`❌ [DIAGNOSIS] Error generating ${executiveSummarySection.name}:`, error);
-      plan[executiveSummarySection.key] = getFallbackContent(executiveSummarySection.name, formData);
-    }
-    
-    // Generate remaining sections SEQUENTIALLY to avoid API rate limits
-    for (let i = 1; i < sections.length; i++) {
+    // Generate each section SEQUENTIALLY to avoid API rate limits
+    for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
       toast({ description: section.message });
       
       try {
-        // Generate each section with built-in retry mechanism
-        console.log(`🔍 [DIAGNOSIS] Generating ${section.name}...`);
+        // Log progress per section for diagnosis
+        console.log(`🔍 [DIAGNOSIS] Starting section ${i+1}/${sections.length}: ${section.name}`);
         console.time(`generate_${section.key}`);
         
+        // Generate each section with built-in retry mechanism
         const result = await generateSection(section.name, formData);
         
         console.timeEnd(`generate_${section.key}`);
@@ -113,7 +91,15 @@ export const generateBusinessPlan = async (formData: BusinessFormData): Promise<
       description: `Business plan generated successfully!`,
     });
     
-    // Return the plan
+    // Make sure all sections are filled with at least fallback content
+    for (const section of sections) {
+      if (!plan[section.key]) {
+        console.log(`🔍 [DIAGNOSIS] Missing ${section.key}, using fallback content`);
+        plan[section.key] = getFallbackContent(section.name, formData);
+      }
+    }
+    
+    // Return the complete plan
     return plan as BusinessPlanData;
   } catch (error) {
     const totalTime = Date.now() - startTime;

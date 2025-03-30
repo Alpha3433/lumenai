@@ -52,12 +52,12 @@ const GeneratingDialog = ({
     }
     
     // Set a timeout to detect if generation is stuck
-    if (open && !error && progress > 0 && progress < 100) {
+    if (open && !error && progress > 0 && progress < 90) {
       const timeout = setTimeout(() => {
-        if (progress < 100) {
+        if (progress < 90) {
           setIsStuck(true);
         }
-      }, 45000); // Consider stuck after 45 seconds without progress change
+      }, 60000); // Consider stuck after 60 seconds without progress change (increased from 45s)
       
       setStuckTimeout(timeout);
     }
@@ -85,16 +85,16 @@ const GeneratingDialog = ({
       setCurrentMessage(getRandomAiActionMessage());
     } else if (progress >= 50 && progress < 75) {
       setCurrentMessage(getRandomAiActionMessage());
-    } else if (progress >= 75 && progress < 100) {
+    } else if (progress >= 75 && progress < 90) {
       setCurrentMessage(getRandomAiActionMessage());
-    } else if (progress === 100) {
-      setCurrentMessage("Complete! Preparing your results...");
+    } else if (progress >= 90) {
+      setCurrentMessage("Processing complete! Preparing your results...");
     }
   }, [progress, error, isStuck]);
 
   // Update message periodically to show activity
   useEffect(() => {
-    if (open && !error && !isStuck && progress < 100) {
+    if (open && !error && !isStuck && progress < 90) {
       const interval = setInterval(() => {
         setCurrentMessage(getRandomAiActionMessage());
       }, 6000);
@@ -210,12 +210,12 @@ const GeneratingDialog = ({
                     <Loader2 className="h-4 w-4 text-primary animate-spin" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Step {progress < 33 ? '1/4' : progress < 66 ? '2/4' : progress < 99 ? '3/4' : '4/4'}</p>
+                    <p className="text-sm font-medium">Step {progress < 33 ? '1/4' : progress < 66 ? '2/4' : progress < 95 ? '3/4' : '4/4'}</p>
                     <p className="text-xs text-muted-foreground">
                       {progress < 33 && "Market analysis and competitive landscape"}
                       {progress >= 33 && progress < 66 && "Financial projections and business model"}
-                      {progress >= 66 && progress < 99 && "Risk assessment and SWOT analysis"}
-                      {progress === 100 && "Finalizing executive summary and recommendations"}
+                      {progress >= 66 && progress < 95 && "Risk assessment and SWOT analysis"}
+                      {progress >= 95 && "Finalizing executive summary and recommendations"}
                     </p>
                   </div>
                 </div>

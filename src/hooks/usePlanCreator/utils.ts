@@ -35,32 +35,47 @@ export const simulateProgress = (
   setGeneratingProgress(0);
   setGenerationError(null);
   
-  // More realistic progress simulation for GPT-4o which takes longer
+  // More realistic progress simulation that ensures progress reaches 100%
   const totalTime = 180000; // 3 minutes expected total time
   const updateInterval = 5000; // Update every 5 seconds
   const updates = totalTime / updateInterval;
-  const progressPerUpdate = 90 / updates; // Reserve 10% for final processing
+  const progressPerUpdate = 85 / updates; // Reserve 15% for final processing
   
   let currentProgress = 0;
+  let progressInterval: NodeJS.Timeout | null = null;
   
-  const interval = setInterval(() => {
+  const advanceProgress = () => {
     // Add a small random factor to make progress look more natural
     const randomFactor = Math.random() * 0.5 + 0.75; // Between 0.75 and 1.25
     currentProgress += progressPerUpdate * randomFactor;
     
-    // Ensure we don't exceed 90% until final completion
-    if (currentProgress > 90) {
-      currentProgress = 90;
-      clearInterval(interval);
+    // Ensure we don't exceed 85% until final completion
+    if (currentProgress > 85) {
+      currentProgress = 85;
+      if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+      }
     }
     
-    setGeneratingProgress(Math.min(Math.round(currentProgress), 90));
-  }, updateInterval);
+    setGeneratingProgress(Math.min(Math.round(currentProgress), 85));
+  };
+  
+  progressInterval = setInterval(advanceProgress, updateInterval);
   
   return () => {
-    clearInterval(interval);
-    // Complete progress to 100% if needed
-    setGeneratingProgress(100);
+    if (progressInterval) {
+      clearInterval(progressInterval);
+      progressInterval = null;
+    }
+    
+    // When called to complete, advance to 90% immediately
+    setGeneratingProgress(90);
+    
+    // Then advance to 100% after a short delay to show completion
+    setTimeout(() => {
+      setGeneratingProgress(100);
+    }, 500);
   };
 };
 

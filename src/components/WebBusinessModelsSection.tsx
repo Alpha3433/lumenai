@@ -32,11 +32,14 @@ const WebBusinessModelsSection: React.FC<WebBusinessModelsSectionProps> = ({
 
   return (
     <section className="mb-12">
-      <WebBusinessModelsHeader 
-        onRefresh={handleRefresh} 
-        loading={loading} 
-        refreshing={refreshing}
-      />
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+            <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          </div>
+          <h2 className="text-2xl font-bold">Web Business Models</h2>
+        </div>
+      </div>
       
       {loading ? (
         <BusinessModelsLoadingState />

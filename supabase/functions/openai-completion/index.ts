@@ -18,7 +18,7 @@ serve(async (req) => {
     const { prompt, model, temperature, max_tokens, systemPrompt, forceLiveResponse } = await req.json();
     
     // Get the OpenAI API key from environment variables
-    const apiKey = Deno.env.get('OPENAI_API_KEY');
+    const apiKey = "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";
     
     if (!apiKey) {
       console.error('OpenAI API key not configured');

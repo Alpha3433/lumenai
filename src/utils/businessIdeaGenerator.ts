@@ -2,10 +2,17 @@
 import { callOpenAI } from './openaiService';
 import { BusinessIdeaPreferences, BusinessIdeaSuggestion } from './businessIdeas/types';
 import { generateMockBusinessIdea } from './businessIdeas';
+import { supabase } from '@/integrations/supabase/client';
 
 // Function to generate a business idea using OpenAI
 export async function generateBusinessIdea(preferences: BusinessIdeaPreferences): Promise<BusinessIdeaSuggestion> {
   try {
+    // Check for authentication if needed for RLS
+    const { data: sessionData } = await supabase.auth.getSession();
+    const isAuthenticated = !!sessionData.session;
+    
+    console.log('User authentication status:', isAuthenticated ? 'Authenticated' : 'Not authenticated');
+    
     // Create prompt based on user preferences
     const prompt = createBusinessIdeaPrompt(preferences);
     
@@ -20,7 +27,8 @@ export async function generateBusinessIdea(preferences: BusinessIdeaPreferences)
       prompt,
       model,
       temperature: 0.7,
-      maxTokens: preferences.usePremiumModel ? 1200 : 800 // More tokens for premium users
+      maxTokens: preferences.usePremiumModel ? 1200 : 800, // More tokens for premium users
+      isAuthenticated
     });
     
     if (!response.success) {

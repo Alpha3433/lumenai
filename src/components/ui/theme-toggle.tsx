@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ThemeToggle = () => {
   // Check for system preference or stored preference
@@ -42,22 +43,48 @@ const ThemeToggle = () => {
       onValueChange={(value) => {
         if (value) setTheme(value as 'light' | 'dark');
       }}
-      className="border rounded-full p-1 bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm"
+      className="border rounded-full p-0.5 bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm scale-90"
     >
-      <ToggleGroupItem 
-        value="light" 
-        aria-label="Light mode"
-        className="rounded-full data-[state=on]:bg-white data-[state=on]:text-yellow-500 data-[state=on]:shadow-sm"
-      >
-        <Sun className="h-4 w-4" />
-      </ToggleGroupItem>
-      <ToggleGroupItem 
-        value="dark" 
-        aria-label="Dark mode"
-        className="rounded-full data-[state=on]:bg-gray-900 data-[state=on]:text-blue-400 data-[state=on]:shadow-sm"
-      >
-        <Moon className="h-4 w-4" />
-      </ToggleGroupItem>
+      <AnimatePresence mode="wait">
+        <ToggleGroupItem 
+          value="light" 
+          aria-label="Light mode"
+          className="rounded-full data-[state=on]:bg-white data-[state=on]:text-yellow-500 data-[state=on]:shadow-sm h-6 w-6 p-0.5"
+        >
+          {theme === 'light' ? (
+            <motion.div
+              key="light"
+              initial={{ rotate: -30, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 30, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Sun className="h-3.5 w-3.5" />
+            </motion.div>
+          ) : (
+            <Sun className="h-3.5 w-3.5" />
+          )}
+        </ToggleGroupItem>
+        <ToggleGroupItem 
+          value="dark" 
+          aria-label="Dark mode"
+          className="rounded-full data-[state=on]:bg-gray-900 data-[state=on]:text-blue-400 data-[state=on]:shadow-sm h-6 w-6 p-0.5"
+        >
+          {theme === 'dark' ? (
+            <motion.div
+              key="dark"
+              initial={{ rotate: 30, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -30, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Moon className="h-3.5 w-3.5" />
+            </motion.div>
+          ) : (
+            <Moon className="h-3.5 w-3.5" />
+          )}
+        </ToggleGroupItem>
+      </AnimatePresence>
     </ToggleGroup>
   );
 };

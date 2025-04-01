@@ -44,7 +44,9 @@ const Navbar = () => {
           <BrandLogo />
           <DesktopNav />
           <div className="flex items-center gap-3">
-            <ThemeToggle />
+            <div className="mr-1">
+              <ThemeToggle />
+            </div>
             <UserAuthSection />
           </div>
           <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />

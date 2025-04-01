@@ -17,8 +17,8 @@ const TransformSection = () => {
           >
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-xl p-1">
               <img 
-                src="/placeholder.svg" 
-                alt="Business Plan Interface" 
+                src="/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png" 
+                alt="Business Plan Form Interface" 
                 className="w-full h-auto rounded-lg"
               />
             </div>

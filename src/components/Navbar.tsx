@@ -5,6 +5,7 @@ import BrandLogo from './navigation/BrandLogo';
 import DesktopNav from './navigation/DesktopNav';
 import UserAuthSection from './navigation/UserAuthSection';
 import MobileMenu from './navigation/MobileMenu';
+import ThemeToggle from './ui/theme-toggle';
 import { useAuth } from '@/components/AuthProvider';
 
 const Navbar = () => {
@@ -42,7 +43,10 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <BrandLogo />
           <DesktopNav />
-          <UserAuthSection />
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <UserAuthSection />
+          </div>
           <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         </div>
       </div>

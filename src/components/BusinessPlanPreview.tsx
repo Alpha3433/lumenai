@@ -5,15 +5,6 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { 
-  FileText, 
-  PieChart, 
-  CheckCircle, 
-  Globe, 
-  Scale, 
-  Activity, 
-  ShieldCheck
-} from 'lucide-react';
 import BusinessPlanActionBar from './BusinessPlanActionBar';
 import ExecutiveSummarySection from './ExecutiveSummarySection';
 import SwotAnalysis from './SwotAnalysis';
@@ -58,29 +49,12 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   const [isEditingInfo, setIsEditingInfo] = useState(false);
   const [refinedName, setRefinedName] = useState(businessName);
   const [refinedDescription, setRefinedDescription] = useState(businessDescription);
-  
-  const sections = [
-    { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-4 w-4" /> },
-    { id: 'dashboard', title: 'Summary', icon: <PieChart className="h-4 w-4" /> },
-    { id: 'swot-analysis', title: 'SWOT', icon: <CheckCircle className="h-4 w-4" /> },
-    { id: 'pestel-analysis', title: 'PESTEL', icon: <Globe className="h-4 w-4" /> },
-    { id: 'porter-five-forces', title: "Porter's", icon: <Scale className="h-4 w-4" /> },
-    { id: 'marketing-plan', title: 'Marketing', icon: <Activity className="h-4 w-4" /> },
-    { id: 'business-models', title: 'Models', icon: <ShieldCheck className="h-4 w-4" /> },
-  ];
 
   const handleSaveRefinements = () => {
     if (onRefineBusinessInfo) {
       onRefineBusinessInfo(refinedName, refinedDescription);
     }
     setIsEditingInfo(false);
-  };
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
   };
 
   return (
@@ -204,27 +178,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
-
-      <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
-        <div className="pointer-events-auto">
-          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full shadow-xl border border-gray-200/50 dark:border-gray-800/50 flex items-center gap-1 py-1 px-2">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => scrollToSection(section.id)}
-                className="flex flex-col items-center justify-center px-3 py-2 rounded-full transition-all hover:bg-gray-100/70 dark:hover:bg-gray-800/50"
-              >
-                <div className="bg-primary/5 dark:bg-primary/10 rounded-full p-2 mb-1 text-primary">
-                  {section.icon}
-                </div>
-                <span className="text-[10px] font-medium text-gray-700 dark:text-gray-300">
-                  {section.title}
-                </span>
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </div>

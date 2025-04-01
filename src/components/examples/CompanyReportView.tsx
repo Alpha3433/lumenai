@@ -1,10 +1,13 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button'; // Fixed import
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Download, Zap, Apple, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, Download, Zap, Apple, ShoppingCart, Edit2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/components/ui/use-toast';
 import BusinessPlanActionBar from '@/components/BusinessPlanActionBar';
 import ExecutiveSummarySection from '@/components/ExecutiveSummarySection';
 import SwotAnalysis from '@/components/SwotAnalysis';
@@ -41,6 +44,10 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
   onBackToList,
   onDownload
 }) => {
+  const [isEditingInfo, setIsEditingInfo] = useState(false);
+  const [refinedName, setRefinedName] = useState(company.name);
+  const [refinedDescription, setRefinedDescription] = useState(company.description);
+  
   // Prepare business plan data in the format expected by components
   const businessPlan: BusinessPlanData = {
     executiveSummary: company.executiveSummary,
@@ -64,6 +71,14 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
       default:
         return null;
     }
+  };
+  
+  const handleSaveRefinements = () => {
+    setIsEditingInfo(false);
+    toast({
+      title: "Information Updated",
+      description: "Your business information has been refined for display purposes.",
+    });
   };
 
   return (
@@ -97,7 +112,7 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 {getCompanyLogo()}
               </div>
               <div>
-                <h1 className="text-3xl font-bold">{company.name}</h1>
+                <h1 className="text-3xl font-bold">{refinedName}</h1>
                 <p className="text-gray-600 dark:text-gray-300">{company.industry}</p>
               </div>
             </div>
@@ -111,10 +126,60 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
         </motion.div>
 
         <BusinessPlanActionBar 
-          businessName={company.name}
+          businessName={refinedName}
           onStartOver={onBackToList}
           onDownload={onDownload}
         />
+        
+        {/* Business Info Editing Section */}
+        <div className="max-w-6xl mx-auto px-4">
+          <Card className="border border-gray-200 dark:border-gray-800 shadow-sm bg-card/95 overflow-hidden">
+            <CardContent className="p-5">
+              {isEditingInfo ? (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Refine Company Information</h3>
+                  <div>
+                    <label htmlFor="businessName" className="block text-sm font-medium mb-1">Company Name</label>
+                    <Input 
+                      id="businessName" 
+                      value={refinedName} 
+                      onChange={(e) => setRefinedName(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="businessDescription" className="block text-sm font-medium mb-1">Company Description</label>
+                    <Textarea 
+                      id="businessDescription" 
+                      value={refinedDescription} 
+                      onChange={(e) => setRefinedDescription(e.target.value)}
+                      className="w-full min-h-[120px]"
+                    />
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    <Button variant="outline" onClick={() => setIsEditingInfo(false)}>Cancel</Button>
+                    <Button onClick={handleSaveRefinements}>Save Changes</Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="text-lg font-medium">{refinedName}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">{refinedDescription}</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex items-center gap-1" 
+                    onClick={() => setIsEditingInfo(true)}
+                  >
+                    <Edit2 className="h-4 w-4" /> Edit
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
         
         <div className="max-w-6xl mx-auto px-4">
           <div className="relative">
@@ -124,7 +189,7 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 {/* Business Plan Dashboard */}
                 <div id="dashboard">
                   <BusinessPlanDashboard 
-                    businessName={company.name}
+                    businessName={refinedName}
                     businessPlan={businessPlan}
                   />
                 </div>
@@ -133,7 +198,7 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 <div id="executive-summary">
                   <ExecutiveSummarySection 
                     summaryText={businessPlan.executiveSummary} 
-                    businessName={company.name}
+                    businessName={refinedName}
                     marketAnalysis={businessPlan.marketAnalysis}
                   />
                 </div>
@@ -154,8 +219,8 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 <div id="pestel-analysis">
                   <PestelAnalysisSection 
                     analysisText={businessPlan.marketAnalysis}
-                    businessName={company.name}
-                    businessDescription={company.description}
+                    businessName={refinedName}
+                    businessDescription={refinedDescription}
                   />
                 </div>
                 
@@ -165,8 +230,8 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 <div id="porter-five-forces">
                   <PorterFiveForcesSection 
                     marketAnalysis={businessPlan.marketAnalysis}
-                    businessName={company.name}
-                    businessDescription={company.description}
+                    businessName={refinedName}
+                    businessDescription={refinedDescription}
                   />
                 </div>
                 
@@ -176,8 +241,8 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 <div id="marketing-plan">
                   <MarketingPlanSection 
                     marketingPlanText={businessPlan.marketingPlan}
-                    businessName={company.name}
-                    businessDescription={company.description}
+                    businessName={refinedName}
+                    businessDescription={refinedDescription}
                   />
                 </div>
                 
@@ -186,8 +251,8 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 {/* Web Business Models */}
                 <div id="business-models">
                   <WebBusinessModelsSection 
-                    businessName={company.name}
-                    businessDescription={company.description}
+                    businessName={refinedName}
+                    businessDescription={refinedDescription}
                   />
                 </div>
               </CardContent>

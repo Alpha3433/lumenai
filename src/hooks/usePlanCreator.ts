@@ -68,6 +68,14 @@ export const usePlanCreator = (initialData?: {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const updateBusinessInfo = (name: string, description: string) => {
+    setFormData(prev => ({
+      ...prev,
+      businessName: name,
+      businessDescription: description
+    }));
+  };
+
   const simulateProgress = () => {
     setGeneratingProgress(0);
     
@@ -192,6 +200,7 @@ export const usePlanCreator = (initialData?: {
     handleSubmit,
     downloadPlan,
     upgradeAccount,
-    setStep
+    setStep,
+    updateBusinessInfo
   };
 };

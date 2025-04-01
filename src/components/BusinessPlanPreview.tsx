@@ -1,7 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Edit2 } from 'lucide-react';
 import BusinessPlanActionBar from './BusinessPlanActionBar';
 import ExecutiveSummarySection from './ExecutiveSummarySection';
 import SwotAnalysis from './SwotAnalysis';
@@ -38,6 +42,7 @@ interface BusinessPlanPreviewProps {
   onDownload: () => void;
   onUpgrade?: () => void;
   businessDescription?: string;
+  onRefineBusinessInfo?: (name: string, description: string) => void;
 }
 
 const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
@@ -47,8 +52,13 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   onStartOver,
   onDownload,
   onUpgrade,
-  businessDescription = ''
+  businessDescription = '',
+  onRefineBusinessInfo
 }) => {
+  const [isEditingInfo, setIsEditingInfo] = useState(false);
+  const [refinedName, setRefinedName] = useState(businessName);
+  const [refinedDescription, setRefinedDescription] = useState(businessDescription);
+  
   const sections = [
     { id: 'executive-summary', title: 'Executive Summary', icon: <FileText className="h-4 w-4" /> },
     { id: 'dashboard', title: 'Summary', icon: <PieChart className="h-4 w-4" /> },
@@ -58,6 +68,13 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
     { id: 'marketing-plan', title: 'Marketing', icon: <Activity className="h-4 w-4" /> },
     { id: 'business-models', title: 'Models', icon: <ShieldCheck className="h-4 w-4" /> },
   ];
+
+  const handleSaveRefinements = () => {
+    if (onRefineBusinessInfo) {
+      onRefineBusinessInfo(refinedName, refinedDescription);
+    }
+    setIsEditingInfo(false);
+  };
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -69,10 +86,62 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   return (
     <div className="space-y-10 animate-fade-in pb-20">
       <BusinessPlanActionBar 
-        businessName={businessName}
+        businessName={refinedName}
         onStartOver={onStartOver}
         onDownload={onDownload}
       />
+      
+      {/* Business Info Editing Section */}
+      {onRefineBusinessInfo && (
+        <div className="max-w-6xl mx-auto px-4">
+          <Card className="border border-gray-200 dark:border-gray-800 shadow-sm bg-card/95 overflow-hidden">
+            <CardContent className="p-5">
+              {isEditingInfo ? (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Refine Your Business Information</h3>
+                  <div>
+                    <label htmlFor="businessName" className="block text-sm font-medium mb-1">Business Name</label>
+                    <Input 
+                      id="businessName" 
+                      value={refinedName} 
+                      onChange={(e) => setRefinedName(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="businessDescription" className="block text-sm font-medium mb-1">Business Description</label>
+                    <Textarea 
+                      id="businessDescription" 
+                      value={refinedDescription} 
+                      onChange={(e) => setRefinedDescription(e.target.value)}
+                      className="w-full min-h-[120px]"
+                    />
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    <Button variant="outline" onClick={() => setIsEditingInfo(false)}>Cancel</Button>
+                    <Button onClick={handleSaveRefinements}>Save Changes</Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="text-lg font-medium">{refinedName}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">{refinedDescription}</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex items-center gap-1" 
+                    onClick={() => setIsEditingInfo(true)}
+                  >
+                    <Edit2 className="h-4 w-4" /> Edit
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
       
       <div className="max-w-6xl mx-auto px-4">
         {/* Main Content */}
@@ -83,7 +152,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               {/* Business Plan Dashboard */}
               <div id="dashboard">
                 <BusinessPlanDashboard 
-                  businessName={businessName}
+                  businessName={refinedName}
                   businessPlan={businessPlan}
                 />
               </div>
@@ -92,7 +161,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <div id="executive-summary">
                 <ExecutiveSummarySection 
                   summaryText={businessPlan.executiveSummary} 
-                  businessName={businessName}
+                  businessName={refinedName}
                   marketAnalysis={businessPlan.marketAnalysis}
                 />
               </div>
@@ -113,8 +182,8 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <div id="pestel-analysis">
                 <PestelAnalysisSection 
                   analysisText={businessPlan.marketAnalysis}
-                  businessName={businessName}
-                  businessDescription={businessDescription}
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
                 />
               </div>
               
@@ -124,8 +193,8 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <div id="porter-five-forces">
                 <PorterFiveForcesSection 
                   marketAnalysis={businessPlan.marketAnalysis}
-                  businessName={businessName}
-                  businessDescription={businessDescription}
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
                 />
               </div>
               
@@ -135,8 +204,8 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <div id="marketing-plan">
                 <MarketingPlanSection 
                   marketingPlanText={businessPlan.marketingPlan}
-                  businessName={businessName}
-                  businessDescription={businessDescription}
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
                 />
               </div>
               
@@ -145,8 +214,8 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               {/* Web Business Models */}
               <div id="business-models">
                 <WebBusinessModelsSection 
-                  businessName={businessName}
-                  businessDescription={businessDescription}
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
                 />
               </div>
             </CardContent>

@@ -26,8 +26,17 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
     handleSubmit,
     downloadPlan,
     upgradeAccount,
-    setStep
+    setStep,
+    updateBusinessInfo
   } = usePlanCreator(initialData);
+
+  const handleRefineBusinessInfo = (name: string, description: string) => {
+    updateBusinessInfo(name, description);
+    toast({
+      title: "Information Updated",
+      description: "Your business information has been refined and the report updated.",
+    });
+  };
 
   return (
     <div className={`${step === 2 ? 'max-w-full' : 'max-w-5xl'} mx-auto py-6 px-4`}>
@@ -50,6 +59,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
           isPremium={true}
           onStartOver={() => setStep(1)}
           onDownload={downloadPlan}
+          onRefineBusinessInfo={handleRefineBusinessInfo}
         />
       )}
     </div>

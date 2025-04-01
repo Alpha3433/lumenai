@@ -1,11 +1,21 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { GitBranch, LineChart, PieChart } from 'lucide-react';
 
 const RoadmapSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  // Transform for the image to create a parallax effect
+  const imageY = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  
   return (
-    <section className="py-24 px-4">
+    <section ref={sectionRef} className="py-24 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-16">
           <motion.div 
@@ -62,6 +72,7 @@ const RoadmapSection = () => {
           </motion.div>
           
           <motion.div 
+            style={{ y: imageY }}
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -70,7 +81,7 @@ const RoadmapSection = () => {
           >
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-xl p-1">
               <img 
-                src="/placeholder.svg" 
+                src="/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png" 
                 alt="Roadmap Interface" 
                 className="w-full h-auto rounded-lg"
               />

@@ -1,13 +1,43 @@
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const NewHero = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerTop, setContainerTop] = useState(0);
+  
+  // Get the scroll progress for parallax effect
+  const { scrollY } = useScroll();
+  
+  // Update container position on mount and resize
+  useEffect(() => {
+    const updateContainerPosition = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setContainerTop(rect.top + window.scrollY);
+      }
+    };
+    
+    // Initial position
+    updateContainerPosition();
+    
+    // Update on resize
+    window.addEventListener('resize', updateContainerPosition);
+    return () => window.removeEventListener('resize', updateContainerPosition);
+  }, []);
+  
+  // Transform the Y position of the screenshot based on scroll
+  const mockupY = useTransform(
+    scrollY, 
+    [containerTop - 500, containerTop + 500], 
+    [0, 150]
+  );
+
   return (
-    <div className="py-24 md:py-32 px-4 max-w-7xl mx-auto">
+    <div ref={containerRef} className="py-24 md:py-32 px-4 max-w-7xl mx-auto">
       <div className="max-w-3xl mx-auto text-center">
         <div className="flex justify-center mb-3">
           <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-600">
@@ -54,36 +84,37 @@ const NewHero = () => {
       </div>
 
       <motion.div 
-        className="mt-6 max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700"
+        style={{ y: mockupY }}
+        className="relative w-full max-w-5xl mx-auto perspective-1000"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <div className="p-3">
-          <div className="flex items-center justify-between p-2 mb-4">
-            <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white h-8 w-8 rounded-md flex items-center justify-center font-bold">LA</div>
-              <div className="text-sm font-medium">Lumen AI</div>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span className="px-2.5 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">PRO features</span>
-              <span className="px-2.5 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">Beautiful Templates</span>
+        <div className="relative z-10">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="p-3">
+              <div className="flex items-center justify-between p-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white h-8 w-8 rounded-md flex items-center justify-center font-bold">LA</div>
+                  <div className="text-sm font-medium">Lumen AI</div>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="px-2.5 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">PRO features</span>
+                  <span className="px-2.5 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">Beautiful Templates</span>
+                </div>
+              </div>
+              <img 
+                src="/lovable-uploads/058f18ce-81ce-4279-bbbb-e7c4b4755683.png" 
+                alt="Business Plan Dashboard" 
+                className="rounded-lg w-full object-contain max-h-[600px]"
+              />
             </div>
           </div>
-          <img 
-            src="/public/lovable-uploads/e20aeebb-024f-448e-a3eb-571d1e87ea3a.png" 
-            alt="Platform Demo" 
-            className="rounded-lg w-full object-cover h-[300px] md:h-[400px] opacity-0"
-            onError={(e) => {
-              // Fallback image if the uploaded one fails to load
-              e.currentTarget.src = "/placeholder.svg";
-              e.currentTarget.classList.remove("opacity-0");
-            }}
-            onLoad={(e) => {
-              e.currentTarget.classList.remove("opacity-0");
-            }}
-          />
         </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute -top-6 -left-6 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg blur-xl"></div>
+        <div className="absolute -bottom-8 -right-8 w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full blur-xl"></div>
       </motion.div>
     </div>
   );

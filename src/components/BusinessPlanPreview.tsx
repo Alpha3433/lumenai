@@ -5,15 +5,6 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Edit2 } from 'lucide-react';
-import BusinessPlanActionBar from './BusinessPlanActionBar';
-import ExecutiveSummarySection from './ExecutiveSummarySection';
-import SwotAnalysis from './SwotAnalysis';
-import MarketingPlanSection from './MarketingPlanSection';
-import WebBusinessModelsSection from './WebBusinessModelsSection';
-import BusinessPlanDashboard from './BusinessPlanDashboard';
-import PestelAnalysisSection from './pestel/PestelAnalysisSection';
-import PorterFiveForcesSection from './PorterFiveForcesSection';
 import { 
   FileText, 
   PieChart, 
@@ -23,6 +14,15 @@ import {
   Activity, 
   ShieldCheck
 } from 'lucide-react';
+import BusinessPlanActionBar from './BusinessPlanActionBar';
+import ExecutiveSummarySection from './ExecutiveSummarySection';
+import SwotAnalysis from './SwotAnalysis';
+import MarketingPlanSection from './MarketingPlanSection';
+import WebBusinessModelsSection from './WebBusinessModelsSection';
+import BusinessPlanDashboard from './BusinessPlanDashboard';
+import PestelAnalysisSection from './pestel/PestelAnalysisSection';
+import PorterFiveForcesSection from './PorterFiveForcesSection';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -89,58 +89,42 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
         businessName={refinedName}
         onStartOver={onStartOver}
         onDownload={onDownload}
+        onEdit={onRefineBusinessInfo ? () => setIsEditingInfo(true) : undefined}
       />
       
-      {/* Business Info Editing Section */}
+      {/* Edit Info Dialog */}
       {onRefineBusinessInfo && (
-        <div className="max-w-6xl mx-auto px-4">
-          <Card className="border border-gray-200 dark:border-gray-800 shadow-sm bg-card/95 overflow-hidden">
-            <CardContent className="p-5">
-              {isEditingInfo ? (
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Refine Your Business Information</h3>
-                  <div>
-                    <label htmlFor="businessName" className="block text-sm font-medium mb-1">Business Name</label>
-                    <Input 
-                      id="businessName" 
-                      value={refinedName} 
-                      onChange={(e) => setRefinedName(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="businessDescription" className="block text-sm font-medium mb-1">Business Description</label>
-                    <Textarea 
-                      id="businessDescription" 
-                      value={refinedDescription} 
-                      onChange={(e) => setRefinedDescription(e.target.value)}
-                      className="w-full min-h-[120px]"
-                    />
-                  </div>
-                  <div className="flex gap-2 justify-end">
-                    <Button variant="outline" onClick={() => setIsEditingInfo(false)}>Cancel</Button>
-                    <Button onClick={handleSaveRefinements}>Save Changes</Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="text-lg font-medium">{refinedName}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">{refinedDescription}</p>
-                  </div>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="flex items-center gap-1" 
-                    onClick={() => setIsEditingInfo(true)}
-                  >
-                    <Edit2 className="h-4 w-4" /> Edit
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+        <Dialog open={isEditingInfo} onOpenChange={setIsEditingInfo}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Refine Business Information</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div>
+                <label htmlFor="businessName" className="block text-sm font-medium mb-1">Business Name</label>
+                <Input 
+                  id="businessName" 
+                  value={refinedName} 
+                  onChange={(e) => setRefinedName(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label htmlFor="businessDescription" className="block text-sm font-medium mb-1">Business Description</label>
+                <Textarea 
+                  id="businessDescription" 
+                  value={refinedDescription} 
+                  onChange={(e) => setRefinedDescription(e.target.value)}
+                  className="w-full min-h-[120px]"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsEditingInfo(false)}>Cancel</Button>
+              <Button onClick={handleSaveRefinements}>Save Changes</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
       
       <div className="max-w-6xl mx-auto px-4">

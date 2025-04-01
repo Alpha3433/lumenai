@@ -1,18 +1,20 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Download } from 'lucide-react';
+import { Download, Edit2 } from 'lucide-react';
 
 interface BusinessPlanActionBarProps {
   businessName: string;
   onStartOver: () => void;
   onDownload: () => void;
+  onEdit?: () => void; // Added optional edit handler
 }
 
 const BusinessPlanActionBar: React.FC<BusinessPlanActionBarProps> = ({
   businessName,
   onStartOver,
-  onDownload
+  onDownload,
+  onEdit
 }) => {
   return (
     <div className="flex items-center justify-between">
@@ -28,6 +30,17 @@ const BusinessPlanActionBar: React.FC<BusinessPlanActionBarProps> = ({
         >
           Start Over
         </Button>
+        
+        {onEdit && (
+          <Button 
+            variant="outline" 
+            className="rounded-full flex items-center gap-2"
+            onClick={onEdit}
+          >
+            <Edit2 className="h-4 w-4" /> Edit Info
+          </Button>
+        )}
+        
         <Button
           variant="outline"
           className="rounded-full flex items-center gap-2"

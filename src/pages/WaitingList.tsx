@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle, Sparkles } from 'lucide-react';
@@ -26,7 +25,8 @@ const WaitingList = () => {
     
     try {
       // Insert the email into the waiting_list table
-      const { error } = await supabase
+      // Using 'any' type assertion to bypass type checking for the table name
+      const { error } = await (supabase as any)
         .from('waiting_list')
         .insert([{ email }]);
       
@@ -126,7 +126,7 @@ const WaitingList = () => {
               <div>
                 <h3 className="font-medium text-green-800 dark:text-green-300">You're on the list!</h3>
                 <p className="text-sm text-green-700 dark:text-green-400">
-                  Thank you for your interest! We'll notify you at {email} when we launch.
+                  Thank you for your interest! We'll notify you when we launch.
                 </p>
               </div>
             </motion.div>

@@ -39,12 +39,12 @@ const NavLinks: React.FC<NavLinkProps> = ({ isMobile = false, onMobileClick }) =
   return (
     <>
       <Link 
-        to="/" 
-        className={getLinkClasses('/')}
+        to="/home" 
+        className={getLinkClasses('/home')}
         onClick={handleClick}
       >
         Home
-        {!isMobile && isActive('/') && (
+        {!isMobile && isActive('/home') && (
           <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 rounded" />
         )}
       </Link>

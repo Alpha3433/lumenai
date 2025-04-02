@@ -16,6 +16,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AuthProvider from "./components/AuthProvider";
 import ScrollProgressBar from "./components/ScrollProgressBar";
+import WaitingList from "./pages/WaitingList";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +31,8 @@ const App = () => (
             <ScrollProgressBar />
             <AnimatePresence mode="wait">
               <Routes>
-                <Route path="/" element={<Index />} />
+                <Route path="/" element={<WaitingList />} />
+                <Route path="/home" element={<Index />} />
                 <Route path="/create" element={<Create />} />
                 <Route path="/generate-idea" element={<GenerateIdea />} />
                 <Route path="/examples" element={<Examples />} />

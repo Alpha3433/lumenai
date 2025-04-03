@@ -188,7 +188,7 @@ const WaitingList = () => {
                 muted
                 playsInline
               >
-                <source src="https://videosholder.s3.ap-southeast-2.amazonaws.com/test.mp4" type="video/mp4" />
+                <source src="https://videosholder.s3.ap-southeast-2.amazonaws.com/test.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIA26SVGFECLMN6KKYT%2F20250403%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20250403T105641Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLXNvdXRoZWFzdC0yIkgwRgIhAIPr6PZ21A0dhAiQR%2B89MGbx0Iu6MRrDXuyLH7DPNhi5AiEA34Rtd%2FuntxbFN5NscGA5AOMWKOtLX5cvH%2BKewEGH%2BAsqogII7P%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw3NTI4NzE2ODAyNjAiDErc0ZpgGhMlThjLTyr2Abxuad414EYUWdZBej8zEv4vzNeJSDWSlEbd%2Bk0qRAsttpVsdZROtghBYXJvJ6Wh2E4y94xDgKUGn5VNsdivCfGzVqgGltSaoQRgbXm65kVMNCeFy964RL8Cstag53Ib7hXaNpT2de%2Bt%2FnNtZrE%2B3W25BSMzjqTu82cHfPqT7bvkJ7Fl6J70PwGk%2FWenQ4oenmtVCo2%2FgfxYYY2vGGru1NNCM7Ryexq5g5mNtRiK%2BUTikoQU6amHbviRHIjuekvSjgOwSoS7C067kH6UHh19f7Ng6m%2Fpe%2B1%2B3%2BYgU57M%2BRSbbWutSf6sLUmMrap3Sx5lDgTYSPHo9jCAy7m%2FBjreAaZVwooD013Re%2Fj2d%2B0pk0xIHCu6Wdrcq%2Fm%2FQZDjSxJJNGqqvSS9vPhRa3QNtnmmy82VhYcJoFuKRnQ2uPfDF3nXtDBrZUnf7zSAoQU3MWUwrWG1WukRK76WEHaRxsZNlcrUa%2FkVu4S%2Fvm6BcP0vtugpncsxbGbZkVM1le7Ybzz7PnSa%2BZT1vOE9ILSjfPW9ECo2cl7C2utpneYMvQlxzrRjq0QaS6vBfA0p5GNjtpE5huQyIUjlO%2F2XY%2Bub2X%2BxoiKl%2FW9nqJMlqbnH%2FAstAdUFXX%2BIW2mlV38V7ISxIQ%3D%3D&X-Amz-Signature=72ef346b3c9e60d6d8e021c942b369cc4d8a017ae5f452d8e22411dbda4cb588&X-Amz-SignedHeaders=host&response-content-disposition=inline" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>

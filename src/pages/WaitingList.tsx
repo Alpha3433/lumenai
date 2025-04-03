@@ -188,7 +188,7 @@ const WaitingList = () => {
                 muted
                 playsInline
               >
-                <source src="https://your-s3-bucket.s3.amazonaws.com/your-video-filename.mp4" type="video/mp4" />
+                <source src="https://videosholder.s3.ap-southeast-2.amazonaws.com/test.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>

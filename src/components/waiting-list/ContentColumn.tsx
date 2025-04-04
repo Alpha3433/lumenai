@@ -23,7 +23,7 @@ const ContentColumn = () => {
       </div>
       
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300">
-        The Most Complete All-in-One AI-Powered Business Builder
+        Complete AI-Powered<br />Business Builder
       </h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
@@ -73,9 +73,9 @@ const ContentColumn = () => {
       </div>
       
       <div className="bg-blue-50 dark:bg-blue-900/20 border-l-2 border-blue-500 rounded p-3 mb-4">
-        <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-1">Comprehensive Service:</h3>
+        <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-1">End-to-End Business Solutions:</h3>
         <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-          Our subscription service goes beyond reports, providing end-to-end business solutions including ad campaign management, website development, and complete backend infrastructure—all managed by our expert team.
+          Our comprehensive approach goes beyond reports, providing end-to-end business solutions including ad campaign management, website development, and complete backend infrastructure—all managed by our expert team.
         </p>
       </div>
       

@@ -1,7 +1,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Play } from 'lucide-react';
+import { Play, CheckCircle } from 'lucide-react';
 
 const VideoColumn = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -37,7 +37,7 @@ const VideoColumn = () => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="w-full md:w-1/2 max-w-lg"
+      className="w-full max-w-lg mx-auto"
     >
       <div className="relative">
         <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-30 animate-pulse"></div>
@@ -66,11 +66,13 @@ const VideoColumn = () => {
             )}
           </div>
           
-          <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
-            <h3 className="text-sm font-semibold mb-1">See how it works:</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-300">
-              Our all-in-one platform streamlines your business operations from planning to execution.
-            </p>
+          <div className="p-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <ServiceFeature text="AI Business Plans" />
+              <ServiceFeature text="Website Development" />
+              <ServiceFeature text="Ad Management" />
+              <ServiceFeature text="Backend Services" />
+            </div>
           </div>
         </div>
         <div className="absolute -bottom-3 -right-3 bg-gradient-to-br from-blue-500 to-purple-600 text-white px-3 py-1.5 rounded-lg shadow-lg text-xs font-medium">
@@ -80,5 +82,12 @@ const VideoColumn = () => {
     </motion.div>
   );
 };
+
+const ServiceFeature = ({ text }) => (
+  <div className="flex items-center gap-1.5">
+    <CheckCircle className="h-3.5 w-3.5 text-green-500 shrink-0" />
+    <span className="text-gray-700 dark:text-gray-300">{text}</span>
+  </div>
+);
 
 export default VideoColumn;

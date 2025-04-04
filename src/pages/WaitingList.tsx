@@ -8,8 +8,8 @@ const WaitingList = () => {
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-950 flex flex-col">
       <WaitingListHeader />
-      
-      <main className="flex-1 grid grid-cols-1 md:grid-cols-2 items-center gap-6 p-4 md:p-6 overflow-hidden">
+
+      <main className="flex-1 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 gap-6 md:gap-12 overflow-hidden">
         <ContentColumn />
         <VideoColumn />
       </main>

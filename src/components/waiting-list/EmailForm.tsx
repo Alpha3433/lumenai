@@ -58,7 +58,7 @@ const EmailForm = () => {
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 rounded-lg p-3 flex items-start gap-3"
+        className="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 rounded-lg p-4 flex items-start gap-3"
       >
         <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5" />
         <div>
@@ -72,27 +72,27 @@ const EmailForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-1">
-      <div className="flex flex-col sm:flex-row gap-2 mb-1">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="flex flex-col sm:flex-row gap-3">
         <Input
           type="email"
           placeholder="Enter your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="h-10 text-sm"
+          className="h-12 text-base"
           autoFocus
           required
         />
         <Button 
           type="submit" 
-          className="h-10 px-4 bg-blue-600 hover:bg-blue-700 text-white"
+          className="h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Joining...' : 'Join Waiting List'}
         </Button>
       </div>
       
-      <p className="text-xs text-gray-500 dark:text-gray-400">
+      <p className="text-sm text-gray-500 dark:text-gray-400">
         We'll notify you when we launch. No spam, ever.
       </p>
     </form>

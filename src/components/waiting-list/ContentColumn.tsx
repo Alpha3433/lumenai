@@ -75,7 +75,7 @@ const ContentColumn = () => {
       <div className="bg-blue-50 dark:bg-blue-900/20 border-l-2 border-blue-500 rounded p-3 mb-4">
         <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-1">End-to-End Business Solutions:</h3>
         <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-          Our comprehensive approach goes beyond reports, providing end-to-end business solutions including ad campaign management, website development, and complete backend infrastructure—all managed by our expert team.
+          Our comprehensive approach goes beyond reports, providing end-to-end business solutions including ad campaign management, website development, and robust technical systems—all managed by our expert team.
         </p>
       </div>
       

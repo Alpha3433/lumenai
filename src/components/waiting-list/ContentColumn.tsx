@@ -26,9 +26,16 @@ const ContentColumn = () => {
         AI-Powered Business Plans For Your Next Venture
       </h1>
       
-      <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
+      <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-4">
         Join our waiting list to be among the first to access our revolutionary AI business plan builder. Get early access and exclusive benefits.
       </p>
+      
+      <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded mb-8">
+        <h3 className="font-semibold text-blue-800 dark:text-blue-300 mb-1">The Problem We're Solving:</h3>
+        <p className="text-gray-700 dark:text-gray-300">
+          Creating comprehensive business plans is time-consuming, requires specialized knowledge, and is often a barrier for aspiring entrepreneurs. Our AI solution will transform this process, allowing anyone to develop investor-ready business plans in minutes instead of weeks.
+        </p>
+      </div>
       
       <EmailForm />
       <FeaturesList />

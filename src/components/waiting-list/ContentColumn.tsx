@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, CheckCircle, ArrowRight } from 'lucide-react';
+import { Sparkles, CheckCircle, ArrowRight, Clock, Users } from 'lucide-react';
 import EmailForm from './EmailForm';
 import FeaturesList from './FeaturesList';
 
@@ -23,7 +23,7 @@ const ContentColumn = () => {
       </div>
       
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300">
-        AI-Powered Business Solutions
+        The Most Complete All-in-One AI-Powered Business Builder
       </h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
@@ -41,6 +41,10 @@ const ContentColumn = () => {
             <li className="flex items-start gap-1">
               <span className="text-red-500 mt-0.5">•</span>
               <span>Ineffective digital marketing</span>
+            </li>
+            <li className="flex items-start gap-1">
+              <span className="text-red-500 mt-0.5">•</span>
+              <span>Limited technical expertise</span>
             </li>
           </ul>
         </div>
@@ -60,6 +64,10 @@ const ContentColumn = () => {
               <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
               <span>Website & backend solutions</span>
             </li>
+            <li className="flex items-start gap-1">
+              <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+              <span>1:1 Consulting</span>
+            </li>
           </ul>
         </div>
       </div>
@@ -74,9 +82,15 @@ const ContentColumn = () => {
       <EmailForm />
       
       <div className="mt-3 flex flex-wrap gap-2">
-        {["AI insights", "Ad management", "Website development", "Backend solutions", "24/7 support", "Expert team"].map((feature, index) => (
+        {["AI insights", "Ad management", "Website development", "Backend solutions", "24/7 support", "Expert team", "Business validation", "Idea generation"].map((feature, index) => (
           <div key={index} className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800/50 px-2 py-1 rounded-full">
-            <CheckCircle className="h-3 w-3 text-blue-600 shrink-0" />
+            {index === 4 ? (
+              <Clock className="h-3 w-3 text-blue-600 shrink-0" />
+            ) : index === 5 ? (
+              <Users className="h-3 w-3 text-blue-600 shrink-0" />
+            ) : (
+              <CheckCircle className="h-3 w-3 text-blue-600 shrink-0" />
+            )}
             <span className="text-xs">{feature}</span>
           </div>
         ))}

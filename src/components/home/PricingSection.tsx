@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, X, Info, CircleDollarSign, Star, ArrowDown, ArrowUp, Sparkles, Rocket } from 'lucide-react';
@@ -117,6 +116,68 @@ const PricingSection = () => {
     }
   ];
 
+  const comparisonTable = {
+    headers: ["Features", "Startup", "Entrepreneur", "Founder", "Partner"],
+    rows: [
+      {
+        feature: "AI Business Plan Generator",
+        startup: "Basic",
+        entrepreneur: "Advanced",
+        founder: "Advanced",
+        partner: "Advanced"
+      },
+      {
+        feature: "Coaching Calls",
+        startup: "1 call (30 min)",
+        entrepreneur: "3 calls/month",
+        founder: "5 calls/month",
+        partner: "5 calls/month"
+      },
+      {
+        feature: "Niche Competitor Reports",
+        startup: "No",
+        entrepreneur: "Yes",
+        founder: "Yes",
+        partner: "Yes"
+      },
+      {
+        feature: "Priority Support",
+        startup: "No",
+        entrepreneur: "Yes",
+        founder: "Yes",
+        partner: "Yes"
+      },
+      {
+        feature: "Team Workspace",
+        startup: "No",
+        entrepreneur: "No",
+        founder: "Yes",
+        partner: "Yes"
+      },
+      {
+        feature: "Shared Analytics",
+        startup: "No",
+        entrepreneur: "No",
+        founder: "Yes",
+        partner: "Yes"
+      },
+      {
+        feature: "Backend Management",
+        startup: "No",
+        entrepreneur: "No",
+        founder: "Yes",
+        partner: "Yes"
+      },
+      {
+        feature: "Revenue Sharing",
+        startup: "No",
+        entrepreneur: "No",
+        founder: "No",
+        partner: "12% (capped)"
+      }
+    ]
+  };
+
   const FeatureItem = ({ feature, available }: { feature: string, available: boolean }) => (
     <div className="flex items-start space-x-2">
       {available ? (
@@ -146,7 +207,6 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {pricingPlans.map((plan, index) => (
             <motion.div
@@ -197,7 +257,6 @@ const PricingSection = () => {
           ))}
         </div>
 
-        {/* Feature Comparison Button */}
         <div className="flex items-center justify-center mb-16">
           <Button 
             variant="outline" 
@@ -209,7 +268,6 @@ const PricingSection = () => {
           </Button>
         </div>
 
-        {/* Comparison Table */}
         {comparisonVisible && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
@@ -262,7 +320,6 @@ const PricingSection = () => {
           </motion.div>
         )}
 
-        {/* Add-ons Section - Revamped */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Check, X, BarChart2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -63,39 +62,99 @@ const CompetitiveFeatureMatrix: React.FC<CompetitiveFeatureMatrixProps> = ({
   );
 };
 
-// Helper function to generate features and competitors
+// Helper function to generate features and competitors based on business description
 function generateFeaturesAndCompetitors(businessName: string, businessDescription: string) {
-  // This would ideally be dynamic based on the business description
-  // For now we'll provide a generic but realistic matrix
+  // Extract business domain/industry from description to generate relevant features
+  const description = businessDescription.toLowerCase();
   
-  const competitors = [businessName, "Competitor A", "Competitor B"];
+  // Initialize competitors array with the business name as first competitor
+  const competitors = [businessName];
   
-  const features = [
-    {
-      name: "AI-Personalization",
-      availability: [true, false, false]
-    },
-    {
-      name: "Modern User Interface",
-      availability: [true, true, false]
-    },
-    {
-      name: "Mobile App",
-      availability: [true, true, true]
-    },
-    {
-      name: "Healthcare Integrations",
-      availability: [true, false, false]
-    },
-    {
-      name: "Data Analytics Dashboard",
-      availability: [true, false, true]
-    },
-    {
-      name: "24/7 Customer Support",
-      availability: [true, false, false]
-    }
+  // Default features that would apply to most businesses
+  let features = [
+    { name: "Modern User Interface", availability: [true] },
+    { name: "Mobile App", availability: [true] },
+    { name: "Data Analytics Dashboard", availability: [true] }
   ];
+  
+  // Add competitors based on industry detected in description
+  if (description.includes('health') || description.includes('fitness') || description.includes('wellness')) {
+    competitors.push("FitnessPro", "HealthTracker");
+    features = [
+      ...features,
+      { name: "AI-Personalization", availability: [true] },
+      { name: "Healthcare Integrations", availability: [true] },
+      { name: "Nutrition Tracking", availability: [true] }
+    ];
+  } 
+  else if (description.includes('finance') || description.includes('banking') || description.includes('invest')) {
+    competitors.push("WealthWise", "FinanceIQ");
+    features = [
+      ...features,
+      { name: "AI Financial Planning", availability: [true] },
+      { name: "Bank Integrations", availability: [true] },
+      { name: "Investment Analytics", availability: [true] }
+    ];
+  }
+  else if (description.includes('education') || description.includes('learning') || description.includes('teach')) {
+    competitors.push("EduMaster", "LearnHub");
+    features = [
+      ...features,
+      { name: "Interactive Lessons", availability: [true] },
+      { name: "Progress Tracking", availability: [true] },
+      { name: "Certification System", availability: [true] }
+    ];
+  }
+  else if (description.includes('ecommerce') || description.includes('shop') || description.includes('retail')) {
+    competitors.push("ShopifyPlus", "RetailNow");
+    features = [
+      ...features,
+      { name: "AI Product Recommendations", availability: [true] },
+      { name: "Inventory Management", availability: [true] },
+      { name: "Multi-channel Sales", availability: [true] }
+    ];
+  }
+  else if (description.includes('food') || description.includes('restaurant') || description.includes('delivery')) {
+    competitors.push("FoodDash", "MealMaster");
+    features = [
+      ...features,
+      { name: "Real-time Order Tracking", availability: [true] },
+      { name: "Dietary Preference Filters", availability: [true] },
+      { name: "Loyalty Program", availability: [true] }
+    ];
+  }
+  else {
+    // Generic competitors for any other business type
+    competitors.push("Competitor A", "Competitor B");
+    features = [
+      ...features,
+      { name: "AI-Personalization", availability: [true] },
+      { name: "24/7 Customer Support", availability: [true] },
+      { name: "Advanced Automation", availability: [true] }
+    ];
+  }
+  
+  // Generate competitive landscape - your business has all features, competitors have some
+  features = features.map(feature => {
+    // For each competitor, decide if they have this feature
+    // First competitor (your business) always has all features
+    // Others have varying feature availability - this creates differentiation
+    const availability = [true]; // Your business
+    
+    // For each competitor, determine if they have this feature (roughly 50% chance)
+    for (let i = 1; i < competitors.length; i++) {
+      // Strategic feature allocation - make competitors weaker in advanced features
+      const hasAdvancedFeature = feature.name.includes('AI') || 
+                               feature.name.includes('Advanced') || 
+                               feature.name.includes('Integration');
+      
+      // Lower chance for competitors to have advanced features (30% vs 70%)
+      const hasFeature = Math.random() < (hasAdvancedFeature ? 0.3 : 0.7);
+      availability.push(hasFeature);
+    }
+    
+    return { ...feature, availability };
+  });
   
   return { features, competitors };
 }

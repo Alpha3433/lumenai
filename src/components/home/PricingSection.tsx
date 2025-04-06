@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, X, Info, CircleDollarSign, Star, ArrowDown } from 'lucide-react';
+import { Check, X, Info, CircleDollarSign, Star, ArrowDown, ArrowUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -138,18 +138,70 @@ const PricingSection = () => {
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
             Choose the perfect plan for your business planning needs
           </p>
-          
-          <div className="flex items-center justify-center mb-4">
-            <Button 
-              variant="outline" 
-              className="flex items-center gap-2 transition-all"
-              onClick={() => setComparisonVisible(!comparisonVisible)}
-            >
-              {comparisonVisible ? "Hide Comparison" : "Compare Features"} 
-              <ArrowDown className={`h-4 w-4 transition-transform ${comparisonVisible ? 'rotate-180' : ''}`} />
-            </Button>
-          </div>
         </motion.div>
+
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {pricingPlans.map((plan, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <Card className={`h-full flex flex-col ${plan.color} ${plan.isPopular ? 'border-blue-500 relative shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
+                {plan.isPopular && (
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                    Best Value
+                  </div>
+                )}
+                <CardHeader className="text-center pb-0">
+                  <h3 className="text-2xl font-bold">{plan.name}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 mt-1">{plan.description}</p>
+                </CardHeader>
+                <CardContent className="text-center pt-6 flex-grow">
+                  <div className="flex items-center justify-center">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    {plan.period && <span className="text-gray-500 ml-1">{plan.period}</span>}
+                  </div>
+                  
+                  <div className="mt-8 space-y-4 text-left">
+                    {plan.features.map((feature, idx) => (
+                      <FeatureItem key={idx} feature={feature.text} available={feature.available} />
+                    ))}
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-4">
+                  <Link to={plan.buttonLink} className="w-full">
+                    <Button 
+                      className={`w-full ${
+                        plan.isPopular 
+                          ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                          : 'bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100'
+                      }`}
+                      variant={plan.isPopular ? "default" : "outline"}
+                    >
+                      {plan.buttonText}
+                    </Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Feature Comparison Button */}
+        <div className="flex items-center justify-center mb-8">
+          <Button 
+            variant="outline" 
+            className="flex items-center gap-2 transition-all"
+            onClick={() => setComparisonVisible(!comparisonVisible)}
+          >
+            {comparisonVisible ? "Hide Comparison" : "Compare Features"} 
+            {comparisonVisible ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
+          </Button>
+        </div>
 
         {/* Comparison Table */}
         {comparisonVisible && (
@@ -203,57 +255,6 @@ const PricingSection = () => {
             </div>
           </motion.div>
         )}
-
-        {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {pricingPlans.map((plan, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card className={`h-full flex flex-col ${plan.color} ${plan.isPopular ? 'border-blue-500 relative shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
-                {plan.isPopular && (
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                    Best Value
-                  </div>
-                )}
-                <CardHeader className="text-center pb-0">
-                  <h3 className="text-2xl font-bold">{plan.name}</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mt-1">{plan.description}</p>
-                </CardHeader>
-                <CardContent className="text-center pt-6 flex-grow">
-                  <div className="flex items-center justify-center">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    {plan.period && <span className="text-gray-500 ml-1">{plan.period}</span>}
-                  </div>
-                  
-                  <div className="mt-8 space-y-4 text-left">
-                    {plan.features.map((feature, idx) => (
-                      <FeatureItem key={idx} feature={feature.text} available={feature.available} />
-                    ))}
-                  </div>
-                </CardContent>
-                <CardFooter className="pt-4">
-                  <Link to={plan.buttonLink} className="w-full">
-                    <Button 
-                      className={`w-full ${
-                        plan.isPopular 
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                          : 'bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100'
-                      }`}
-                      variant={plan.isPopular ? "default" : "outline"}
-                    >
-                      {plan.buttonText}
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
 
         {/* Add-ons */}
         <motion.div

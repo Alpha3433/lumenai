@@ -39,37 +39,29 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
   // Get the number of risks
   const risksCount = negatives.length;
   
-  // Get progress bar color based on score out of 10
-  const getProgressBarColor = () => {
-    if (scoreOutOfTen >= 8) return "bg-green-500"; 
-    if (scoreOutOfTen >= 5) return "bg-amber-500"; 
-    return "bg-red-500";
+  // Get score color based on value
+  const getScoreColor = () => {
+    if (scoreOutOfTen >= 8) return "text-green-600 dark:text-green-400"; 
+    if (scoreOutOfTen >= 5) return "text-amber-600 dark:text-amber-400"; 
+    return "text-red-600 dark:text-red-400";
   };
   
   return (
     <div className="space-y-8">
-      {/* Viability Section - Updated Design */}
+      {/* Viability Section - Redesigned with central score */}
       <Card className="border-none shadow-md rounded-xl overflow-hidden bg-white dark:bg-gray-900">
         <CardContent className="p-6">
           <h3 className="font-semibold text-lg mb-4">Business Idea Score</h3>
           
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-gray-800 dark:text-gray-300 font-medium"></span>
+          {/* Centralized score display */}
+          <div className="flex flex-col items-center justify-center mb-8">
             <div className="flex items-baseline">
-              <span className="text-4xl font-bold">{scoreOutOfTen}</span>
-              <span className="text-gray-500 text-lg">/10</span>
+              <span className={`text-7xl font-bold ${getScoreColor()}`}>{scoreOutOfTen}</span>
+              <span className="text-gray-500 text-2xl ml-1">/10</span>
             </div>
           </div>
           
-          {/* Progress bar with dynamic color */}
-          <div className="w-full h-3 bg-gray-200 rounded-full mb-4">
-            <div 
-              className={`h-3 rounded-full ${getProgressBarColor()}`} 
-              style={{ width: `${score}%` }}
-            ></div>
-          </div>
-          
-          <p className="text-gray-700 dark:text-gray-300 mb-6 font-normal">
+          <p className="text-gray-700 dark:text-gray-300 mb-6 font-normal text-center">
             Based on our comprehensive analysis of market conditions, competitive landscape, and risk factors, this business idea demonstrates <span className="text-amber-600 font-medium">{getViabilityText()}</span>.
           </p>
           

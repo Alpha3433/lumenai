@@ -15,6 +15,17 @@ import PestelAnalysisSection from './pestel/PestelAnalysisSection';
 import PorterFiveForcesSection from './PorterFiveForcesSection';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
+// Import new section components
+import CustomerPersonasSection from './personas/CustomerPersonasSection';
+import CompetitiveFeatureMatrix from './competitive/CompetitiveFeatureMatrix';
+import GoToMarketStrategy from './strategy/GoToMarketStrategy';
+import MonetizationExperiments from './monetization/MonetizationExperiments';
+import UserRetentionStrategy from './retention/UserRetentionStrategy';
+import TechnologyRoadmap from './roadmap/TechnologyRoadmap';
+import RegulatoryComplianceChecklist from './compliance/RegulatoryComplianceChecklist';
+import PartnershipPipeline from './partnerships/PartnershipPipeline';
+import RiskMitigationPlaybook from './risk/RiskMitigationPlaybook';
+
 interface BusinessPlanData {
   executiveSummary: string;
   marketAnalysis: string;
@@ -126,11 +137,31 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               <Separator className="my-10" />
               
+              {/* Customer Personas Deep-Dive */}
+              <div id="customer-personas">
+                <CustomerPersonasSection 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+
               {/* SWOT Analysis */}
               <div id="swot-analysis">
                 <SwotAnalysis 
                   swotText={businessPlan.swotAnalysis} 
                   marketAnalysis={businessPlan.marketAnalysis}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Competitive Feature Matrix */}
+              <div id="competitive-matrix">
+                <CompetitiveFeatureMatrix 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
                 />
               </div>
               
@@ -158,6 +189,26 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               <Separator className="my-10" />
               
+              {/* Go-To-Market Strategy */}
+              <div id="gtm-strategy">
+                <GoToMarketStrategy 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Monetization Experiments */}
+              <div id="monetization">
+                <MonetizationExperiments 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
               {/* Marketing Plan */}
               <div id="marketing-plan">
                 <MarketingPlanSection 
@@ -169,9 +220,59 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               <Separator className="my-10" />
               
+              {/* User Retention Strategy */}
+              <div id="retention-strategy">
+                <UserRetentionStrategy 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Technology Roadmap */}
+              <div id="technology-roadmap">
+                <TechnologyRoadmap 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
               {/* Web Business Models */}
               <div id="business-models">
                 <WebBusinessModelsSection 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Regulatory Compliance Checklist */}
+              <div id="compliance">
+                <RegulatoryComplianceChecklist 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Partnership Pipeline */}
+              <div id="partnerships">
+                <PartnershipPipeline 
+                  businessName={refinedName}
+                  businessDescription={refinedDescription}
+                />
+              </div>
+              
+              <Separator className="my-10" />
+              
+              {/* Risk Mitigation Playbook */}
+              <div id="risk-mitigation">
+                <RiskMitigationPlaybook 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
                 />

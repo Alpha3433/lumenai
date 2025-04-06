@@ -1,113 +1,126 @@
+import { callOpenAI } from '../openaiService';
+import { BusinessFormData } from '../planGenerator';
 
-import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Clock, Code, Laptop } from 'lucide-react';
-
-interface TechnologyRoadmapProps {
-  businessName: string;
-  businessDescription: string;
+export interface RoadmapPhase {
+  title: string;
+  description: string;
+  items: string[];
+  dependencies?: string;
 }
 
-const TechnologyRoadmap: React.FC<TechnologyRoadmapProps> = ({
-  businessName,
-  businessDescription
-}) => {
-  const roadmap = generateRoadmapData(businessName, businessDescription);
-  
-  return (
-    <section className="mb-10">
-      <div className="flex flex-col items-center mb-6 relative">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-            <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-          </div>
-          Technology Roadmap
-        </h2>
-        <div className="text-sm text-gray-500 dark:text-gray-400 italic bg-gray-100 dark:bg-gray-800/50 px-3 py-1 rounded-full mt-1">
-          Future development planning
-        </div>
-      </div>
+export interface TechnologyRoadmap {
+  q1: RoadmapPhase;
+  q3: RoadmapPhase;
+  future: RoadmapPhase;
+}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Q1 Roadmap */}
-        <Card className="border border-gray-200 dark:border-gray-800">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="p-1 rounded-full bg-blue-100 dark:bg-blue-900/30">
-                <Clock className="h-4 w-4 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-semibold">Q1 {new Date().getFullYear()}</h3>
-            </div>
-            <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">{roadmap.q1.title}</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{roadmap.q1.description}</p>
-            <div className="space-y-2">
-              {roadmap.q1.items.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
-                  <Laptop className="h-4 w-4 text-blue-500" />
-                  <span className="text-sm">{item}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Q3 Roadmap */}
-        <Card className="border border-gray-200 dark:border-gray-800">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="p-1 rounded-full bg-purple-100 dark:bg-purple-900/30">
-                <Clock className="h-4 w-4 text-purple-600" />
-              </div>
-              <h3 className="text-lg font-semibold">Q3 {new Date().getFullYear()}</h3>
-            </div>
-            <h4 className="font-semibold text-purple-800 dark:text-purple-300 mb-2">{roadmap.q3.title}</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{roadmap.q3.description}</p>
-            <div className="space-y-2">
-              {roadmap.q3.items.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
-                  <Laptop className="h-4 w-4 text-purple-500" />
-                  <span className="text-sm">{item}</span>
-                </div>
-              ))}
-            </div>
-            {roadmap.q3.dependencies && (
-              <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 italic">
-                Dependencies: {roadmap.q3.dependencies}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Future Year Roadmap */}
-        <Card className="border border-gray-200 dark:border-gray-800">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="p-1 rounded-full bg-green-100 dark:bg-green-900/30">
-                <Clock className="h-4 w-4 text-green-600" />
-              </div>
-              <h3 className="text-lg font-semibold">{new Date().getFullYear() + 1}</h3>
-            </div>
-            <h4 className="font-semibold text-green-800 dark:text-green-300 mb-2">{roadmap.future.title}</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{roadmap.future.description}</p>
-            <div className="space-y-2">
-              {roadmap.future.items.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
-                  <Laptop className="h-4 w-4 text-green-500" />
-                  <span className="text-sm">{item}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
-  );
+/**
+ * Generate technology roadmap using OpenAI based on business info
+ */
+export const generateTechnologyRoadmap = async (formData: BusinessFormData): Promise<TechnologyRoadmap> => {
+  try {
+    const prompt = createRoadmapPrompt(formData);
+    
+    const response = await callOpenAI({
+      prompt,
+      model: "gpt-4o-mini",
+      temperature: 0.7,
+      maxTokens: 1000
+    });
+    
+    if (!response.success) {
+      console.error('Error generating technology roadmap:', response.error);
+      return getDefaultRoadmap(formData.businessName, formData.businessDescription);
+    }
+    
+    try {
+      // Try to parse the response as JSON
+      const jsonMatch = response.text.match(/```json\n([\s\S]*?)\n```/) || 
+                        response.text.match(/```([\s\S]*?)```/) ||
+                        [null, response.text];
+      
+      const jsonStr = jsonMatch[1] || response.text;
+      const data = JSON.parse(jsonStr);
+      
+      return {
+        q1: data.q1 || getDefaultRoadmap(formData.businessName, formData.businessDescription).q1,
+        q3: data.q3 || getDefaultRoadmap(formData.businessName, formData.businessDescription).q3,
+        future: data.future || getDefaultRoadmap(formData.businessName, formData.businessDescription).future
+      };
+    } catch (parseError) {
+      console.error('Error parsing OpenAI response:', parseError);
+      return getDefaultRoadmap(formData.businessName, formData.businessDescription);
+    }
+  } catch (error) {
+    console.error('Error in generateTechnologyRoadmap:', error);
+    return getDefaultRoadmap(formData.businessName, formData.businessDescription);
+  }
 };
 
-function generateRoadmapData(businessName: string, businessDescription: string) {
-  // This function would ideally use AI to generate roadmap data based on the business description
-  // For now, we'll use some basic logic based on the business description
+/**
+ * Create a prompt for OpenAI to generate technology roadmap
+ */
+function createRoadmapPrompt(formData: BusinessFormData): string {
+  const currentYear = new Date().getFullYear();
   
+  return `
+Generate a detailed technology roadmap for a business with the following details:
+Business Name: ${formData.businessName}
+Business Description: ${formData.businessDescription}
+
+Based on the business type and industry, create a comprehensive technology roadmap with the following phases:
+1. Q1 ${currentYear}: Near-term technical priorities
+2. Q3 ${currentYear}: Mid-term technical development
+3. ${currentYear + 1}: Long-term technical vision
+
+For each phase, provide:
+- A concise title describing the focus of that phase
+- A brief description of the overall goal
+- 4-5 specific technical features or capabilities to be developed
+- For Q3, include any dependencies on Q1 deliverables
+
+Return ONLY a JSON object with the following structure (and nothing else):
+{
+  "q1": {
+    "title": "Short title for Q1 focus",
+    "description": "Brief description of Q1 focus",
+    "items": [
+      "First technical feature",
+      "Second technical feature",
+      "Third technical feature",
+      "Fourth technical feature"
+    ]
+  },
+  "q3": {
+    "title": "Short title for Q3 focus",
+    "description": "Brief description of Q3 focus",
+    "items": [
+      "First technical feature",
+      "Second technical feature",
+      "Third technical feature",
+      "Fourth technical feature"
+    ],
+    "dependencies": "Brief description of Q1 dependencies"
+  },
+  "future": {
+    "title": "Short title for ${currentYear + 1} focus",
+    "description": "Brief description of ${currentYear + 1} focus",
+    "items": [
+      "First technical feature",
+      "Second technical feature",
+      "Third technical feature",
+      "Fourth technical feature",
+      "Fifth technical feature"
+    ]
+  }
+}
+`;
+}
+
+/**
+ * Generate default roadmap when OpenAI fails or is not available
+ */
+function getDefaultRoadmap(businessName: string, businessDescription: string): TechnologyRoadmap {
   const isHealthBusiness = businessDescription.toLowerCase().includes('health') || 
                          businessDescription.toLowerCase().includes('fitness') || 
                          businessDescription.toLowerCase().includes('wellness');
@@ -264,5 +277,3 @@ function generateRoadmapData(businessName: string, businessDescription: string) 
     };
   }
 }
-
-export default TechnologyRoadmap;

@@ -1,73 +1,115 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, X, Info } from 'lucide-react';
+import { Check, X, Info, CircleDollarSign, Star, ArrowDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const PricingSection = () => {
+  const [comparisonVisible, setComparisonVisible] = useState(false);
+
   const pricingPlans = [
     {
       name: "Startup",
-      description: "Perfect for indie entrepreneurs",
-      price: "Free",
-      period: "",
+      description: "Curious creators",
+      price: "$0",
+      period: "/month",
       features: [
-        { text: "1 Business Plan Report", available: true },
-        { text: "5 Idea Creation Plans", available: true },
-        { text: "Basic Market Analysis", available: true },
-        { text: "Standard Next-Gen Business Validation Tool", available: true },
-        { text: "3 Competitor Insights", available: true },
-        { text: "Advanced Market Analysis", available: false },
-        { text: "AI-Powered Next-Gen Business Validation Tool", available: false },
-        { text: "5 Detailed Competitor Insights", available: false },
-        { text: "Marketing Strategy Recommendations", available: false },
-        { text: "Priority Support", available: false }
+        { text: "Basic AI business plan generator", available: true },
+        { text: "1 coaching call (30-min intro session)", available: true },
+        { text: "Advanced AI insights", available: false },
+        { text: "Niche competitor reports", available: false },
+        { text: "Priority chat support", available: false },
+        { text: "Team workspace", available: false },
+        { text: "Shared analytics", available: false }
       ],
-      buttonText: "Try for Free",
+      buttonText: "Start for Free",
       buttonLink: "/register",
-      isPopular: false
+      isPopular: false,
+      color: "bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
     },
     {
       name: "Entrepreneur",
-      description: "Ideal for growing companies",
-      price: "$29",
-      period: "/mo",
+      description: "Committed solopreneurs",
+      price: "$29.99",
+      period: "/month",
       features: [
-        { text: "Unlimited Business Plans", available: true },
-        { text: "Unlimited Idea Creation Plans", available: true },
-        { text: "Advanced Market Analysis", available: true },
-        { text: "AI-Powered Next-Gen Business Validation Tool", available: true },
-        { text: "5 Detailed Competitor Insights", available: true },
-        { text: "Marketing Strategy Recommendations", available: true },
-        { text: "Priority Support", available: true }
+        { text: "Basic AI business plan generator", available: true },
+        { text: "Advanced AI insights + niche competitor reports", available: true },
+        { text: "3 coaching calls/month", available: true },
+        { text: "Priority chat support", available: true },
+        { text: "Team workspace", available: false },
+        { text: "Shared analytics", available: false }
       ],
       buttonText: "Get Started",
       buttonLink: "/register",
-      isPopular: true
+      isPopular: true,
+      color: "bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/30"
     },
     {
-      name: "Strategist",
-      description: "For established organizations",
-      price: "$79",
-      period: "/mo",
+      name: "Founder",
+      description: "Growing businesses",
+      price: "$54.99",
+      period: "/month",
       features: [
-        { text: "Unlimited Business Plans", available: true },
-        { text: "Unlimited Idea Creation Plans", available: true },
-        { text: "Integrated AI Marketing Tool", available: true },
-        { text: "Advanced Next-Gen Business Validation Tool", available: true },
-        { text: "Unlimited Competitor Analysis", available: true },
-        { text: "Custom Marketing Strategies", available: true },
-        { text: "Priority Support", available: true },
-        { text: "1-on-1 Marketing Consulting", available: true }
+        { text: "All Entrepreneur features", available: true },
+        { text: "Team workspace + shared analytics", available: true },
+        { text: "5 coaching calls/month", available: true },
+        { text: "Complete Backend Management", available: true }
       ],
       buttonText: "Get Started",
       buttonLink: "/register",
-      isPopular: false
+      isPopular: false,
+      color: "bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-purple-900/40 dark:to-indigo-900/30"
+    },
+    {
+      name: "Partner",
+      description: "Cash-strapped hustlers",
+      price: "0%",
+      period: " upfront",
+      features: [
+        { text: "Full Founder features", available: true },
+        { text: "Pay 12% of monthly revenue", available: true },
+        { text: "Capped at $299/month for 12 months", available: true }
+      ],
+      buttonText: "Apply Now",
+      buttonLink: "/register",
+      isPopular: false,
+      color: "bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/40 dark:to-yellow-900/30"
     }
   ];
+
+  const addOns = [
+    {
+      name: "Launchpad Website",
+      description: "A polished 5-page website (SEO-optimized)",
+      price: "$89",
+      period: " one-time"
+    },
+    {
+      name: "Social Boost Bundle",
+      description: "100+ viral post templates + AI caption generator + hashtag optimizer",
+      price: "$24.99",
+      period: "/month"
+    }
+  ];
+
+  const comparisonTable = {
+    headers: ["Features", "Startup", "Entrepreneur", "Founder", "Partner"],
+    rows: [
+      { feature: "AI Business Plan Generator", startup: "Basic", entrepreneur: "Advanced", founder: "Advanced", partner: "Advanced" },
+      { feature: "Market Analysis", startup: "Basic", entrepreneur: "Detailed", founder: "Comprehensive", partner: "Comprehensive" },
+      { feature: "Competitor Reports", startup: "1", entrepreneur: "3", founder: "Unlimited", partner: "Unlimited" },
+      { feature: "Coaching Calls", startup: "1 (30 min)", entrepreneur: "3/month", founder: "5/month", partner: "5/month" },
+      { feature: "Chat Support", startup: "Standard", entrepreneur: "Priority", founder: "Priority", partner: "Priority" },
+      { feature: "Team Members", startup: "1", entrepreneur: "1", founder: "5", partner: "5" },
+      { feature: "Backend Management", startup: "No", entrepreneur: "No", founder: "Yes", partner: "Yes" },
+      { feature: "Revenue Share", startup: "No", entrepreneur: "No", founder: "No", partner: "12%" }
+    ]
+  };
 
   const FeatureItem = ({ feature, available }: { feature: string, available: boolean }) => (
     <div className="flex items-start space-x-2">
@@ -93,12 +135,77 @@ const PricingSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Choose the perfect plan for your business planning and market analysis needs
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
+            Choose the perfect plan for your business planning needs
           </p>
+          
+          <div className="flex items-center justify-center mb-4">
+            <Button 
+              variant="outline" 
+              className="flex items-center gap-2 transition-all"
+              onClick={() => setComparisonVisible(!comparisonVisible)}
+            >
+              {comparisonVisible ? "Hide Comparison" : "Compare Features"} 
+              <ArrowDown className={`h-4 w-4 transition-transform ${comparisonVisible ? 'rotate-180' : ''}`} />
+            </Button>
+          </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Comparison Table */}
+        {comparisonVisible && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-16 overflow-x-auto"
+          >
+            <div className="inline-block min-w-full align-middle">
+              <Table className="border-collapse border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <TableHeader>
+                  <TableRow>
+                    {comparisonTable.headers.map((header, index) => (
+                      <TableHead 
+                        key={index} 
+                        className={`text-center p-4 bg-gray-100 dark:bg-gray-800 font-medium ${index === 0 ? 'text-left' : ''}`}
+                      >
+                        {header}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {comparisonTable.rows.map((row, rowIndex) => (
+                    <TableRow key={rowIndex}>
+                      <TableCell className="font-medium border-t border-gray-200 dark:border-gray-700">
+                        {row.feature}
+                      </TableCell>
+                      <TableCell className="text-center border-t border-gray-200 dark:border-gray-700">
+                        {row.startup === "No" ? <X className="h-5 w-5 text-gray-400 mx-auto" /> : 
+                        row.startup === "Yes" ? <Check className="h-5 w-5 text-blue-500 mx-auto" /> : row.startup}
+                      </TableCell>
+                      <TableCell className="text-center border-t border-gray-200 dark:border-gray-700">
+                        {row.entrepreneur === "No" ? <X className="h-5 w-5 text-gray-400 mx-auto" /> : 
+                        row.entrepreneur === "Yes" ? <Check className="h-5 w-5 text-blue-500 mx-auto" /> : row.entrepreneur}
+                      </TableCell>
+                      <TableCell className="text-center border-t border-gray-200 dark:border-gray-700">
+                        {row.founder === "No" ? <X className="h-5 w-5 text-gray-400 mx-auto" /> : 
+                        row.founder === "Yes" ? <Check className="h-5 w-5 text-blue-500 mx-auto" /> : row.founder}
+                      </TableCell>
+                      <TableCell className="text-center border-t border-gray-200 dark:border-gray-700">
+                        {row.partner === "No" ? <X className="h-5 w-5 text-gray-400 mx-auto" /> : 
+                        row.partner === "Yes" ? <Check className="h-5 w-5 text-blue-500 mx-auto" /> : row.partner}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {pricingPlans.map((plan, index) => (
             <motion.div
               key={index}
@@ -107,7 +214,7 @@ const PricingSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className={`h-full flex flex-col ${plan.isPopular ? 'border-blue-500 relative shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
+              <Card className={`h-full flex flex-col ${plan.color} ${plan.isPopular ? 'border-blue-500 relative shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
                 {plan.isPopular && (
                   <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
                     Best Value
@@ -143,6 +250,44 @@ const PricingSection = () => {
                     </Button>
                   </Link>
                 </CardFooter>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Add-ons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-8"
+        >
+          <h3 className="text-2xl font-bold mb-2">Powerful Add-ons</h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-8">Enhance your plan with these additional features</p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {addOns.map((addon, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <Card className="border border-gray-200 dark:border-gray-700 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="text-xl font-bold">{addon.name}</h4>
+                    <div className="flex items-center">
+                      <span className="text-2xl font-bold">{addon.price}</span>
+                      <span className="text-gray-500 ml-1">{addon.period}</span>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">{addon.description}</p>
+                  <Button variant="outline" className="w-full">Add to Plan</Button>
+                </CardContent>
               </Card>
             </motion.div>
           ))}

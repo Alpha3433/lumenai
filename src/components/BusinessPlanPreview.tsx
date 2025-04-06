@@ -15,7 +15,7 @@ import PestelAnalysisSection from './pestel/PestelAnalysisSection';
 import PorterFiveForcesSection from './PorterFiveForcesSection';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
-// Import new section components
+// Import remaining section components
 import CustomerPersonasSection from './personas/CustomerPersonasSection';
 import CompetitiveFeatureMatrix from './competitive/CompetitiveFeatureMatrix';
 import GoToMarketStrategy from './strategy/GoToMarketStrategy';
@@ -230,39 +230,9 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               <Separator className="my-10" />
               
-              {/* Technology Roadmap */}
-              <div id="technology-roadmap">
-                <TechnologyRoadmap 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
               {/* Web Business Models */}
               <div id="business-models">
                 <WebBusinessModelsSection 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              {/* Regulatory Compliance Checklist */}
-              <div id="compliance">
-                <RegulatoryComplianceChecklist 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              {/* Partnership Pipeline */}
-              <div id="partnerships">
-                <PartnershipPipeline 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
                 />

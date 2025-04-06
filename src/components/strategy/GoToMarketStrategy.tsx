@@ -12,7 +12,7 @@ const GoToMarketStrategy: React.FC<GoToMarketStrategyProps> = ({
   businessName,
   businessDescription
 }) => {
-  const { phases, pilotTesting, scalingPlaybook } = generateGTMStrategy(businessName, businessDescription);
+  const { phases, scalingPlaybook } = generateGTMStrategy(businessName, businessDescription);
 
   return (
     <section className="mb-10">
@@ -48,24 +48,6 @@ const GoToMarketStrategy: React.FC<GoToMarketStrategyProps> = ({
                       </li>
                     ))}
                   </ul>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Pilot Testing */}
-        <Card className="border border-gray-200 dark:border-gray-800">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Target className="h-5 w-5 text-amber-600 dark:text-amber-500" />
-              <h3 className="text-lg font-semibold">Pilot Testing</h3>
-            </div>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">{pilotTesting.description}</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {pilotTesting.partners.map((partner, index) => (
-                <div key={index} className="px-3 py-2 rounded-md bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-300 text-sm">
-                  {partner}
                 </div>
               ))}
             </div>
@@ -133,18 +115,6 @@ function generateGTMStrategy(businessName: string, businessDescription: string) 
     }
   ];
 
-  const pilotTesting = {
-    description: `Partner with key organizations to gather real-world feedback and validate ${businessName}'s value proposition before full market launch.`,
-    partners: [
-      "Industry Leaders Association",
-      "Regional Medical Center",
-      "University Research Group",
-      "Tech Innovation Hub",
-      "Consumer Focus Groups",
-      "Professional Advisory Board"
-    ]
-  };
-
   const scalingPlaybook = [
     {
       milestone: "First 1,000 Users",
@@ -164,7 +134,7 @@ function generateGTMStrategy(businessName: string, businessDescription: string) 
     }
   ];
 
-  return { phases, pilotTesting, scalingPlaybook };
+  return { phases, scalingPlaybook };
 }
 
 export default GoToMarketStrategy;

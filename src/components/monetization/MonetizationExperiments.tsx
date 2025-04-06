@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { DollarSign, CreditCard, Users, Award } from 'lucide-react';
+import { DollarSign, Check, Share2 } from 'lucide-react';
 
 interface MonetizationExperimentsProps {
   businessName: string;
@@ -12,7 +12,54 @@ const MonetizationExperiments: React.FC<MonetizationExperimentsProps> = ({
   businessName,
   businessDescription
 }) => {
-  const { tieredPricing, partnerships, referralProgram } = generateMonetizationStrategies(businessName);
+  // For demonstration purposes, we're using hardcoded pricing tiers and referral program info
+  // In a real application, this would come from an API or configuration
+  const pricingTiers = [
+    {
+      name: "Basic",
+      price: "$9.99/month",
+      features: [
+        "Core platform features",
+        "Basic analytics dashboard",
+        "Email support",
+        "Mobile app access"
+      ],
+      popular: false
+    },
+    {
+      name: "Premium",
+      price: "$29.99/month",
+      features: [
+        "All Basic features",
+        "Advanced analytics",
+        "Priority support",
+        "Personalized recommendations",
+        "1:1 expert coaching"
+      ],
+      popular: true
+    },
+    {
+      name: "Family",
+      price: "$49.99/month",
+      features: [
+        "Up to 4 user accounts",
+        "All Premium features",
+        "Family dashboard",
+        "Group challenges",
+        "Shared resources"
+      ],
+      popular: false
+    }
+  ];
+
+  const referralProgram = {
+    tagline: "Get 1 month free for every friend who subscribes",
+    benefits: [
+      { name: "Win-Win", description: "Both referrer and new user receive rewards" },
+      { name: "Unlimited", description: "No cap on how many referrals you can make" },
+      { name: "Easy Sharing", description: "One-click social media and email sharing" }
+    ]
+  };
 
   return (
     <section className="mb-10">
@@ -32,63 +79,32 @@ const MonetizationExperiments: React.FC<MonetizationExperimentsProps> = ({
         {/* Tiered Pricing */}
         <Card className="border border-gray-200 dark:border-gray-800">
           <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <CreditCard className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="text-lg font-semibold">Tiered Pricing</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {tieredPricing.map((tier, index) => (
+            <h3 className="text-lg font-semibold mb-4">Tiered Pricing</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {pricingTiers.map((tier, index) => (
                 <div 
                   key={index} 
-                  className={`p-5 rounded-lg border ${
-                    tier.popular 
-                      ? "border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20" 
-                      : "border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50"
-                  }`}
+                  className={`border ${tier.popular ? 'border-blue-400 dark:border-blue-500' : 'border-gray-200 dark:border-gray-700'} rounded-lg overflow-hidden`}
                 >
                   {tier.popular && (
-                    <div className="mb-2 py-1 px-2 bg-blue-500 text-white text-xs font-semibold rounded inline-block">
+                    <div className="bg-blue-600 text-white text-center text-sm py-1">
                       MOST POPULAR
                     </div>
                   )}
-                  <h4 className="font-semibold text-lg mb-1">{tier.name}</h4>
-                  <div className="mb-3">
-                    <span className="text-2xl font-bold">${tier.price}</span>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">/month</span>
+                  <div className="p-6">
+                    <h4 className="font-bold text-xl mb-2">{tier.name}</h4>
+                    <div className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4">{tier.price}</div>
+                    <div className="space-y-2">
+                      {tier.features.map((feature, i) => (
+                        <div key={i} className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-sm">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <ul className="space-y-2 mb-4">
-                    {tier.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm">
-                        <span className="text-green-500 flex-shrink-0">✓</span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Partnership Revenue */}
-        <Card className="border border-gray-200 dark:border-gray-800">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-              <h3 className="text-lg font-semibold">Partnership Revenue</h3>
-            </div>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">{partnerships.description}</p>
-            <div className="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg">
-              <div className="flex justify-between items-center">
-                <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Partner referral fee</span>
-                  <div className="text-xl font-bold">${partnerships.referralFee} <span className="text-sm font-normal">per user</span></div>
-                </div>
-                <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Estimated annual revenue</span>
-                  <div className="text-xl font-bold">${partnerships.estimatedRevenue}</div>
-                </div>
-              </div>
             </div>
           </CardContent>
         </Card>
@@ -96,25 +112,20 @@ const MonetizationExperiments: React.FC<MonetizationExperimentsProps> = ({
         {/* Referral Program */}
         <Card className="border border-gray-200 dark:border-gray-800">
           <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Award className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            <div className="flex items-center gap-3 mb-4">
+              <Share2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-lg font-semibold">Referral Program</h3>
             </div>
-            <div className="p-4 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border border-amber-100 dark:border-amber-800/30">
-              <div className="text-center">
-                <div className="text-lg font-semibold mb-2">{referralProgram.tagline}</div>
-                <p className="text-gray-700 dark:text-gray-300 text-sm">{referralProgram.description}</p>
-              </div>
-              <div className="mt-4 border-t border-amber-200 dark:border-amber-800/30 pt-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {referralProgram.benefits.map((benefit, index) => (
-                    <div key={index} className="text-center">
-                      <div className="font-semibold mb-1">{benefit.title}</div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{benefit.description}</p>
-                    </div>
-                  ))}
+            <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg mb-5">
+              <p className="text-lg font-medium text-center text-indigo-800 dark:text-indigo-300">{referralProgram.tagline}</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {referralProgram.benefits.map((benefit, index) => (
+                <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 text-center">
+                  <h4 className="font-semibold mb-1">{benefit.name}</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{benefit.description}</p>
                 </div>
-              </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -122,72 +133,5 @@ const MonetizationExperiments: React.FC<MonetizationExperimentsProps> = ({
     </section>
   );
 };
-
-function generateMonetizationStrategies(businessName: string) {
-  const tieredPricing = [
-    {
-      name: "Basic",
-      price: "9.99",
-      popular: false,
-      features: [
-        "Core platform features",
-        "Basic analytics dashboard",
-        "Email support",
-        "Mobile app access"
-      ]
-    },
-    {
-      name: "Premium",
-      price: "29.99",
-      popular: true,
-      features: [
-        "All Basic features",
-        "Advanced analytics",
-        "Priority support",
-        "Personalized recommendations",
-        "1:1 expert coaching"
-      ]
-    },
-    {
-      name: "Family",
-      price: "49.99",
-      popular: false,
-      features: [
-        "Up to 4 user accounts",
-        "All Premium features",
-        "Family dashboard",
-        "Group challenges",
-        "Shared resources"
-      ]
-    }
-  ];
-
-  const partnerships = {
-    description: `Strategic partners can refer users to ${businessName} in exchange for a fee, creating a mutually beneficial relationship while accelerating growth.`,
-    referralFee: 100,
-    estimatedRevenue: "250,000"
-  };
-
-  const referralProgram = {
-    tagline: `Get 1 month free for every friend who subscribes`,
-    description: `Share ${businessName} with friends and colleagues to earn free subscription time and special perks.`,
-    benefits: [
-      {
-        title: "Win-Win",
-        description: "Both referrer and new user receive rewards"
-      },
-      {
-        title: "Unlimited",
-        description: "No cap on how many referrals you can make"
-      },
-      {
-        title: "Easy Sharing",
-        description: "One-click social media and email sharing"
-      }
-    ]
-  };
-
-  return { tieredPricing, partnerships, referralProgram };
-}
 
 export default MonetizationExperiments;

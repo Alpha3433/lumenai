@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button'; 
@@ -18,15 +17,12 @@ import WebBusinessModelsSection from '@/components/WebBusinessModelsSection';
 import BusinessPlanDashboard from '@/components/BusinessPlanDashboard';
 import { BusinessPlanData } from '@/types/businessPlan';
 
-// Import new section components
+// Import remaining section components
 import CustomerPersonasSection from '../personas/CustomerPersonasSection';
 import CompetitiveFeatureMatrix from '../competitive/CompetitiveFeatureMatrix';
 import GoToMarketStrategy from '../strategy/GoToMarketStrategy';
 import MonetizationExperiments from '../monetization/MonetizationExperiments';
 import UserRetentionStrategy from '../retention/UserRetentionStrategy';
-import TechnologyRoadmap from '../roadmap/TechnologyRoadmap';
-import RegulatoryComplianceChecklist from '../compliance/RegulatoryComplianceChecklist';
-import PartnershipPipeline from '../partnerships/PartnershipPipeline';
 import RiskMitigationPlaybook from '../risk/RiskMitigationPlaybook';
 
 interface CompanyData {
@@ -309,39 +305,9 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Technology Roadmap */}
-                <div id="technology-roadmap">
-                  <TechnologyRoadmap 
-                    businessName={refinedName}
-                    businessDescription={refinedDescription}
-                  />
-                </div>
-                
-                <Separator className="my-10" />
-                
                 {/* Web Business Models */}
                 <div id="business-models">
                   <WebBusinessModelsSection 
-                    businessName={refinedName}
-                    businessDescription={refinedDescription}
-                  />
-                </div>
-                
-                <Separator className="my-10" />
-                
-                {/* Regulatory Compliance Checklist */}
-                <div id="compliance">
-                  <RegulatoryComplianceChecklist 
-                    businessName={refinedName}
-                    businessDescription={refinedDescription}
-                  />
-                </div>
-                
-                <Separator className="my-10" />
-                
-                {/* Partnership Pipeline */}
-                <div id="partnerships">
-                  <PartnershipPipeline 
                     businessName={refinedName}
                     businessDescription={refinedDescription}
                   />

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '@/components/AuthProvider';
-import { useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -47,8 +47,19 @@ export default function Login() {
     }
   };
 
+  const handleBackClick = () => {
+    navigate(-1); // Go back to previous page in history
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+      <Button 
+        variant="ghost"
+        onClick={handleBackClick}
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-900"
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" /> Back
+      </Button>
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>

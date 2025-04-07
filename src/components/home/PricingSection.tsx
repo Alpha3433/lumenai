@@ -6,9 +6,11 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import PartnerApplicationModal from './PartnerApplicationModal';
 
 const PricingSection = () => {
   const [comparisonVisible, setComparisonVisible] = useState(false);
+  const [partnerModalOpen, setPartnerModalOpen] = useState(false);
 
   const pricingPlans = [
     {
@@ -239,8 +241,9 @@ const PricingSection = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="pt-4">
-                  <Link to={plan.buttonLink} className="w-full">
+                  {plan.name === "Partner" ? (
                     <Button 
+                      onClick={() => setPartnerModalOpen(true)}
                       className={`w-full ${
                         plan.isPopular 
                           ? 'bg-blue-600 hover:bg-blue-700 text-white' 
@@ -250,12 +253,30 @@ const PricingSection = () => {
                     >
                       {plan.buttonText}
                     </Button>
-                  </Link>
+                  ) : (
+                    <Link to={plan.buttonLink} className="w-full">
+                      <Button 
+                        className={`w-full ${
+                          plan.isPopular 
+                            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                            : 'bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100'
+                        }`}
+                        variant={plan.isPopular ? "default" : "outline"}
+                      >
+                        {plan.buttonText}
+                      </Button>
+                    </Link>
+                  )}
                 </CardFooter>
               </Card>
             </motion.div>
           ))}
         </div>
+
+        <PartnerApplicationModal 
+          open={partnerModalOpen}
+          onOpenChange={setPartnerModalOpen}
+        />
 
         <div className="flex items-center justify-center mb-16">
           <Button 

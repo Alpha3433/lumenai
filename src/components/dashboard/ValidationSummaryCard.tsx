@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertTriangle, Shield, TrendingUp } from "lucide-react";
+import { AlertTriangle, Shield, TrendingUp, CircleGauge } from "lucide-react";
 
 interface ValidationSummaryCardProps {
   score: number;
@@ -46,16 +46,39 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
     return "text-red-600 dark:text-red-400";
   };
   
+  // Get gauge rotation based on score (0-100)
+  const getGaugeRotation = () => {
+    // Convert score to a rotation between -30 (0%) and 210 (100%)
+    const rotation = -30 + (score / 100) * 240;
+    return `rotate(${rotation}deg)`;
+  };
+  
   return (
     <div className="space-y-8">
-      {/* Viability Section - Redesigned with central score */}
+      {/* Viability Section - Redesigned with gauge chart */}
       <Card className="border-none shadow-md rounded-xl overflow-hidden bg-white dark:bg-gray-900">
         <CardContent className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Business Idea Score</h3>
+          <h3 className="font-semibold text-lg mb-4">Business Validation Score</h3>
           
-          {/* Centralized score display */}
+          {/* Gauge chart and centralized score display */}
           <div className="flex flex-col items-center justify-center mb-8">
-            <div className="flex items-baseline">
+            {/* Gauge chart */}
+            <div className="relative w-32 h-16 mb-2">
+              <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-t-full"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-1/2">
+                <div 
+                  className="absolute bottom-0 left-[15.5%] w-[69%] h-full bg-gradient-to-r from-red-500 via-amber-500 to-green-500 rounded-t-full"
+                ></div>
+              </div>
+              <div 
+                className="absolute bottom-0 left-1/2 h-1/2 w-1 bg-gray-800 dark:bg-white origin-bottom transform -translate-x-1/2"
+                style={{ transform: `${getGaugeRotation()} translateX(-50%)` }}
+              ></div>
+              <CircleGauge className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 h-6 w-6 text-gray-800 dark:text-white" />
+            </div>
+            
+            {/* Score display */}
+            <div className="flex items-baseline mt-4">
               <span className={`text-7xl font-bold ${getScoreColor()}`}>{scoreOutOfTen}</span>
               <span className="text-gray-500 text-2xl ml-1">/10</span>
             </div>

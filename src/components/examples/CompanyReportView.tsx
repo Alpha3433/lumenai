@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button'; 
 import { Separator } from '@/components/ui/separator';
@@ -16,6 +17,7 @@ import MarketingPlanSection from '@/components/MarketingPlanSection';
 import WebBusinessModelsSection from '@/components/WebBusinessModelsSection';
 import BusinessPlanDashboard from '@/components/BusinessPlanDashboard';
 import { BusinessPlanData } from '@/types/businessPlan';
+import VerticalTabs from '@/components/VerticalTabs';
 
 // Import remaining section components
 import CustomerPersonasSection from '../personas/CustomerPersonasSection';
@@ -54,6 +56,7 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
   const [isEditingInfo, setIsEditingInfo] = useState(false);
   const [refinedName, setRefinedName] = useState(company.name);
   const [refinedDescription, setRefinedDescription] = useState(company.description);
+  const [activeTab, setActiveTab] = useState('dashboard');
   
   // Prepare business plan data in the format expected by components
   const businessPlan: BusinessPlanData = {
@@ -87,6 +90,46 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
       description: "Your business information has been refined for display purposes.",
     });
   };
+
+  // Set up scroll observation for auto-selecting tabs
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-100px 0px -60% 0px',
+      threshold: 0
+    };
+
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveTab(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+    
+    // Observe all section elements
+    const sections = [
+      'dashboard', 'executive-summary', 'customer-personas', 
+      'swot-analysis', 'competitive-matrix', 'pestel-analysis', 
+      'porter-five-forces', 'gtm-strategy', 'monetization',
+      'marketing-plan', 'retention-strategy', 'business-models',
+      'risk-mitigation'
+    ];
+    
+    sections.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => {
+      sections.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) observer.unobserve(element);
+      });
+    };
+  }, []);
 
   return (
     <motion.div 
@@ -188,11 +231,16 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
           </Card>
         </div>
         
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent -z-10 rounded-3xl blur-xl opacity-50"></div>
-            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden bg-card/95 backdrop-blur-sm">
-              <CardContent className="p-8">
+        <div className="max-w-[95%] xl:max-w-7xl mx-auto">
+          <div className="relative flex rounded-xl overflow-hidden shadow-xl">
+            {/* Side Navigation */}
+            <div className="hidden md:block w-56 sticky top-24 h-[calc(100vh-120px)]">
+              <VerticalTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+            </div>
+            
+            {/* Main Content Area */}
+            <div className="flex-1 bg-card/95 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-r-xl overflow-hidden">
+              <div className="p-6 md:p-8">
                 {/* Business Plan Dashboard */}
                 <div id="dashboard">
                   <BusinessPlanDashboard 
@@ -322,8 +370,8 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                     businessDescription={refinedDescription}
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </div>

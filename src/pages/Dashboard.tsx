@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import Navbar from '@/components/Navbar';
+import { Dumbbell, Plus, Trash2, Eye } from 'lucide-react';
+import ValidationSummaryCard from '@/components/dashboard/ValidationSummaryCard';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -91,19 +93,42 @@ export default function Dashboard() {
     );
   }
 
+  // Sample data for demonstration purposes - in a real app this would come from the database
+  const sampleValidation = {
+    score: 70, // Score out of 100
+    positives: [
+      "Strong unique selling proposition", 
+      "Growing market with low competition"
+    ],
+    negatives: [
+      "High initial capital requirements"
+    ],
+    businessName: plans.length > 0 ? plans[0].business_name : "Your Business"
+  };
+
   return (
-    <div className="container mx-auto py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
       <Navbar />
-      <div className="max-w-5xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Your Business Plans</h1>
-          <Button onClick={() => navigate('/create')}>Create New Plan</Button>
+      <div className="container max-w-6xl mx-auto px-4 py-8 pt-24">
+        <div className="flex justify-between items-center mb-8 border-b border-blue-100 dark:border-blue-800/30 pb-4">
+          <div className="flex items-center gap-2">
+            <Dumbbell className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              Your Business Plans
+            </h1>
+          </div>
+          <Button 
+            onClick={() => navigate('/create')}
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full"
+          >
+            <Plus className="mr-2 h-4 w-4" /> Create New Plan
+          </Button>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[1, 2, 3, 4].map((i) => (
-              <Card key={i} className="h-60">
+              <Card key={i} className="h-60 border border-blue-100 dark:border-blue-800/30 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm shadow-md hover:shadow-lg transition-all">
                 <CardHeader>
                   <Skeleton className="h-6 w-3/4 mb-2" />
                   <Skeleton className="h-4 w-1/2" />
@@ -119,40 +144,87 @@ export default function Dashboard() {
             ))}
           </div>
         ) : plans.length === 0 ? (
-          <div className="text-center py-16 bg-gray-50 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-2">No Business Plans Yet</h2>
-            <p className="text-gray-600 mb-6">Create your first business plan to get started!</p>
-            <Button onClick={() => navigate('/create')}>Create Business Plan</Button>
+          <div className="text-center py-20 px-6 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-blue-100 dark:border-blue-800/30 shadow-xl">
+            <div className="flex justify-center mb-6">
+              <div className="rounded-full bg-blue-100 dark:bg-blue-900/50 p-5">
+                <Dumbbell className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              No Business Plans Yet
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-8">
+              Create your first business plan to start building your entrepreneurial journey. Our AI-powered platform will help you validate your ideas and develop winning strategies.
+            </p>
+            <Button 
+              onClick={() => navigate('/create')}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
+            >
+              <Plus className="mr-2 h-5 w-5" /> Create Business Plan
+            </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {plans.map((plan) => (
-              <Card key={plan.id} className="h-full">
-                <CardHeader>
-                  <CardTitle>{plan.business_name}</CardTitle>
-                  <CardDescription>
-                    {plan.industry || 'No industry specified'} • 
-                    Created on {plan.created_at ? formatDate(plan.created_at) : 'Unknown date'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">
-                    {Object.keys(plan.plan_data).length} sections completed
-                  </p>
-                  <p className="text-sm text-gray-600 capitalize">
-                    Status: {plan.status || 'draft'}
-                  </p>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button variant="outline" onClick={() => navigate(`/plan/${plan.id}`)}>
-                    View Plan
-                  </Button>
-                  <Button variant="destructive" onClick={() => handleDeletePlan(plan.id!)}>
-                    Delete
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+          <div className="space-y-12">
+            {plans.length > 0 && (
+              <ValidationSummaryCard 
+                score={sampleValidation.score}
+                positives={sampleValidation.positives}
+                negatives={sampleValidation.negatives}
+                businessName={sampleValidation.businessName}
+              />
+            )}
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {plans.map((plan) => (
+                <Card 
+                  key={plan.id} 
+                  className="overflow-hidden border border-blue-100 dark:border-blue-800/30 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm shadow-md hover:shadow-xl transition-all group"
+                >
+                  <div className="h-2 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
+                  <CardHeader>
+                    <CardTitle className="font-bold text-xl">{plan.business_name}</CardTitle>
+                    <CardDescription className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                      <span className="capitalize">{plan.industry || 'No industry specified'}</span>
+                      <span className="mx-2">•</span>
+                      <span>{plan.created_at ? formatDate(plan.created_at) : 'Unknown date'}</span>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600 dark:text-gray-400">Completion</span>
+                        <span className="font-medium">{Object.keys(plan.plan_data).length} sections</span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div 
+                          className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-500"
+                          style={{ width: `${Math.min(100, Object.keys(plan.plan_data).length * 10)}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 capitalize mt-4">
+                        Status: <span className="font-medium">{plan.status || 'draft'}</span>
+                      </p>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-between pt-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => navigate(`/plan/${plan.id}`)} 
+                      className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2"
+                    >
+                      <Eye className="h-4 w-4" /> View Plan
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => handleDeletePlan(plan.id!)}
+                      className="border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
+                    >
+                      <Trash2 className="h-4 w-4" /> Delete
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
           </div>
         )}
       </div>

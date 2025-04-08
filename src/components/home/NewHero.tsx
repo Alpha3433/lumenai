@@ -71,13 +71,13 @@ const NewHero = () => {
         >
           <Link to="/create">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
-              Build Your Business Plan Now
+              Try for Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
-          <Link to="/market-trends">
+          <Link to="/examples">
             <Button variant="outline" className="rounded-md h-12 px-8 text-lg font-medium border-gray-300 dark:border-gray-700">
-              See Market Trends
+              See Real Business Plans
             </Button>
           </Link>
         </motion.div>

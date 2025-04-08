@@ -43,7 +43,7 @@ const BuildProductsSection = () => {
               Be part of a unique app that lets us build a business system that works for you.
             </p>
             
-            <Link to="/market-trends">
+            <Link to="/create">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
                 Try for FREE
                 <ArrowRight className="ml-2 h-5 w-5" />

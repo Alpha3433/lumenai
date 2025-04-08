@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import ConfirmationDialog from './ConfirmationDialog';
 
 const EmailForm = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,12 +47,17 @@ const EmailForm = () => {
       setIsSubmitting(false);
       setIsSubmitted(true);
       setEmail('');
+      setShowDialog(true);
       toast.success('You\'ve been added to our waiting list!');
     } catch (error) {
       console.error('Error submitting form:', error);
       setIsSubmitting(false);
       toast.error('Something went wrong. Please try again later.');
     }
+  };
+
+  const closeDialog = () => {
+    setShowDialog(false);
   };
 
   if (isSubmitted) {
@@ -72,30 +79,34 @@ const EmailForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Input
-          type="email"
-          placeholder="Enter your email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="h-12 text-base"
-          autoFocus
-          required
-        />
-        <Button 
-          type="submit" 
-          className="h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Joining...' : 'Join Waiting List'}
-        </Button>
-      </div>
-      
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        We'll notify you when we launch. No spam, ever.
-      </p>
-    </form>
+    <>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Input
+            type="email"
+            placeholder="Enter your email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="h-12 text-base"
+            autoFocus
+            required
+          />
+          <Button 
+            type="submit" 
+            className="h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Joining...' : 'Join Waiting List'}
+          </Button>
+        </div>
+        
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          We'll notify you when we launch. No spam, ever.
+        </p>
+      </form>
+
+      <ConfirmationDialog open={showDialog} onClose={closeDialog} />
+    </>
   );
 };
 

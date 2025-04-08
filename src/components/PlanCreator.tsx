@@ -39,7 +39,7 @@ const PlanCreator = ({ initialData }: PlanCreatorProps) => {
   };
 
   return (
-    <div className={`${step === 2 ? 'max-w-full' : 'max-w-5xl'} mx-auto py-6 px-4`}>
+    <div className={`${step === 2 ? 'w-full max-w-full' : 'max-w-5xl'} mx-auto py-6 px-4`}>
       {step === 1 ? (
         <BusinessPlanForm
           formData={formData}

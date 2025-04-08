@@ -7,7 +7,7 @@ interface BusinessPlanActionBarProps {
   businessName: string;
   onStartOver: () => void;
   onDownload: () => void;
-  onEdit?: () => void; // Added optional edit handler
+  onEdit?: () => void;
 }
 
 const BusinessPlanActionBar: React.FC<BusinessPlanActionBarProps> = ({
@@ -17,8 +17,8 @@ const BusinessPlanActionBar: React.FC<BusinessPlanActionBarProps> = ({
   onEdit
 }) => {
   return (
-    <div className="flex items-center justify-between">
-      <div>
+    <div className="flex flex-col items-center justify-center text-center mb-8">
+      <div className="mb-4">
         <h1 className="text-2xl font-bold">{businessName} Strategic Business Report</h1>
         <p className="text-gray-600 dark:text-gray-300">Professional analysis based on your inputs</p>
       </div>

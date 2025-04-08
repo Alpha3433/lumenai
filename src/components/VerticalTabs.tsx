@@ -46,19 +46,26 @@ const VerticalTabs: React.FC<VerticalTabsProps> = ({ activeTab, setActiveTab }) 
     { id: 'risk-mitigation', label: 'Risk Mitigation', icon: <ShieldAlert className="h-4 w-4" /> },
   ];
 
-  // Handle tab click
+  // Handle tab click with smooth scrolling to section including heading
   const handleTabClick = (id: string) => {
     setActiveTab(id);
-    // Scroll to the section
+    // Scroll to the section with smooth behavior
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Get the element's position and scroll with offset for the header
+      const yOffset = -80; // Adjust this value for proper offset from the top
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+      });
     }
   };
 
   return (
-    <div className="h-full bg-card/70 backdrop-blur-sm border-r border-border rounded-l-xl">
-      <ScrollArea className="h-full w-full py-4">
+    <div className="h-full sticky top-24 bg-card/70 backdrop-blur-sm border-r border-border rounded-l-xl">
+      <ScrollArea className="h-[calc(100vh-120px)] w-full py-4">
         <div className="space-y-1 px-2">
           {tabs.map((tab) => (
             <button

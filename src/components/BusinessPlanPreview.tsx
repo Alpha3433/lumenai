@@ -74,7 +74,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '-100px 0px -60% 0px',
+      rootMargin: '-120px 0px -50% 0px', // Adjusted to better detect when section is in view
       threshold: 0
     };
 
@@ -112,12 +112,15 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
 
   return (
     <div className="space-y-10 animate-fade-in pb-20">
-      <BusinessPlanActionBar 
-        businessName={refinedName}
-        onStartOver={onStartOver}
-        onDownload={onDownload}
-        onEdit={onRefineBusinessInfo ? () => setIsEditingInfo(true) : undefined}
-      />
+      {/* Centered Action Bar */}
+      <div className="max-w-5xl mx-auto">
+        <BusinessPlanActionBar 
+          businessName={refinedName}
+          onStartOver={onStartOver}
+          onDownload={onDownload}
+          onEdit={onRefineBusinessInfo ? () => setIsEditingInfo(true) : undefined}
+        />
+      </div>
       
       {/* Edit Info Dialog */}
       {onRefineBusinessInfo && (
@@ -157,8 +160,8 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
       <div className="max-w-[95%] xl:max-w-7xl mx-auto">
         {/* Main Content with Vertical Tabs */}
         <div className="relative flex rounded-xl overflow-hidden shadow-xl">
-          {/* Side Navigation */}
-          <div className="hidden md:block w-56 sticky top-24 h-[calc(100vh-120px)]">
+          {/* Side Navigation - Now sticky */}
+          <div className="hidden md:block w-56 z-20">
             <VerticalTabs activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
           
@@ -166,7 +169,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
           <div className="flex-1 bg-card/95 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-r-xl overflow-hidden">
             <div className="p-6 md:p-8">
               {/* Business Plan Dashboard */}
-              <div id="dashboard">
+              <div id="dashboard" className="pt-4">
                 <BusinessPlanDashboard 
                   businessName={refinedName}
                   businessPlan={businessPlan}
@@ -174,7 +177,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               </div>
               
               {/* Executive Summary */}
-              <div id="executive-summary">
+              <div id="executive-summary" className="pt-16 mt-8">
                 <ExecutiveSummarySection 
                   summaryText={businessPlan.executiveSummary} 
                   businessName={refinedName}
@@ -185,7 +188,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* Customer Personas Deep-Dive */}
-              <div id="customer-personas">
+              <div id="customer-personas" className="pt-16 mt-8">
                 <CustomerPersonasSection 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
@@ -195,7 +198,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
 
               {/* SWOT Analysis */}
-              <div id="swot-analysis">
+              <div id="swot-analysis" className="pt-16 mt-8">
                 <SwotAnalysis 
                   swotText={businessPlan.swotAnalysis} 
                   marketAnalysis={businessPlan.marketAnalysis}
@@ -205,7 +208,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* Competitive Feature Matrix */}
-              <div id="competitive-matrix">
+              <div id="competitive-matrix" className="pt-16 mt-8">
                 <CompetitiveFeatureMatrix 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
@@ -215,7 +218,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* PESTEL Analysis */}
-              <div id="pestel-analysis">
+              <div id="pestel-analysis" className="pt-16 mt-8">
                 <PestelAnalysisSection 
                   analysisText={businessPlan.marketAnalysis}
                   businessName={refinedName}
@@ -226,7 +229,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* Porter's Five Forces Analysis */}
-              <div id="porter-five-forces">
+              <div id="porter-five-forces" className="pt-16 mt-8">
                 <PorterFiveForcesSection 
                   marketAnalysis={businessPlan.marketAnalysis}
                   businessName={refinedName}
@@ -237,7 +240,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* Go-To-Market Strategy */}
-              <div id="gtm-strategy">
+              <div id="gtm-strategy" className="pt-16 mt-8">
                 <GoToMarketStrategy 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
@@ -247,7 +250,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* Monetization Experiments */}
-              <div id="monetization">
+              <div id="monetization" className="pt-16 mt-8">
                 <MonetizationExperiments 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
@@ -257,7 +260,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* Marketing Plan */}
-              <div id="marketing-plan">
+              <div id="marketing-plan" className="pt-16 mt-8">
                 <MarketingPlanSection 
                   marketingPlanText={businessPlan.marketingPlan}
                   businessName={refinedName}
@@ -268,7 +271,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* User Retention Strategy */}
-              <div id="retention-strategy">
+              <div id="retention-strategy" className="pt-16 mt-8">
                 <UserRetentionStrategy 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
@@ -278,7 +281,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* Web Business Models */}
-              <div id="business-models">
+              <div id="business-models" className="pt-16 mt-8">
                 <WebBusinessModelsSection 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
@@ -288,7 +291,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               <Separator className="my-10" />
               
               {/* Risk Mitigation Playbook */}
-              <div id="risk-mitigation">
+              <div id="risk-mitigation" className="pt-16 mt-8">
                 <RiskMitigationPlaybook 
                   businessName={refinedName}
                   businessDescription={refinedDescription}

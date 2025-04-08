@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { GitBranch, LineChart, PieChart } from 'lucide-react';
+import { Users, Megaphone, BarChart3 } from 'lucide-react';
 
 const RoadmapSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -26,45 +26,45 @@ const RoadmapSection = () => {
             className="md:w-1/2 order-2 md:order-1"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Roadmap: Keep Everyone Aligned
+              Expert Consulting: Your Digital Success Partner
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Ensure that your AI-led AI helps to guide the right path. Whether a startup or scale-up, your business keeps vision focused and users engaged.
+              Our team of seasoned consultants works alongside your business to implement proven digital marketing strategies and drive measurable growth. From startups to established enterprises, we transform vision into results.
             </p>
             
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-md">
-                  <GitBranch className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  <Megaphone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Strategic Planning</h3>
+                  <h3 className="text-xl font-semibold mb-1">Digital Marketing Excellence</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Create comprehensive business plans with clear milestones and execution steps.
+                    Our expert team crafts custom marketing strategies, from SEO and content marketing to paid acquisition and social media campaigns.
                   </p>
                 </div>
               </div>
               
               <div className="flex items-start gap-4">
                 <div className="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-md">
-                  <LineChart className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                  <BarChart3 className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Growth Forecasting</h3>
+                  <h3 className="text-xl font-semibold mb-1">Data-Driven Strategy</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Predict your business trajectory with data-driven financial projections and market analysis.
+                    Leverage our advanced analytics to transform raw data into actionable insights, optimizing campaigns for maximum ROI and growth.
                   </p>
                 </div>
               </div>
               
               <div className="flex items-start gap-4">
                 <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-md">
-                  <PieChart className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  <Users className="h-6 w-6 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Resource Allocation</h3>
+                  <h3 className="text-xl font-semibold mb-1">Dedicated Consulting Team</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Optimize your budget and team focus with AI-recommended resource distribution strategies.
+                    Work with our experienced consultants who provide personalized guidance, quarterly strategy reviews, and continuous optimization.
                   </p>
                 </div>
               </div>
@@ -82,7 +82,7 @@ const RoadmapSection = () => {
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-xl p-1">
               <img 
                 src="/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png" 
-                alt="Roadmap Interface" 
+                alt="Digital Marketing Consulting" 
                 className="w-full h-auto rounded-lg"
               />
             </div>

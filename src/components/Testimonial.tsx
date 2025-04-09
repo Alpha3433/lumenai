@@ -18,8 +18,11 @@ const Testimonial: React.FC<TestimonialProps> = ({
   rating,
   imageSrc = 'https://source.unsplash.com/random/100x100/?portrait'
 }) => {
+  // Extract first few words for the headline
+  const headline = content.split(' ').slice(0, 5).join(' ') + '...';
+
   return (
-    <Card className="p-6 border-0 shadow-md rounded-xl bg-white/80 dark:bg-black/80 backdrop-blur-md hover:shadow-lg transition-all duration-300">
+    <Card className="p-6 border-0 shadow-md rounded-xl bg-white/80 dark:bg-black/80 backdrop-blur-md hover:shadow-lg transition-all duration-300 h-full">
       <div className="flex items-center space-x-1 mb-4">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star
@@ -30,11 +33,13 @@ const Testimonial: React.FC<TestimonialProps> = ({
         ))}
       </div>
       
+      <h3 className="text-xl font-bold mb-3">"{headline}"</h3>
+      
       <p className="text-gray-700 dark:text-gray-300 mb-6 italic">
         "{content}"
       </p>
       
-      <div className="flex items-center">
+      <div className="flex items-center mt-auto">
         <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
           <img 
             src={imageSrc} 

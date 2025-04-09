@@ -17,6 +17,8 @@ import Dashboard from "./pages/Dashboard";
 import AuthProvider from "./components/AuthProvider";
 import ScrollProgressBar from "./components/ScrollProgressBar";
 import WaitingList from "./pages/WaitingList";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCanceled from "./pages/PaymentCanceled";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,8 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/payment-success" element={<PaymentSuccess />} />
+                <Route path="/payment-canceled" element={<PaymentCanceled />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

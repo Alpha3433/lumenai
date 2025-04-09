@@ -6,11 +6,15 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useAuth } from '@/components/AuthProvider';
+import { useSubscription } from '@/hooks/useSubscription';
 import PartnerApplicationModal from './PartnerApplicationModal';
 
 const PricingSection = () => {
   const [comparisonVisible, setComparisonVisible] = useState(false);
   const [partnerModalOpen, setPartnerModalOpen] = useState(false);
+  const { user } = useAuth();
+  const { handleCheckout, loading } = useSubscription();
 
   const pricingPlans = [
     {
@@ -30,7 +34,8 @@ const PricingSection = () => {
       buttonText: "Start for Free",
       buttonLink: "/register",
       isPopular: false,
-      color: "bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+      color: "bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800",
+      type: "startup" as const
     },
     {
       name: "Entrepreneur",
@@ -48,7 +53,8 @@ const PricingSection = () => {
       buttonText: "Get Started",
       buttonLink: "/register",
       isPopular: true,
-      color: "bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/30"
+      color: "bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/30",
+      type: "entrepreneur" as const
     },
     {
       name: "Founder",
@@ -64,7 +70,8 @@ const PricingSection = () => {
       buttonText: "Get Started",
       buttonLink: "/register",
       isPopular: false,
-      color: "bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-purple-900/40 dark:to-indigo-900/30"
+      color: "bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-purple-900/40 dark:to-indigo-900/30",
+      type: "founder" as const
     },
     {
       name: "Partner",
@@ -79,7 +86,8 @@ const PricingSection = () => {
       buttonText: "Apply Now",
       buttonLink: "/register",
       isPopular: false,
-      color: "bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/40 dark:to-yellow-900/30"
+      color: "bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-900/40 dark:to-yellow-900/30",
+      type: "partner" as const
     }
   ];
 
@@ -193,6 +201,21 @@ const PricingSection = () => {
     </div>
   );
 
+  const handlePlanClick = (plan: typeof pricingPlans[0]) => {
+    if (!user) {
+      window.location.href = plan.buttonLink;
+      return;
+    }
+    
+    if (plan.type === 'startup') {
+      handleCheckout('startup');
+    } else if (plan.type === 'partner') {
+      setPartnerModalOpen(true);
+    } else {
+      handleCheckout(plan.type);
+    }
+  };
+
   return (
     <section id="pricing" className="py-24 px-4">
       <div className="max-w-7xl mx-auto">
@@ -241,32 +264,18 @@ const PricingSection = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="pt-4">
-                  {plan.name === "Partner" ? (
-                    <Button 
-                      onClick={() => setPartnerModalOpen(true)}
-                      className={`w-full ${
-                        plan.isPopular 
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                          : 'bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100'
-                      }`}
-                      variant={plan.isPopular ? "default" : "outline"}
-                    >
-                      {plan.buttonText}
-                    </Button>
-                  ) : (
-                    <Link to={plan.buttonLink} className="w-full">
-                      <Button 
-                        className={`w-full ${
-                          plan.isPopular 
-                            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                            : 'bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100'
-                        }`}
-                        variant={plan.isPopular ? "default" : "outline"}
-                      >
-                        {plan.buttonText}
-                      </Button>
-                    </Link>
-                  )}
+                  <Button 
+                    onClick={() => handlePlanClick(plan)}
+                    className={`w-full ${
+                      plan.isPopular 
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                        : 'bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    }`}
+                    variant={plan.isPopular ? "default" : "outline"}
+                    disabled={loading}
+                  >
+                    {loading ? 'Processing...' : plan.buttonText}
+                  </Button>
                 </CardFooter>
               </Card>
             </motion.div>

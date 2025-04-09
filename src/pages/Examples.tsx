@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -58,7 +57,7 @@ const Examples = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900">
       <Navbar />
       
-      <div className="pt-16"> {/* Added padding-top to create space for the fixed navbar */}
+      <div className="pt-12"> {/* Decreased padding-top from pt-16 to pt-12 */}
         <ExamplesListView 
           companies={sortedCompanies} 
           onSelectCompany={handleSelectCompany} 

@@ -41,15 +41,15 @@ const ExamplesListView: React.FC<ExamplesListViewProps> = ({
 
   return (
     <motion.main 
-      className="flex-1 w-full mx-auto px-4 py-16"
+      className="flex-1 w-full mx-auto px-4 py-24" /* Increased padding-top from py-16 to py-24 */
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="relative max-w-6xl mx-auto">
+      <div className="relative max-w-6xl mx-auto mt-8"> {/* Added mt-8 for extra margin at the top */}
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-3xl blur-3xl opacity-50 -z-10"></div>
         
-        <div className="text-center mb-12 max-w-3xl mx-auto">
+        <div className="text-center mb-12 max-w-3xl mx-auto pt-4"> {/* Added pt-4 padding to the top */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -41,7 +41,9 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <BrandLogo />
+          <div className="flex-shrink-0">
+            <BrandLogo />
+          </div>
           <DesktopNav />
           <div className="flex items-center gap-3">
             <div className="mr-1">

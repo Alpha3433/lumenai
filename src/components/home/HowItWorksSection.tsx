@@ -1,14 +1,14 @@
 
 import React from 'react';
 import { 
-  Package, 
-  Store, 
-  Truck, 
-  DollarSign,
+  FileText, 
+  Sparkles, 
+  BarChart3, 
+  TrendingUp,
   Clock,
   CheckCircle2,
   Zap,
-  PiggyBank
+  Users
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -73,40 +73,40 @@ const HowItWorksSection = () => {
   const steps: StepProps[] = [
     {
       number: 1,
-      title: "Choose a Prebuilt Store",
-      description: "Secure your Prebuilt Shopify (custom themes included) store today with a fast, hassle-free checkout process, so you can start your e-commerce journey within 1 hour.",
-      icon: <Store className="h-5 w-5" />,
+      title: "Generate Your Business Plan",
+      description: "Create a comprehensive AI-powered business plan in minutes. Our platform analyzes market trends and compiles essential data to build a strong foundation for your business idea.",
+      icon: <FileText className="h-5 w-5" />,
       badges: [
-        { text: "30+ Themes" },
-        { text: "1 hour", icon: <Clock className="h-3 w-3" /> }
+        { text: "5-10 minutes", icon: <Clock className="h-3 w-3" /> },
+        { text: "AI-Powered" }
       ]
     },
     {
       number: 2,
-      title: "We Set Up Your Store",
-      description: "Our team configures your store, integrates high-converting products, and even provides ad strategies to help you start strong.",
-      icon: <Package className="h-5 w-5" />,
+      title: "We Refine Your Strategy",
+      description: "Our expert team reviews your plan, optimizes your market positioning, and provides tailored recommendations to enhance your business strategy and maximize your chances of success.",
+      icon: <Sparkles className="h-5 w-5" />,
       badges: [
-        { text: "INSTANT DELIVERY", icon: <Zap className="h-3 w-3" /> }
+        { text: "Expert Review", icon: <CheckCircle2 className="h-3 w-3" /> }
       ]
     },
     {
       number: 3,
-      title: "Supplier Ships Your Orders Automatically",
-      description: "Whenever you make a sale, the supplier handles fulfillment. For example, if you're selling a smartwatch for $49.99, we connect you with a supplier who ships it worldwide for just $12.99—completely hands-off.",
-      icon: <Truck className="h-5 w-5" />,
+      title: "Launch Your Marketing Campaign",
+      description: "Deploy targeted marketing campaigns based on data-driven insights. Our platform helps you identify the most effective channels and messaging for your specific audience and business model.",
+      icon: <BarChart3 className="h-5 w-5" />,
       badges: [
-        { text: "FOR BRANDS WITH NO SUPPLIERS" }
+        { text: "Multi-channel Strategy" }
       ]
     },
     {
       number: 4,
-      title: "Keep Your Profits & Scale Your Store",
-      description: "You keep the profit from every sale based on your product margins. Use the included course and proven strategies to grow and scale your business even further.",
-      icon: <DollarSign className="h-5 w-5" />,
+      title: "Monitor Growth & Scale Your Business",
+      description: "Track your performance metrics and grow your business with ongoing support. Use our analytics dashboard and proven strategies to continually refine your approach and scale effectively.",
+      icon: <TrendingUp className="h-5 w-5" />,
       badges: [
-        { text: "5 lessons" },
-        { text: "1 month", icon: <CheckCircle2 className="h-3 w-3" /> }
+        { text: "Real-time Analytics" },
+        { text: "Ongoing Support", icon: <Users className="h-3 w-3" /> }
       ]
     }
   ];

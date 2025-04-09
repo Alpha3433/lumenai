@@ -11,6 +11,7 @@ import TestimonialsSection from '@/components/home/TestimonialsSection';
 import BuildProductsSection from '@/components/home/BuildProductsSection';
 import PricingSection from '@/components/home/PricingSection';
 import FAQAccordion from '@/components/home/FAQAccordion';
+import HowItWorksSection from '@/components/home/HowItWorksSection';
 
 const Index = () => {
   return (
@@ -19,6 +20,7 @@ const Index = () => {
       <NewHero />
       <ToolsShowcase />
       <ThreeColumnFeatures />
+      <HowItWorksSection />
       <TransformSection />
       <RoadmapSection />
       <PricingSection />

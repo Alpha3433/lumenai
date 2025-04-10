@@ -8,13 +8,15 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import Navbar from '@/components/Navbar';
-import { Dumbbell, Plus, Trash2, Eye } from 'lucide-react';
+import { Dumbbell, Plus, Trash2, Eye, Paintbrush } from 'lucide-react';
 import ValidationSummaryCard from '@/components/dashboard/ValidationSummaryCard';
+import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
   const [plans, setPlans] = useState<StoredBusinessPlan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -117,12 +119,23 @@ export default function Dashboard() {
               Your Business Plans
             </h1>
           </div>
-          <Button 
-            onClick={() => navigate('/create')}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full"
-          >
-            <Plus className="mr-2 h-4 w-4" /> Create New Plan
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline"
+              size="sm"
+              className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2"
+              onClick={() => setIsLogoModalOpen(true)}
+            >
+              <Paintbrush className="h-4 w-4" />
+              <span>Create New Logo</span>
+            </Button>
+            <Button 
+              onClick={() => navigate('/create')}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full"
+            >
+              <Plus className="mr-2 h-4 w-4" /> Create New Plan
+            </Button>
+          </div>
         </div>
 
         {loading ? (
@@ -156,12 +169,21 @@ export default function Dashboard() {
             <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-8">
               Create your first business plan to start building your entrepreneurial journey. Our AI-powered platform will help you validate your ideas and develop winning strategies.
             </p>
-            <Button 
-              onClick={() => navigate('/create')}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
-            >
-              <Plus className="mr-2 h-5 w-5" /> Create Business Plan
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                variant="outline"
+                onClick={() => setIsLogoModalOpen(true)}
+                className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2 px-8 py-6 text-lg font-semibold"
+              >
+                <Paintbrush className="mr-2 h-5 w-5" /> Create New Logo
+              </Button>
+              <Button 
+                onClick={() => navigate('/create')}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
+              >
+                <Plus className="mr-2 h-5 w-5" /> Create Business Plan
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="space-y-12">
@@ -228,6 +250,10 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+      <LogoGeneratorModal 
+        open={isLogoModalOpen}
+        onClose={() => setIsLogoModalOpen(false)}
+      />
     </div>
   );
 }

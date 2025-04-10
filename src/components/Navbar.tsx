@@ -7,10 +7,14 @@ import UserAuthSection from './navigation/UserAuthSection';
 import MobileMenu from './navigation/MobileMenu';
 import ThemeToggle from './ui/theme-toggle';
 import { useAuth } from '@/components/AuthProvider';
+import { Button } from './ui/button';
+import { Paintbrush } from 'lucide-react';
+import LogoGeneratorModal from './logo/LogoGeneratorModal';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -46,6 +50,15 @@ const Navbar = () => {
           </div>
           <DesktopNav />
           <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden md:flex items-center gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+              onClick={() => setIsLogoModalOpen(true)}
+            >
+              <Paintbrush className="h-4 w-4" />
+              <span>Create New Logo</span>
+            </Button>
             <div className="mr-1">
               <ThemeToggle />
             </div>
@@ -54,6 +67,10 @@ const Navbar = () => {
           <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         </div>
       </div>
+      <LogoGeneratorModal 
+        open={isLogoModalOpen}
+        onClose={() => setIsLogoModalOpen(false)}
+      />
     </motion.nav>
   );
 };

@@ -1,13 +1,22 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleDot } from 'lucide-react';
+import { CircleDot, Home, LayoutDashboard, Settings, DollarSign, MessageCircle, Users, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const UserAuthSection: React.FC = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -26,14 +35,49 @@ const UserAuthSection: React.FC = () => {
             <CircleDot className="h-3 w-3 text-blue-500" />
             <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Free Plan</span>
           </div>
-          <div className="relative">
-            <button 
-              onClick={handleSignOut}
-              className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-            >
-              {user.email?.substring(0, 2).toUpperCase() || 'JD'}
-            </button>
-          </div>
+          <DropdownMenu open={open} onOpenChange={setOpen}>
+            <DropdownMenuTrigger asChild>
+              <button 
+                className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              >
+                {user.email?.substring(0, 2).toUpperCase() || 'JD'}
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+              <DropdownMenuLabel className="font-semibold">My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate('/home')} className="cursor-pointer">
+                <Home className="mr-2 h-4 w-4" />
+                <span>Home</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/dashboard')} className="cursor-pointer">
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                <span>Dashboard</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate('/home#pricing')} className="cursor-pointer">
+                <DollarSign className="mr-2 h-4 w-4" />
+                <span>Upgrade Plan</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => window.open('mailto:support@example.com', '_blank')} className="cursor-pointer">
+                <MessageCircle className="mr-2 h-4 w-4" />
+                <span>Contact Support</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate('/switch-account')} className="cursor-pointer">
+                <Users className="mr-2 h-4 w-4" />
+                <span>Switch Account</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log Out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       ) : (
         <>

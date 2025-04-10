@@ -1,7 +1,18 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleDot, Home, LayoutDashboard, Settings, DollarSign, MessageCircle, Users, LogOut } from 'lucide-react';
+import { 
+  CircleDot, 
+  Home, 
+  LayoutDashboard, 
+  Settings, 
+  DollarSign, 
+  MessageCircle, 
+  Users, 
+  LogOut,
+  Calendar,
+  ChartBar
+} from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import {
@@ -54,11 +65,19 @@ const UserAuthSection: React.FC = () => {
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/analytics')} className="cursor-pointer">
+                <ChartBar className="mr-2 h-4 w-4" />
+                <span>Analytics</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate('/schedule-meeting')} className="cursor-pointer">
+                <Calendar className="mr-2 h-4 w-4" />
+                <span>Schedule a Meeting</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/home#pricing')} className="cursor-pointer">
                 <DollarSign className="mr-2 h-4 w-4" />
                 <span>Upgrade Plan</span>

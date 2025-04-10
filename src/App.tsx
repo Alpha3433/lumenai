@@ -21,6 +21,8 @@ import ScrollProgressBar from "./components/ScrollProgressBar";
 import WaitingList from "./pages/WaitingList";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCanceled from "./pages/PaymentCanceled";
+import Analytics from "./pages/Analytics";
+import ScheduleMeeting from "./pages/ScheduleMeeting";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +49,8 @@ const App = () => (
                 <Route path="/switch-account" element={<SwitchAccount />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-canceled" element={<PaymentCanceled />} />
+                <Route path="/analytics" element={<Analytics />} />
+                <Route path="/schedule-meeting" element={<ScheduleMeeting />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { 
@@ -27,7 +29,13 @@ import {
   MailWarning,
   MessageSquare,
   AlertCircle,
-  Clock
+  Clock,
+  DollarSign,
+  Sparkles,
+  Tag,
+  ArrowUp,
+  ArrowDown,
+  CheckCircle
 } from 'lucide-react';
 
 export default function Settings() {
@@ -46,6 +54,19 @@ export default function Settings() {
   const [marketingEmails, setMarketingEmails] = useState(false);
   const [securityAlerts, setSecurityAlerts] = useState(true);
   const [productUpdates, setProductUpdates] = useState(true);
+  
+  // New notification preferences
+  const [milestonesNotifications, setMilestonesNotifications] = useState(true);
+  const [coachingNotifications, setCoachingNotifications] = useState(true);
+  const [featureNotifications, setFeatureNotifications] = useState(true);
+  const [offerNotifications, setOfferNotifications] = useState(true);
+  const [paymentNotifications, setPaymentNotifications] = useState(true);
+  const [planNotifications, setPlanNotifications] = useState(true);
+  
+  // Notification delivery preferences
+  const [emailDelivery, setEmailDelivery] = useState(true);
+  const [pushDelivery, setPushDelivery] = useState(true);
+  const [smsDelivery, setSmsDelivery] = useState(false);
   
   // Preferences state
   const [timezone, setTimezone] = useState('UTC');
@@ -343,28 +364,206 @@ export default function Settings() {
                 <div className="space-y-1 mt-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Bell className="h-5 w-5 text-blue-500" />
-                    <h3 className="text-lg font-medium">Notification Frequency</h3>
+                    <h3 className="text-lg font-medium">Notification Types</h3>
+                  </div>
+                  <Separator className="mb-4" />
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5 flex items-center gap-3">
+                      <DollarSign className="h-5 w-5 text-green-500" />
+                      <div>
+                        <Label htmlFor="milestones-notifications">Revenue Milestones</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Notifications about your revenue achievements and goals
+                        </p>
+                      </div>
+                    </div>
+                    <Switch 
+                      id="milestones-notifications" 
+                      checked={milestonesNotifications}
+                      onCheckedChange={setMilestonesNotifications}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5 flex items-center gap-3">
+                      <Calendar className="h-5 w-5 text-blue-500" />
+                      <div>
+                        <Label htmlFor="coaching-notifications">Coaching Call Reminders</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Reminders about scheduled coaching and mentoring sessions
+                        </p>
+                      </div>
+                    </div>
+                    <Switch 
+                      id="coaching-notifications" 
+                      checked={coachingNotifications}
+                      onCheckedChange={setCoachingNotifications}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5 flex items-center gap-3">
+                      <Sparkles className="h-5 w-5 text-purple-500" />
+                      <div>
+                        <Label htmlFor="feature-notifications">Feature Teasers</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Previews and announcements of new platform features
+                        </p>
+                      </div>
+                    </div>
+                    <Switch 
+                      id="feature-notifications" 
+                      checked={featureNotifications}
+                      onCheckedChange={setFeatureNotifications}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5 flex items-center gap-3">
+                      <Tag className="h-5 w-5 text-amber-500" />
+                      <div>
+                        <Label htmlFor="offer-notifications">Limited-Time Offers</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Special promotions and limited-time deals
+                        </p>
+                      </div>
+                    </div>
+                    <Switch 
+                      id="offer-notifications" 
+                      checked={offerNotifications}
+                      onCheckedChange={setOfferNotifications}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5 flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <div>
+                        <Label htmlFor="payment-notifications">Payment Success/Failure</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Updates about the status of your payments
+                        </p>
+                      </div>
+                    </div>
+                    <Switch 
+                      id="payment-notifications" 
+                      checked={paymentNotifications}
+                      onCheckedChange={setPaymentNotifications}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5 flex items-center gap-3">
+                      <ArrowUp className="h-5 w-5 text-blue-500" />
+                      <div>
+                        <Label htmlFor="plan-notifications">Plan Upgrades/Downgrades</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Notifications about changes to your subscription plan
+                        </p>
+                      </div>
+                    </div>
+                    <Switch 
+                      id="plan-notifications" 
+                      checked={planNotifications}
+                      onCheckedChange={setPlanNotifications}
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-1 mt-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Clock className="h-5 w-5 text-blue-500" />
+                    <h3 className="text-lg font-medium">Delivery Methods</h3>
                   </div>
                   <Separator className="mb-4" />
                 </div>
                 
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="notification-frequency">Email Digest Frequency</Label>
-                      <Select defaultValue="daily">
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select frequency" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="realtime">Real-time</SelectItem>
-                          <SelectItem value="daily">Daily Digest</SelectItem>
-                          <SelectItem value="weekly">Weekly Digest</SelectItem>
-                          <SelectItem value="never">Never</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Choose how you want to receive notifications
+                    </p>
+                    
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="email-delivery" 
+                        checked={emailDelivery}
+                        onCheckedChange={(checked) => 
+                          setEmailDelivery(checked === true)
+                        }
+                      />
+                      <div className="grid gap-1.5">
+                        <Label htmlFor="email-delivery">Email</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive notifications via email
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="push-delivery" 
+                        checked={pushDelivery}
+                        onCheckedChange={(checked) => 
+                          setPushDelivery(checked === true)
+                        }
+                      />
+                      <div className="grid gap-1.5">
+                        <Label htmlFor="push-delivery">Push Notifications</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive notifications in-app
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="sms-delivery" 
+                        checked={smsDelivery}
+                        onCheckedChange={(checked) => 
+                          setSmsDelivery(checked === true)
+                        }
+                      />
+                      <div className="grid gap-1.5">
+                        <Label htmlFor="sms-delivery">SMS (Coming Soon)</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive critical notifications via text message
+                        </p>
+                      </div>
                     </div>
                   </div>
+                </div>
+                
+                <div className="space-y-1 mt-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <AlertCircle className="h-5 w-5 text-blue-500" />
+                    <h3 className="text-lg font-medium">Priority Settings</h3>
+                  </div>
+                  <Separator className="mb-4" />
+                </div>
+                
+                <div className="space-y-4">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Select which notifications should bypass your do-not-disturb settings
+                  </p>
+                  
+                  <RadioGroup defaultValue="critical" className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem id="critical-only" value="critical" />
+                      <Label htmlFor="critical-only">Critical notifications only</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem id="important" value="important" />
+                      <Label htmlFor="important">Important and critical notifications</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem id="all" value="all" />
+                      <Label htmlFor="all">All notifications</Label>
+                    </div>
+                  </RadioGroup>
                 </div>
               </CardContent>
               <CardFooter className="flex justify-end">

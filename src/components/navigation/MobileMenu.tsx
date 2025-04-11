@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import NavLinks from './NavLinks';
 import UserProfileSection from './UserProfileSection';
+import NotificationCenter from './NotificationCenter';
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -38,13 +39,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isMenuOpen, setIsMenuOpen }) =>
 
   return (
     <>
-      <motion.button 
-        className="md:hidden text-gray-700 dark:text-gray-300 p-2"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        whileTap={{ scale: 0.95 }}
-      >
-        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-      </motion.button>
+      <div className="md:hidden flex items-center gap-2">
+        {user && <NotificationCenter />}
+        <motion.button 
+          className="text-gray-700 dark:text-gray-300 p-2"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          whileTap={{ scale: 0.95 }}
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </motion.button>
+      </div>
 
       <motion.div 
         className="md:hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md overflow-hidden"

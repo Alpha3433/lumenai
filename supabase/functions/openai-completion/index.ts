@@ -48,10 +48,14 @@ serve(async (req) => {
 
     const isMarketAnalysisPrompt = prompt.toLowerCase().includes('market analysis');
     
+    const isDynamicContentPrompt = prompt.toLowerCase().includes('format it strictly as valid json');
+    
     // Add special system instructions based on prompt type
     let systemMessage = '';
     
-    if (isValidationPrompt) {
+    if (isDynamicContentPrompt) {
+      systemMessage = 'You are a helpful assistant that generates structured business data. Respond ONLY with valid JSON according to the exact format requested in the prompt. Do not include any explanations, notes, or text outside of the JSON structure. Ensure your response is properly escaped and can be parsed directly by JSON.parse().';
+    } else if (isValidationPrompt) {
       systemMessage = 'You are a helpful assistant that generates business plan content. For validation scoring, format important category scores with double asterisks. For example: **1. Overall viability score: 75/100** and **2. Market need assessment: 80/100**. Use this format for all numeric scores. After each heading, list bullet points using - at the start of each point. This is CRITICAL FOR PROPER DISPLAY of the report.';
     } else if (isMarketAnalysisPrompt) {
       systemMessage = 'You are a helpful assistant that generates business plan content. For market analysis, include specific metrics like market size in dollars (e.g., $4.5 billion), growth rate percentages, age demographics, and identify real competitor companies with estimates of their market share and revenue. Format any statistics with numbers and percentages clearly. IMPORTANT: Make sure to write decimal numbers correctly WITHOUT SPACES between the number and decimal point (write 10.5% not 10. 5%). Include a dedicated section titled "Key Competitors" with detailed information on at least 4-5 specific real companies in this industry. For each competitor, use this format: "Company: [Name], Market Share: [percentage], Founded: [year], Revenue: [$amount], Strength: [main strength], Weakness: [main weakness]". Always include these exact fields for each competitor. ALSO INCLUDE a section titled "Porter\'s Five Forces Analysis" with subsections for each of the five forces: "Threat of New Entrants", "Threat of Substitution", "Bargaining Power of Suppliers", "Bargaining Power of Buyers", and "Competitive Rivalry". For each force, indicate whether it is HIGH, MEDIUM, or LOW, and provide 3-4 SPECIFIC, DETAILED bullet points explaining why. These bullet points should be HIGHLY SPECIFIC to the business described in the prompt, including precise details such as specific technologies, competitors\' names, supplier relationships, buyer demographics, or regulatory factors. DO NOT use generic statements that could apply to any business - each point should clearly relate to the specific business and industry described in the prompt. ALSO INCLUDE a section titled "PESTEL Analysis" that looks at all the Political, Economic, Social, Technological, Environmental, and Legal factors affecting this business. For each PESTEL factor, provide 3-4 SPECIFIC bullet points relating to the business context.';

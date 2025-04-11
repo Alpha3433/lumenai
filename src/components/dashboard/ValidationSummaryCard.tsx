@@ -51,9 +51,6 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
       {/* Viability Section - Redesigned with central score */}
       <Card className="border-none shadow-md rounded-xl overflow-hidden bg-white dark:bg-gray-900">
         <CardContent className="p-6">
-          <h3 className="font-semibold text-lg mb-4 text-black dark:text-black">Business Validation Score</h3>
-          
-          {/* Centralized score display */}
           <div className="flex flex-col items-center justify-center mb-8">
             {/* Score display */}
             <div className="flex items-baseline mt-4">

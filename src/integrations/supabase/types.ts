@@ -45,6 +45,45 @@ export type Database = {
         }
         Relationships: []
       }
+      meeting_requests: {
+        Row: {
+          business_plan_url: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          selected_date: string
+          selected_time: string
+          status: string | null
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_plan_url?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          selected_date: string
+          selected_time: string
+          status?: string | null
+          topic: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_plan_url?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          selected_date?: string
+          selected_time?: string
+          status?: string | null
+          topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_subscriptions: {
         Row: {
           created_at: string

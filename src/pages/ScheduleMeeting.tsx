@@ -8,19 +8,20 @@ import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Clock } from "lucide-react";
+import { CalendarIcon, Clock, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { supabase } from '@/integrations/supabase/client';
 
 const timeSlots = [
-  "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", 
+  "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", 
   "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM",
   "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM",
-  "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM"
+  "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM"
 ];
 
 export default function ScheduleMeeting() {
@@ -30,6 +31,8 @@ export default function ScheduleMeeting() {
   const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined);
   const [topic, setTopic] = useState("");
   const [notes, setNotes] = useState("");
+  const [businessPlanUrl, setBusinessPlanUrl] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -37,32 +40,48 @@ export default function ScheduleMeeting() {
     }
   }, [user, loading, navigate]);
 
-  const handleScheduleMeeting = () => {
+  const handleScheduleMeeting = async () => {
     if (!selectedDate || !selectedTime || !topic) {
       toast.error("Please complete all required fields");
       return;
     }
 
-    // In a real app, you would send this data to your backend
-    const meetingDetails = {
-      date: format(selectedDate, "MMMM do, yyyy"),
-      time: selectedTime,
-      topic,
-      notes,
-      user: user?.email
-    };
-    
-    console.log("Meeting scheduled:", meetingDetails);
-    
-    toast.success("Meeting scheduled successfully!", {
-      description: `Your meeting has been scheduled for ${format(selectedDate, "MMMM do")} at ${selectedTime}`
-    });
-    
-    // Reset form
-    setSelectedDate(undefined);
-    setSelectedTime(undefined);
-    setTopic("");
-    setNotes("");
+    setSubmitting(true);
+
+    try {
+      const meetingDetails = {
+        selected_date: format(selectedDate, "yyyy-MM-dd"),
+        selected_time: selectedTime,
+        topic,
+        notes,
+        business_plan_url: businessPlanUrl,
+        user_id: user?.id
+      };
+      
+      const { error } = await supabase
+        .from('meeting_requests')
+        .insert(meetingDetails);
+      
+      if (error) {
+        throw error;
+      }
+      
+      toast.success("Meeting scheduled successfully!", {
+        description: `Your meeting has been scheduled for ${format(selectedDate, "MMMM do")} at ${selectedTime}`
+      });
+      
+      // Reset form
+      setSelectedDate(undefined);
+      setSelectedTime(undefined);
+      setTopic("");
+      setNotes("");
+      setBusinessPlanUrl("");
+    } catch (error) {
+      console.error("Error scheduling meeting:", error);
+      toast.error("Failed to schedule meeting. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading) {
@@ -115,9 +134,8 @@ export default function ScheduleMeeting() {
                       disabled={(date) => {
                         const today = new Date();
                         today.setHours(0, 0, 0, 0);
-                        // Disable past dates and weekends
-                        const day = date.getDay();
-                        return date < today || day === 0 || day === 6;
+                        // Only disable past dates, allow weekends
+                        return date < today;
                       }}
                       className="p-3 pointer-events-auto"
                     />
@@ -173,10 +191,23 @@ export default function ScheduleMeeting() {
                 <Textarea 
                   id="notes" 
                   placeholder="Any specific points you'd like to discuss..." 
-                  rows={4}
+                  rows={3}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                 />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="businessPlan">Business Plan URL (Optional)</Label>
+                <Input 
+                  id="businessPlan" 
+                  placeholder="Link to your business plan" 
+                  value={businessPlanUrl}
+                  onChange={(e) => setBusinessPlanUrl(e.target.value)}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Share a link to your generated business plan so we can review it before the meeting
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -203,22 +234,28 @@ export default function ScheduleMeeting() {
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Your Topic</p>
                 <p className="font-medium">{topic || "Not specified"}</p>
               </div>
+
+              {businessPlanUrl && (
+                <div>
+                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Business Plan</p>
+                  <a 
+                    href={businessPlanUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-blue-600 hover:underline break-all"
+                  >
+                    {businessPlanUrl}
+                  </a>
+                </div>
+              )}
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="outline" onClick={() => {
-              setSelectedDate(undefined);
-              setSelectedTime(undefined);
-              setTopic("");
-              setNotes("");
-            }}>
-              Reset
-            </Button>
+          <CardFooter className="flex justify-end">
             <Button 
               onClick={handleScheduleMeeting}
-              disabled={!selectedDate || !selectedTime || !topic}
+              disabled={!selectedDate || !selectedTime || !topic || submitting}
             >
-              Schedule Meeting
+              {submitting ? "Scheduling..." : "Schedule Meeting"}
             </Button>
           </CardFooter>
         </Card>

@@ -45,6 +45,7 @@ const MeetingsCalendar = () => {
         throw error;
       }
 
+      console.log("Fetched meetings:", data);
       setMeetings(data || []);
     } catch (error) {
       console.error('Error fetching meetings:', error);

@@ -109,6 +109,13 @@ export default function Dashboard() {
     businessName: plans.length > 0 ? plans[0].business_name : "Your Business"
   };
 
+  // Always show meeting calendar regardless of whether there are plans
+  const renderMeetingsCalendar = () => (
+    <div className="mb-12">
+      <MeetingsCalendar />
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
       <Navbar />
@@ -139,6 +146,9 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Always show meetings calendar at the top */}
+        {renderMeetingsCalendar()}
+
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[1, 2, 3, 4].map((i) => (
@@ -165,26 +175,17 @@ export default function Dashboard() {
               </div>
             </div>
             <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-              No Business Plans Yet
+              Ready to Create Your First Business Plan
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-8">
-              Create your first business plan to start building your entrepreneurial journey. Our AI-powered platform will help you validate your ideas and develop winning strategies.
+              Start building your entrepreneurial journey with our AI-powered platform. Create your first business plan to validate ideas and develop winning strategies.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="outline"
-                onClick={() => setIsLogoModalOpen(true)}
-                className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2 px-8 py-6 text-lg font-semibold"
-              >
-                <Paintbrush className="mr-2 h-5 w-5" /> Create New Logo
-              </Button>
-              <Button 
-                onClick={() => navigate('/create')}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
-              >
-                <Plus className="mr-2 h-5 w-5" /> Create Business Plan
-              </Button>
-            </div>
+            <Button 
+              onClick={() => navigate('/create')}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
+            >
+              <Plus className="mr-2 h-5 w-5" /> Create Business Plan
+            </Button>
           </div>
         ) : (
           <div className="space-y-12">
@@ -196,9 +197,6 @@ export default function Dashboard() {
                 businessName={sampleValidation.businessName}
               />
             )}
-            
-            {/* Meetings Calendar Section */}
-            <MeetingsCalendar />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {plans.map((plan) => (

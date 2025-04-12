@@ -11,6 +11,7 @@ import Navbar from '@/components/Navbar';
 import { Dumbbell, Plus, Trash2, Eye, Paintbrush } from 'lucide-react';
 import ValidationSummaryCard from '@/components/dashboard/ValidationSummaryCard';
 import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
+import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -195,6 +196,9 @@ export default function Dashboard() {
                 businessName={sampleValidation.businessName}
               />
             )}
+            
+            {/* Meetings Calendar Section */}
+            <MeetingsCalendar />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {plans.map((plan) => (

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageSquare } from 'lucide-react';
 import Testimonial from '@/components/Testimonial';
 
+// This component is kept for backwards compatibility but is not used in the dashboard anymore
 const ClientFeedbackHub = () => {
   // Sample testimonials - in a real app, these would come from a database
   const testimonials = [

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
@@ -13,8 +12,6 @@ import ValidationSummaryCard from '@/components/dashboard/ValidationSummaryCard'
 import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
 import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
 import TaskScheduler from '@/components/dashboard/TaskScheduler';
-import ClientFeedbackHub from '@/components/dashboard/ClientFeedbackHub';
-import CampaignControlRoom from '@/components/dashboard/CampaignControlRoom';
 import ExpertTaskList from '@/components/dashboard/ExpertTaskList';
 
 export default function Dashboard() {
@@ -100,7 +97,6 @@ export default function Dashboard() {
     );
   }
 
-  // Sample data for demonstration purposes - in a real app this would come from the database
   const sampleValidation = {
     score: 70, // Score out of 100
     positives: [
@@ -163,7 +159,10 @@ export default function Dashboard() {
           </div>
         ) : plans.length === 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Empty state and meetings calendar side by side */}
+            <div>
+              <MeetingsCalendar />
+            </div>
+            
             <div className="text-center py-20 px-6 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-blue-100 dark:border-blue-800/30 shadow-xl">
               <div className="flex justify-center mb-6">
                 <div className="rounded-full bg-blue-100 dark:bg-blue-900/50 p-5">
@@ -184,31 +183,16 @@ export default function Dashboard() {
               </Button>
             </div>
             
-            <div>
-              <MeetingsCalendar />
-            </div>
-            
-            {/* Collaboration & Workflow Section */}
             <div className="lg:col-span-2 mt-8">
               <h2 className="text-2xl font-bold mb-6 text-foreground">Collaboration & Workflow</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <TaskScheduler />
-                <ClientFeedbackHub />
-              </div>
-            </div>
-            
-            {/* Managed Services Portal Section */}
-            <div className="lg:col-span-2 mt-8">
-              <h2 className="text-2xl font-bold mb-6 text-foreground">Managed Services Portal</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <CampaignControlRoom />
                 <ExpertTaskList />
               </div>
             </div>
           </div>
         ) : (
           <div className="space-y-12">
-            {/* Display validation score if there are plans */}
             {plans.length > 0 && (
               <ValidationSummaryCard 
                 score={sampleValidation.score}
@@ -219,7 +203,6 @@ export default function Dashboard() {
             )}
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Business plans grid (taking 2/3 of the space) */}
               <div className="lg:col-span-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {plans.map((plan) => (
@@ -274,26 +257,15 @@ export default function Dashboard() {
                 </div>
               </div>
               
-              {/* Meetings calendar (taking 1/3 of the space) */}
               <div className="lg:col-span-1">
                 <MeetingsCalendar />
               </div>
             </div>
             
-            {/* Collaboration & Workflow Section */}
             <div>
               <h2 className="text-2xl font-bold mb-6 text-foreground">Collaboration & Workflow</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <TaskScheduler />
-                <ClientFeedbackHub />
-              </div>
-            </div>
-            
-            {/* Managed Services Portal Section */}
-            <div>
-              <h2 className="text-2xl font-bold mb-6 text-foreground">Managed Services Portal</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <CampaignControlRoom />
                 <ExpertTaskList />
               </div>
             </div>

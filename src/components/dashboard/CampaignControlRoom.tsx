@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, TrendingUp, Users, ArrowUpRight } from 'lucide-react';
 
+// This component is kept for backwards compatibility but is not used in the dashboard anymore
 const CampaignControlRoom = () => {
   // Sample campaign data - in a real app, these would come from a database
   const campaignData = {

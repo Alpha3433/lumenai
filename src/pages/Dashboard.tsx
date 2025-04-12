@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
@@ -7,12 +8,13 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import Navbar from '@/components/Navbar';
-import { Dumbbell, Plus, Trash2, Eye, Paintbrush } from 'lucide-react';
+import { Dumbbell, Plus, Trash2, Eye, Paintbrush, Sparkles } from 'lucide-react';
 import ValidationSummaryCard from '@/components/dashboard/ValidationSummaryCard';
 import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
 import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
 import TaskScheduler from '@/components/dashboard/TaskScheduler';
 import ExpertTaskList from '@/components/dashboard/ExpertTaskList';
+import PremiumHeader from '@/components/navigation/PremiumHeader';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -98,7 +100,7 @@ export default function Dashboard() {
   }
 
   const sampleValidation = {
-    score: 70, // Score out of 100
+    score: 70,
     positives: [
       "Strong unique selling proposition", 
       "Growing market with low competition"
@@ -109,15 +111,22 @@ export default function Dashboard() {
     businessName: plans.length > 0 ? plans[0].business_name : "Your Business"
   };
 
+  // Determine if user has premium (in a real app, this would come from your auth system)
+  const hasPremium = user && user.id; // Placeholder logic
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
       <Navbar />
+      
+      {/* Premium Header Banner */}
+      {hasPremium && <PremiumHeader plan="Business Pro" />}
+      
       <div className="container max-w-6xl mx-auto px-4 py-8 pt-24">
         <div className="flex justify-between items-center mb-8 border-b border-blue-100 dark:border-blue-800/30 pb-4">
           <div className="flex items-center gap-2">
             <Dumbbell className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-              Your Business Plans
+              Business Dashboard
             </h1>
           </div>
           <div className="flex items-center gap-3">
@@ -128,13 +137,13 @@ export default function Dashboard() {
               onClick={() => setIsLogoModalOpen(true)}
             >
               <Paintbrush className="h-4 w-4" />
-              <span>Create New Logo</span>
+              <span>Create Logo</span>
             </Button>
             <Button 
               onClick={() => navigate('/create')}
               className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full"
             >
-              <Plus className="mr-2 h-4 w-4" /> Create New Plan
+              <Plus className="mr-2 h-4 w-4" /> New Business Plan
             </Button>
           </div>
         </div>
@@ -159,10 +168,7 @@ export default function Dashboard() {
           </div>
         ) : plans.length === 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <MeetingsCalendar />
-            </div>
-            
+            {/* First column - Ready to Create Your First Business Plan */}
             <div className="text-center py-20 px-6 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-blue-100 dark:border-blue-800/30 shadow-xl">
               <div className="flex justify-center mb-6">
                 <div className="rounded-full bg-blue-100 dark:bg-blue-900/50 p-5">
@@ -183,16 +189,26 @@ export default function Dashboard() {
               </Button>
             </div>
             
+            {/* Second column - Meetings Calendar */}
+            <div>
+              <MeetingsCalendar />
+            </div>
+            
+            {/* Task Management Section - Full width */}
             <div className="lg:col-span-2 mt-8">
-              <h2 className="text-2xl font-bold mb-6 text-foreground">Collaboration & Workflow</h2>
+              <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" /> 
+                Workflow & Tasks
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <TaskScheduler />
                 <ExpertTaskList />
+                <TaskScheduler />
               </div>
             </div>
           </div>
         ) : (
           <div className="space-y-12">
+            {/* Validation Summary - Full width for plans */}
             {plans.length > 0 && (
               <ValidationSummaryCard 
                 score={sampleValidation.score}
@@ -202,9 +218,15 @@ export default function Dashboard() {
               />
             )}
             
+            {/* Main Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Business Plans List - 2/3 width */}
               <div className="lg:col-span-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
+                  <Dumbbell className="h-5 w-5 text-blue-600 dark:text-blue-400" /> 
+                  Your Business Plans
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {plans.map((plan) => (
                     <Card 
                       key={plan.id} 
@@ -257,16 +279,21 @@ export default function Dashboard() {
                 </div>
               </div>
               
+              {/* Calendar - 1/3 width */}
               <div className="lg:col-span-1">
                 <MeetingsCalendar />
               </div>
             </div>
             
+            {/* Task Management Section - Full width for plans */}
             <div>
-              <h2 className="text-2xl font-bold mb-6 text-foreground">Collaboration & Workflow</h2>
+              <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" /> 
+                Workflow & Tasks
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <TaskScheduler />
                 <ExpertTaskList />
+                <TaskScheduler />
               </div>
             </div>
           </div>

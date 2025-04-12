@@ -83,7 +83,7 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
           
           {/* Summary content */}
           <div className="flex-1">
-            <h2 className="text-xl font-bold mb-3 text-blue-600 dark:text-blue-400">
+            <h2 className="text-xl font-bold mb-3 text-foreground">
               Business Validation Score
             </h2>
             <h3 className="text-lg font-semibold mb-4 text-foreground">{businessName}</h3>

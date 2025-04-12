@@ -12,6 +12,10 @@ import { Dumbbell, Plus, Trash2, Eye, Paintbrush } from 'lucide-react';
 import ValidationSummaryCard from '@/components/dashboard/ValidationSummaryCard';
 import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
 import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
+import TaskScheduler from '@/components/dashboard/TaskScheduler';
+import ClientFeedbackHub from '@/components/dashboard/ClientFeedbackHub';
+import CampaignControlRoom from '@/components/dashboard/CampaignControlRoom';
+import ExpertTaskList from '@/components/dashboard/ExpertTaskList';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -109,13 +113,6 @@ export default function Dashboard() {
     businessName: plans.length > 0 ? plans[0].business_name : "Your Business"
   };
 
-  // Always show meeting calendar regardless of whether there are plans
-  const renderMeetingsCalendar = () => (
-    <div className="mb-12">
-      <MeetingsCalendar />
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
       <Navbar />
@@ -146,9 +143,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Always show meetings calendar at the top */}
-        {renderMeetingsCalendar()}
-
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[1, 2, 3, 4].map((i) => (
@@ -168,27 +162,53 @@ export default function Dashboard() {
             ))}
           </div>
         ) : plans.length === 0 ? (
-          <div className="text-center py-20 px-6 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-blue-100 dark:border-blue-800/30 shadow-xl">
-            <div className="flex justify-center mb-6">
-              <div className="rounded-full bg-blue-100 dark:bg-blue-900/50 p-5">
-                <Dumbbell className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Empty state and meetings calendar side by side */}
+            <div className="text-center py-20 px-6 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-blue-100 dark:border-blue-800/30 shadow-xl">
+              <div className="flex justify-center mb-6">
+                <div className="rounded-full bg-blue-100 dark:bg-blue-900/50 p-5">
+                  <Dumbbell className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+                </div>
+              </div>
+              <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                Ready to Create Your First Business Plan
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-8">
+                Start building your entrepreneurial journey with our AI-powered platform. Create your first business plan to validate ideas and develop winning strategies.
+              </p>
+              <Button 
+                onClick={() => navigate('/create')}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
+              >
+                <Plus className="mr-2 h-5 w-5" /> Create Business Plan
+              </Button>
+            </div>
+            
+            <div>
+              <MeetingsCalendar />
+            </div>
+            
+            {/* Collaboration & Workflow Section */}
+            <div className="lg:col-span-2 mt-8">
+              <h2 className="text-2xl font-bold mb-6 text-foreground">Collaboration & Workflow</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <TaskScheduler />
+                <ClientFeedbackHub />
               </div>
             </div>
-            <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-              Ready to Create Your First Business Plan
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-8">
-              Start building your entrepreneurial journey with our AI-powered platform. Create your first business plan to validate ideas and develop winning strategies.
-            </p>
-            <Button 
-              onClick={() => navigate('/create')}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
-            >
-              <Plus className="mr-2 h-5 w-5" /> Create Business Plan
-            </Button>
+            
+            {/* Managed Services Portal Section */}
+            <div className="lg:col-span-2 mt-8">
+              <h2 className="text-2xl font-bold mb-6 text-foreground">Managed Services Portal</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <CampaignControlRoom />
+                <ExpertTaskList />
+              </div>
+            </div>
           </div>
         ) : (
           <div className="space-y-12">
+            {/* Display validation score if there are plans */}
             {plans.length > 0 && (
               <ValidationSummaryCard 
                 score={sampleValidation.score}
@@ -198,56 +218,84 @@ export default function Dashboard() {
               />
             )}
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {plans.map((plan) => (
-                <Card 
-                  key={plan.id} 
-                  className="overflow-hidden border border-blue-100 dark:border-blue-800/30 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm shadow-md hover:shadow-xl transition-all group"
-                >
-                  <div className="h-2 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
-                  <CardHeader>
-                    <CardTitle className="font-bold text-xl">{plan.business_name}</CardTitle>
-                    <CardDescription className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                      <span className="capitalize">{plan.industry || 'No industry specified'}</span>
-                      <span className="mx-2">•</span>
-                      <span>{plan.created_at ? formatDate(plan.created_at) : 'Unknown date'}</span>
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">Completion</span>
-                        <span className="font-medium">{Object.keys(plan.plan_data).length} sections</span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div 
-                          className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-500"
-                          style={{ width: `${Math.min(100, Object.keys(plan.plan_data).length * 10)}%` }}
-                        ></div>
-                      </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 capitalize mt-4">
-                        Status: <span className="font-medium">{plan.status || 'draft'}</span>
-                      </p>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between pt-2">
-                    <Button 
-                      variant="outline" 
-                      onClick={() => navigate(`/plan/${plan.id}`)} 
-                      className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2"
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Business plans grid (taking 2/3 of the space) */}
+              <div className="lg:col-span-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {plans.map((plan) => (
+                    <Card 
+                      key={plan.id} 
+                      className="overflow-hidden border border-blue-100 dark:border-blue-800/30 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm shadow-md hover:shadow-xl transition-all group"
                     >
-                      <Eye className="h-4 w-4" /> View Plan
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => handleDeletePlan(plan.id!)}
-                      className="border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
-                    >
-                      <Trash2 className="h-4 w-4" /> Delete
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
+                      <div className="h-2 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
+                      <CardHeader>
+                        <CardTitle className="font-bold text-xl">{plan.business_name}</CardTitle>
+                        <CardDescription className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                          <span className="capitalize">{plan.industry || 'No industry specified'}</span>
+                          <span className="mx-2">•</span>
+                          <span>{plan.created_at ? formatDate(plan.created_at) : 'Unknown date'}</span>
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-600 dark:text-gray-400">Completion</span>
+                            <span className="font-medium">{Object.keys(plan.plan_data).length} sections</span>
+                          </div>
+                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div 
+                              className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-500"
+                              style={{ width: `${Math.min(100, Object.keys(plan.plan_data).length * 10)}%` }}
+                            ></div>
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 capitalize mt-4">
+                            Status: <span className="font-medium">{plan.status || 'draft'}</span>
+                          </p>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="flex justify-between pt-2">
+                        <Button 
+                          variant="outline" 
+                          onClick={() => navigate(`/plan/${plan.id}`)} 
+                          className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2"
+                        >
+                          <Eye className="h-4 w-4" /> View Plan
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          onClick={() => handleDeletePlan(plan.id!)}
+                          className="border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
+                        >
+                          <Trash2 className="h-4 w-4" /> Delete
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Meetings calendar (taking 1/3 of the space) */}
+              <div className="lg:col-span-1">
+                <MeetingsCalendar />
+              </div>
+            </div>
+            
+            {/* Collaboration & Workflow Section */}
+            <div>
+              <h2 className="text-2xl font-bold mb-6 text-foreground">Collaboration & Workflow</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <TaskScheduler />
+                <ClientFeedbackHub />
+              </div>
+            </div>
+            
+            {/* Managed Services Portal Section */}
+            <div>
+              <h2 className="text-2xl font-bold mb-6 text-foreground">Managed Services Portal</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <CampaignControlRoom />
+                <ExpertTaskList />
+              </div>
             </div>
           </div>
         )}

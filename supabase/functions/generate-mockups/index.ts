@@ -24,19 +24,18 @@ serve(async (req) => {
     
     // Parse request body
     const body = await req.json();
-    const { imageBase64, mockupStyle, prompt } = body;
+    const { prompt, mockupStyle } = body;
     
-    if (!imageBase64 || !mockupStyle) {
-      throw new Error("Missing required parameters: imageBase64 and mockupStyle");
+    if (!prompt || !mockupStyle) {
+      throw new Error("Missing required parameters: prompt and mockupStyle");
     }
     
     // Prepare the prompt for OpenAI
-    const basePrompt = prompt || "Create a professional mockup of this image";
-    const fullPrompt = `${basePrompt} in a ${mockupStyle} style. The mockup should be clean, professional, and showcase the image in an appealing context. Do not alter the main image content, just place it in a mockup context.`;
+    const fullPrompt = `Create a professional mockup image in a ${mockupStyle} style. ${prompt} The mockup should be clean, professional, and showcase a design in an appealing context.`;
     
-    console.log(`Generating mockup in ${mockupStyle} style...`);
+    console.log(`Generating mockup in ${mockupStyle} style with prompt: ${fullPrompt}`);
     
-    // Call OpenAI API to generate the mockup
+    // Call OpenAI API to generate the mockup using ChatGPT's image generation
     const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
@@ -44,7 +43,7 @@ serve(async (req) => {
         "Authorization": `Bearer ${openAiKey}`
       },
       body: JSON.stringify({
-        model: "dall-e-3",
+        model: "dall-e-3", // The current model that powers ChatGPT's image generation
         prompt: fullPrompt,
         n: 1,
         size: "1024x1024",
@@ -65,6 +64,7 @@ serve(async (req) => {
       JSON.stringify({ 
         success: true, 
         imageUrl: data.data[0].url,
+        prompt: fullPrompt,
         createdAt: new Date().toISOString()
       }),
       { 

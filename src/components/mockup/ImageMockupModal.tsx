@@ -8,7 +8,8 @@ import {
   RefreshCw, 
   Loader2, 
   PaintBucket, 
-  Check
+  Check,
+  Pencil
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -20,63 +21,47 @@ interface ImageMockupModalProps {
 type MockupStyle = 'device frame' | 'website' | 'advertising banner' | 'social media post' | 'billboard';
 
 const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
+  const [mockupPrompt, setMockupPrompt] = useState<string>('');
   const [mockupSrc, setMockupSrc] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<MockupStyle>('device frame');
   const [customPrompt, setCustomPrompt] = useState('');
+  const [lastUsedPrompt, setLastUsedPrompt] = useState('');
   
   // Clear state when modal closes
   useEffect(() => {
     if (!open) {
       // Wait for the closing animation before resetting
       const timeout = setTimeout(() => {
-        setSelectedFile(null);
-        setPreviewSrc(null);
+        setMockupPrompt('');
         setMockupSrc(null);
         setIsGenerating(false);
         setSelectedStyle('device frame');
         setCustomPrompt('');
+        setLastUsedPrompt('');
       }, 300);
       
       return () => clearTimeout(timeout);
     }
   }, [open]);
   
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      
-      // Reset mockup when uploading a new image
-      setMockupSrc(null);
-      
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setPreviewSrc(event.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  
   const generateMockup = async () => {
-    if (!selectedFile || !previewSrc) {
-      toast.error("Please select an image first");
+    if (!mockupPrompt && !customPrompt) {
+      toast.error("Please enter a prompt for the mockup");
       return;
     }
     
     try {
       setIsGenerating(true);
       
-      // Get base64 data from previewSrc
-      const base64Data = previewSrc.split(',')[1];
+      // Prepare the prompt
+      const finalPrompt = customPrompt || `Create a mockup for ${mockupPrompt}`;
+      setLastUsedPrompt(finalPrompt);
       
       const { data, error } = await supabase.functions.invoke('generate-mockups', {
         body: {
-          imageBase64: base64Data,
-          mockupStyle: selectedStyle,
-          prompt: customPrompt || undefined
+          prompt: finalPrompt,
+          mockupStyle: selectedStyle
         }
       });
       
@@ -98,6 +83,12 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
     } finally {
       setIsGenerating(false);
     }
+  };
+  
+  const handleRetry = () => {
+    // Reset mockup source before generating a new one
+    setMockupSrc(null);
+    generateMockup();
   };
   
   const handleDownload = () => {
@@ -127,98 +118,82 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-4">Create Mockups from Image</h2>
+        <h2 className="text-2xl font-bold mb-4">Create Mockups from Prompts</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left side - Upload and settings */}
           <div className="space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Upload an image to create mockups
+                Enter a prompt to create mockups
               </label>
-              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 p-6 rounded-md text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                  id="image-upload"
-                />
-                <label htmlFor="image-upload" className="cursor-pointer flex flex-col items-center">
-                  {previewSrc ? (
-                    <img src={previewSrc} alt="Preview" className="max-h-40 mb-3 rounded" />
-                  ) : (
-                    <ImageIcon className="h-12 w-12 text-gray-400 mb-2" />
-                  )}
-                  <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                    {previewSrc ? "Change image" : "Select an image"}
-                  </span>
-                </label>
+              <textarea
+                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2"
+                placeholder="Describe what you want to create a mockup for..."
+                value={mockupPrompt}
+                onChange={(e) => setMockupPrompt(e.target.value)}
+                rows={3}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                Select mockup style
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {mockupStyles.map((style) => (
+                  <Button
+                    key={style}
+                    type="button"
+                    variant={selectedStyle === style ? "default" : "outline"}
+                    className={`justify-start text-left ${selectedStyle === style ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
+                    onClick={() => setSelectedStyle(style)}
+                  >
+                    {selectedStyle === style && <Check className="mr-1 h-4 w-4" />}
+                    {style}
+                  </Button>
+                ))}
               </div>
             </div>
             
-            {previewSrc && (
-              <>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">
-                    Select mockup style
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {mockupStyles.map((style) => (
-                      <Button
-                        key={style}
-                        type="button"
-                        variant={selectedStyle === style ? "default" : "outline"}
-                        className={`justify-start text-left ${selectedStyle === style ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
-                        onClick={() => setSelectedStyle(style)}
-                      >
-                        {selectedStyle === style && <Check className="mr-1 h-4 w-4" />}
-                        {style}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="text-sm font-medium" htmlFor="custom-prompt">
-                    Custom prompt (optional)
-                  </label>
-                  <textarea
-                    id="custom-prompt"
-                    className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2"
-                    placeholder="Add custom instructions for the mockup..."
-                    value={customPrompt}
-                    onChange={(e) => setCustomPrompt(e.target.value)}
-                    rows={3}
-                  />
-                </div>
-                
-                <div className="pt-2">
-                  <Button
-                    onClick={generateMockup}
-                    disabled={isGenerating || !previewSrc}
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                  >
-                    {isGenerating ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Generating...
-                      </>
-                    ) : mockupSrc ? (
-                      <>
-                        <RefreshCw className="mr-2 h-4 w-4" />
-                        Regenerate Mockup
-                      </>
-                    ) : (
-                      <>
-                        <PaintBucket className="mr-2 h-4 w-4" />
-                        Generate Mockup
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </>
-            )}
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor="custom-prompt">
+                Custom prompt (optional)
+              </label>
+              <textarea
+                id="custom-prompt"
+                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2"
+                placeholder="Add custom instructions for the mockup..."
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                rows={3}
+              />
+            </div>
+            
+            <div className="pt-2">
+              <Button
+                onClick={generateMockup}
+                disabled={isGenerating}
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : mockupSrc ? (
+                  <>
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    Generate New Mockup
+                  </>
+                ) : (
+                  <>
+                    <PaintBucket className="mr-2 h-4 w-4" />
+                    Generate Mockup
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
           
           {/* Right side - Mockup preview */}
@@ -238,31 +213,41 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
                     alt="Generated Mockup" 
                     className="w-full h-auto rounded shadow-lg" 
                   />
-                  <Button
-                    onClick={handleDownload}
-                    className="absolute bottom-4 right-4 bg-blue-600 hover:bg-blue-700"
-                    size="sm"
-                  >
-                    <DownloadIcon className="mr-2 h-4 w-4" />
-                    Download
-                  </Button>
-                </div>
-              ) : previewSrc ? (
-                <div className="text-center py-12">
-                  <ImageIcon className="h-12 w-12 mx-auto text-gray-400" />
-                  <p className="mt-4 text-gray-600 dark:text-gray-400">
-                    Click "Generate Mockup" to create your design
-                  </p>
+                  <div className="absolute bottom-4 right-4 flex space-x-2">
+                    <Button
+                      onClick={handleRetry}
+                      className="bg-blue-600 hover:bg-blue-700"
+                      size="sm"
+                    >
+                      <RefreshCw className="mr-2 h-4 w-4" />
+                      Retry
+                    </Button>
+                    <Button
+                      onClick={handleDownload}
+                      className="bg-green-600 hover:bg-green-700"
+                      size="sm"
+                    >
+                      <DownloadIcon className="mr-2 h-4 w-4" />
+                      Download
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <ImageIcon className="h-12 w-12 mx-auto text-gray-400" />
+                  <Pencil className="h-12 w-12 mx-auto text-gray-400" />
                   <p className="mt-4 text-gray-600 dark:text-gray-400">
-                    Upload an image to see a preview
+                    Enter a prompt and click "Generate Mockup"
                   </p>
                 </div>
               )}
             </div>
+
+            {mockupSrc && lastUsedPrompt && (
+              <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
+                <p className="font-medium">Used prompt:</p>
+                <p className="italic">{lastUsedPrompt}</p>
+              </div>
+            )}
           </div>
         </div>
         
@@ -271,7 +256,7 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
             Close
           </Button>
           {mockupSrc && (
-            <Button onClick={handleDownload} className="bg-blue-600 hover:bg-blue-700">
+            <Button onClick={handleDownload} className="bg-green-600 hover:bg-green-700">
               <DownloadIcon className="mr-2 h-4 w-4" />
               Download Mockup
             </Button>

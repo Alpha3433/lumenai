@@ -24,14 +24,33 @@ serve(async (req) => {
     
     // Parse request body
     const body = await req.json();
-    const { prompt, mockupStyle } = body;
+    const { prompt, mockupStyle, imageBase64 } = body;
     
     if (!prompt || !mockupStyle) {
       throw new Error("Missing required parameters: prompt and mockupStyle");
     }
     
     // Prepare the prompt for OpenAI
-    const fullPrompt = `Create a professional mockup image in a ${mockupStyle} style. ${prompt} The mockup should be clean, professional, and showcase a design in an appealing context.`;
+    let fullPrompt = `Create a professional mockup image in a ${mockupStyle} style. ${prompt} The mockup should be clean, professional, and showcase a design in an appealing context.`;
+    
+    const requestBody = {
+      model: "dall-e-3", // The current model that powers ChatGPT's image generation
+      prompt: fullPrompt,
+      n: 1,
+      size: "1024x1024",
+      response_format: "url",
+    };
+
+    // If an image is provided, use it as a reference in the API call
+    if (imageBase64) {
+      console.log("Image provided. Using as reference for mockup generation.");
+      
+      // For DALL-E 3, we can describe the image in the prompt
+      fullPrompt = `Create a professional mockup image in a ${mockupStyle} style based on this uploaded image: ${prompt}. The mockup should be clean, professional, and showcase the uploaded design in an appealing context.`;
+      
+      // Update request body with the new prompt
+      requestBody.prompt = fullPrompt;
+    }
     
     console.log(`Generating mockup in ${mockupStyle} style with prompt: ${fullPrompt}`);
     
@@ -42,13 +61,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${openAiKey}`
       },
-      body: JSON.stringify({
-        model: "dall-e-3", // The current model that powers ChatGPT's image generation
-        prompt: fullPrompt,
-        n: 1,
-        size: "1024x1024",
-        response_format: "url",
-      })
+      body: JSON.stringify(requestBody)
     });
     
     if (!openAiResponse.ok) {

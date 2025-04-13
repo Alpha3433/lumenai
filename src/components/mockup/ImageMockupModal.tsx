@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { 
@@ -9,7 +9,9 @@ import {
   Loader2, 
   PaintBucket, 
   Check,
-  Pencil
+  Pencil,
+  Upload,
+  X
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -27,6 +29,8 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
   const [selectedStyle, setSelectedStyle] = useState<MockupStyle>('device frame');
   const [customPrompt, setCustomPrompt] = useState('');
   const [lastUsedPrompt, setLastUsedPrompt] = useState('');
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Clear state when modal closes
   useEffect(() => {
@@ -39,11 +43,43 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
         setSelectedStyle('device frame');
         setCustomPrompt('');
         setLastUsedPrompt('');
+        setUploadedImage(null);
       }, 300);
       
       return () => clearTimeout(timeout);
     }
   }, [open]);
+  
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    // Check file size (limit to 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size must be less than 5MB");
+      return;
+    }
+    
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please select an image file");
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      setUploadedImage(result);
+    };
+    reader.readAsDataURL(file);
+  };
+  
+  const clearUploadedImage = () => {
+    setUploadedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
   
   const generateMockup = async () => {
     if (!mockupPrompt && !customPrompt) {
@@ -58,11 +94,20 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
       const finalPrompt = customPrompt || `Create a mockup for ${mockupPrompt}`;
       setLastUsedPrompt(finalPrompt);
       
+      // Prepare the request body
+      const requestBody: any = {
+        prompt: finalPrompt,
+        mockupStyle: selectedStyle
+      };
+      
+      // Add base64 image if available
+      if (uploadedImage) {
+        // If the image is already in base64 format, use it directly
+        requestBody.imageBase64 = uploadedImage;
+      }
+      
       const { data, error } = await supabase.functions.invoke('generate-mockups', {
-        body: {
-          prompt: finalPrompt,
-          mockupStyle: selectedStyle
-        }
+        body: requestBody
       });
       
       if (error) {
@@ -118,7 +163,7 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-4">Create Mockups from Prompts</h2>
+        <h2 className="text-2xl font-bold mb-4">Create Mockups from Prompts & Images</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left side - Upload and settings */}
@@ -134,6 +179,54 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
                 onChange={(e) => setMockupPrompt(e.target.value)}
                 rows={3}
               />
+            </div>
+            
+            {/* Image upload section */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                Upload an image (optional)
+              </label>
+              <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-md p-4">
+                {uploadedImage ? (
+                  <div className="relative w-full">
+                    <img 
+                      src={uploadedImage} 
+                      alt="Uploaded Preview" 
+                      className="w-full h-auto max-h-32 object-contain rounded" 
+                    />
+                    <button 
+                      onClick={clearUploadedImage}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                      title="Remove image"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                    <p className="text-xs text-center mt-2 text-gray-500">Image uploaded successfully</p>
+                  </div>
+                ) : (
+                  <>
+                    <label htmlFor="image-upload" className="cursor-pointer">
+                      <div className="flex flex-col items-center justify-center py-3">
+                        <Upload className="h-8 w-8 text-gray-400 mb-2" />
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Click to upload an image or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          PNG, JPG, GIF up to 5MB
+                        </p>
+                      </div>
+                      <input 
+                        id="image-upload" 
+                        ref={fileInputRef}
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden"
+                        onChange={handleImageUpload} 
+                      />
+                    </label>
+                  </>
+                )}
+              </div>
             </div>
             
             <div className="space-y-2">
@@ -236,7 +329,7 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
                 <div className="text-center py-12">
                   <Pencil className="h-12 w-12 mx-auto text-gray-400" />
                   <p className="mt-4 text-gray-600 dark:text-gray-400">
-                    Enter a prompt and click "Generate Mockup"
+                    Enter a prompt and/or upload an image, then click "Generate Mockup"
                   </p>
                 </div>
               )}

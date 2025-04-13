@@ -7,19 +7,100 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import Navbar from '@/components/Navbar';
-import { Dumbbell, Plus, Trash2, Eye, Paintbrush, Sparkles, ChevronRight, BarChart3, LineChart } from 'lucide-react';
+import { Dumbbell, Plus, Trash2, Eye, Paintbrush, Sparkles, ChevronRight, BarChart3, LineChart, Badge, CalendarIcon, ImageIcon } from 'lucide-react';
 import ValidationSummaryCard from '@/components/dashboard/ValidationSummaryCard';
 import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
 import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
 import TaskScheduler from '@/components/dashboard/TaskScheduler';
 import ExpertTaskList from '@/components/dashboard/ExpertTaskList';
-import PremiumHeader from '@/components/navigation/PremiumHeader';
+
+interface ImageMockupModalProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPreviewSrc(event.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedFile) {
+      toast.success("Your mockup is being created!");
+      setTimeout(() => {
+        toast.info("Mockup created! Check your projects folder.");
+        onClose();
+      }, 2000);
+    } else {
+      toast.error("Please select an image first");
+    }
+  };
+  
+  if (!open) return null;
+  
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4">Create Mockups from Image</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">
+              Upload an image to create mockups
+            </label>
+            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 p-6 rounded-md text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+                id="image-upload"
+              />
+              <label htmlFor="image-upload" className="cursor-pointer flex flex-col items-center">
+                {previewSrc ? (
+                  <img src={previewSrc} alt="Preview" className="max-h-40 mb-3 rounded" />
+                ) : (
+                  <ImageIcon className="h-12 w-12 text-gray-400 mb-2" />
+                )}
+                <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                  {previewSrc ? "Change image" : "Select an image"}
+                </span>
+              </label>
+            </div>
+          </div>
+          
+          <div className="flex gap-3 justify-end">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" className="bg-gradient-to-r from-blue-600 to-indigo-600">
+              Create Mockups
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
   const [plans, setPlans] = useState<StoredBusinessPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
+  const [isImageMockupModalOpen, setIsImageMockupModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -110,17 +191,11 @@ export default function Dashboard() {
     businessName: plans.length > 0 ? plans[0].business_name : "Your Business"
   };
 
-  const hasPremium = user && user.id; // Placeholder logic
-  const premiumPlan = 'Business Pro'; // This would come from user data in a real app
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/30">
       <Navbar />
       
-      {/* Premium Header Banner */}
-      {hasPremium && <PremiumHeader plan={premiumPlan} />}
-      
-      <div className="container max-w-7xl mx-auto px-4 py-8 pt-28">
+      <div className="container max-w-7xl mx-auto px-4 py-8 pt-20">
         <div className="flex justify-between items-center mb-10">
           <div>
             <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-2">
@@ -132,13 +207,16 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-3">
             <Button 
-              variant="outline"
-              size="sm"
-              className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2 px-4"
-              onClick={() => setIsLogoModalOpen(true)}
+              onClick={() => setIsImageMockupModalOpen(true)}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-5 py-2.5"
             >
-              <Paintbrush className="h-4 w-4" />
-              <span>Create Logo</span>
+              <ImageIcon className="mr-2 h-4 w-4" /> Create Mockups
+            </Button>
+            <Button 
+              onClick={() => setIsLogoModalOpen(true)}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-5 py-2.5"
+            >
+              <Paintbrush className="mr-2 h-4 w-4" /> Create Logo
             </Button>
             <Button 
               onClick={() => navigate('/create')}
@@ -223,9 +301,7 @@ export default function Dashboard() {
                     Your Business Plans
                   </h2>
                   <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="text-xs border-blue-200 dark:border-blue-800"
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-5 py-2.5 text-sm"
                     onClick={() => navigate('/create')}
                   >
                     <Plus className="h-3 w-3 mr-1" /> New Plan
@@ -241,9 +317,9 @@ export default function Dashboard() {
                       <CardHeader className="pb-2">
                         <div className="flex justify-between items-start">
                           <CardTitle className="font-bold text-xl">{plan.business_name}</CardTitle>
-                          <Badge variant="outline" className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800">
+                          <div className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800 text-xs px-2.5 py-0.5 rounded-full font-medium">
                             {plan.industry || 'Business'}
-                          </Badge>
+                          </div>
                         </div>
                         <CardDescription className="flex items-center text-sm text-gray-600 dark:text-gray-400 mt-1">
                           <CalendarIcon className="h-3.5 w-3.5 mr-1.5" />
@@ -323,6 +399,10 @@ export default function Dashboard() {
       <LogoGeneratorModal 
         open={isLogoModalOpen}
         onClose={() => setIsLogoModalOpen(false)}
+      />
+      <ImageMockupModal
+        open={isImageMockupModalOpen}
+        onClose={() => setIsImageMockupModalOpen(false)}
       />
     </div>
   );

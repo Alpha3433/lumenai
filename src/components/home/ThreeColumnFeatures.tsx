@@ -5,9 +5,7 @@ const ThreeColumnFeatures = () => {
   return <section className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Increase business success with AI-powered planning
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Increase Business Success with AI-powered Planning</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Optimize business planning with our comprehensive analysis platform for up to 30% better outcomes & leveraging AI to make real business growth.
           </p>

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Sparkles, Shield } from 'lucide-react';
+import { Sparkles, Shield, Crown } from 'lucide-react';
 
 interface PremiumHeaderProps {
   plan: 'Starter' | 'Business Pro' | 'Enterprise';
@@ -14,7 +14,7 @@ const PremiumHeader: React.FC<PremiumHeaderProps> = ({ plan }) => {
         return {
           gradient: 'from-purple-600 to-pink-600',
           gradientDark: 'dark:from-purple-500 dark:to-pink-500',
-          icon: <Shield className="h-4 w-4 mr-1" />,
+          icon: <Crown className="h-4 w-4 mr-1" />,
           message: 'Enterprise Plan: Unlimited Access to All Premium Features'
         };
       case 'Business Pro':
@@ -28,7 +28,7 @@ const PremiumHeader: React.FC<PremiumHeaderProps> = ({ plan }) => {
         return {
           gradient: 'from-green-600 to-teal-600',
           gradientDark: 'dark:from-green-500 dark:to-teal-500',
-          icon: <Sparkles className="h-4 w-4 mr-1" />,
+          icon: <Shield className="h-4 w-4 mr-1" />,
           message: 'Starter Plan: Enhanced Business Planning Features'
         };
     }
@@ -37,11 +37,11 @@ const PremiumHeader: React.FC<PremiumHeaderProps> = ({ plan }) => {
   const planDetails = getPlanDetails(plan);
 
   return (
-    <div className={`fixed top-16 inset-x-0 z-10 py-1.5 bg-gradient-to-r ${planDetails.gradient} ${planDetails.gradientDark} shadow-md`}>
+    <div className={`fixed top-16 inset-x-0 z-10 py-2 bg-gradient-to-r ${planDetails.gradient} ${planDetails.gradientDark} shadow-md`}>
       <div className="container max-w-6xl mx-auto px-4 flex items-center justify-center">
         <div className="text-sm font-medium text-white flex items-center">
           {planDetails.icon}
-          {planDetails.message}
+          <span className="ml-1">{planDetails.message}</span>
         </div>
       </div>
     </div>

@@ -41,13 +41,13 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
   );
   
   return (
-    <section className="mb-10 animate-fade-in">
-      <h2 className="text-3xl font-bold mb-6 text-center text-foreground">
+    <section className="mb-12 animate-fade-in">
+      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
         Business Validation Score
       </h2>
       
       {/* Overall Validation Score Summary */}
-      <div className="mb-6">
+      <div className="mb-8">
         <ValidationSummaryCard 
           score={validationData.overallScore}
           positives={validationData.positives.slice(0, 2)}
@@ -62,7 +62,7 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
         opportunities={opportunities} 
       />
       
-      <Separator className="my-8" />
+      <Separator className="my-10" />
     </section>
   );
 };

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
@@ -8,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import Navbar from '@/components/Navbar';
-import { Dumbbell, Plus, Trash2, Eye, Paintbrush, Sparkles } from 'lucide-react';
+import { Dumbbell, Plus, Trash2, Eye, Paintbrush, Sparkles, ChevronRight, BarChart3, LineChart } from 'lucide-react';
 import ValidationSummaryCard from '@/components/dashboard/ValidationSummaryCard';
 import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
 import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
@@ -111,29 +110,31 @@ export default function Dashboard() {
     businessName: plans.length > 0 ? plans[0].business_name : "Your Business"
   };
 
-  // Determine if user has premium (in a real app, this would come from your auth system)
   const hasPremium = user && user.id; // Placeholder logic
+  const premiumPlan = 'Business Pro'; // This would come from user data in a real app
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/30">
       <Navbar />
       
       {/* Premium Header Banner */}
-      {hasPremium && <PremiumHeader plan="Business Pro" />}
+      {hasPremium && <PremiumHeader plan={premiumPlan} />}
       
-      <div className="container max-w-6xl mx-auto px-4 py-8 pt-24">
-        <div className="flex justify-between items-center mb-8 border-b border-blue-100 dark:border-blue-800/30 pb-4">
-          <div className="flex items-center gap-2">
-            <Dumbbell className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-            <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+      <div className="container max-w-7xl mx-auto px-4 py-8 pt-28">
+        <div className="flex justify-between items-center mb-10">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-2">
               Business Dashboard
             </h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              Welcome back{user?.user_metadata?.full_name ? `, ${user.user_metadata.full_name}` : ''}! Manage your business plans and schedule.
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <Button 
               variant="outline"
               size="sm"
-              className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2"
+              className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2 px-4"
               onClick={() => setIsLogoModalOpen(true)}
             >
               <Paintbrush className="h-4 w-4" />
@@ -141,7 +142,7 @@ export default function Dashboard() {
             </Button>
             <Button 
               onClick={() => navigate('/create')}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-5 py-2.5"
             >
               <Plus className="mr-2 h-4 w-4" /> New Business Plan
             </Button>
@@ -167,34 +168,31 @@ export default function Dashboard() {
             ))}
           </div>
         ) : plans.length === 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* First column - Ready to Create Your First Business Plan */}
-            <div className="text-center py-20 px-6 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-blue-100 dark:border-blue-800/30 shadow-xl">
-              <div className="flex justify-center mb-6">
-                <div className="rounded-full bg-blue-100 dark:bg-blue-900/50 p-5">
-                  <Dumbbell className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="text-center py-20 px-8 bg-white/90 dark:bg-gray-800/40 backdrop-blur-sm rounded-3xl border border-blue-100 dark:border-blue-800/30 shadow-2xl">
+              <div className="flex justify-center mb-8">
+                <div className="rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/50 dark:to-indigo-900/50 p-6">
+                  <BarChart3 className="h-16 w-16 text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
-              <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
                 Ready to Create Your First Business Plan
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-8">
+              <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-10 text-lg">
                 Start building your entrepreneurial journey with our AI-powered platform. Create your first business plan to validate ideas and develop winning strategies.
               </p>
               <Button 
                 onClick={() => navigate('/create')}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
               >
-                <Plus className="mr-2 h-5 w-5" /> Create Business Plan
+                <Plus className="mr-3 h-5 w-5" /> Create Business Plan
               </Button>
             </div>
             
-            {/* Second column - Meetings Calendar */}
             <div>
               <MeetingsCalendar />
             </div>
             
-            {/* Task Management Section - Full width */}
             <div className="lg:col-span-2 mt-8">
               <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" /> 
@@ -208,7 +206,6 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="space-y-12">
-            {/* Validation Summary - Full width for plans */}
             {plans.length > 0 && (
               <ValidationSummaryCard 
                 score={sampleValidation.score}
@@ -218,60 +215,77 @@ export default function Dashboard() {
               />
             )}
             
-            {/* Main Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Business Plans List - 2/3 width */}
               <div className="lg:col-span-2">
-                <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
-                  <Dumbbell className="h-5 w-5 text-blue-600 dark:text-blue-400" /> 
-                  Your Business Plans
-                </h2>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                    <LineChart className="h-5 w-5 text-blue-600 dark:text-blue-400" /> 
+                    Your Business Plans
+                  </h2>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="text-xs border-blue-200 dark:border-blue-800"
+                    onClick={() => navigate('/create')}
+                  >
+                    <Plus className="h-3 w-3 mr-1" /> New Plan
+                  </Button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {plans.map((plan) => (
                     <Card 
                       key={plan.id} 
-                      className="overflow-hidden border border-blue-100 dark:border-blue-800/30 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm shadow-md hover:shadow-xl transition-all group"
+                      className="overflow-hidden border border-blue-100 dark:border-blue-800/30 bg-white/90 dark:bg-gray-800/40 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all group"
                     >
-                      <div className="h-2 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
-                      <CardHeader>
-                        <CardTitle className="font-bold text-xl">{plan.business_name}</CardTitle>
-                        <CardDescription className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                          <span className="capitalize">{plan.industry || 'No industry specified'}</span>
-                          <span className="mx-2">•</span>
+                      <div className="h-2.5 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="font-bold text-xl">{plan.business_name}</CardTitle>
+                          <Badge variant="outline" className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800">
+                            {plan.industry || 'Business'}
+                          </Badge>
+                        </div>
+                        <CardDescription className="flex items-center text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          <CalendarIcon className="h-3.5 w-3.5 mr-1.5" />
                           <span>{plan.created_at ? formatDate(plan.created_at) : 'Unknown date'}</span>
                         </CardDescription>
                       </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
+                      <CardContent className="pb-2">
+                        <div className="space-y-3">
                           <div className="flex items-center justify-between text-sm">
                             <span className="text-gray-600 dark:text-gray-400">Completion</span>
                             <span className="font-medium">{Object.keys(plan.plan_data).length} sections</span>
                           </div>
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                             <div 
-                              className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-500"
+                              className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2.5 rounded-full transition-all duration-500"
                               style={{ width: `${Math.min(100, Object.keys(plan.plan_data).length * 10)}%` }}
                             ></div>
                           </div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 capitalize mt-4">
-                            Status: <span className="font-medium">{plan.status || 'draft'}</span>
-                          </p>
+                          <div className="flex justify-between items-center text-sm pt-1">
+                            <span className="text-gray-600 dark:text-gray-400 capitalize">
+                              Status:
+                            </span> 
+                            <span className="font-medium px-2.5 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-xs">
+                              {plan.status || 'draft'}
+                            </span>
+                          </div>
                         </div>
                       </CardContent>
-                      <CardFooter className="flex justify-between pt-2">
+                      <CardFooter className="flex justify-between pt-3 border-t border-gray-100 dark:border-gray-800/60">
                         <Button 
                           variant="outline" 
                           onClick={() => navigate(`/plan/${plan.id}`)} 
-                          className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-2"
+                          className="border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 flex items-center gap-1.5"
                         >
-                          <Eye className="h-4 w-4" /> View Plan
+                          <Eye className="h-3.5 w-3.5" /> View
                         </Button>
                         <Button 
                           variant="outline" 
                           onClick={() => handleDeletePlan(plan.id!)}
-                          className="border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
+                          className="border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-1.5"
                         >
-                          <Trash2 className="h-4 w-4" /> Delete
+                          <Trash2 className="h-3.5 w-3.5" /> Delete
                         </Button>
                       </CardFooter>
                     </Card>
@@ -279,18 +293,25 @@ export default function Dashboard() {
                 </div>
               </div>
               
-              {/* Calendar - 1/3 width */}
               <div className="lg:col-span-1">
                 <MeetingsCalendar />
               </div>
             </div>
             
-            {/* Task Management Section - Full width for plans */}
             <div>
-              <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" /> 
-                Workflow & Tasks
-              </h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" /> 
+                  Workflow & Tasks
+                </h2>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                >
+                  View All <ChevronRight className="h-3 w-3" />
+                </Button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <ExpertTaskList />
                 <TaskScheduler />

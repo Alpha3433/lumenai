@@ -1,13 +1,62 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, FilePlus } from 'lucide-react';
+import { FileText, FilePlus, ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { StoredBusinessPlan } from '@/utils/supabaseClient';
 
-const EmptyReportsSection: React.FC = () => {
+interface EmptyReportsSectionProps {
+  plans?: StoredBusinessPlan[];
+}
+
+const EmptyReportsSection: React.FC<EmptyReportsSectionProps> = ({ plans = [] }) => {
   const navigate = useNavigate();
   
+  // If we have plans, show the most recent one
+  if (plans && plans.length > 0) {
+    const latestPlan = plans[0]; // Assuming plans are sorted by date (newest first)
+    
+    return (
+      <Card className="border border-gray-200 dark:border-gray-800 shadow-sm mb-6">
+        <CardContent className="p-6">
+          <div className="mb-4">
+            <h2 className="text-xl font-bold">Recent Reports</h2>
+            <p className="text-sm text-muted-foreground">Your latest market research projects</p>
+          </div>
+
+          {/* Latest Plan Summary */}
+          <div className="bg-blue-50/50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 rounded-lg p-5">
+            <h3 className="text-lg font-semibold mb-2">{latestPlan.business_name}</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              {latestPlan.industry || 'Business'} • Created on {new Date(latestPlan.created_at).toLocaleDateString()}
+            </p>
+            <div className="flex justify-between items-center">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => navigate(`/plan/${latestPlan.id}`)}
+                className="text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+              >
+                <FileText className="mr-1.5 h-3.5 w-3.5" />
+                View Report
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => navigate('/create')}
+                className="text-sm"
+              >
+                <FilePlus className="mr-1.5 h-3.5 w-3.5" />
+                Create New
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+  
+  // Otherwise show empty state
   return (
     <Card className="border border-gray-200 dark:border-gray-800 shadow-sm mb-6">
       <CardContent className="p-6">

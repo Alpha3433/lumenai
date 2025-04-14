@@ -14,6 +14,7 @@ import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
 import TaskScheduler from '@/components/dashboard/TaskScheduler';
 import ExpertTaskList from '@/components/dashboard/ExpertTaskList';
 import ImageMockupModal from '@/components/mockup/ImageMockupModal';
+import EmptyReportsSection from '@/components/market/EmptyReportsSection';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -165,26 +166,32 @@ export default function Dashboard() {
               </Card>
             ))}
           </div>
-        ) : plans.length === 0 ? (
+        ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="text-center py-20 px-8 bg-white/90 dark:bg-gray-800/40 backdrop-blur-sm rounded-3xl border border-blue-100 dark:border-blue-800/30 shadow-2xl">
-              <div className="flex justify-center mb-8">
-                <div className="rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/50 dark:to-indigo-900/50 p-6">
-                  <BarChart3 className="h-16 w-16 text-blue-600 dark:text-blue-400" />
-                </div>
-              </div>
-              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-                Ready to Create Your First Business Plan
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-10 text-lg">
-                Start building your entrepreneurial journey with our AI-powered platform. Create your first business plan to validate ideas and develop winning strategies.
-              </p>
-              <Button 
-                onClick={() => navigate('/create')}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
-              >
-                <Plus className="mr-3 h-5 w-5" /> Create Business Plan
-              </Button>
+            <div className={plans.length === 0 ? "text-center py-20 px-8 bg-white/90 dark:bg-gray-800/40 backdrop-blur-sm rounded-3xl border border-blue-100 dark:border-blue-800/30 shadow-2xl" : ""}>
+              {plans.length === 0 ? (
+                <>
+                  <div className="flex justify-center mb-8">
+                    <div className="rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/50 dark:to-indigo-900/50 p-6">
+                      <BarChart3 className="h-16 w-16 text-blue-600 dark:text-blue-400" />
+                    </div>
+                  </div>
+                  <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                    Ready to Create Your First Business Plan
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto mb-10 text-lg">
+                    Start building your entrepreneurial journey with our AI-powered platform. Create your first business plan to validate ideas and develop winning strategies.
+                  </p>
+                  <Button 
+                    onClick={() => navigate('/create')}
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-8 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <Plus className="mr-3 h-5 w-5" /> Create Business Plan
+                  </Button>
+                </>
+              ) : (
+                <EmptyReportsSection plans={plans} />
+              )}
             </div>
             
             <div>
@@ -202,8 +209,10 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-        ) : (
-          <div className="space-y-12">
+        )}
+        
+        {plans.length > 0 && !loading && (
+          <div className="space-y-12 mt-8">
             {plans.length > 0 && (
               <ValidationSummaryCard 
                 score={sampleValidation.score}

@@ -1,9 +1,11 @@
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import { businessPlanService } from '@/utils/supabaseClient';
 import Navbar from '@/components/Navbar';
 import { FileText, Calendar, CheckCircle, MessageSquare } from 'lucide-react';
+import { Skeleton } from "@/components/ui/skeleton";
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import StatsCard from '@/components/dashboard/StatsCard';
 import ExpertTaskList from '@/components/dashboard/ExpertTaskList';

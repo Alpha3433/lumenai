@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { 
@@ -11,10 +10,22 @@ import {
   Users, 
   LogOut,
   Calendar,
-  ChartBar
+  ChartBar,
+  HelpCircle,
+  CreditCard,
+  Mail,
+  CheckCircle
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +40,8 @@ const UserAuthSection: React.FC = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+  const [showSupportDialog, setShowSupportDialog] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -56,7 +69,7 @@ const UserAuthSection: React.FC = () => {
                 {user.email?.substring(0, 2).toUpperCase() || 'JD'}
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <DropdownMenuContent align="end" className="w-[320px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
               <DropdownMenuLabel className="font-semibold">My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate('/home')} className="cursor-pointer">
@@ -80,13 +93,19 @@ const UserAuthSection: React.FC = () => {
                 <Calendar className="mr-2 h-4 w-4" />
                 <span>Schedule a Meeting</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/home#pricing')} className="cursor-pointer">
-                <DollarSign className="mr-2 h-4 w-4" />
-                <span>Upgrade Plan</span>
+              <DropdownMenuItem onClick={() => setShowUpgradeDialog(true)} className="cursor-pointer">
+                <DollarSign className="mr-2 h-4 w-4 text-purple-500" />
+                <div>
+                  <span className="font-medium">Upgrade Plan</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Get access to premium features</p>
+                </div>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => window.open('mailto:support@example.com', '_blank')} className="cursor-pointer">
-                <MessageCircle className="mr-2 h-4 w-4" />
-                <span>Contact Support</span>
+              <DropdownMenuItem onClick={() => setShowSupportDialog(true)} className="cursor-pointer">
+                <MessageCircle className="mr-2 h-4 w-4 text-blue-500" />
+                <div>
+                  <span className="font-medium">Contact Support</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Get help with your account</p>
+                </div>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate('/switch-account')} className="cursor-pointer">
@@ -99,6 +118,97 @@ const UserAuthSection: React.FC = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <CreditCard className="h-5 w-5 text-purple-500" />
+                  Upgrade Your Plan
+                </DialogTitle>
+                <DialogDescription>
+                  Choose the perfect plan for your business needs
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4 p-4 rounded-lg border border-purple-100 dark:border-purple-900/50 bg-purple-50/50 dark:bg-purple-900/20">
+                    <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/50">
+                      <CheckCircle className="h-5 w-5 text-purple-500" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-1">Premium Plan</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Unlock advanced features, priority support, and unlimited reports</p>
+                      <div className="mt-2">
+                        <span className="text-2xl font-bold">$29</span>
+                        <span className="text-gray-500 dark:text-gray-400">/month</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setShowUpgradeDialog(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  className="bg-purple-600 hover:bg-purple-700"
+                  onClick={() => navigate('/home#pricing')}
+                >
+                  View All Plans
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={showSupportDialog} onOpenChange={setShowSupportDialog}>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <HelpCircle className="h-5 w-5 text-blue-500" />
+                  Contact Support
+                </DialogTitle>
+                <DialogDescription>
+                  Get help with your account or business plan
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="space-y-4">
+                  <a 
+                    href="mailto:support@example.com" 
+                    className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <Mail className="h-5 w-5 text-blue-500" />
+                    <div>
+                      <h4 className="font-medium">Email Support</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">support@example.com</p>
+                    </div>
+                  </a>
+                  <a 
+                    href="#" 
+                    className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <MessageCircle className="h-5 w-5 text-blue-500" />
+                    <div>
+                      <h4 className="font-medium">Live Chat</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Chat with our support team</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setShowSupportDialog(false)}
+                >
+                  Close
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       ) : (
         <>

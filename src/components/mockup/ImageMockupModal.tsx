@@ -27,7 +27,6 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
   const [mockupSrc, setMockupSrc] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<MockupStyle>('device frame');
-  const [customPrompt, setCustomPrompt] = useState('');
   const [lastUsedPrompt, setLastUsedPrompt] = useState('');
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +40,6 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
         setMockupSrc(null);
         setIsGenerating(false);
         setSelectedStyle('device frame');
-        setCustomPrompt('');
         setLastUsedPrompt('');
         setUploadedImage(null);
       }, 300);
@@ -82,16 +80,28 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
   };
   
   const generateMockup = async () => {
-    if (!mockupPrompt && !customPrompt) {
-      toast.error("Please enter a prompt for the mockup");
+    if (!mockupPrompt && !uploadedImage) {
+      toast.error("Please enter a prompt or upload an image");
       return;
     }
     
     try {
       setIsGenerating(true);
       
-      // Prepare the prompt
-      const finalPrompt = customPrompt || `Create a mockup for ${mockupPrompt}`;
+      // Generate dynamic prompt based on user input and selected style
+      let finalPrompt = '';
+      
+      if (uploadedImage && mockupPrompt) {
+        // Both image and prompt provided
+        finalPrompt = `Create a professional ${selectedStyle} mockup for "${mockupPrompt}"`;
+      } else if (uploadedImage) {
+        // Only image provided
+        finalPrompt = `Create a professional ${selectedStyle} mockup based on the uploaded image`;
+      } else {
+        // Only prompt provided
+        finalPrompt = `Create a professional ${selectedStyle} mockup for "${mockupPrompt}"`;
+      }
+      
       setLastUsedPrompt(finalPrompt);
       
       // Prepare the request body
@@ -247,20 +257,6 @@ const ImageMockupModal = ({ open, onClose }: ImageMockupModalProps) => {
                   </Button>
                 ))}
               </div>
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium" htmlFor="custom-prompt">
-                Custom prompt (optional)
-              </label>
-              <textarea
-                id="custom-prompt"
-                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2"
-                placeholder="Add custom instructions for the mockup..."
-                value={customPrompt}
-                onChange={(e) => setCustomPrompt(e.target.value)}
-                rows={3}
-              />
             </div>
             
             <div className="pt-2">

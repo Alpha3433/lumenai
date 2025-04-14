@@ -26,35 +26,31 @@ serve(async (req) => {
     const body = await req.json();
     const { prompt, mockupStyle, imageBase64 } = body;
     
-    if (!prompt || !mockupStyle) {
-      throw new Error("Missing required parameters: prompt and mockupStyle");
+    if (!prompt) {
+      throw new Error("Missing required parameter: prompt");
     }
     
-    // Prepare the prompt for OpenAI
+    // Build a dynamic prompt for OpenAI
     let fullPrompt = `Create a professional mockup image in a ${mockupStyle} style. ${prompt} The mockup should be clean, professional, and showcase a design in an appealing context.`;
     
     const requestBody = {
-      model: "dall-e-3", // The current model that powers ChatGPT's image generation
+      model: "dall-e-3", // Using DALL-E 3 model
       prompt: fullPrompt,
       n: 1,
       size: "1024x1024",
       response_format: "url",
     };
 
-    // If an image is provided, use it as a reference in the API call
+    // If an image is provided, enhance the prompt with image reference
     if (imageBase64) {
       console.log("Image provided. Using as reference for mockup generation.");
-      
-      // For DALL-E 3, we can describe the image in the prompt
-      fullPrompt = `Create a professional mockup image in a ${mockupStyle} style based on this uploaded image: ${prompt}. The mockup should be clean, professional, and showcase the uploaded design in an appealing context.`;
-      
-      // Update request body with the new prompt
+      fullPrompt = `${prompt} Create a professional mockup image in a ${mockupStyle} style that incorporates elements from the uploaded image. The mockup should be clean, professional, and present the design in an appealing context.`;
       requestBody.prompt = fullPrompt;
     }
     
-    console.log(`Generating mockup in ${mockupStyle} style with prompt: ${fullPrompt}`);
+    console.log(`Generating mockup with prompt: ${fullPrompt}`);
     
-    // Call OpenAI API to generate the mockup using ChatGPT's image generation
+    // Call OpenAI API to generate the mockup
     const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {

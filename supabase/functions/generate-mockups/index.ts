@@ -26,15 +26,15 @@ serve(async (req) => {
     const body = await req.json();
     const { prompt, mockupStyle, imageBase64 } = body;
     
-    if (!prompt) {
-      throw new Error("Missing required parameter: prompt");
+    if (!prompt && !imageBase64) {
+      throw new Error("Missing required parameter: prompt or imageBase64");
     }
     
     // Build a dynamic prompt for OpenAI
     let fullPrompt = `Create a professional mockup image in a ${mockupStyle} style. ${prompt} The mockup should be clean, professional, and showcase a design in an appealing context.`;
     
     const requestBody = {
-      model: "dall-e-3", // Using DALL-E 3 model
+      model: "gpt-4o", // Using GPT-4o model with vision capabilities
       prompt: fullPrompt,
       n: 1,
       size: "1024x1024",
@@ -44,7 +44,7 @@ serve(async (req) => {
     // If an image is provided, enhance the prompt with image reference
     if (imageBase64) {
       console.log("Image provided. Using as reference for mockup generation.");
-      fullPrompt = `${prompt} Create a professional mockup image in a ${mockupStyle} style that incorporates elements from the uploaded image. The mockup should be clean, professional, and present the design in an appealing context.`;
+      fullPrompt = `${prompt ? prompt : "Using the uploaded image as reference,"} create a professional mockup image in a ${mockupStyle} style that incorporates elements from the uploaded image. The mockup should be clean, professional, and present the design in an appealing context.`;
       requestBody.prompt = fullPrompt;
     }
     

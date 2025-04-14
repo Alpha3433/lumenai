@@ -35,7 +35,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "dall-e-3",
+        model: "gpt-4o", // Using GPT-4o model instead of DALL-E 3
         prompt: enhancedPrompt,
         n: 1,
         size: "1024x1024",

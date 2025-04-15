@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
@@ -86,14 +85,19 @@ export default function Dashboard() {
           />
         </div>
 
+        <div className="mb-8">
+          <MeetingsCalendar />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <EmptyReportsSection plans={plans} />
           <div className="space-y-8">
+            <EmptyReportsSection plans={plans} />
+          </div>
+          <div>
             <ExpertTaskList />
-            <MeetingsCalendar />
           </div>
         </div>
       </div>
     </div>
   );
-};
+}

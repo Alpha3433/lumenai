@@ -9,8 +9,10 @@ const NewHero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerTop, setContainerTop] = useState(0);
   
+  // Get the scroll progress for parallax effect
   const { scrollY } = useScroll();
   
+  // Update container position on mount and resize
   useEffect(() => {
     const updateContainerPosition = () => {
       if (containerRef.current) {
@@ -19,11 +21,15 @@ const NewHero = () => {
       }
     };
     
+    // Initial position
     updateContainerPosition();
+    
+    // Update on resize
     window.addEventListener('resize', updateContainerPosition);
     return () => window.removeEventListener('resize', updateContainerPosition);
   }, []);
   
+  // Transform the Y position of the screenshot based on scroll
   const mockupY = useTransform(
     scrollY, 
     [containerTop - 500, containerTop + 500], 
@@ -35,7 +41,7 @@ const NewHero = () => {
       <div className="max-w-3xl mx-auto text-center">
         <div className="flex justify-center mb-3">
           <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-600">
-            Complete Business Building Platform
+            AI-Powered Business Building
           </span>
         </div>
 
@@ -45,7 +51,7 @@ const NewHero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Beyond Ideas - We <span className="text-blue-600">Build Your Business</span> End-to-End
+          Turn <span className="text-blue-600">Business Ideas</span> Into Your Product's Secret Weapon
         </motion.h1>
 
         <motion.p 
@@ -54,8 +60,7 @@ const NewHero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          While others stop at ideas, we deliver complete business solutions. From validation to execution, 
-          backed by real-time data, expert support, and done-for-you services.
+          An affordable way to validate business ideas that works your product gives the industry boost all customer-centric, with simple product enhancements with ease
         </motion.p>
 
         <motion.div
@@ -66,31 +71,16 @@ const NewHero = () => {
         >
           <Link to="/create">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
-              Start Building Now
+              Try for Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
           <Link to="/examples">
             <Button variant="outline" className="rounded-md h-12 px-8 text-lg font-medium border-gray-300 dark:border-gray-700">
-              View Success Stories
+              See Real Business Plans
             </Button>
           </Link>
         </motion.div>
-
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200/50 dark:border-gray-700/50">
-            <div className="text-3xl font-bold text-blue-600">92%</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Success Rate</div>
-          </div>
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200/50 dark:border-gray-700/50">
-            <div className="text-3xl font-bold text-blue-600">50K+</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Businesses Built</div>
-          </div>
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200/50 dark:border-gray-700/50">
-            <div className="text-3xl font-bold text-blue-600">$2M+</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Revenue Generated</div>
-          </div>
-        </div>
       </div>
 
       <motion.div 

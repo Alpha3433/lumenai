@@ -42,6 +42,7 @@ const UserAuthSection: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [showSupportDialog, setShowSupportDialog] = useState(false);
+  const [showSwitchAccountDialog, setShowSwitchAccountDialog] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -78,20 +79,32 @@ const UserAuthSection: React.FC = () => {
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/dashboard')} className="cursor-pointer">
                 <LayoutDashboard className="mr-2 h-4 w-4" />
-                <span>Dashboard</span>
+                <div>
+                  <span className="font-medium">Dashboard</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">View your business overview</p>
+                </div>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/analytics')} className="cursor-pointer">
                 <ChartBar className="mr-2 h-4 w-4" />
-                <span>Analytics</span>
+                <div>
+                  <span className="font-medium">Analytics</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Track your business metrics</p>
+                </div>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
                 <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+                <div>
+                  <span className="font-medium">Settings</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Manage your preferences</p>
+                </div>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate('/schedule-meeting')} className="cursor-pointer">
-                <Calendar className="mr-2 h-4 w-4" />
-                <span>Schedule a Meeting</span>
+                <Calendar className="mr-2 h-4 w-4 text-green-500" />
+                <div>
+                  <span className="font-medium">Schedule a Meeting</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Book time with an expert</p>
+                </div>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setShowUpgradeDialog(true)} className="cursor-pointer">
                 <DollarSign className="mr-2 h-4 w-4 text-purple-500" />
@@ -108,13 +121,19 @@ const UserAuthSection: React.FC = () => {
                 </div>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/switch-account')} className="cursor-pointer">
+              <DropdownMenuItem onClick={() => setShowSwitchAccountDialog(true)} className="cursor-pointer">
                 <Users className="mr-2 h-4 w-4" />
-                <span>Switch Account</span>
+                <div>
+                  <span className="font-medium">Switch Account</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Change to another workspace</p>
+                </div>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300">
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Log Out</span>
+                <div>
+                  <span className="font-medium">Log Out</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Sign out of your account</p>
+                </div>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -205,6 +224,61 @@ const UserAuthSection: React.FC = () => {
                   onClick={() => setShowSupportDialog(false)}
                 >
                   Close
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={showSwitchAccountDialog} onOpenChange={setShowSwitchAccountDialog}>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-gray-500" />
+                  Switch Account
+                </DialogTitle>
+                <DialogDescription>
+                  Select an account to switch to or create a new one
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4 p-4 rounded-lg border border-blue-100 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-900/20">
+                    <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/50">
+                      <Users className="h-5 w-5 text-blue-500" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-1">Personal Account</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">{user?.email}</p>
+                      <div className="mt-2">
+                        <span className="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-full">Current Account</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => navigate('/switch-account')}
+                    className="w-full flex items-center gap-3 p-4 rounded-lg border border-dashed border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                  >
+                    <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-800">
+                      <Users className="h-5 w-5 text-gray-500" />
+                    </div>
+                    <div className="text-left">
+                      <h4 className="font-medium">Add New Account</h4>
+                      <p className="text-sm text-gray-500">Create or connect another workspace</p>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setShowSwitchAccountDialog(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => navigate('/switch-account')}
+                >
+                  Manage Accounts
                 </Button>
               </DialogFooter>
             </DialogContent>

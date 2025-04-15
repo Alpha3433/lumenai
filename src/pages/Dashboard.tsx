@@ -10,10 +10,23 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import StatsCard from '@/components/dashboard/StatsCard';
 import ExpertTaskList from '@/components/dashboard/ExpertTaskList';
 import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
+import EmptyReportsSection from '@/components/market/EmptyReportsSection';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  const { data: plans } = useQuery({
+    queryKey: ['business-plans', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      const { data, error } = await businessPlanService.getUserPlans(user.id);
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!user?.id
+  });
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -45,8 +58,8 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatsCard
             title="Business Plans"
-            value={2}
-            subtext="+1 this month"
+            value={plans?.length || 0}
+            subtext={plans?.length === 1 ? "1 plan created" : `${plans?.length || 0} plans created`}
             icon={FileText}
             iconClassName="bg-purple-100 dark:bg-purple-900/30"
           />
@@ -74,10 +87,13 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ExpertTaskList />
-          <MeetingsCalendar />
+          <EmptyReportsSection plans={plans} />
+          <div className="space-y-8">
+            <ExpertTaskList />
+            <MeetingsCalendar />
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};

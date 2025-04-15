@@ -47,19 +47,19 @@ const ExpertTaskList = () => {
           <Plus className="h-4 w-4 mr-1" /> Add Task
         </Button>
       </CardHeader>
-      <CardContent>
-        <div className="mb-6">
+      <CardContent className="p-4">
+        <div className="mb-4">
           <div className="flex justify-between text-sm mb-2">
             <span>Task Completion</span>
             <span>{Math.round(completionPercentage)}%</span>
           </div>
           <Progress value={completionPercentage} className="h-2" />
         </div>
-        <div className="space-y-4">
+        <div className="space-y-2 max-h-[240px] overflow-y-auto">
           {tasks.map((task) => (
             <div 
               key={task.id}
-              className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700"
+              className="flex items-start gap-3 p-2 rounded-lg border border-gray-200 dark:border-gray-700"
             >
               <input
                 type="checkbox"
@@ -68,15 +68,12 @@ const ExpertTaskList = () => {
                 onChange={() => {}}
               />
               <div className="flex-1">
-                <p className="font-medium">{task.description}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-sm text-gray-500">Due in {task.dueIn}</span>
-                  {task.priority === 'high' && (
-                    <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-600 dark:bg-red-900/30">
-                      High Priority
-                    </span>
-                  )}
-                </div>
+                <p className="font-medium text-sm">{task.description}</p>
+                {task.priority === 'high' && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 mt-1 inline-block">
+                    High Priority
+                  </span>
+                )}
               </div>
             </div>
           ))}

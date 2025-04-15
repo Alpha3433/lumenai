@@ -58,28 +58,36 @@ const EmptyReportsSection: React.FC<EmptyReportsSectionProps> = ({ plans = [] })
   
   // Otherwise show empty state
   return (
-    <Card className="border border-gray-200 dark:border-gray-800 shadow-sm mb-6">
-      <CardContent className="p-6">
-        <div className="mb-4">
-          <h2 className="text-xl font-bold">Recent Reports</h2>
-          <p className="text-sm text-muted-foreground">Your latest market research projects</p>
+    <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
+      <CardContent className="flex flex-col items-start h-full p-6">
+        <div className="flex justify-between items-center w-full mb-8">
+          <div className="flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-600" />
+            <h2 className="text-xl font-semibold">Business Plans</h2>
+          </div>
+          <Button 
+            onClick={() => navigate('/create')}
+            className="bg-indigo-600 hover:bg-indigo-700"
+          >
+            <FilePlus className="h-4 w-4 mr-1" />
+            Create Plan
+          </Button>
         </div>
 
-        {/* Empty State */}
-        <div className="text-center py-12">
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <FileText className="h-8 w-8 text-gray-400" />
+        <div className="flex flex-col items-center justify-center text-center flex-1 w-full py-8">
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-full mb-4">
+            <FileText className="h-8 w-8 text-blue-500" />
           </div>
-          <h3 className="text-lg font-semibold mb-2">You haven't created any reports yet</h3>
-          <p className="text-muted-foreground max-w-md mx-auto mb-6">
-            Get started by creating your first market research report to uncover profitable niches
+          <h3 className="text-xl font-semibold mb-2">Ready to Create Your First Business Plan</h3>
+          <p className="text-muted-foreground max-w-md mb-6">
+            Start building your entrepreneurial journey with our AI-powered platform. Create your first business plan to validate ideas and develop winning strategies.
           </p>
           <Button 
-            onClick={() => navigate('/create')} 
-            className="bg-black hover:bg-black/90 text-white"
+            onClick={() => navigate('/create')}
+            className="bg-indigo-600 hover:bg-indigo-700"
           >
-            <FilePlus className="mr-2 h-4 w-4" />
-            Create your first report
+            <FilePlus className="h-4 w-4 mr-1" />
+            Create Business Plan
           </Button>
         </div>
       </CardContent>

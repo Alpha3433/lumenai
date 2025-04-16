@@ -69,7 +69,7 @@ const UpcomingMeetingsList = () => {
   };
 
   return (
-    <Card className="border border-green-100 dark:border-green-800/30 shadow-md">
+    <Card className="border border-green-100 dark:border-green-800/30 shadow-md h-full w-full flex flex-col">
       <CardHeader className="pb-2 flex flex-row items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/40 dark:to-emerald-950/40 p-4">
         <div className="flex items-center gap-2">
           <div className="p-1.5 bg-green-100 dark:bg-green-900/50 rounded-full">
@@ -87,8 +87,8 @@ const UpcomingMeetingsList = () => {
         </Button>
       </CardHeader>
 
-      <CardContent className="p-0">
-        <div className="divide-y divide-gray-100 dark:divide-gray-800">
+      <CardContent className="p-0 flex-grow overflow-auto">
+        <div className="divide-y divide-gray-100 dark:divide-gray-800 h-full">
           {meetings.map((day) => (
             <div key={day.id} className="p-4">
               <div className="flex justify-between items-center mb-3">

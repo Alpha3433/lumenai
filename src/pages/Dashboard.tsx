@@ -91,7 +91,7 @@ export default function Dashboard() {
             <EmptyReportsSection plans={plans} />
             <ExpertTaskList />
           </div>
-          <div>
+          <div className="flex h-full">
             <UpcomingMeetingsList />
           </div>
         </div>

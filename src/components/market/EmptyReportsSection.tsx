@@ -1,7 +1,8 @@
+
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, FilePlus, ExternalLink } from 'lucide-react';
+import { FileText, FilePlus, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { StoredBusinessPlan } from '@/utils/supabaseClient';
 
@@ -17,13 +18,25 @@ const EmptyReportsSection: React.FC<EmptyReportsSectionProps> = ({ plans = [] })
     const latestPlan = plans[0]; // Assuming plans are sorted by date (newest first)
     
     return (
-      <Card className="border border-gray-200 dark:border-gray-800 shadow-sm mb-6">
-        <CardContent className="p-6">
-          <div className="mb-4">
-            <h2 className="text-xl font-bold">Recent Reports</h2>
-            <p className="text-sm text-muted-foreground">Your latest market research projects</p>
+      <Card className="border border-purple-100 dark:border-purple-800/30 shadow-md mb-6">
+        <CardHeader className="pb-2 flex flex-row items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/40 dark:to-indigo-950/40 p-4">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-purple-100 dark:bg-purple-900/50 rounded-full">
+              <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <h3 className="text-lg font-semibold">Business Plans</h3>
           </div>
+          <Button 
+            onClick={() => navigate('/create')}
+            className="bg-indigo-600 hover:bg-indigo-700"
+            size="sm"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Create Plan
+          </Button>
+        </CardHeader>
 
+        <CardContent className="p-5">
           {/* Latest Plan Summary */}
           <div className="bg-blue-50/50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 rounded-lg p-5">
             <h3 className="text-lg font-semibold mb-2">{latestPlan.business_name}</h3>
@@ -56,27 +69,30 @@ const EmptyReportsSection: React.FC<EmptyReportsSectionProps> = ({ plans = [] })
     );
   }
   
-  // Otherwise show empty state
+  // Empty state
   return (
-    <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-sm">
-      <CardContent className="flex flex-col items-start h-full p-6">
-        <div className="flex justify-between items-center w-full mb-8">
-          <div className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-blue-600" />
-            <h2 className="text-xl font-semibold">Business Plans</h2>
+    <Card className="border border-purple-100 dark:border-purple-800/30 shadow-md">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/40 dark:to-indigo-950/40 p-4">
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 bg-purple-100 dark:bg-purple-900/50 rounded-full">
+            <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
           </div>
-          <Button 
-            onClick={() => navigate('/create')}
-            className="bg-indigo-600 hover:bg-indigo-700"
-          >
-            <FilePlus className="h-4 w-4 mr-1" />
-            Create Plan
-          </Button>
+          <h3 className="text-lg font-semibold">Business Plans</h3>
         </div>
+        <Button 
+          onClick={() => navigate('/create')}
+          className="bg-indigo-600 hover:bg-indigo-700"
+          size="sm"
+        >
+          <Plus className="h-4 w-4 mr-1" />
+          Create Plan
+        </Button>
+      </CardHeader>
 
-        <div className="flex flex-col items-center justify-center text-center flex-1 w-full py-8">
+      <CardContent className="p-8 text-center">
+        <div className="flex flex-col items-center justify-center">
           <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-full mb-4">
-            <FileText className="h-8 w-8 text-blue-500" />
+            <FileText className="h-10 w-10 text-blue-500" />
           </div>
           <h3 className="text-xl font-semibold mb-2">Ready to Create Your First Business Plan</h3>
           <p className="text-muted-foreground max-w-md mb-6">
@@ -86,7 +102,7 @@ const EmptyReportsSection: React.FC<EmptyReportsSectionProps> = ({ plans = [] })
             onClick={() => navigate('/create')}
             className="bg-indigo-600 hover:bg-indigo-700"
           >
-            <FilePlus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4 mr-1" />
             Create Business Plan
           </Button>
         </div>

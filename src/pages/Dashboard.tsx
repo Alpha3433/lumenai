@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
@@ -8,9 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import StatsCard from '@/components/dashboard/StatsCard';
 import ExpertTaskList from '@/components/dashboard/ExpertTaskList';
-import MeetingsCalendar from '@/components/dashboard/MeetingsCalendar';
 import EmptyReportsSection from '@/components/market/EmptyReportsSection';
 import { useQuery } from '@tanstack/react-query';
+import UpcomingMeetingsList from '@/components/dashboard/UpcomingMeetingsList';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -85,17 +86,17 @@ export default function Dashboard() {
           />
         </div>
 
-        <div className="mb-8">
-          <MeetingsCalendar />
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-8">
+          <div>
             <EmptyReportsSection plans={plans} />
           </div>
           <div>
-            <ExpertTaskList />
+            <UpcomingMeetingsList />
           </div>
+        </div>
+
+        <div className="mt-8">
+          <ExpertTaskList />
         </div>
       </div>
     </div>

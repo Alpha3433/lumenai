@@ -1,11 +1,12 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, CheckCircle, ArrowRight, Clock, Users } from 'lucide-react';
 import EmailForm from './EmailForm';
-import FeaturesList from './FeaturesList';
+import EarlyAccessDialog from './EarlyAccessDialog';
 
 const ContentColumn = () => {
+  const [isEarlyAccessDialogOpen, setIsEarlyAccessDialogOpen] = useState(false);
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -96,10 +97,16 @@ const ContentColumn = () => {
         ))}
       </div>
       
-      <div className="mt-3 text-xs text-blue-600 dark:text-blue-400 flex items-center">
+      <div className="mt-3 text-xs text-blue-600 dark:text-blue-400 flex items-center cursor-pointer" 
+           onClick={() => setIsEarlyAccessDialogOpen(true)}>
         <ArrowRight className="h-3 w-3 mr-1" />
         <span>Join now for early access pricing</span>
       </div>
+      
+      <EarlyAccessDialog 
+        open={isEarlyAccessDialogOpen} 
+        onClose={() => setIsEarlyAccessDialogOpen(false)} 
+      />
     </motion.div>
   );
 };

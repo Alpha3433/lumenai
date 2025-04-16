@@ -1,16 +1,14 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
 const NewHero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerTop, setContainerTop] = useState(0);
-  
-  const { scrollY } = useScroll();
-  
+  const {
+    scrollY
+  } = useScroll();
   useEffect(() => {
     const updateContainerPosition = () => {
       if (containerRef.current) {
@@ -18,20 +16,12 @@ const NewHero = () => {
         setContainerTop(rect.top + window.scrollY);
       }
     };
-    
     updateContainerPosition();
     window.addEventListener('resize', updateContainerPosition);
     return () => window.removeEventListener('resize', updateContainerPosition);
   }, []);
-  
-  const mockupY = useTransform(
-    scrollY, 
-    [containerTop - 500, containerTop + 500], 
-    [0, 150]
-  );
-
-  return (
-    <div ref={containerRef} className="py-24 md:py-32 px-4 max-w-7xl mx-auto">
+  const mockupY = useTransform(scrollY, [containerTop - 500, containerTop + 500], [0, 150]);
+  return <div ref={containerRef} className="py-24 md:py-32 px-4 max-w-7xl mx-auto">
       <div className="max-w-3xl mx-auto text-center">
         <div className="flex justify-center mb-3">
           <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-600">
@@ -39,31 +29,42 @@ const NewHero = () => {
           </span>
         </div>
 
-        <motion.h1 
-          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <motion.h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400" initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }}>
           Beyond Ideas - We <span className="text-blue-600">Build Your Business</span> End-to-End
         </motion.h1>
 
-        <motion.p 
-          className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
+        <motion.p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8" initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5,
+        delay: 0.1
+      }}>
           While others stop at ideas, we deliver complete business solutions. From validation to execution, 
           backed by real-time data, expert support, and done-for-you services.
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5,
+        delay: 0.2
+      }} className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
           <Link to="/create">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
               Start Building Now
@@ -71,9 +72,7 @@ const NewHero = () => {
             </Button>
           </Link>
           <Link to="/examples">
-            <Button variant="outline" className="rounded-md h-12 px-8 text-lg font-medium border-gray-300 dark:border-gray-700">
-              View Success Stories
-            </Button>
+            <Button variant="outline" className="rounded-md h-12 px-8 text-lg font-medium border-gray-300 dark:border-gray-700">See Real Business Examples</Button>
           </Link>
         </motion.div>
 
@@ -93,13 +92,18 @@ const NewHero = () => {
         </div>
       </div>
 
-      <motion.div 
-        style={{ y: mockupY }}
-        className="relative w-full max-w-5xl mx-auto perspective-1000"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-      >
+      <motion.div style={{
+      y: mockupY
+    }} className="relative w-full max-w-5xl mx-auto perspective-1000" initial={{
+      opacity: 0,
+      y: 40
+    }} animate={{
+      opacity: 1,
+      y: 0
+    }} transition={{
+      duration: 0.6,
+      delay: 0.3
+    }}>
         <div className="relative z-10">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700">
             <div className="p-3">
@@ -113,11 +117,7 @@ const NewHero = () => {
                   <span className="px-2.5 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">Beautiful Templates</span>
                 </div>
               </div>
-              <img 
-                src="/lovable-uploads/058f18ce-81ce-4279-bbbb-e7c4b4755683.png" 
-                alt="Business Plan Dashboard" 
-                className="rounded-lg w-full object-contain max-h-[600px]"
-              />
+              <img src="/lovable-uploads/058f18ce-81ce-4279-bbbb-e7c4b4755683.png" alt="Business Plan Dashboard" className="rounded-lg w-full object-contain max-h-[600px]" />
             </div>
           </div>
         </div>
@@ -126,8 +126,6 @@ const NewHero = () => {
         <div className="absolute -top-6 -left-6 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg blur-xl"></div>
         <div className="absolute -bottom-8 -right-8 w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full blur-xl"></div>
       </motion.div>
-    </div>
-  );
+    </div>;
 };
-
 export default NewHero;

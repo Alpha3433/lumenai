@@ -2,7 +2,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Percent, CheckCircle } from 'lucide-react';
+import { Sparkles, Percent } from 'lucide-react';
 
 interface EarlyAccessDialogProps {
   open: boolean;
@@ -62,3 +62,4 @@ const EarlyAccessDialog = ({ open, onClose }: EarlyAccessDialogProps) => {
 };
 
 export default EarlyAccessDialog;
+

@@ -86,17 +86,14 @@ export default function Dashboard() {
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div className="space-y-8">
             <EmptyReportsSection plans={plans} />
+            <ExpertTaskList />
           </div>
           <div>
             <UpcomingMeetingsList />
           </div>
-        </div>
-
-        <div className="mt-8">
-          <ExpertTaskList />
         </div>
       </div>
     </div>

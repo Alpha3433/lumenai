@@ -88,9 +88,9 @@ const UpcomingMeetingsList = () => {
       </CardHeader>
 
       <CardContent className="p-0 flex-grow overflow-auto">
-        <div className="divide-y divide-gray-100 dark:divide-gray-800 h-full">
-          {meetings.map((day) => (
-            <div key={day.id} className="p-4">
+        <div className="divide-y divide-gray-100 dark:divide-gray-800 flex flex-col h-full">
+          {meetings.map((day, index) => (
+            <div key={day.id} className={`p-4 ${index === meetings.length - 1 && day.items.length === 0 ? 'flex-grow' : ''}`}>
               <div className="flex justify-between items-center mb-3">
                 <h4 className="font-medium">{day.date}</h4>
                 <Badge variant="outline" className="bg-green-50 dark:bg-green-900/10 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800/30">
@@ -115,9 +115,20 @@ const UpcomingMeetingsList = () => {
                     </div>
                   </div>
                 ))}
+
+                {day.items.length === 0 && (
+                  <div className="flex items-center justify-center py-6 text-gray-500 dark:text-gray-400 italic">
+                    No meetings scheduled
+                  </div>
+                )}
               </div>
             </div>
           ))}
+
+          {/* Add an empty state at the bottom to fill remaining space if needed */}
+          {meetings.length < 3 && (
+            <div className="p-4 flex-grow"></div>
+          )}
         </div>
       </CardContent>
     </Card>

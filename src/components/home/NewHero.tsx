@@ -1,13 +1,14 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useAuth } from '@/components/AuthProvider';
 
 const NewHero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerTop, setContainerTop] = useState(0);
+  const { user } = useAuth();
   
   // Get the scroll progress for parallax effect
   const { scrollY } = useScroll();
@@ -69,7 +70,7 @@ const NewHero = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
         >
-          <Link to="/create">
+          <Link to={user ? "/create" : "/register"}>
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md h-12 px-8 text-lg font-medium">
               Try for Free
               <ArrowRight className="ml-2 h-5 w-5" />

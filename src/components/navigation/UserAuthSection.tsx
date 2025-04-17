@@ -1,7 +1,7 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { 
-  CircleDot, 
   Home, 
   LayoutDashboard, 
   Settings, 
@@ -35,6 +35,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import NotificationCenter from './NotificationCenter';
+import SubscriptionBadge from './SubscriptionBadge';
+import { useUserSubscription } from '@/hooks/useUserSubscription';
 
 const UserAuthSection: React.FC = () => {
   const { user, signOut } = useAuth();
@@ -43,6 +45,7 @@ const UserAuthSection: React.FC = () => {
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [showSupportDialog, setShowSupportDialog] = useState(false);
   const [showSwitchAccountDialog, setShowSwitchAccountDialog] = useState(false);
+  const { subscriptionTier } = useUserSubscription();
 
   const handleSignOut = async () => {
     try {
@@ -58,10 +61,7 @@ const UserAuthSection: React.FC = () => {
       {user ? (
         <div className="flex items-center gap-3">
           <NotificationCenter />
-          <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full border border-blue-100 dark:border-blue-800">
-            <CircleDot className="h-3 w-3 text-blue-500" />
-            <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Free Plan</span>
-          </div>
+          <SubscriptionBadge tier={subscriptionTier} />
           <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
               <button 

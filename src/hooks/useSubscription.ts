@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAuth } from '@/components/AuthProvider';
+import { SubscriptionTier } from './useUserSubscription';
 
 type PlanType = 'startup' | 'entrepreneur' | 'founder' | 'partner';
 type PaymentMode = 'subscription' | 'payment';

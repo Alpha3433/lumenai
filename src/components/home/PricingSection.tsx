@@ -23,13 +23,11 @@ const PricingSection = () => {
       price: "$0",
       period: "/month",
       features: [
-        { text: "Basic AI business plan generator", available: true },
+        { text: "3 Business Validations per month", available: true },
         { text: "1 coaching call (30-min intro session)", available: true },
         { text: "Advanced AI insights", available: false },
         { text: "Niche competitor reports", available: false },
-        { text: "Priority chat support", available: false },
-        { text: "Team workspace", available: false },
-        { text: "Shared analytics", available: false }
+        { text: "Priority chat support", available: false }
       ],
       buttonText: "Start for Free",
       buttonLink: "/register",
@@ -43,12 +41,12 @@ const PricingSection = () => {
       price: "$29.99",
       period: "/month",
       features: [
-        { text: "Basic AI business plan generator", available: true },
-        { text: "Advanced AI insights + niche competitor reports", available: true },
-        { text: "3 coaching calls/month", available: true },
+        { text: "Unlimited reports", available: true },
+        { text: "Campaign audit", available: true },
+        { text: "Target audience research", available: true },
+        { text: "Ad content creation", available: true },
         { text: "Priority chat support", available: true },
-        { text: "Team workspace", available: false },
-        { text: "Shared analytics", available: false }
+        { text: "3 coaching calls/month", available: true }
       ],
       buttonText: "Get Started",
       buttonLink: "/register",
@@ -63,9 +61,10 @@ const PricingSection = () => {
       period: "/month",
       features: [
         { text: "All Entrepreneur features", available: true },
-        { text: "Team workspace + shared analytics", available: true },
-        { text: "5 coaching calls/month", available: true },
-        { text: "Complete Backend Management", available: true }
+        { text: "Optimize campaign", available: true },
+        { text: "Ads analytical report", available: true },
+        { text: "Special Meta + Google Marketing Solution", available: true },
+        { text: "5 coaching calls/month", available: true }
       ],
       buttonText: "Get Started",
       buttonLink: "/register",
@@ -81,7 +80,7 @@ const PricingSection = () => {
       features: [
         { text: "Full Founder features", available: true },
         { text: "Pay 12% of monthly revenue", available: true },
-        { text: "Capped at $299/month for 12 months", available: true }
+        { text: "Capped at $1000/month for 6 months", available: true }
       ],
       buttonText: "Apply Now",
       buttonLink: "/register",
@@ -286,69 +285,6 @@ const PricingSection = () => {
           open={partnerModalOpen}
           onOpenChange={setPartnerModalOpen}
         />
-
-        <div className="flex items-center justify-center mb-16">
-          <Button 
-            variant="outline" 
-            className="flex items-center gap-2 transition-all"
-            onClick={() => setComparisonVisible(!comparisonVisible)}
-          >
-            {comparisonVisible ? "Hide Comparison" : "Compare Features"} 
-            {comparisonVisible ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
-          </Button>
-        </div>
-
-        {comparisonVisible && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mb-16 overflow-x-auto"
-          >
-            <div className="inline-block min-w-full align-middle">
-              <Table className="border-collapse border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                <TableHeader>
-                  <TableRow>
-                    {comparisonTable.headers.map((header, index) => (
-                      <TableHead 
-                        key={index} 
-                        className={`text-center p-4 bg-gray-100 dark:bg-gray-800 font-medium ${index === 0 ? 'text-left' : ''}`}
-                      >
-                        {header}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {comparisonTable.rows.map((row, rowIndex) => (
-                    <TableRow key={rowIndex}>
-                      <TableCell className="font-medium border-t border-gray-200 dark:border-gray-700">
-                        {row.feature}
-                      </TableCell>
-                      <TableCell className="text-center border-t border-gray-200 dark:border-gray-700">
-                        {row.startup === "No" ? <X className="h-5 w-5 text-gray-400 mx-auto" /> : 
-                        row.startup === "Yes" ? <Check className="h-5 w-5 text-blue-500 mx-auto" /> : row.startup}
-                      </TableCell>
-                      <TableCell className="text-center border-t border-gray-200 dark:border-gray-700">
-                        {row.entrepreneur === "No" ? <X className="h-5 w-5 text-gray-400 mx-auto" /> : 
-                        row.entrepreneur === "Yes" ? <Check className="h-5 w-5 text-blue-500 mx-auto" /> : row.entrepreneur}
-                      </TableCell>
-                      <TableCell className="text-center border-t border-gray-200 dark:border-gray-700">
-                        {row.founder === "No" ? <X className="h-5 w-5 text-gray-400 mx-auto" /> : 
-                        row.founder === "Yes" ? <Check className="h-5 w-5 text-blue-500 mx-auto" /> : row.founder}
-                      </TableCell>
-                      <TableCell className="text-center border-t border-gray-200 dark:border-gray-700">
-                        {row.partner === "No" ? <X className="h-5 w-5 text-gray-400 mx-auto" /> : 
-                        row.partner === "Yes" ? <Check className="h-5 w-5 text-blue-500 mx-auto" /> : row.partner}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </motion.div>
-        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

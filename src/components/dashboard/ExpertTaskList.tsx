@@ -18,33 +18,7 @@ interface Task {
 const ExpertTaskList = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [sortByPriority, setSortByPriority] = useState(false);
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: '1',
-      description: 'Approve logo draft',
-      completed: false,
-      priority: 'high',
-      dueIn: '2 days'
-    },
-    {
-      id: '2',
-      description: 'Review Q2 ad budget',
-      completed: false,
-      priority: 'high'
-    },
-    {
-      id: '3',
-      description: 'Schedule customer feedback session',
-      completed: true,
-      priority: 'medium'
-    },
-    {
-      id: '4',
-      description: 'Update competitor analysis',
-      completed: false,
-      priority: 'medium'
-    }
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const handleTaskCreate = (newTask: { description: string; priority: 'high' | 'medium' | 'low' }) => {
     setTasks([...tasks, {
@@ -74,7 +48,7 @@ const ExpertTaskList = () => {
   });
 
   const completedTasks = tasks.filter(task => task.completed).length;
-  const completionPercentage = (completedTasks / tasks.length) * 100;
+  const completionPercentage = tasks.length > 0 ? (completedTasks / tasks.length) * 100 : 0;
 
   return (
     <Card className="border border-gray-200 dark:border-gray-800 shadow-sm">
@@ -110,27 +84,33 @@ const ExpertTaskList = () => {
           <Progress value={completionPercentage} className="h-2" />
         </div>
         <div className="space-y-2 max-h-[240px] overflow-y-auto">
-          {sortedTasks.map((task) => (
-            <div 
-              key={task.id}
-              className="flex items-start gap-3 p-2 rounded-lg border border-gray-200 dark:border-gray-700"
-            >
-              <Checkbox
-                checked={task.completed}
-                onCheckedChange={() => handleTaskToggle(task.id)}
-              />
-              <div className="flex-1">
-                <p className={`font-medium text-sm ${task.completed ? 'line-through text-gray-500' : ''}`}>
-                  {task.description}
-                </p>
-                {task.priority === 'high' && (
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 mt-1 inline-block">
-                    High Priority
-                  </span>
-                )}
+          {sortedTasks.length > 0 ? (
+            sortedTasks.map((task) => (
+              <div 
+                key={task.id}
+                className="flex items-start gap-3 p-2 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <Checkbox
+                  checked={task.completed}
+                  onCheckedChange={() => handleTaskToggle(task.id)}
+                />
+                <div className="flex-1">
+                  <p className={`font-medium text-sm ${task.completed ? 'line-through text-gray-500' : ''}`}>
+                    {task.description}
+                  </p>
+                  {task.priority === 'high' && (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 mt-1 inline-block">
+                      High Priority
+                    </span>
+                  )}
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              No tasks yet. Click "Add Task" to create one.
             </div>
-          ))}
+          )}
         </div>
       </CardContent>
       <NewTaskDialog 

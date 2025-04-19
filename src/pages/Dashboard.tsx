@@ -12,6 +12,8 @@ import ExpertTaskList from '@/components/dashboard/ExpertTaskList';
 import EmptyReportsSection from '@/components/market/EmptyReportsSection';
 import { useQuery } from '@tanstack/react-query';
 import UpcomingMeetingsList from '@/components/dashboard/UpcomingMeetingsList';
+import { supabase } from '@/integrations/supabase/client';
+import { format } from 'date-fns';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();

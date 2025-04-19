@@ -1,30 +1,26 @@
 
 import React from 'react';
+import { Card } from "@/components/ui/card";
 import { extractValidationData } from '@/utils/businessValidation';
-import ValidationScoreCard from './validation/ValidationScoreCard';
-import RecommendationsCard from './validation/RecommendationsCard';
-import FormattedValidationContent from './validation/FormattedValidationContent';
+import ScoreOverview from './validation/ScoreOverview';
 
 interface BusinessValidationScoreProps {
   businessText: string;
+  businessName?: string;
 }
 
-const BusinessValidationScore = ({ businessText }: BusinessValidationScoreProps) => {
+const BusinessValidationScore = ({ businessText, businessName = "New Business" }: BusinessValidationScoreProps) => {
   const validationData = extractValidationData(businessText);
   
   return (
     <div className="space-y-6">
-      {/* Overall score card */}
-      <ValidationScoreCard validationData={validationData} />
-      
-      {/* Formatted validation content with improved parsing */}
-      <div className="bg-card rounded-xl p-5 border border-border shadow-sm">
-        <FormattedValidationContent validationText={businessText} />
-      </div>
-      
-      {/* Recommendations */}
-      <RecommendationsCard 
-        score={validationData.overallScore} 
+      <ScoreOverview 
+        score={validationData.overallScore}
+        industryAverage={62}
+        topCompetitor={78}
+        businessName={businessName}
+        category={validationData.category || "Business"}
+        businessDescription={validationData.description || businessText.slice(0, 150) + "..."}
       />
     </div>
   );

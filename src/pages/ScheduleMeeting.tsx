@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from "date-fns";
@@ -31,7 +30,8 @@ export default function ScheduleMeeting() {
   const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined);
   const [topic, setTopic] = useState("");
   const [notes, setNotes] = useState("");
-  const [businessPlanUrl, setBusinessPlanUrl] = useState("");
+  const [businessPlanFile, setBusinessPlanFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -39,6 +39,41 @@ export default function ScheduleMeeting() {
       navigate('/login');
     }
   }, [user, loading, navigate]);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      handleFileSelected(file);
+    }
+  };
+
+  const handleFileSelected = async (file: File) => {
+    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      toast.error("File is too large. Maximum size is 10MB.");
+      return;
+    }
+    setBusinessPlanFile(file);
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileSelected(file);
+    }
+  };
 
   const handleScheduleMeeting = async () => {
     if (!selectedDate || !selectedTime || !topic) {
@@ -49,12 +84,32 @@ export default function ScheduleMeeting() {
     setSubmitting(true);
 
     try {
+      let fileUrl = '';
+      
+      if (businessPlanFile) {
+        const fileExt = businessPlanFile.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const filePath = `${user?.id}/${fileName}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('business-plans')
+          .upload(filePath, businessPlanFile);
+          
+        if (uploadError) throw uploadError;
+        
+        const { data: { publicUrl } } = supabase.storage
+          .from('business-plans')
+          .getPublicUrl(filePath);
+          
+        fileUrl = publicUrl;
+      }
+
       const meetingDetails = {
         selected_date: format(selectedDate, "yyyy-MM-dd"),
         selected_time: selectedTime,
         topic,
         notes,
-        business_plan_url: businessPlanUrl,
+        business_plan_url: fileUrl || null,
         user_id: user?.id
       };
       
@@ -62,9 +117,7 @@ export default function ScheduleMeeting() {
         .from('meeting_requests')
         .insert(meetingDetails);
       
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       
       toast.success("Meeting scheduled successfully!", {
         description: `Your meeting has been scheduled for ${format(selectedDate, "MMMM do")} at ${selectedTime}`
@@ -75,7 +128,10 @@ export default function ScheduleMeeting() {
       setSelectedTime(undefined);
       setTopic("");
       setNotes("");
-      setBusinessPlanUrl("");
+      setBusinessPlanFile(null);
+      
+      // Navigate back to dashboard
+      navigate('/dashboard');
     } catch (error) {
       console.error("Error scheduling meeting:", error);
       toast.error("Failed to schedule meeting. Please try again.");
@@ -198,16 +254,46 @@ export default function ScheduleMeeting() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="businessPlan">Business Plan URL (Optional)</Label>
-                <Input 
-                  id="businessPlan" 
-                  placeholder="Link to your business plan" 
-                  value={businessPlanUrl}
-                  onChange={(e) => setBusinessPlanUrl(e.target.value)}
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Share a link to your generated business plan so we can review it before the meeting
-                </p>
+                <Label>Business Plan Document (Optional)</Label>
+                <div 
+                  className={cn(
+                    "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
+                    isDragging 
+                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20" 
+                      : "border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600"
+                  )}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <Input 
+                    type="file" 
+                    className="hidden" 
+                    id="file-upload"
+                    onChange={handleFileInputChange}
+                    accept=".pdf,.doc,.docx"
+                  />
+                  <Label 
+                    htmlFor="file-upload" 
+                    className="cursor-pointer flex flex-col items-center gap-2"
+                  >
+                    <Upload className="h-8 w-8 text-gray-400" />
+                    {businessPlanFile ? (
+                      <div className="text-sm text-gray-600 dark:text-gray-300">
+                        Selected: {businessPlanFile.name}
+                      </div>
+                    ) : (
+                      <>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          Drag and drop your business plan here, or click to browse
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Supports PDF, DOC, DOCX (max 10MB)
+                        </p>
+                      </>
+                    )}
+                  </Label>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -235,16 +321,16 @@ export default function ScheduleMeeting() {
                 <p className="font-medium">{topic || "Not specified"}</p>
               </div>
 
-              {businessPlanUrl && (
+              {businessPlanFile && (
                 <div>
                   <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Business Plan</p>
                   <a 
-                    href={businessPlanUrl} 
+                    href={businessPlanFile} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="text-blue-600 hover:underline break-all"
                   >
-                    {businessPlanUrl}
+                    {businessPlanFile}
                   </a>
                 </div>
               )}

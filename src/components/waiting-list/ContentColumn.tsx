@@ -1,18 +1,18 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, CheckCircle, ArrowRight, Clock, Users } from 'lucide-react';
 import EmailForm from './EmailForm';
 import FeaturesList from './FeaturesList';
-
 const ContentColumn = () => {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="w-full md:w-1/2 max-w-xl"
-    >
+  return <motion.div initial={{
+    opacity: 0,
+    y: 20
+  }} animate={{
+    opacity: 1,
+    y: 0
+  }} transition={{
+    duration: 0.5
+  }} className="w-full md:w-1/2 max-w-xl">
       <div className="mb-2 flex items-center">
         <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-1.5 rounded-md mr-2">
           <Sparkles className="h-4 w-4" />
@@ -36,11 +36,11 @@ const ContentColumn = () => {
             </li>
             <li className="flex items-start gap-1">
               <span className="text-red-500 mt-0.5">•</span>
-              <span>Difficult market analysis</span>
+              <span>No time or skill for digital ads</span>
             </li>
             <li className="flex items-start gap-1">
               <span className="text-red-500 mt-0.5">•</span>
-              <span>Ineffective digital marketing</span>
+              <span>Inconsistent social media strategy</span>
             </li>
             <li className="flex items-start gap-1">
               <span className="text-red-500 mt-0.5">•</span>
@@ -54,11 +54,11 @@ const ContentColumn = () => {
           <ul className="text-xs text-gray-700 dark:text-gray-300 space-y-1">
             <li className="flex items-start gap-1">
               <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-              <span>AI-powered business reports</span>
+              <span>Instant AI-powered business validation</span>
             </li>
             <li className="flex items-start gap-1">
               <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-              <span>Digital ad management</span>
+              <span>AI-powered ad + social media campaigns</span>
             </li>
             <li className="flex items-start gap-1">
               <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
@@ -82,26 +82,16 @@ const ContentColumn = () => {
       <EmailForm />
       
       <div className="mt-3 flex flex-wrap gap-2">
-        {["AI insights", "Ad management", "Website development", "Backend solutions", "24/7 support", "Expert team", "Business validation", "Idea generation"].map((feature, index) => (
-          <div key={index} className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800/50 px-2 py-1 rounded-full">
-            {index === 4 ? (
-              <Clock className="h-3 w-3 text-blue-600 shrink-0" />
-            ) : index === 5 ? (
-              <Users className="h-3 w-3 text-blue-600 shrink-0" />
-            ) : (
-              <CheckCircle className="h-3 w-3 text-blue-600 shrink-0" />
-            )}
+        {["AI insights", "Ad management", "Website development", "Backend solutions", "24/7 support", "Expert team", "Business validation", "Idea generation"].map((feature, index) => <div key={index} className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800/50 px-2 py-1 rounded-full">
+            {index === 4 ? <Clock className="h-3 w-3 text-blue-600 shrink-0" /> : index === 5 ? <Users className="h-3 w-3 text-blue-600 shrink-0" /> : <CheckCircle className="h-3 w-3 text-blue-600 shrink-0" />}
             <span className="text-xs">{feature}</span>
-          </div>
-        ))}
+          </div>)}
       </div>
       
       <div className="mt-3 text-xs text-blue-600 dark:text-blue-400 flex items-center">
         <ArrowRight className="h-3 w-3 mr-1" />
         <span>Join now for early access pricing</span>
       </div>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
 export default ContentColumn;

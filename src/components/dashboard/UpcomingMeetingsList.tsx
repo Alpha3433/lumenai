@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, Plus } from "lucide-react";
@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
+import { Checkbox } from "@/components/ui/checkbox";
 
 const UpcomingMeetingsList = () => {
   const navigate = useNavigate();
+  const [selectedMeetings, setSelectedMeetings] = useState<string[]>([]);
   
   const { data: meetings, isLoading } = useQuery({
     queryKey: ['upcoming-meetings'],
@@ -25,6 +27,14 @@ const UpcomingMeetingsList = () => {
       return data;
     }
   });
+
+  const toggleMeetingSelection = (meetingId: string) => {
+    setSelectedMeetings(prev => 
+      prev.includes(meetingId) 
+        ? prev.filter(id => id !== meetingId)
+        : [...prev, meetingId]
+    );
+  };
 
   return (
     <Card className="border border-green-100 dark:border-green-800/30 shadow-md h-full w-full flex flex-col">
@@ -55,22 +65,29 @@ const UpcomingMeetingsList = () => {
             {meetings.map((meeting) => (
               <div 
                 key={meeting.id}
-                className="p-3 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800"
+                className="p-3 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800 flex items-start gap-3"
               >
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-medium">{meeting.topic}</h4>
-                  <span className="text-sm text-gray-500">
-                    {format(new Date(meeting.selected_date), 'MMM d')}
-                  </span>
+                <Checkbox
+                  checked={selectedMeetings.includes(meeting.id)}
+                  onCheckedChange={() => toggleMeetingSelection(meeting.id)}
+                  className="mt-1"
+                />
+                <div className="flex-1">
+                  <div className="flex justify-between items-start">
+                    <h4 className="font-medium">{meeting.topic}</h4>
+                    <span className="text-sm text-gray-500">
+                      {format(new Date(meeting.selected_date), 'MMM d')}
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300">
+                    {meeting.selected_time}
+                  </div>
+                  {meeting.notes && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                      {meeting.notes}
+                    </p>
+                  )}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  {meeting.selected_time}
-                </div>
-                {meeting.notes && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                    {meeting.notes}
-                  </p>
-                )}
               </div>
             ))}
           </div>

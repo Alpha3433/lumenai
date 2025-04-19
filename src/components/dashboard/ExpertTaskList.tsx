@@ -34,6 +34,19 @@ const ExpertTaskList = () => {
     ));
   };
 
+  const getPriorityStyles = (priority: 'high' | 'medium' | 'low') => {
+    switch (priority) {
+      case 'high':
+        return 'bg-red-100 text-red-600 dark:bg-red-900/30';
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30';
+      case 'low':
+        return 'bg-blue-100 text-blue-600 dark:bg-blue-900/30';
+      default:
+        return '';
+    }
+  };
+
   const completedTasks = tasks.filter(task => task.completed).length;
   const completionPercentage = tasks.length > 0 ? (completedTasks / tasks.length) * 100 : 0;
 
@@ -75,11 +88,9 @@ const ExpertTaskList = () => {
                   <p className={`font-medium text-sm ${task.completed ? 'line-through text-gray-500' : ''}`}>
                     {task.description}
                   </p>
-                  {task.priority === 'high' && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 mt-1 inline-block">
-                      High Priority
-                    </span>
-                  )}
+                  <span className={`text-xs px-2 py-0.5 rounded-full mt-1 inline-block ${getPriorityStyles(task.priority)}`}>
+                    {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)} Priority
+                  </span>
                 </div>
               </div>
             ))

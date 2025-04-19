@@ -28,6 +28,26 @@ export default function Dashboard() {
     enabled: !!user?.id
   });
 
+  const { data: meetings } = useQuery({
+    queryKey: ['upcoming-meetings-count'],
+    queryFn: async () => {
+      if (!user?.id) return { count: 0, nextMeeting: null };
+      const { data, error } = await supabase
+        .from('meeting_requests')
+        .select('*')
+        .gte('selected_date', new Date().toISOString().split('T')[0])
+        .order('selected_date', { ascending: true })
+        .order('selected_time', { ascending: true });
+      
+      if (error) throw error;
+      return {
+        count: data.length,
+        nextMeeting: data[0]
+      };
+    },
+    enabled: !!user?.id
+  });
+
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/login');
@@ -65,22 +85,22 @@ export default function Dashboard() {
           />
           <StatsCard
             title="Upcoming Meetings"
-            value={3}
-            subtext="Next: Today, 9:00 AM"
+            value={meetings?.count || 0}
+            subtext={meetings?.nextMeeting ? `Next: ${format(new Date(meetings.nextMeeting.selected_date), 'MMM d')}, ${meetings.nextMeeting.selected_time}` : 'No upcoming meetings'}
             icon={Calendar}
             iconClassName="bg-emerald-100 dark:bg-emerald-900/30"
           />
           <StatsCard
             title="Tasks"
-            value={12}
-            subtext="4 due soon"
+            value={0}
+            subtext="No tasks due soon"
             icon={CheckCircle}
             iconClassName="bg-orange-100 dark:bg-orange-900/30"
           />
           <StatsCard
             title="Messages"
-            value={5}
-            subtext="3 unread"
+            value={0}
+            subtext="No unread messages"
             icon={MessageSquare}
             iconClassName="bg-pink-100 dark:bg-pink-900/30"
           />
@@ -98,4 +118,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}
+};

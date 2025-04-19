@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -23,6 +22,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCanceled from "./pages/PaymentCanceled";
 import Analytics from "./pages/Analytics";
 import ScheduleMeeting from "./pages/ScheduleMeeting";
+import Checkout from "./pages/Checkout";
 
 const queryClient = new QueryClient();
 
@@ -51,7 +51,7 @@ const App = () => (
                 <Route path="/payment-canceled" element={<PaymentCanceled />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/schedule-meeting" element={<ScheduleMeeting />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="/checkout" element={<Checkout />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>

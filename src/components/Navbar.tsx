@@ -51,6 +51,7 @@ const Navbar = () => {
             <div className="mr-1">
               <ThemeToggle />
             </div>
+            <CartIcon />
             <UserAuthSection />
           </div>
           <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
@@ -65,3 +66,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

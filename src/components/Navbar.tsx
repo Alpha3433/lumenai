@@ -6,6 +6,7 @@ import DesktopNav from './navigation/DesktopNav';
 import UserAuthSection from './navigation/UserAuthSection';
 import MobileMenu from './navigation/MobileMenu';
 import ThemeToggle from './ui/theme-toggle';
+import CartIcon from './navigation/CartIcon';
 import { useAuth } from '@/components/AuthProvider';
 import LogoGeneratorModal from './logo/LogoGeneratorModal';
 
@@ -66,4 +67,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

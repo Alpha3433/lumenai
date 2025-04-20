@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Card } from "@/components/ui/card";
 import { CheckCircle, AlertTriangle } from 'lucide-react';
 
 interface StrengthsAndChallengesProps {
@@ -10,45 +9,53 @@ interface StrengthsAndChallengesProps {
 
 const StrengthsAndChallenges = ({ positives, negatives }: StrengthsAndChallengesProps) => {
   return (
-    <Card className="p-6 bg-white dark:bg-gray-800/50">
-      <div className="space-y-8">
-        {/* Key Strengths */}
-        <div>
-          <h3 className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mb-4 uppercase tracking-wider">
-            Key Strengths
-          </h3>
-          <div className="space-y-4">
-            {positives.map((positive, i) => (
-              <div key={`strength-${i}`} className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-emerald-500 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-medium mb-1">{positive} <span className="text-emerald-600">+12%</span></h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">12% above industry average</p>
-                </div>
+    <div className="space-y-8">
+      {/* Key Strengths */}
+      <div>
+        <h3 className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-4">
+          Key Strengths
+        </h3>
+        <div className="space-y-4">
+          {positives.map((positive, i) => (
+            <div key={`strength-${i}`} className="flex items-start gap-3">
+              <div className="mt-1 p-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30">
+                <CheckCircle className="h-4 w-4 text-emerald-500" />
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Areas for Improvement */}
-        <div>
-          <h3 className="text-sm font-semibold text-amber-600 dark:text-amber-400 mb-4 uppercase tracking-wider">
-            Areas for Improvement
-          </h3>
-          <div className="space-y-4">
-            {negatives.map((negative, i) => (
-              <div key={`improvement-${i}`} className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-medium mb-1">{negative} <span className="text-amber-600">+34%</span></h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">34% market growth in competitors</p>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="font-medium">{positive}</h4>
+                  <span className="text-sm text-emerald-600 dark:text-emerald-400">+12%</span>
                 </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">12% above industry average</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
-    </Card>
+
+      {/* Areas for Improvement */}
+      <div>
+        <h3 className="text-sm font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-4">
+          Areas for Improvement
+        </h3>
+        <div className="space-y-4">
+          {negatives.map((negative, i) => (
+            <div key={`improvement-${i}`} className="flex items-start gap-3">
+              <div className="mt-1 p-1 rounded-full bg-amber-100 dark:bg-amber-900/30">
+                <AlertTriangle className="h-4 w-4 text-amber-500" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="font-medium">{negative}</h4>
+                  <span className="text-sm text-amber-600 dark:text-amber-400">+34%</span>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">34% market growth in competitors</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

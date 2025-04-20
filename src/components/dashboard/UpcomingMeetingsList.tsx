@@ -2,18 +2,19 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Plus } from "lucide-react";
+import { Clock, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from 'sonner';
 
 const UpcomingMeetingsList = () => {
   const navigate = useNavigate();
   const [selectedMeetings, setSelectedMeetings] = useState<string[]>([]);
   
-  const { data: meetings, isLoading } = useQuery({
+  const { data: meetings, isLoading, refetch } = useQuery({
     queryKey: ['upcoming-meetings'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -27,6 +28,26 @@ const UpcomingMeetingsList = () => {
       return data;
     }
   });
+
+  const handleDelete = async () => {
+    if (selectedMeetings.length === 0) return;
+
+    try {
+      const { error } = await supabase
+        .from('meeting_requests')
+        .delete()
+        .in('id', selectedMeetings);
+
+      if (error) throw error;
+
+      toast.success(`${selectedMeetings.length} meeting${selectedMeetings.length > 1 ? 's' : ''} deleted`);
+      setSelectedMeetings([]);
+      refetch();
+    } catch (error) {
+      toast.error('Failed to delete meetings');
+      console.error('Error deleting meetings:', error);
+    }
+  };
 
   const toggleMeetingSelection = (meetingId: string) => {
     setSelectedMeetings(prev => 
@@ -45,14 +66,26 @@ const UpcomingMeetingsList = () => {
           </div>
           <h3 className="text-lg font-semibold">Upcoming Meetings</h3>
         </div>
-        <Button 
-          onClick={() => navigate('/schedule-meeting')}
-          className="bg-green-500 hover:bg-green-600"
-          size="sm"
-        >
-          <Plus className="h-4 w-4 mr-1" />
-          Schedule
-        </Button>
+        <div className="flex gap-2">
+          {selectedMeetings.length > 0 && (
+            <Button 
+              onClick={handleDelete}
+              variant="destructive"
+              size="sm"
+            >
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete ({selectedMeetings.length})
+            </Button>
+          )}
+          <Button 
+            onClick={() => navigate('/schedule-meeting')}
+            className="bg-green-500 hover:bg-green-600"
+            size="sm"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Schedule
+          </Button>
+        </div>
       </CardHeader>
 
       <CardContent className="p-4 flex-grow overflow-auto">

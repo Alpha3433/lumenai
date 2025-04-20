@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ClipboardCheck, Plus } from 'lucide-react';
+import { ClipboardCheck, Plus, Trash2 } from 'lucide-react';
 import NewTaskDialog from './NewTaskDialog';
 
 interface Task {
@@ -18,6 +17,7 @@ interface Task {
 const ExpertTaskList = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
 
   const handleTaskCreate = (newTask: { description: string; priority: 'high' | 'medium' | 'low' }) => {
     setTasks([...tasks, {
@@ -32,6 +32,20 @@ const ExpertTaskList = () => {
     setTasks(tasks.map(task => 
       task.id === taskId ? { ...task, completed: !task.completed } : task
     ));
+  };
+
+  const toggleTaskSelection = (taskId: string) => {
+    setSelectedTasks(prev =>
+      prev.includes(taskId)
+        ? prev.filter(id => id !== taskId)
+        : [...prev, taskId]
+    );
+  };
+
+  const handleDeleteSelectedTasks = () => {
+    setTasks(tasks.filter(task => !selectedTasks.includes(task.id)));
+    setSelectedTasks([]);
+    toast.success(`${selectedTasks.length} task${selectedTasks.length > 1 ? 's' : ''} deleted`);
   };
 
   const getPriorityStyles = (priority: 'high' | 'medium' | 'low') => {
@@ -57,13 +71,26 @@ const ExpertTaskList = () => {
           <ClipboardCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           Workflow & Tasks
         </CardTitle>
-        <Button
-          variant="default"
-          className="bg-orange-500 hover:bg-orange-600"
-          onClick={() => setDialogOpen(true)}
-        >
-          <Plus className="h-4 w-4 mr-1" /> Add Task
-        </Button>
+        <div className="flex gap-2">
+          {selectedTasks.length > 0 && (
+            <Button
+              variant="destructive"
+              onClick={handleDeleteSelectedTasks}
+              size="sm"
+            >
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete ({selectedTasks.length})
+            </Button>
+          )}
+          <Button
+            variant="default"
+            className="bg-orange-500 hover:bg-orange-600"
+            onClick={() => setDialogOpen(true)}
+            size="sm"
+          >
+            <Plus className="h-4 w-4 mr-1" /> Add Task
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="p-4">
         <div className="mb-4">
@@ -80,10 +107,16 @@ const ExpertTaskList = () => {
                 key={task.id}
                 className="flex items-start gap-3 p-2 rounded-lg border border-gray-200 dark:border-gray-700"
               >
-                <Checkbox
-                  checked={task.completed}
-                  onCheckedChange={() => handleTaskToggle(task.id)}
-                />
+                <div className="flex gap-2">
+                  <Checkbox
+                    checked={selectedTasks.includes(task.id)}
+                    onCheckedChange={() => toggleTaskSelection(task.id)}
+                  />
+                  <Checkbox
+                    checked={task.completed}
+                    onCheckedChange={() => handleTaskToggle(task.id)}
+                  />
+                </div>
                 <div className="flex-1">
                   <p className={`font-medium text-sm ${task.completed ? 'line-through text-gray-500' : ''}`}>
                     {task.description}

@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { ThumbsUp, ThumbsDown, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Card } from "@/components/ui/card";
+import { CheckCircle, AlertTriangle } from 'lucide-react';
 
 interface StrengthsAndChallengesProps {
   positives: string[];
@@ -10,45 +10,45 @@ interface StrengthsAndChallengesProps {
 
 const StrengthsAndChallenges = ({ positives, negatives }: StrengthsAndChallengesProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {/* Positives */}
-      <Card className="border border-green-100 dark:border-green-900/30 bg-gradient-to-br from-green-50/50 to-white dark:from-green-950/20 dark:to-gray-900">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <ThumbsUp className="h-5 w-5 text-green-600 dark:text-green-400" />
-            <h3 className="font-semibold text-lg">Strengths</h3>
-          </div>
-          
-          <div className="space-y-3">
-            {positives.map((positive, index) => (
-              <div key={index} className="flex items-start gap-2 bg-green-50/70 dark:bg-green-950/30 p-2.5 rounded-md">
-                <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">{positive}</span>
+    <Card className="p-6 bg-white dark:bg-gray-800/50">
+      <div className="space-y-8">
+        {/* Key Strengths */}
+        <div>
+          <h3 className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mb-4 uppercase tracking-wider">
+            Key Strengths
+          </h3>
+          <div className="space-y-4">
+            {positives.map((positive, i) => (
+              <div key={`strength-${i}`} className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-emerald-500 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium mb-1">{positive} <span className="text-emerald-600">+12%</span></h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">12% above industry average</p>
+                </div>
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-      
-      {/* Negatives */}
-      <Card className="border border-red-100 dark:border-red-900/30 bg-gradient-to-br from-red-50/50 to-white dark:from-red-950/20 dark:to-gray-900">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <ThumbsDown className="h-5 w-5 text-red-600 dark:text-red-400" />
-            <h3 className="font-semibold text-lg">Challenges</h3>
-          </div>
-          
-          <div className="space-y-3">
-            {negatives.map((negative, index) => (
-              <div key={index} className="flex items-start gap-2 bg-red-50/70 dark:bg-red-950/30 p-2.5 rounded-md">
-                <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">{negative}</span>
+        </div>
+
+        {/* Areas for Improvement */}
+        <div>
+          <h3 className="text-sm font-semibold text-amber-600 dark:text-amber-400 mb-4 uppercase tracking-wider">
+            Areas for Improvement
+          </h3>
+          <div className="space-y-4">
+            {negatives.map((negative, i) => (
+              <div key={`improvement-${i}`} className="flex items-start gap-3">
+                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium mb-1">{negative} <span className="text-amber-600">+34%</span></h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">34% market growth in competitors</p>
+                </div>
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </div>
+    </Card>
   );
 };
 

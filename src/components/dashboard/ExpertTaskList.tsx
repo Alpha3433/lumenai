@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ClipboardCheck, Plus, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 import NewTaskDialog from './NewTaskDialog';
 
 interface Task {

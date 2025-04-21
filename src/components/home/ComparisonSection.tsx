@@ -1,6 +1,6 @@
 
 import React from "react";
-import { columns2, columns3 } from "lucide-react";
+import { Columns2, Columns3 } from "lucide-react";
 
 const GENERIC_PROMPT_POINTS = [
   { ok: false, text: "Unstructured, messy output" },
@@ -39,7 +39,7 @@ const ComparisonSection = () => (
         <div className="relative bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg flex flex-col p-8">
           <div className="flex items-center gap-3 mb-3">
             <div className="rounded-lg bg-gray-100 dark:bg-gray-700 p-2">
-              <columns2 className="h-6 w-6 text-gray-400" />
+              <Columns2 className="h-6 w-6 text-gray-400" />
             </div>
             <span className="font-semibold text-gray-700 dark:text-gray-200 text-lg">
               Generic AI Prompt
@@ -67,7 +67,7 @@ const ComparisonSection = () => (
         <div className="relative bg-gradient-to-br from-purple-100 via-blue-50 to-white dark:from-purple-800/50 dark:via-blue-900/30 dark:to-gray-950 rounded-2xl border border-purple-200 dark:border-purple-700 shadow-2xl flex flex-col p-8">
           <div className="flex items-center gap-3 mb-3">
             <div className="rounded-lg bg-purple-200 dark:bg-purple-800/50 p-2">
-              <columns3 className="h-6 w-6 text-purple-600" />
+              <Columns3 className="h-6 w-6 text-purple-600" />
             </div>
             <span className="font-semibold text-purple-700 dark:text-purple-100 text-lg">
               Lumen AI Platform

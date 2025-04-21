@@ -1,13 +1,16 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Switch } from '@/components/ui/switch';
 import { Zap } from 'lucide-react';
+
 interface AIEngineSelectorProps {
   useAIV2: boolean;
   isPremium: boolean;
   onToggleChange: (name: string, value: boolean) => void;
   onUpgrade: () => void;
 }
+
 const AIEngineSelector = ({
   useAIV2,
   isPremium,
@@ -32,13 +35,14 @@ const AIEngineSelector = ({
           <div className="flex items-center gap-2">
             <span className="text-sm">Standard</span>
             <Switch id="ai-version-switch" checked={useAIV2} onCheckedChange={checked => onToggleChange('useAIV2', checked)} disabled={!isPremium} />
-            <span className="text-sm font-medium">GPT-4.1 {!isPremium && '🔒'}</span>
+            <span className="text-sm font-medium">Premium {!isPremium && '🔒'}</span>
           </div>
         </div>
       </div>
       {!isPremium && <div className="mt-2 text-xs text-muted-foreground">
-          Upgrade to access our advanced GPT-4.1 model for more nuanced and comprehensive business insights
+          Upgrade to access our advanced Premium model for more nuanced and comprehensive business insights
         </div>}
     </div>;
 };
+
 export default AIEngineSelector;

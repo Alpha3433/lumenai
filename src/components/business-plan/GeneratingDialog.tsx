@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from '@/components/ui/progress';
 import { Loader2, Sparkles, Zap } from 'lucide-react';
+import GenerationTimer from './GenerationTimer';
 
 interface GeneratingDialogProps {
   open: boolean;
@@ -58,6 +58,7 @@ const GeneratingDialog = ({ open, progress, useAIV2 }: GeneratingDialogProps) =>
               {progress >= 66 && progress < 99 && getRandomAiActionMessage()}
               {progress === 100 && "Complete! Preparing your results..."}
             </p>
+            <GenerationTimer generating={open} />
           </div>
 
           <div className="bg-muted/50 p-4 rounded-lg space-y-3">

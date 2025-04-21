@@ -56,9 +56,7 @@ const ComparisonSection = () => <section className="py-20 px-4 bg-gradient-to-b 
             <div className="rounded-lg bg-gray-100 dark:bg-gray-700 p-2">
               <Columns2 className="h-6 w-6 text-gray-400" />
             </div>
-            <span className="font-semibold text-gray-700 dark:text-gray-200 text-lg">
-              Generic AI Prompt
-            </span>
+            <span className="font-semibold text-gray-700 dark:text-gray-200 text-lg">Generic AI LLM</span>
           </div>
           <ul className="space-y-4 flex-1 mb-4">
             {GENERIC_PROMPT_POINTS.map((pt, i) => <li key={i} className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
@@ -82,9 +80,7 @@ const ComparisonSection = () => <section className="py-20 px-4 bg-gradient-to-b 
             <div className="rounded-lg bg-purple-200 dark:bg-purple-800/50 p-2">
               <Columns3 className="h-6 w-6 text-purple-600" />
             </div>
-            <span className="font-semibold text-purple-700 dark:text-purple-100 text-lg">
-              Lumen AI Platform
-            </span>
+            <span className="font-semibold text-purple-700 dark:text-purple-100 text-lg">Lumen AI</span>
           </div>
           <ul className="space-y-4 flex-1 mb-4">
             {LUMEN_PLATFORM_POINTS.map((pt, i) => <li key={i} className="flex items-center gap-2 text-gray-800 dark:text-gray-200">

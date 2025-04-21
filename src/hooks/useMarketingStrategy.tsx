@@ -26,25 +26,56 @@ export interface MarketingStrategyData {
   };
 }
 
+// Default marketing strategy to use as fallback
+const defaultMarketingStrategy: MarketingStrategyData = {
+  targetAudience: {
+    segments: [],
+    insights: []
+  },
+  positioning: {
+    statement: '',
+    uniqueValue: [],
+    differentiators: []
+  },
+  channels: {
+    primary: [],
+    secondary: []
+  },
+  promotional: {
+    campaigns: [],
+    activities: []
+  },
+  acquisition: {
+    strategies: []
+  }
+};
+
 export function useMarketingStrategy(businessName: string, businessDescription: string) {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['marketingStrategy', businessName, businessDescription],
     queryFn: async () => {
-      const result = await generateDynamicContent({
-        sectionType: 'marketing-strategy',
-        businessName,
-        businessDescription
-      });
-      return result as MarketingStrategyData;
+      try {
+        const result = await generateDynamicContent({
+          sectionType: 'marketing-strategy',
+          businessName,
+          businessDescription
+        });
+        return result as MarketingStrategyData;
+      } catch (err) {
+        console.error('Error generating marketing strategy:', err);
+        // Return the default structure to prevent undefined errors
+        return defaultMarketingStrategy;
+      }
     },
-    enabled: !!businessName && !!businessDescription
+    enabled: !!businessName && !!businessDescription,
+    // Use default strategy as fallback
+    placeholderData: defaultMarketingStrategy 
   });
 
   return {
-    marketingStrategy: data,
+    marketingStrategy: data || defaultMarketingStrategy,
     isLoading,
     error,
     refetch
   };
 }
-

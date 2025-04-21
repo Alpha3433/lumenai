@@ -41,23 +41,41 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
     );
   }
 
+  // Default empty values for when segments or insights might be undefined
+  const targetAudience = marketingStrategy.targetAudience || {
+    segments: [],
+    insights: []
+  };
+
   return (
     <section className="space-y-8">
       <MarketingSectionHeader />
       
       <div className="space-y-6">
         <TargetAudienceSection 
-          segments={marketingStrategy.targetAudience.segments}
-          insights={marketingStrategy.targetAudience.insights}
+          segments={targetAudience.segments || []}
+          insights={targetAudience.insights || []}
         />
         
         <Separator className="my-8" />
         
         <MarketingStrategiesGrid 
-          positioning={marketingStrategy.positioning}
-          channels={marketingStrategy.channels}
-          promotional={marketingStrategy.promotional}
-          acquisition={marketingStrategy.acquisition}
+          positioning={marketingStrategy.positioning || {
+            statement: '',
+            uniqueValue: [],
+            differentiators: []
+          }}
+          channels={marketingStrategy.channels || {
+            primary: [],
+            secondary: []
+          }}
+          promotional={marketingStrategy.promotional || {
+            campaigns: [],
+            activities: []
+          }}
+          acquisition={marketingStrategy.acquisition || {
+            strategies: []
+          }}
         />
       </div>
     </section>
@@ -65,4 +83,3 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
 };
 
 export default MarketingPlanSection;
-

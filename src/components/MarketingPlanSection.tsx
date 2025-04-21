@@ -29,7 +29,7 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
   // Parse all relevant data
   const sections = extractSections(marketingPlanText);
 
-  // Always extract dot points with fallback and condense to 4 points each
+  // Always extract dot points, condense to 4 points each
   const dotPoints = {
     targetAudience: getFourPoints(
       sections.audience.flatMap(paragraph => extractBulletPoints(paragraph))
@@ -56,7 +56,6 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
         businessName={businessName}
         marketingPlanText={marketingPlanText}
       />
-
       <MarketingStrategyCard title="Marketing Strategy">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <MarketingSection
@@ -98,3 +97,4 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
 };
 
 export default MarketingPlanSection;
+

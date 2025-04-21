@@ -1,6 +1,6 @@
-
 import React from "react";
 import { Columns2, Columns3 } from "lucide-react";
+
 const GENERIC_PROMPT_POINTS = [
   { ok: false, text: "Unstructured, messy output" },
   { ok: false, text: "Manual formatting required" },
@@ -9,6 +9,7 @@ const GENERIC_PROMPT_POINTS = [
   { ok: false, text: "Time-consuming review process" },
   { ok: false, text: "Can't repeat with consistent quality" },
 ];
+
 const LUMEN_PLATFORM_POINTS = [
   { ok: true, text: "Structured business plan (sections, charts, rationale)" },
   { ok: true, text: "Auto-formatting & export options" },
@@ -44,22 +45,15 @@ const ComparisonSection = () => (
             </span>
           </div>
           {/* Begin Video Box */}
-          <div className="mb-6" style={{paddingTop: "56.25%", position: "relative"}}>
+          <div className="mb-6 w-full rounded-xl overflow-hidden shadow aspect-video bg-black">
             <iframe
               src="https://player.vimeo.com/video/1077299488?h=52c03e4c37&badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1"
               title="Untitled video - Made with Clipchamp (4)"
               frameBorder="0"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                pointerEvents: "none",
-              }}
+              className="w-full h-full pointer-events-none"
               allowFullScreen
-            ></iframe>
+            />
           </div>
           {/* End Video Box */}
           <ul className="space-y-4 flex-1 mb-4">
@@ -111,5 +105,5 @@ const ComparisonSection = () => (
     </div>
   </section>
 );
-export default ComparisonSection;
 
+export default ComparisonSection;

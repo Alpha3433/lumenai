@@ -1,4 +1,3 @@
-
 // Follow this setup guide to integrate the Deno runtime:
 // https://docs.supabase.com/guides/functions/deno-runtime
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
@@ -8,7 +7,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// This function handles OpenAI API calls securely from the backend
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -35,8 +33,11 @@ serve(async (req) => {
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
       );
     }
+
+    // Determine which model to use based on useAIV2
+    const selectedModel = model === 'gpt-4.1' ? 'gpt-4o' : 'gpt-4o-mini';
     
-    console.log(`Calling OpenAI API with model: ${model}`);
+    console.log(`Calling OpenAI API with model: ${selectedModel}`);
     
     // Check prompt type to add special formatting instructions
     const isValidationPrompt = prompt.toLowerCase().includes('financial and idea validation') || 
@@ -69,15 +70,15 @@ serve(async (req) => {
       systemMessage = 'You are a helpful assistant that generates business plan content. When including numbers with decimal points, always ensure there is no space between the number and the decimal point (use 4.5 not 4. 5).';
     }
     
-    // Call OpenAI API using Chat Completions endpoint (newer API)
+    // Call OpenAI API using Chat Completions endpoint
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: model || 'gpt-4o-mini',
+        model: selectedModel,
         messages: [
           { role: 'system', content: systemMessage },
           { role: 'user', content: prompt }

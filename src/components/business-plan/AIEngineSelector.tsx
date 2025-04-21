@@ -23,10 +23,10 @@ const AIEngineSelector = ({
         <div className="flex-1">
           <h3 className="font-medium flex items-center">
             <Zap className="mr-2 h-4 w-4 text-amber-500" />
-            Enhanced AI Engine
+            AI Model Selection
           </h3>
           <p className="text-sm text-muted-foreground mt-1">
-            Unlock next-gen analysis with our premium AI engine
+            {isPremium ? 'Choose between standard and premium AI models' : 'Unlock our premium AI model for enhanced analysis'}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -42,20 +42,20 @@ const AIEngineSelector = ({
             </Button>
           )}
           <div className="flex items-center gap-2">
-            <span className="text-sm">Standard</span>
+            <span className="text-sm">GPT-4o</span>
             <Switch
               id="ai-version-switch"
               checked={useAIV2}
               onCheckedChange={(checked) => onToggleChange('useAIV2', checked)}
               disabled={!isPremium}
             />
-            <span className="text-sm font-medium">Premium {!isPremium && '🔒'}</span>
+            <span className="text-sm font-medium">GPT-4.1 {!isPremium && '🔒'}</span>
           </div>
         </div>
       </div>
       {!isPremium && (
         <div className="mt-2 text-xs text-muted-foreground">
-          Our Premium AI delivers deeper insights and more strategic business recommendations
+          Upgrade to access our advanced GPT-4.1 model for more nuanced and comprehensive business insights
         </div>
       )}
     </div>

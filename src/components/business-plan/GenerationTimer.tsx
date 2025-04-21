@@ -10,7 +10,7 @@ const GenerationTimer = ({ generating }: GenerationTimerProps) => {
   const [timeElapsed, setTimeElapsed] = useState(0);
 
   useEffect(() => {
-    let intervalId: number;
+    let intervalId: NodeJS.Timeout | undefined;
 
     if (generating) {
       setTimeElapsed(0);

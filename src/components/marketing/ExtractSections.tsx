@@ -1,4 +1,3 @@
-
 // Helper function to extract sections from marketing plan text
 export const extractSections = (text: string) => {
   const sections: Record<string, string[]> = {
@@ -12,7 +11,6 @@ export const extractSections = (text: string) => {
   
   let currentSection = 'general';
   
-  // Split by paragraphs and clean up formatting
   const paragraphs = text.split('\n\n').map(p => 
     p.replace(/\*\*.*?\*\*/g, '')     // Remove ** markers
      .replace(/Segment \d+:?\s*/gi, '') // Remove segment headers

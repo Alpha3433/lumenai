@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button'; 
@@ -19,20 +18,12 @@ import BusinessPlanDashboard from '@/components/BusinessPlanDashboard';
 import { BusinessPlanData } from '@/types/businessPlan';
 import VerticalTabs from '@/components/VerticalTabs';
 
-// Import remaining section components
-import CustomerPersonasSection from '../personas/CustomerPersonasSection';
-import CompetitiveFeatureMatrix from '../competitive/CompetitiveFeatureMatrix';
-import GoToMarketStrategy from '../strategy/GoToMarketStrategy';
-import MonetizationExperiments from '../monetization/MonetizationExperiments';
-import UserRetentionStrategy from '../retention/UserRetentionStrategy';
-import RiskMitigationPlaybook from '../risk/RiskMitigationPlaybook';
-
 interface CompanyData {
   id: string;
   name: string;
   description: string;
   industry: string;
-  logoIcon: string; // Changed to match ExampleCard interface
+  logoIcon: string;
   executiveSummary: string;
   marketAnalysis: string;
   businessModel: string;
@@ -58,7 +49,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
   const [refinedDescription, setRefinedDescription] = useState(company.description);
   const [activeTab, setActiveTab] = useState('dashboard');
   
-  // Prepare business plan data in the format expected by components
   const businessPlan: BusinessPlanData = {
     executiveSummary: company.executiveSummary,
     marketAnalysis: company.marketAnalysis,
@@ -69,7 +59,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
     swotAnalysis: company.swotAnalysis
   };
 
-  // Get the appropriate logo based on the company
   const getCompanyLogo = () => {
     switch(company.logoIcon) {
       case 'Zap':
@@ -91,7 +80,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
     });
   };
 
-  // Set up scroll observation for auto-selecting tabs
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -109,7 +97,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
 
     const observer = new IntersectionObserver(handleIntersect, observerOptions);
     
-    // Observe all section elements
     const sections = [
       'dashboard', 'executive-summary', 'customer-personas', 
       'swot-analysis', 'competitive-matrix', 'pestel-analysis', 
@@ -149,7 +136,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
       </div>
 
       <div className="space-y-10 animate-fade-in pb-20">
-        {/* Company Header with Logo */}
         <motion.div 
           className="max-w-6xl mx-auto mb-8"
           initial={{ opacity: 0, y: 20 }}
@@ -181,7 +167,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
           onDownload={onDownload}
         />
         
-        {/* Business Info Editing Section */}
         <div className="max-w-6xl mx-auto px-4">
           <Card className="border border-gray-200 dark:border-gray-800 shadow-sm bg-card/95 overflow-hidden">
             <CardContent className="p-5">
@@ -233,15 +218,12 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
         
         <div className="max-w-[95%] xl:max-w-7xl mx-auto">
           <div className="relative flex rounded-xl overflow-hidden shadow-xl">
-            {/* Side Navigation */}
             <div className="hidden md:block w-56 sticky top-24 h-[calc(100vh-120px)]">
               <VerticalTabs activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
             
-            {/* Main Content Area */}
             <div className="flex-1 bg-card/95 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-r-xl overflow-hidden">
               <div className="p-6 md:p-8">
-                {/* Business Plan Dashboard */}
                 <div id="dashboard">
                   <BusinessPlanDashboard 
                     businessName={refinedName}
@@ -249,7 +231,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                   />
                 </div>
                 
-                {/* Executive Summary */}
                 <div id="executive-summary">
                   <ExecutiveSummarySection 
                     summaryText={businessPlan.executiveSummary} 
@@ -260,7 +241,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Customer Personas Deep-Dive */}
                 <div id="customer-personas">
                   <CustomerPersonasSection 
                     businessName={refinedName}
@@ -269,8 +249,7 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 </div>
                 
                 <Separator className="my-10" />
-
-                {/* SWOT Analysis */}
+                
                 <div id="swot-analysis">
                   <SwotAnalysis 
                     swotText={businessPlan.swotAnalysis} 
@@ -280,7 +259,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Competitive Feature Matrix */}
                 <div id="competitive-matrix">
                   <CompetitiveFeatureMatrix 
                     businessName={refinedName}
@@ -290,7 +268,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* PESTEL Analysis */}
                 <div id="pestel-analysis">
                   <PestelAnalysisSection 
                     analysisText={businessPlan.marketAnalysis}
@@ -301,7 +278,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Porter's Five Forces Analysis */}
                 <div id="porter-five-forces">
                   <PorterFiveForcesSection 
                     marketAnalysis={businessPlan.marketAnalysis}
@@ -312,7 +288,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Go-To-Market Strategy */}
                 <div id="gtm-strategy">
                   <GoToMarketStrategy 
                     businessName={refinedName}
@@ -322,7 +297,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Monetization Experiments */}
                 <div id="monetization">
                   <MonetizationExperiments 
                     businessName={refinedName}
@@ -332,10 +306,8 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Marketing Plan */}
                 <div id="marketing-plan">
                   <MarketingPlanSection 
-                    marketingPlanText={businessPlan.marketingPlan}
                     businessName={refinedName}
                     businessDescription={refinedDescription}
                   />
@@ -343,7 +315,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* User Retention Strategy */}
                 <div id="retention-strategy">
                   <UserRetentionStrategy 
                     businessName={refinedName}
@@ -353,7 +324,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Web Business Models */}
                 <div id="business-models">
                   <WebBusinessModelsSection 
                     businessName={refinedName}
@@ -363,7 +333,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <Separator className="my-10" />
                 
-                {/* Risk Mitigation Playbook */}
                 <div id="risk-mitigation">
                   <RiskMitigationPlaybook 
                     businessName={refinedName}

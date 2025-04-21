@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -125,10 +124,9 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
               
               <Separator className="my-10" />
               
-              {/* Marketing Plan */}
+              {/* Marketing Plan - Updated to remove marketingPlanText prop */}
               <div id="marketing-plan">
                 <MarketingPlanSection 
-                  marketingPlanText={businessPlan.marketingPlan}
                   businessName={company.name}
                   businessDescription={company.description}
                 />

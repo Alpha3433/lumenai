@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,8 +13,9 @@ import { toast } from 'sonner';
 const UpcomingMeetingsList = () => {
   const navigate = useNavigate();
   const [selectedMeetings, setSelectedMeetings] = useState<string[]>([]);
+  const queryClient = useQueryClient();
   
-  const { data: meetings, isLoading, refetch } = useQuery({
+  const { data: meetings, isLoading } = useQuery({
     queryKey: ['upcoming-meetings'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -42,7 +43,10 @@ const UpcomingMeetingsList = () => {
 
       toast.success(`${selectedMeetings.length} meeting${selectedMeetings.length > 1 ? 's' : ''} deleted`);
       setSelectedMeetings([]);
-      refetch();
+      
+      // Invalidate both queries to refresh the data
+      queryClient.invalidateQueries({ queryKey: ['upcoming-meetings'] });
+      queryClient.invalidateQueries({ queryKey: ['upcoming-meetings-count'] });
     } catch (error) {
       toast.error('Failed to delete meetings');
       console.error('Error deleting meetings:', error);
@@ -103,7 +107,6 @@ const UpcomingMeetingsList = () => {
                 <Checkbox
                   checked={selectedMeetings.includes(meeting.id)}
                   onCheckedChange={() => toggleMeetingSelection(meeting.id)}
-                  className="mt-1"
                 />
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
@@ -125,7 +128,7 @@ const UpcomingMeetingsList = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             No meetings scheduled. Click "Schedule" to add one.
           </div>
         )}

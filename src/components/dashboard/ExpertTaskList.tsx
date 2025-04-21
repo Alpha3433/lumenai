@@ -13,6 +13,7 @@ interface Task {
   completed: boolean;
   priority: 'high' | 'medium' | 'low';
   dueIn?: string;
+  selected?: boolean;
 }
 
 const ExpertTaskList = () => {
@@ -33,14 +34,12 @@ const ExpertTaskList = () => {
     setTasks(tasks.map(task => 
       task.id === taskId ? { ...task, completed: !task.completed } : task
     ));
-  };
-
-  const toggleTaskSelection = (taskId: string) => {
-    setSelectedTasks(prev =>
-      prev.includes(taskId)
-        ? prev.filter(id => id !== taskId)
-        : [...prev, taskId]
-    );
+    
+    if (!selectedTasks.includes(taskId)) {
+      setSelectedTasks(prev => [...prev, taskId]);
+    } else {
+      setSelectedTasks(prev => prev.filter(id => id !== taskId));
+    }
   };
 
   const handleDeleteSelectedTasks = () => {
@@ -108,16 +107,10 @@ const ExpertTaskList = () => {
                 key={task.id}
                 className="flex items-start gap-3 p-2 rounded-lg border border-gray-200 dark:border-gray-700"
               >
-                <div className="flex gap-2">
-                  <Checkbox
-                    checked={selectedTasks.includes(task.id)}
-                    onCheckedChange={() => toggleTaskSelection(task.id)}
-                  />
-                  <Checkbox
-                    checked={task.completed}
-                    onCheckedChange={() => handleTaskToggle(task.id)}
-                  />
-                </div>
+                <Checkbox
+                  checked={task.completed || selectedTasks.includes(task.id)}
+                  onCheckedChange={() => handleTaskToggle(task.id)}
+                />
                 <div className="flex-1">
                   <p className={`font-medium text-sm ${task.completed ? 'line-through text-gray-500' : ''}`}>
                     {task.description}

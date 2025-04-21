@@ -1,97 +1,65 @@
 
 import React from 'react';
-import { Target, Users, Megaphone, Calendar, Activity } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import MarketingSectionHeader from './marketing/MarketingSectionHeader';
-import MarketingRoadmapVisualizer from './marketing/MarketingRoadmapVisualizer';
-import MarketingStrategyCard from './marketing/MarketingStrategyCard';
-import MarketingSection from './marketing/MarketingSection';
-import { extractSections, extractBulletPoints } from './marketing/ExtractSections';
-
-// Helper to reduce to 4 concise points
-function getFourPoints(points: string[] = []): string[] {
-  return points.filter(Boolean).slice(0, 4).map((pt) =>
-    pt.length > 120 ? pt.substring(0, 110).trim() + '...' : pt
-  );
-}
+import MarketingStrategiesGrid from './marketing/MarketingStrategiesGrid';
+import TargetAudienceSection from './marketing/TargetAudienceSection';
+import { useMarketingStrategy } from '@/hooks/useMarketingStrategy';
 
 interface MarketingPlanSectionProps {
-  marketingPlanText: string;
-  businessName?: string;
-  businessDescription?: string;
+  businessName: string;
+  businessDescription: string;
 }
 
 const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
-  marketingPlanText,
-  businessName = "Business",
-  businessDescription = ""
+  businessName,
+  businessDescription
 }) => {
-  // Parse all relevant data
-  const sections = extractSections(marketingPlanText);
+  const { marketingStrategy, isLoading, error } = useMarketingStrategy(
+    businessName,
+    businessDescription
+  );
 
-  // Always extract dot points, condense to 4 points each
-  const dotPoints = {
-    targetAudience: getFourPoints(
-      sections.audience.flatMap(paragraph => extractBulletPoints(paragraph))
-    ),
-    positioning: getFourPoints(
-      sections.positioning.flatMap(paragraph => extractBulletPoints(paragraph))
-    ),
-    marketingChannels: getFourPoints(
-      sections.channels.flatMap(paragraph => extractBulletPoints(paragraph))
-    ),
-    promotional: getFourPoints(
-      sections.promotional.flatMap(paragraph => extractBulletPoints(paragraph))
-    ),
-    acquisition: getFourPoints(
-      sections.acquisition.flatMap(paragraph => extractBulletPoints(paragraph))
-    )
-  };
+  if (error) {
+    return (
+      <div className="p-8 text-center text-gray-500">
+        Unable to load marketing strategy. Please try again later.
+      </div>
+    );
+  }
+
+  if (isLoading || !marketingStrategy) {
+    return (
+      <div className="animate-pulse space-y-8">
+        <div className="h-8 bg-gray-200 dark:bg-gray-800 rounded w-1/3" />
+        <div className="grid gap-6 md:grid-cols-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-48 bg-gray-100 dark:bg-gray-900 rounded-lg" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <section className="mb-12">
+    <section className="space-y-8">
       <MarketingSectionHeader />
-
-      <MarketingRoadmapVisualizer
-        businessName={businessName}
-        marketingPlanText={marketingPlanText}
-      />
-      <MarketingStrategyCard title="Marketing Strategy">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <MarketingSection
-            title="Target Audience"
-            icon={<Target className="h-4 w-4" />}
-            items={dotPoints.targetAudience}
-          />
-          <MarketingSection
-            title="Positioning Strategy"
-            icon={<Users className="h-4 w-4" />}
-            items={dotPoints.positioning}
-            checkColor="purple-500"
-          />
-        </div>
-        <Separator className="my-6" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <MarketingSection
-            title="Marketing Channels"
-            icon={<Megaphone className="h-4 w-4" />}
-            items={dotPoints.marketingChannels}
-            checkColor="green-500"
-          />
-          <MarketingSection
-            title="Promotional Activities"
-            icon={<Calendar className="h-4 w-4" />}
-            items={dotPoints.promotional}
-            checkColor="amber-500"
-          />
-          <MarketingSection
-            title="Customer Acquisition"
-            icon={<Activity className="h-4 w-4" />}
-            items={dotPoints.acquisition}
-            checkColor="blue-500"
-          />
-        </div>
-      </MarketingStrategyCard>
+      
+      <div className="space-y-6">
+        <TargetAudienceSection 
+          segments={marketingStrategy.targetAudience.segments}
+          insights={marketingStrategy.targetAudience.insights}
+        />
+        
+        <Separator className="my-8" />
+        
+        <MarketingStrategiesGrid 
+          positioning={marketingStrategy.positioning}
+          channels={marketingStrategy.channels}
+          promotional={marketingStrategy.promotional}
+          acquisition={marketingStrategy.acquisition}
+        />
+      </div>
     </section>
   );
 };

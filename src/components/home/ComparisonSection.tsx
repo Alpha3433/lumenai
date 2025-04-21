@@ -56,7 +56,7 @@ const ComparisonSection = () => <section className="py-20 px-4 bg-gradient-to-b 
             <div className="rounded-lg bg-gray-100 dark:bg-gray-700 p-2">
               <Columns2 className="h-6 w-6 text-gray-400" />
             </div>
-            <span className="font-semibold text-gray-700 dark:text-gray-200 text-lg">Generic AI LLM</span>
+            <span className="font-semibold text-gray-700 dark:text-gray-200 text-lg">Generic AI Language Model</span>
           </div>
           <ul className="space-y-4 flex-1 mb-4">
             {GENERIC_PROMPT_POINTS.map((pt, i) => <li key={i} className="flex items-center gap-2 text-gray-500 dark:text-gray-400">

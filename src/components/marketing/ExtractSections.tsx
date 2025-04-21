@@ -1,3 +1,4 @@
+
 // Helper function to extract sections from marketing plan text
 export const extractSections = (text: string) => {
   const sections: Record<string, string[]> = {
@@ -19,6 +20,12 @@ export const extractSections = (text: string) => {
      .replace(/Positioning Statement:\s*/g, '') // Remove positioning statement label
      .replace(/Differentiation:\s*/g, '') // Remove differentiation label
      .replace(/Unique Value Proposition:\s*/g, '') // Remove UVP label
+     .replace(/Social Media [aA]dvertising:\s*/g, '') // Remove social media advertising label
+     .replace(/Content Marketing:\s*/g, '') // Remove content marketing label
+     .replace(/Community Events:\s*/g, '') // Remove community events label
+     .replace(/Email Marketing:\s*/g, '') // Remove email marketing label
+     .replace(/Partnerships[^:]*:\s*/g, '') // Remove partnerships label
+     .replace(/Targeted[^:]*:\s*/g, '') // Remove targeted advertising label
      .trim()
   );
   

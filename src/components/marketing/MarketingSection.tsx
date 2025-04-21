@@ -18,25 +18,28 @@ function expandBulletPoint(point: string): string {
     return `Our core audience consists of health-conscious individuals aged 30-50, predominantly female professionals with middle-income backgrounds, seeking personalized wellness guidance and structured support for their health journey.`;
   }
   if (point.toLowerCase().includes('motivated')) {
-    return `These individuals are deeply motivated to transform their lives through healthier habits, actively seeking comprehensive programs that provide clear, actionable steps toward their wellness goals.`;
+    return `These individuals are deeply motivated to transform their lives through healthier habits, actively seeking comprehensive programs that provide clear, actionable steps toward their wellness goals while maintaining busy professional schedules.`;
   }
-  if (point.toLowerCase().includes('ai-driven') || point.toLowerCase().includes('technology')) {
-    return `By leveraging cutting-edge AI technology, we deliver personalized fitness recommendations and adaptive workout plans that evolve with each user's progress and preferences.`;
+  if (point.toLowerCase().includes('position')) {
+    return `Our platform stands as the premier AI-powered wellness companion, uniquely positioned to deliver personalized fitness and nutrition guidance through advanced machine learning algorithms that adapt to each user's progress and preferences.`;
   }
   if (point.toLowerCase().includes('traditional')) {
-    return `Unlike conventional fitness solutions, our platform provides deeply personalized experiences, adapting to individual progress patterns and offering real-time adjustments to maximize results.`;
+    return `Unlike conventional fitness solutions that offer one-size-fits-all approaches, our platform provides deeply personalized experiences, combining cutting-edge AI technology with human expertise to deliver tailored wellness programs that evolve with each user's journey.`;
   }
   if (point.toLowerCase().includes('community')) {
-    return `Our platform creates a supportive ecosystem where users connect with like-minded individuals, share achievements, and receive encouragement from an engaged community of wellness enthusiasts.`;
-  }
-  if (point.toLowerCase().includes('target segments')) {
-    return `Strategic marketing campaigns target specific demographic segments through precise data analytics, ensuring our message reaches those most likely to benefit from our personalized approach.`;
-  }
-  if (point.toLowerCase().includes('trial')) {
-    return `New users can experience the full suite of premium features through our comprehensive 30-day trial, allowing them to discover the platform's value proposition firsthand.`;
+    return `We foster a supportive ecosystem where users connect with like-minded individuals, share achievements, and receive encouragement from an engaged community of wellness enthusiasts, creating a powerful blend of technological innovation and human connection.`;
   }
   if (point.toLowerCase().includes('social media')) {
-    return `Our multi-channel digital marketing strategy combines targeted social media campaigns with sophisticated Google Ads optimization, reaching potential users across their preferred platforms.`;
+    return `Our comprehensive digital marketing strategy leverages data-driven targeting across major social media platforms, creating engaging content that resonates with our core demographic while showcasing real user success stories and transformation journeys.`;
+  }
+  if (point.toLowerCase().includes('events')) {
+    return `We organize regular virtual wellness events, expert-led webinars, and community challenges that create meaningful engagement opportunities, helping users stay motivated while building a strong, supportive community around our brand.`;
+  }
+  if (point.toLowerCase().includes('trial')) {
+    return `New users experience our premium features through an extensive 30-day trial period, supported by personalized onboarding sessions and AI-driven goal setting, ensuring they discover the full value of our platform's capabilities.`;
+  }
+  if (point.toLowerCase().includes('partnership')) {
+    return `Strategic partnerships with healthcare providers, wellness experts, and fitness influencers enhance our credibility while creating valuable content and resources that address specific health concerns and fitness goals of our target audience.`;
   }
   
   return point.endsWith('.') ? point : `${point}.`;

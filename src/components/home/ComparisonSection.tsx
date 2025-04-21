@@ -18,9 +18,6 @@ const LUMEN_PLATFORM_POINTS = [
   { ok: true, text: "Expert templates & AI guidance built-in" },
 ];
 
-const GOOGLE_DRIVE_EMBED =
-  "https://drive.google.com/file/d/1SX5spnFMVL-GvltMZtKPESk5FPaP1J2E/preview";
-
 const ComparisonSection = () => (
   <section className="py-20 px-4 bg-gradient-to-b from-[#F1F0FB] to-white dark:from-gray-950/80 dark:to-gray-900">
     <div className="max-w-7xl mx-auto">
@@ -47,20 +44,22 @@ const ComparisonSection = () => (
             </span>
           </div>
           {/* Begin Video Box */}
-          <div className="mb-6">
-            <div className="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-black shadow">
-              <iframe
-                src={GOOGLE_DRIVE_EMBED + "?autoplay=1&loop=1&mute=1"}
-                title="Generic AI Demo"
-                allow="autoplay"
-                frameBorder="0"
-                allowFullScreen
-                className="w-full h-64 md:h-56"
-                style={{
-                  pointerEvents: "none", // disables user interaction with controls
-                }}
-              ></iframe>
-            </div>
+          <div className="mb-6" style={{paddingTop: "56.25%", position: "relative"}}>
+            <iframe
+              src="https://player.vimeo.com/video/1077299488?h=52c03e4c37&badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1"
+              title="Untitled video - Made with Clipchamp (4)"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none",
+              }}
+              allowFullScreen
+            ></iframe>
           </div>
           {/* End Video Box */}
           <ul className="space-y-4 flex-1 mb-4">
@@ -113,3 +112,4 @@ const ComparisonSection = () => (
   </section>
 );
 export default ComparisonSection;
+

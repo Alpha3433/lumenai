@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CircleCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -12,36 +11,35 @@ interface MarketingSectionProps {
 }
 
 function expandBulletPoint(point: string): string {
-  // Expands the bullet into a slightly longer, clearer mini-paragraph.
-  // You can tune this logic as desired for the app - for now, we're subtly expanding, not rewriting.
-  if (point.length > 100) return point; // Already expanded from OpenAI output
-  // Pattern-based expansions
-  if (point.toLowerCase().includes('aged')) {
-    return `The primary audience is aged 30-50, primarily female, middle-income earners, and often working professionals seeking structured guidance to adopt healthier habits.`;
+  if (point.length > 100) return point;
+  
+  // Enhanced pattern-based expansions with more natural flow
+  if (point.toLowerCase().includes('aged') || point.toLowerCase().includes('demographic')) {
+    return `Our core audience consists of health-conscious individuals aged 30-50, predominantly female professionals with middle-income backgrounds, seeking personalized wellness guidance and structured support for their health journey.`;
   }
   if (point.toLowerCase().includes('motivated')) {
-    return `This audience is motivated to adopt healthier habits, looking for structured, easy-to-follow programs to guide weight loss and wellness.`;
+    return `These individuals are deeply motivated to transform their lives through healthier habits, actively seeking comprehensive programs that provide clear, actionable steps toward their wellness goals.`;
   }
-  if (point.toLowerCase().includes('ai-driven fitness app')) {
-    return `FitnessAi is positioned as a leading AI-driven fitness app, empowering users with smart recommendations tailored specifically to their health goals.`;
+  if (point.toLowerCase().includes('ai-driven') || point.toLowerCase().includes('technology')) {
+    return `By leveraging cutting-edge AI technology, we deliver personalized fitness recommendations and adaptive workout plans that evolve with each user's progress and preferences.`;
   }
-  if (point.toLowerCase().includes('unlike traditional fitness apps')) {
-    return `FitnessAi stands out from traditional fitness apps by deeply understanding its targeted users rather than offering generic solutions.`;
+  if (point.toLowerCase().includes('traditional')) {
+    return `Unlike conventional fitness solutions, our platform provides deeply personalized experiences, adapting to individual progress patterns and offering real-time adjustments to maximize results.`;
   }
-  if (point.toLowerCase().includes('advanced ai technology')) {
-    return `The platform leverages advanced AI technology combined with a supportive community, offering a personalized and encouraging experience.`;
+  if (point.toLowerCase().includes('community')) {
+    return `Our platform creates a supportive ecosystem where users connect with like-minded individuals, share achievements, and receive encouragement from an engaged community of wellness enthusiasts.`;
   }
-  if (point.toLowerCase().includes('ideal for reaching target segments')) {
-    return `Marketing campaigns are ideally tailored to target health-conscious individuals and new parents by utilizing sharp demographic segmentation.`;
+  if (point.toLowerCase().includes('target segments')) {
+    return `Strategic marketing campaigns target specific demographic segments through precise data analytics, ensuring our message reaches those most likely to benefit from our personalized approach.`;
   }
-  if (point.toLowerCase().includes('30-day free trial')) {
-    return `A 30-day free trial encourages sign-ups and showcases the app’s value, reducing barriers for new users to experience FitnessAi’s unique features.`;
+  if (point.toLowerCase().includes('trial')) {
+    return `New users can experience the full suite of premium features through our comprehensive 30-day trial, allowing them to discover the platform's value proposition firsthand.`;
   }
-  if (point.toLowerCase().includes('google ads and social media')) {
-    return `Advertising on Google and social media enables precise targeting of the most promising demographics, improving acquisition efficiency.`;
+  if (point.toLowerCase().includes('social media')) {
+    return `Our multi-channel digital marketing strategy combines targeted social media campaigns with sophisticated Google Ads optimization, reaching potential users across their preferred platforms.`;
   }
-  // Default: present as a full sentence
-  return point.endsWith('.') ? point : point + '.';
+  
+  return point.endsWith('.') ? point : `${point}.`;
 }
 
 const MarketingSection: React.FC<MarketingSectionProps> = ({
@@ -79,4 +77,3 @@ const MarketingSection: React.FC<MarketingSectionProps> = ({
 };
 
 export default MarketingSection;
-

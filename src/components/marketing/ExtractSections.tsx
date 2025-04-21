@@ -1,4 +1,3 @@
-
 // Helper function to extract sections from marketing plan text
 export const extractSections = (text: string) => {
   const sections: Record<string, string[]> = {
@@ -12,24 +11,32 @@ export const extractSections = (text: string) => {
   
   let currentSection = 'general';
   
-  // Split by paragraphs
-  const paragraphs = text.split('\n\n');
+  // Split by paragraphs and clean up formatting
+  const paragraphs = text.split('\n\n').map(p => 
+    p.replace(/\*\*.*?\*\*/g, '')     // Remove ** markers
+     .replace(/Segment \d+:?\s*/gi, '') // Remove segment headers
+     .replace(/Psychographic:\s*/g, '')  // Remove psychographic label
+     .replace(/Positioning Statement:\s*/g, '') // Remove positioning statement label
+     .replace(/Differentiation:\s*/g, '') // Remove differentiation label
+     .replace(/Unique Value Proposition:\s*/g, '') // Remove UVP label
+     .trim()
+  );
   
   paragraphs.forEach(paragraph => {
-    // Check for section headers
-    if (paragraph.toLowerCase().includes('target audience') || paragraph.toLowerCase().includes('segmentation')) {
+    // Check for section content without relying on headers
+    if (paragraph.toLowerCase().includes('target') || paragraph.toLowerCase().includes('audience') || paragraph.toLowerCase().includes('demographic')) {
       currentSection = 'audience';
-    } else if (paragraph.toLowerCase().includes('positioning')) {
+    } else if (paragraph.toLowerCase().includes('position') || paragraph.toLowerCase().includes('different') || paragraph.toLowerCase().includes('value prop')) {
       currentSection = 'positioning';
-    } else if (paragraph.toLowerCase().includes('marketing channels') || paragraph.toLowerCase().includes('channels')) {
+    } else if (paragraph.toLowerCase().includes('channel') || paragraph.toLowerCase().includes('platform') || paragraph.toLowerCase().includes('media')) {
       currentSection = 'channels';
-    } else if (paragraph.toLowerCase().includes('promotional') || paragraph.toLowerCase().includes('promotion')) {
+    } else if (paragraph.toLowerCase().includes('promot') || paragraph.toLowerCase().includes('campaign') || paragraph.toLowerCase().includes('event')) {
       currentSection = 'promotional';
-    } else if (paragraph.toLowerCase().includes('customer acquisition') || paragraph.toLowerCase().includes('acquisition')) {
+    } else if (paragraph.toLowerCase().includes('acquisition') || paragraph.toLowerCase().includes('convert') || paragraph.toLowerCase().includes('customer')) {
       currentSection = 'acquisition';
     }
     
-    // Add paragraph to current section
+    // Add cleaned paragraph to current section if it's not empty
     if (paragraph.trim()) {
       sections[currentSection].push(paragraph);
     }

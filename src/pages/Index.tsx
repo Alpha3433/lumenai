@@ -12,6 +12,7 @@ import BuildProductsSection from '@/components/home/BuildProductsSection';
 import PricingSection from '@/components/home/PricingSection';
 import FAQAccordion from '@/components/home/FAQAccordion';
 import HowItWorksSection from '@/components/home/HowItWorksSection';
+import ComparisonSection from '@/components/home/ComparisonSection';
 
 const Index = () => {
   return (
@@ -19,8 +20,9 @@ const Index = () => {
       <Navbar />
       <NewHero />
       <ToolsShowcase />
-      <ThreeColumnFeatures />
       <HowItWorksSection />
+      <ComparisonSection />
+      <ThreeColumnFeatures />
       <TransformSection />
       <RoadmapSection />
       <TestimonialsSection />

@@ -41,7 +41,7 @@ const MarketingPlanSection: React.FC<MarketingPlanSectionProps> = ({
       />
       
       {/* Main Marketing Plan Content */}
-      <MarketingStrategyCard>
+      <MarketingStrategyCard title="Marketing Strategy">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Target Audience Section */}
           {parsedData?.targetAudience && parsedData.targetAudience.length > 0 ? (

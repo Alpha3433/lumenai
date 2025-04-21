@@ -11,17 +11,19 @@ interface MarketingSectionProps {
   description?: string;
 }
 
-const MarketingSection: React.FC<MarketingSectionProps> = ({ 
-  title, 
-  icon, 
-  items, 
+const MarketingSection: React.FC<MarketingSectionProps> = ({
+  title,
+  icon,
+  items = [],
   checkColor = "indigo-500",
   description
 }) => {
-  if (!items || items.length === 0) return null;
-  
+  // Only show the first 4 concise points
+  const displayItems = items.slice(0, 4);
+  if (displayItems.length === 0) return null;
+
   return (
-    <div className="space-y-4 bg-card/50 p-4 rounded-lg border border-border/50 hover:border-border/80 transition-colors">
+    <div className="space-y-4 bg-card/50 p-4 rounded-lg border border-border/50">
       <div className="space-y-1">
         <h4 className="font-semibold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
           {icon}
@@ -32,9 +34,9 @@ const MarketingSection: React.FC<MarketingSectionProps> = ({
         )}
       </div>
       <div className="space-y-3">
-        {items.map((point, idx) => (
-          <div key={idx} className="flex items-start gap-2 group">
-            <CircleCheck className={cn(`h-4 w-4 text-${checkColor} mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform`)} />
+        {displayItems.map((point, idx) => (
+          <div key={idx} className="flex items-start gap-3 group">
+            <CircleCheck className={cn(`h-4 w-4 text-${checkColor} mt-1 flex-shrink-0`)} />
             <p className="text-sm text-gray-700 dark:text-gray-300">{point}</p>
           </div>
         ))}

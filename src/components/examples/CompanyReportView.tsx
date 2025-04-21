@@ -17,6 +17,12 @@ import WebBusinessModelsSection from '@/components/WebBusinessModelsSection';
 import BusinessPlanDashboard from '@/components/BusinessPlanDashboard';
 import { BusinessPlanData } from '@/types/businessPlan';
 import VerticalTabs from '@/components/VerticalTabs';
+import CustomerPersonasSection from '@/components/personas/CustomerPersonasSection';
+import CompetitiveFeatureMatrix from '@/components/competitive/CompetitiveFeatureMatrix';
+import GoToMarketStrategy from '@/components/strategy/GoToMarketStrategy';
+import MonetizationExperiments from '@/components/monetization/MonetizationExperiments';
+import UserRetentionStrategy from '@/components/retention/UserRetentionStrategy';
+import RiskMitigationPlaybook from '@/components/risk/RiskMitigationPlaybook';
 
 interface CompanyData {
   id: string;

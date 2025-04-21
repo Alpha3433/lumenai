@@ -30,7 +30,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
 }) => {
   if (!company) return null;
   
-  // Prepare business plan data in the format expected by components
   const businessPlan: BusinessPlanData = {
     executiveSummary: company.executiveSummary,
     marketAnalysis: company.marketAnalysis,
@@ -73,7 +72,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent -z-10 rounded-3xl blur-xl opacity-50"></div>
           <Card className="border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl overflow-hidden bg-card/95 backdrop-blur-sm">
             <CardContent className="p-8">
-              {/* Business Plan Dashboard */}
               <div id="dashboard">
                 <BusinessPlanDashboard 
                   businessName={company.name}
@@ -81,7 +79,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
                 />
               </div>
               
-              {/* Executive Summary */}
               <div id="executive-summary">
                 <ExecutiveSummarySection 
                   summaryText={businessPlan.executiveSummary} 
@@ -92,7 +89,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
               
               <Separator className="my-10" />
               
-              {/* SWOT Analysis */}
               <div id="swot-analysis">
                 <SwotAnalysis 
                   swotText={businessPlan.swotAnalysis} 
@@ -102,7 +98,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
               
               <Separator className="my-10" />
               
-              {/* PESTEL Analysis */}
               <div id="pestel-analysis">
                 <PestelAnalysisSection 
                   analysisText={businessPlan.marketAnalysis}
@@ -113,7 +108,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
               
               <Separator className="my-10" />
               
-              {/* Porter's Five Forces Analysis */}
               <div id="porter-five-forces">
                 <PorterFiveForcesSection 
                   marketAnalysis={businessPlan.marketAnalysis}
@@ -124,7 +118,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
               
               <Separator className="my-10" />
               
-              {/* Marketing Plan - Updated to remove marketingPlanText prop */}
               <div id="marketing-plan">
                 <MarketingPlanSection 
                   businessName={company.name}
@@ -134,7 +127,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
               
               <Separator className="my-10" />
               
-              {/* Web Business Models */}
               <div id="business-models">
                 <WebBusinessModelsSection 
                   businessName={company.name}

@@ -3,13 +3,13 @@ import React from 'react';
 import { Globe, RefreshCw } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
-interface WebBusinessModelsHeaderProps {
+interface BusinessModelsHeaderProps {
   onRefresh: () => void;
   loading: boolean;
   refreshing: boolean;
 }
 
-const WebBusinessModelsHeader: React.FC<WebBusinessModelsHeaderProps> = ({ 
+const WebBusinessModelsHeader: React.FC<BusinessModelsHeaderProps> = ({ 
   onRefresh, 
   loading, 
   refreshing 

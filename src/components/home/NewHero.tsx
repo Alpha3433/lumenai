@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
@@ -101,26 +100,12 @@ const NewHero = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-3 gap-4 p-4">
-                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-48">
+              <div className="p-4">
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-[400px]">
                   <img 
-                    src="/lovable-uploads/4d5550d8-557f-4435-80c0-505047b84980.png" 
-                    alt="Business Feature 1" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-64 lg:h-80">
-                  <img 
-                    src="/lovable-uploads/4d5550d8-557f-4435-80c0-505047b84980.png" 
-                    alt="Business Validation Score" 
+                    src="/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png" 
+                    alt="Business Platform Dashboard" 
                     className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-48">
-                  <img 
-                    src="/lovable-uploads/4d5550d8-557f-4435-80c0-505047b84980.png" 
-                    alt="Business Feature 3" 
-                    className="w-full h-full object-cover"
                   />
                 </div>
               </div>

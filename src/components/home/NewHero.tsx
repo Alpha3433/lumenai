@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
@@ -81,7 +82,7 @@ const NewHero = () => {
 
       <motion.div 
         style={{ y: mockupY }}
-        className="relative w-full max-w-5xl mx-auto perspective-1000"
+        className="relative w-full max-w-5xl mx-auto perspective-1000 -mt-10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
@@ -101,7 +102,7 @@ const NewHero = () => {
               </div>
               
               <div className="p-4">
-                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-[400px]">
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-[500px] flex items-center justify-center">
                   <img 
                     src="/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png" 
                     alt="Business Platform Dashboard" 

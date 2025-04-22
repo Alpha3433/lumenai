@@ -117,8 +117,8 @@ const NewHero = () => {
                 </div>
                 <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-64">
                   <img 
-                    src="/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png" 
-                    alt="Business Plan Dashboard" 
+                    src="/lovable-uploads/5e06ea28-634a-4eba-bab1-938d96ec42fa.png" 
+                    alt="Business Validation Score" 
                     className="w-full h-full object-cover"
                   />
                 </div>

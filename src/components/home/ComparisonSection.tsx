@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Columns2, Columns3 } from "lucide-react";
 
@@ -84,6 +85,18 @@ const ComparisonSection = () => (
               Lumen AI
             </span>
           </div>
+          {/* Begin Lumen AI Video Box */}
+          <div className="mb-6 w-full rounded-xl overflow-hidden shadow aspect-video bg-black">
+            <iframe
+              src="https://player.vimeo.com/video/1077686359?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1"
+              title="Untitled video - Made with Clipchamp (6)"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              className="w-full h-full pointer-events-none"
+              allowFullScreen
+            />
+          </div>
+          {/* End Lumen AI Video Box */}
           <ul className="space-y-4 flex-1 mb-4">
             {LUMEN_PLATFORM_POINTS.map((pt, i) => (
               <li key={i} className="flex items-center gap-2 text-gray-800 dark:text-gray-200">

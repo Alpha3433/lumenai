@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
@@ -7,7 +8,6 @@ import { Textarea } from '@/components/ui/textarea';
 import BusinessPlanActionBar from './BusinessPlanActionBar';
 import ExecutiveSummarySection from './ExecutiveSummarySection';
 import SwotAnalysis from './SwotAnalysis';
-import MarketingPlanSection from './MarketingPlanSection';
 import WebBusinessModelsSection from './WebBusinessModelsSection';
 import BusinessPlanDashboard from './BusinessPlanDashboard';
 import PestelAnalysisSection from './pestel/PestelAnalysisSection';
@@ -90,7 +90,7 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
       'dashboard', 'executive-summary', 'customer-personas', 
       'swot-analysis', 'competitive-matrix', 'pestel-analysis', 
       'porter-five-forces', 'gtm-strategy', 'monetization',
-      'marketing-plan', 'retention-strategy', 'business-models',
+      'retention-strategy', 'business-models',
       'risk-mitigation'
     ];
     
@@ -235,15 +235,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
               
               <div id="monetization" className="pt-16 mt-8">
                 <MonetizationExperiments 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="marketing-plan" className="pt-16 mt-8">
-                <MarketingPlanSection 
                   businessName={refinedName}
                   businessDescription={refinedDescription}
                 />

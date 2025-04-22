@@ -40,7 +40,6 @@ const VerticalTabs: React.FC<VerticalTabsProps> = ({ activeTab, setActiveTab }) 
     { id: 'porter-five-forces', label: 'Porter Analysis', icon: <ArrowLeftRight className="h-4 w-4" /> },
     { id: 'gtm-strategy', label: 'GTM Strategy', icon: <Target className="h-4 w-4" /> },
     { id: 'monetization', label: 'Monetization', icon: <Landmark className="h-4 w-4" /> },
-    { id: 'marketing-plan', label: 'Marketing', icon: <Globe className="h-4 w-4" /> },
     { id: 'retention-strategy', label: 'User Retention', icon: <Users className="h-4 w-4" /> },
     { id: 'business-models', label: 'Business Models', icon: <Zap className="h-4 w-4" /> },
     { id: 'risk-mitigation', label: 'Risk Mitigation', icon: <ShieldAlert className="h-4 w-4" /> },

@@ -10,7 +10,7 @@ import { useAuth } from '@/components/AuthProvider';
 import { useSubscription } from '@/hooks/useSubscription';
 import PartnerApplicationModal from './PartnerApplicationModal';
 import { useCart } from '@/hooks/useCart';
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const PricingSection = () => {
   const [comparisonVisible, setComparisonVisible] = useState(false);
@@ -18,6 +18,7 @@ const PricingSection = () => {
   const { user } = useAuth();
   const { handleCheckout, loading } = useSubscription();
   const { addItem } = useCart();
+  const { toast } = useToast();
 
   const pricingPlans = [
     {
@@ -227,7 +228,10 @@ const PricingSection = () => {
       type: 'addon',
       quantity: 1
     });
-    toast.success(`${addon.name} added to cart`);
+    toast({
+      title: "Added to cart",
+      description: `${addon.name} has been added to your cart.`
+    });
   };
 
   return (

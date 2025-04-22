@@ -11,6 +11,7 @@ import {
   extractCompetitors
 } from '@/components/dashboard/DashboardUtils';
 import { extractValidationData } from '@/utils/businessValidation';
+import { useEffect, useState } from 'react';
 
 interface BusinessPlanDashboardProps {
   businessName: string;
@@ -28,17 +29,40 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
   businessName, 
   businessPlan 
 }) => {
-  // Extract key metrics and insights from the business plan
+  const [validationData, setValidationData] = useState(() => 
+    extractValidationData(
+      [
+        businessPlan.executiveSummary,
+        businessPlan.marketAnalysis,
+        businessPlan.businessModel,
+        businessPlan.swotAnalysis,
+        businessPlan.financialProjections,
+        businessPlan.riskAssessment
+      ].filter(Boolean).join('\n')
+    )
+  );
+
+  // Update validation data whenever business plan changes
+  useEffect(() => {
+    const newValidationData = extractValidationData(
+      [
+        businessPlan.executiveSummary,
+        businessPlan.marketAnalysis,
+        businessPlan.businessModel,
+        businessPlan.swotAnalysis,
+        businessPlan.financialProjections,
+        businessPlan.riskAssessment
+      ].filter(Boolean).join('\n')
+    );
+    setValidationData(newValidationData);
+  }, [businessPlan]);
+
+  // Extract other metrics
   const targetMarket = extractTargetMarket(businessPlan.marketAnalysis);
   const revenue = extractRevenue(businessPlan.financialProjections || '');
   const strengths = extractStrengths(businessPlan.swotAnalysis);
   const opportunities = extractOpportunities(businessPlan.swotAnalysis);
   const competitors = extractCompetitors(businessPlan.marketAnalysis);
-  
-  // Extract validation data for the summary card
-  const validationData = extractValidationData(
-    businessPlan.financialProjections || businessPlan.marketAnalysis || businessPlan.swotAnalysis
-  );
   
   return (
     <section className="mb-12 animate-fade-in">

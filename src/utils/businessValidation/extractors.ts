@@ -1,7 +1,6 @@
 import { ValidationData } from './types';
 
 export const extractValidationData = (text: string): ValidationData => {
-  // Initialize with default structure
   const validationData: ValidationData = {
     overallScore: 0,
     categories: [
@@ -17,72 +16,22 @@ export const extractValidationData = (text: string): ValidationData => {
   };
 
   try {
-    // Category detection
-    const categoryPatterns = [
-      { pattern: /food|restaurant|meal|kitchen/gi, category: 'Food & Beverage' },
-      { pattern: /tech|software|app|digital/gi, category: 'Technology' },
-      { pattern: /health|wellness|fitness|medical/gi, category: 'Healthcare' },
-      { pattern: /education|learning|training|course/gi, category: 'Education' },
-      { pattern: /retail|shop|store|ecommerce/gi, category: 'Retail' },
-      { pattern: /sustainable|eco|green|environment/gi, category: 'Sustainable' },
-      { pattern: /finance|banking|investment/gi, category: 'Finance' }
-    ];
+    // Enhanced scoring logic
+    let marketScore = calculateMarketScore(text);
+    let profitabilityScore = calculateProfitabilityScore(text);
+    let competitionScore = calculateCompetitionScore(text);
+    let timeToMarketScore = calculateTimeToMarketScore(text);
+    let scalabilityScore = calculateScalabilityScore(text);
 
-    // Detect business category
-    for (const { pattern, category } of categoryPatterns) {
-      if (pattern.test(text)) {
-        validationData.category = category;
-        break;
-      }
-    }
-
-    // Extract brief description
-    const firstSentenceMatch = text.match(/^([^.!?]+[.!?])\s*/);
-    if (firstSentenceMatch) {
-      validationData.description = firstSentenceMatch[1].trim();
-    }
-
-    // Market analysis patterns
-    const marketPatterns = {
-      positive: [
-        /(?:high|strong|growing|large) (?:demand|market|opportunity)/i,
-        /(?:unique|innovative) (?:solution|approach|product)/i,
-        /competitive advantage/i,
-        /scalable/i
-      ],
-      negative: [
-        /(?:high|intense) competition/i,
-        /market saturation/i,
-        /limited demand/i,
-        /regulatory (?:challenges|barriers)/i
-      ]
-    };
-
-    // Calculate scores based on text analysis
-    let marketScore = 70; // Base score
-    let profitabilityScore = 65;
-    let competitionScore = 60;
-    let timeToMarketScore = 75;
-    let scalabilityScore = 68;
-
-    // Adjust scores based on text analysis
-    marketPatterns.positive.forEach(pattern => {
-      if (pattern.test(text)) marketScore += 5;
-    });
-
-    marketPatterns.negative.forEach(pattern => {
-      if (pattern.test(text)) marketScore -= 5;
-    });
-
-    // Update category scores
+    // Update category scores with weighted calculations
     validationData.categories[0].score = Math.min(100, Math.max(0, marketScore));
     validationData.categories[1].score = Math.min(100, Math.max(0, profitabilityScore));
     validationData.categories[2].score = Math.min(100, Math.max(0, competitionScore));
     validationData.categories[3].score = Math.min(100, Math.max(0, timeToMarketScore));
     validationData.categories[4].score = Math.min(100, Math.max(0, scalabilityScore));
 
-    // Calculate overall score (weighted average)
-    const weights = [0.25, 0.2, 0.15, 0.15, 0.25]; // Weights for each category
+    // Calculate overall score with weighted importance
+    const weights = [0.3, 0.25, 0.15, 0.15, 0.15]; // Adjusted weights based on importance
     validationData.overallScore = Math.round(
       validationData.categories.reduce((sum, category, index) => {
         return sum + (category.score * weights[index]);
@@ -90,8 +39,8 @@ export const extractValidationData = (text: string): ValidationData => {
     );
 
     // Extract strengths and weaknesses
-    validationData.positives = extractPositives(text);
-    validationData.negatives = extractNegatives(text);
+    validationData.positives = extractKeyStrengths(text);
+    validationData.negatives = extractKeyWeaknesses(text);
     validationData.recommendations = generateRecommendations(validationData);
 
     return validationData;
@@ -101,7 +50,90 @@ export const extractValidationData = (text: string): ValidationData => {
   }
 };
 
-function extractPositives(text: string): string[] {
+// Helper functions for score calculation
+function calculateMarketScore(text: string): number {
+  let score = 70; // Base score
+  
+  // Market size indicators
+  if (text.match(/large market|growing market|billion|million/i)) score += 10;
+  if (text.match(/niche market|small market|limited demand/i)) score -= 10;
+  
+  // Problem validation
+  if (text.match(/solving|pain point|customer need|demand/i)) score += 10;
+  if (text.match(/unclear need|uncertain demand/i)) score -= 10;
+  
+  // Market growth
+  if (text.match(/rapid growth|expanding|increasing demand/i)) score += 10;
+  if (text.match(/declining|shrinking|decreasing/i)) score -= 10;
+  
+  return score;
+}
+
+function calculateProfitabilityScore(text: string): number {
+  let score = 65; // Base score
+  
+  // Revenue potential
+  if (text.match(/high margin|profitable|recurring revenue/i)) score += 10;
+  if (text.match(/low margin|price sensitive|cost intensive/i)) score -= 10;
+  
+  // Cost structure
+  if (text.match(/low cost|efficient|automated/i)) score += 10;
+  if (text.match(/high cost|expensive|resource intensive/i)) score -= 10;
+  
+  // Business model
+  if (text.match(/subscription|saas|recurring/i)) score += 15;
+  if (text.match(/one-time|transactional|variable/i)) score -= 5;
+  
+  return score;
+}
+
+function calculateCompetitionScore(text: string): number {
+  let score = 60; // Base score
+  
+  // Competition level
+  if (text.match(/high competition|saturated|crowded market/i)) score -= 15;
+  if (text.match(/low competition|unique|innovative/i)) score += 15;
+  
+  // Barriers to entry
+  if (text.match(/patent|proprietary|unique technology/i)) score += 10;
+  if (text.match(/easy to copy|no barriers|simple/i)) score -= 10;
+  
+  // Competitive advantage
+  if (text.match(/competitive advantage|unique selling|differentiated/i)) score += 10;
+  if (text.match(/similar to|like existing|comparable to/i)) score -= 10;
+  
+  return score;
+}
+
+function calculateTimeToMarketScore(text: string): number {
+  let score = 75; // Base score
+  
+  // Development time
+  if (text.match(/quick to develop|ready|existing solution/i)) score += 10;
+  if (text.match(/complex development|long timeline|extensive research/i)) score -= 10;
+  
+  // Regulatory requirements
+  if (text.match(/heavily regulated|compliance|certification/i)) score -= 15;
+  if (text.match(/unregulated|straightforward|simple compliance/i)) score += 10;
+  
+  return score;
+}
+
+function calculateScalabilityScore(text: string): number {
+  let score = 68; // Base score
+  
+  // Scalability potential
+  if (text.match(/easily scalable|automated|digital/i)) score += 15;
+  if (text.match(/manual process|physical limitations|geography dependent/i)) score -= 15;
+  
+  // Market expansion
+  if (text.match(/global potential|multiple markets|expansion opportunity/i)) score += 10;
+  if (text.match(/local only|limited reach|geographic constraints/i)) score -= 10;
+  
+  return score;
+}
+
+function extractKeyStrengths(text: string): string[] {
   const positivePatterns = [
     /(?:strong|high) profit margins?/i,
     /recurring revenue/i,
@@ -122,7 +154,7 @@ function extractPositives(text: string): string[] {
     .slice(0, 3);
 }
 
-function extractNegatives(text: string): string[] {
+function extractKeyWeaknesses(text: string): string[] {
   const negativePatterns = [
     /high competition/i,
     /market saturation/i,

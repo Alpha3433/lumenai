@@ -104,7 +104,7 @@ const NewHero = () => {
               <div className="p-4">
                 <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-[500px] flex items-center justify-center">
                   <img 
-                    src="/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png" 
+                    src="/lovable-uploads/a880096e-a58b-47dc-b1d0-3df2d05d533f.png" 
                     alt="Business Platform Dashboard" 
                     className="w-full h-full object-contain scale-100 hover:scale-105 transition-transform duration-300"
                   />

@@ -3,24 +3,34 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Check, AlertTriangle } from 'lucide-react';
+import { extractCompetitors } from '@/utils/extraction/competitorUtils';
 
 interface ValidationSummaryCardProps {
   score: number;
   positives: string[];
   negatives: string[];
   businessName: string;
+  marketAnalysis?: string;
 }
 
 const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
   score,
   positives,
   negatives,
-  businessName
+  businessName,
+  marketAnalysis = ''
 }) => {
-  // Calculate circumference for circular progress
-  const radius = 50;
-  const circumference = 2 * Math.PI * radius;
-  const progressOffset = circumference - (score / 100) * circumference;
+  // Get competitor data for industry comparisons
+  const competitors = extractCompetitors(marketAnalysis);
+  const topCompetitor = competitors.length > 0 
+    ? Math.max(...competitors.map(c => parseInt(c.marketShare.replace('%', '') || '0')))
+    : 78; // Fallback value
+  
+  // Calculate industry average based on competitors or use fallback
+  const industryAverage = competitors.length > 0
+    ? Math.round(competitors.reduce((acc, curr) => 
+        acc + parseInt(curr.marketShare.replace('%', '') || '0'), 0) / competitors.length)
+    : 62; // Fallback value
 
   return (
     <Card className="border-none shadow-lg bg-gradient-to-br from-slate-50 to-white dark:from-gray-900 dark:to-gray-800">
@@ -66,16 +76,16 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-gray-600">Industry Average</span>
-                  <span>62</span>
+                  <span>{industryAverage}</span>
                 </div>
-                <Progress value={62} className="h-2" />
+                <Progress value={industryAverage} className="h-2" />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-gray-600">Top Competitor</span>
-                  <span>78</span>
+                  <span>{topCompetitor}</span>
                 </div>
-                <Progress value={78} className="h-2" indicatorClassName="bg-violet-500" />
+                <Progress value={topCompetitor} className="h-2" indicatorClassName="bg-violet-500" />
               </div>
             </div>
           </div>
@@ -97,11 +107,11 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
                       <div className="flex items-center gap-2">
                         <h4 className="text-sm font-medium">{positive}</h4>
                         <span className="text-xs px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
-                          +12%
+                          Strong
                         </span>
                       </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                        12% above industry average
+                        Performing well compared to industry standards
                       </p>
                     </div>
                   </div>
@@ -124,11 +134,11 @@ const ValidationSummaryCard: React.FC<ValidationSummaryCardProps> = ({
                       <div className="flex items-center gap-2">
                         <h4 className="text-sm font-medium">{negative}</h4>
                         <span className="text-xs px-1.5 py-0.5 rounded bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
-                          +34%
+                          Needs Focus
                         </span>
                       </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                        34% market growth in competitors
+                        Room for improvement in this area
                       </p>
                     </div>
                   </div>

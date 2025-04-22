@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Separator } from "@/components/ui/separator";
 import InsightsGrid from './dashboard/InsightsGrid';
@@ -42,7 +41,6 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
     )
   );
 
-  // Update validation data whenever business plan changes
   useEffect(() => {
     const newValidationData = extractValidationData(
       [
@@ -57,7 +55,6 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
     setValidationData(newValidationData);
   }, [businessPlan]);
 
-  // Extract other metrics
   const targetMarket = extractTargetMarket(businessPlan.marketAnalysis);
   const revenue = extractRevenue(businessPlan.financialProjections || '');
   const strengths = extractStrengths(businessPlan.swotAnalysis);
@@ -70,17 +67,16 @@ const BusinessPlanDashboard: React.FC<BusinessPlanDashboardProps> = ({
         Business Validation Score
       </h2>
       
-      {/* Overall Validation Score Summary */}
       <div className="mb-8">
         <ValidationSummaryCard 
           score={validationData.overallScore}
           positives={validationData.positives.slice(0, 2)}
           negatives={validationData.negatives.slice(0, 2)}
           businessName={businessName}
+          marketAnalysis={businessPlan.marketAnalysis}
         />
       </div>
       
-      {/* Top Strengths & Opportunities */}
       <InsightsGrid 
         strengths={strengths} 
         opportunities={opportunities} 

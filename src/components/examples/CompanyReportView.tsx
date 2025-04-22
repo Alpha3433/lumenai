@@ -12,7 +12,6 @@ import ExecutiveSummarySection from '@/components/ExecutiveSummarySection';
 import SwotAnalysis from '@/components/SwotAnalysis';
 import PestelAnalysisSection from '@/components/pestel/PestelAnalysisSection';
 import PorterFiveForcesSection from '@/components/PorterFiveForcesSection';
-import MarketingPlanSection from '@/components/MarketingPlanSection';
 import WebBusinessModelsSection from '@/components/WebBusinessModelsSection';
 import BusinessPlanDashboard from '@/components/BusinessPlanDashboard';
 import { BusinessPlanData } from '@/types/businessPlan';
@@ -305,15 +304,6 @@ const CompanyReportView: React.FC<CompanyReportViewProps> = ({
                 
                 <div id="monetization">
                   <MonetizationExperiments 
-                    businessName={refinedName}
-                    businessDescription={refinedDescription}
-                  />
-                </div>
-                
-                <Separator className="my-10" />
-                
-                <div id="marketing-plan">
-                  <MarketingPlanSection 
                     businessName={refinedName}
                     businessDescription={refinedDescription}
                   />

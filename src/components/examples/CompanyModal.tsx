@@ -10,10 +10,10 @@ import ExecutiveSummarySection from '@/components/ExecutiveSummarySection';
 import SwotAnalysis from '@/components/SwotAnalysis';
 import PestelAnalysisSection from '@/components/pestel/PestelAnalysisSection';
 import PorterFiveForcesSection from '@/components/PorterFiveForcesSection';
-import MarketingPlanSection from '@/components/MarketingPlanSection';
 import WebBusinessModelsSection from '@/components/WebBusinessModelsSection';
 import BusinessPlanDashboard from '@/components/BusinessPlanDashboard';
 import { BusinessPlanData } from '@/types/businessPlan';
+import MonetizationExperiments from '@/components/monetization/MonetizationExperiments';
 
 interface CompanyModalProps {
   company: ExampleCompany | null;
@@ -118,8 +118,8 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
               
               <Separator className="my-10" />
               
-              <div id="marketing-plan">
-                <MarketingPlanSection 
+              <div id="monetization">
+                <MonetizationExperiments 
                   businessName={company.name}
                   businessDescription={company.description}
                 />

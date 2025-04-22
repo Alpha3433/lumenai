@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -18,48 +19,32 @@ const Examples = () => {
   };
 
   const handleDownloadPlan = () => {
-    // Mock functionality - in a real app, this would generate a PDF
     console.log("Downloading plan for", selectedCompanyId);
     toast.success("Report download started", {
       description: "Your business report will be ready in a few moments"
     });
   };
 
-  // Find the selected company if one is selected
   const selectedCompany = selectedCompanyId 
     ? exampleCompanies.find(c => c.id === selectedCompanyId) 
     : null;
 
-  // Make sure we're showing tesla, apple, and amazon at the beginning
-  const sortedCompanies = [...exampleCompanies].sort((a, b) => {
-    // Put tesla, apple, amazon first in that order
-    const priority = ['tesla', 'apple', 'amazon'];
-    const indexA = priority.indexOf(a.id);
-    const indexB = priority.indexOf(b.id);
-    
-    // If both are in priority list, sort by priority
-    if (indexA !== -1 && indexB !== -1) {
-      return indexA - indexB;
-    }
-    // If only a is in priority, a comes first
-    if (indexA !== -1) {
-      return -1;
-    }
-    // If only b is in priority, b comes first
-    if (indexB !== -1) {
-      return 1;
-    }
-    // For the rest, keep original order
-    return 0;
-  });
+  // Filter out Tesla and reorder companies with Spotify first
+  const filteredCompanies = exampleCompanies
+    .filter(company => company.id !== 'tesla')
+    .sort((a, b) => {
+      if (a.id === 'spotify') return -1;
+      if (b.id === 'spotify') return 1;
+      return 0;
+    });
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900">
       <Navbar />
       
-      <div className="pt-12"> {/* Decreased padding-top from pt-16 to pt-12 */}
+      <div className="pt-12">
         <ExamplesListView 
-          companies={sortedCompanies} 
+          companies={filteredCompanies}
           onSelectCompany={handleSelectCompany} 
         />
       </div>

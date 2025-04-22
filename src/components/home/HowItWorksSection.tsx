@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   FileText, 
@@ -86,10 +85,10 @@ const HowItWorksSection = () => {
       description: "Create a comprehensive AI-powered business plan in minutes. Our platform analyzes market trends and compiles essential data to build a strong foundation for your business idea.",
       icon: <FileText className="h-5 w-5" />,
       badges: [
-        { text: "5-10 minutes", icon: <Clock className="h-3 w-3" /> },
+        { text: "1-2 minutes", icon: <Clock className="h-3 w-3" /> },
         { text: "AI-Powered" }
       ],
-      image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
+      image: "/lovable-uploads/22e7cc2a-d94c-4b5f-aee6-469b6f192067.png"
     },
     {
       number: 2,
@@ -156,4 +155,3 @@ const HowItWorksSection = () => {
 };
 
 export default HowItWorksSection;
-

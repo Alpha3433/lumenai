@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,20 +18,15 @@ interface ExampleCardProps {
 }
 
 const ExampleCard: React.FC<ExampleCardProps> = ({ company, onSelect }) => {
-  // Get the appropriate logo image based on company.id
   const getLogoImage = () => {
-    // Let's add console logs to help debug
-    console.log('Company ID:', company.id);
-    
     switch(company.id) {
-      case 'tesla':
-        return '/lovable-uploads/0e5dc4b2-34c2-4fcf-9c1c-877e2501390d.png';
+      case 'spotify':
+        return '/lovable-uploads/6d3e81cf-7a75-4b50-a9b9-174a6ce46e4e.png';
       case 'apple':
         return '/lovable-uploads/1fcba80c-9322-462e-a894-f9028ee6eb2c.png';
       case 'amazon':
         return '/lovable-uploads/7ffe4f40-f73e-49b5-a23c-f0c590ae7f83.png';
       default:
-        // For other companies, use first letter as fallback
         return null;
     }
   };

@@ -1,4 +1,3 @@
-
 export interface ExampleCompany {
   id: string;
   name: string;
@@ -14,8 +13,21 @@ export interface ExampleCompany {
   swotAnalysis: string;
 }
 
-// Mock data for example companies
 export const exampleCompanies: ExampleCompany[] = [
+  {
+    id: "spotify",
+    name: "Spotify",
+    description: "Leading music and podcast streaming platform offering personalized content and algorithmic recommendations.",
+    industry: "Digital Entertainment & Streaming",
+    logoIcon: "Music",
+    executiveSummary: "Spotify is a digital music, podcast, and video service that gives you access to millions of songs and other content from creators all over the world. With over 456 million monthly active users, it is the world's most popular audio streaming subscription service.",
+    marketAnalysis: "The global music streaming market is experiencing robust growth at a CAGR of 16.5%, driven by increasing internet penetration and smartphone adoption. Spotify maintains market leadership with approximately 31% market share, facing competition from tech giants like Apple Music (15%), Amazon Music (13%), and YouTube Music (8%). The shift towards digital consumption of audio content, including podcasts and audiobooks, presents significant growth opportunities.",
+    businessModel: "Spotify operates a freemium business model with both advertising-supported free tier and premium subscription services. Revenue is generated through monthly subscription fees and advertising, with costs primarily driven by content licensing and royalty payments to rights holders. The company has expanded into podcasting to diversify content offerings and reduce dependence on music licensing.",
+    marketingPlan: "Spotify's marketing strategy leverages personalization, user-generated playlists, and algorithmic recommendations to drive engagement. The company invests in exclusive content partnerships, influencer collaborations, and data-driven campaigns. Focus areas include podcast creator partnerships, emerging market expansion, and enhanced social features.",
+    swotAnalysis: "Strengths: Market leader with largest user base, advanced recommendation algorithms, strong brand recognition, successful podcast expansion. Weaknesses: Challenging profitability due to high royalty costs, dependence on major labels, limited hardware integration. Opportunities: Further expansion into podcasts and audiobooks, emerging markets growth, artist tools development. Threats: Intense competition from tech giants, increasing licensing costs, regulatory challenges.",
+    financialProjections: "Spotify reported €3.2 billion in revenue for Q2 2023, with premium subscribers reaching 220 million. The company maintains a gross margin of 25.2%, with ongoing investments in content and technology. Primary focus remains on expanding the user base while improving operational efficiency.",
+    riskAssessment: "Key risks include increasing content costs, intense competition from well-funded tech companies, regulatory scrutiny of artist compensation, and potential disintermediation through direct-to-fan platforms. Spotify's market leadership, technological capabilities, and content diversity provide risk mitigation."
+  },
   {
     id: "tesla",
     name: "Tesla, Inc.",

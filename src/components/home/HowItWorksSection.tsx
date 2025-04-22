@@ -11,6 +11,13 @@ import {
   Users
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface StepProps {
   number: number;
@@ -21,9 +28,10 @@ interface StepProps {
     text: string;
     icon?: React.ReactNode;
   }[];
+  images: string[];
 }
 
-const Step = ({ number, title, description, icon, badges }: StepProps) => {
+const Step = ({ number, title, description, icon, badges, images }: StepProps) => {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -32,7 +40,6 @@ const Step = ({ number, title, description, icon, badges }: StepProps) => {
       transition={{ duration: 0.5 }}
       className="relative flex flex-col md:flex-row gap-6 items-start"
     >
-      {/* Step number with connector line */}
       <div className="flex flex-col items-center">
         <div className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-600 text-white text-xl font-bold">
           {number}
@@ -42,7 +49,6 @@ const Step = ({ number, title, description, icon, badges }: StepProps) => {
         )}
       </div>
 
-      {/* Step content */}
       <div className="flex-1 pb-12 md:pb-16">
         <div className="flex flex-wrap items-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
@@ -53,7 +59,7 @@ const Step = ({ number, title, description, icon, badges }: StepProps) => {
         
         <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
         
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 mb-6">
           {badges.map((badge, index) => (
             <div 
               key={index}
@@ -64,6 +70,26 @@ const Step = ({ number, title, description, icon, badges }: StepProps) => {
             </div>
           ))}
         </div>
+
+        <Carousel className="w-full max-w-xl">
+          <CarouselContent>
+            {images.map((image, index) => (
+              <CarouselItem key={index}>
+                <div className="p-1">
+                  <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
+                    <img 
+                      src={image} 
+                      alt={`Step ${number} Screenshot ${index + 1}`}
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
     </motion.div>
   );
@@ -79,6 +105,11 @@ const HowItWorksSection = () => {
       badges: [
         { text: "5-10 minutes", icon: <Clock className="h-3 w-3" /> },
         { text: "AI-Powered" }
+      ],
+      images: [
+        "/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png",
+        "/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png",
+        "/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png"
       ]
     },
     {
@@ -88,6 +119,11 @@ const HowItWorksSection = () => {
       icon: <Sparkles className="h-5 w-5" />,
       badges: [
         { text: "Expert Review", icon: <CheckCircle2 className="h-3 w-3" /> }
+      ],
+      images: [
+        "/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png",
+        "/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png",
+        "/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png"
       ]
     },
     {
@@ -97,6 +133,11 @@ const HowItWorksSection = () => {
       icon: <BarChart3 className="h-5 w-5" />,
       badges: [
         { text: "Multi-channel Strategy" }
+      ],
+      images: [
+        "/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png",
+        "/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png",
+        "/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png"
       ]
     },
     {
@@ -107,6 +148,11 @@ const HowItWorksSection = () => {
       badges: [
         { text: "Real-time Analytics" },
         { text: "Ongoing Support", icon: <Users className="h-3 w-3" /> }
+      ],
+      images: [
+        "/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png",
+        "/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png",
+        "/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png"
       ]
     }
   ];
@@ -133,6 +179,7 @@ const HowItWorksSection = () => {
               description={step.description}
               icon={step.icon}
               badges={step.badges}
+              images={step.images}
             />
           ))}
         </div>

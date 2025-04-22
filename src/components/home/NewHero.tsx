@@ -105,7 +105,7 @@ const NewHero = () => {
                   <img 
                     src="/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png" 
                     alt="Business Platform Dashboard" 
-                    className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-contain scale-100 hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </div>

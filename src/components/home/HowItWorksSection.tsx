@@ -1,6 +1,7 @@
 import React from 'react';
 import { FileText, Sparkles, BarChart3, TrendingUp, Clock, CheckCircle2, Zap, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
+
 interface StepProps {
   number: number;
   title: string;
@@ -12,6 +13,7 @@ interface StepProps {
   }[];
   image: string;
 }
+
 const Step = ({
   number,
   title,
@@ -63,6 +65,7 @@ const Step = ({
       </div>
     </motion.div>;
 };
+
 const HowItWorksSection = () => {
   const steps: StepProps[] = [{
     number: 1,
@@ -75,7 +78,7 @@ const HowItWorksSection = () => {
     }, {
       text: "AI-Powered"
     }],
-    image: "/lovable-uploads/22e7cc2a-d94c-4b5f-aee6-469b6f192067.png"
+    image: "/lovable-uploads/8206228d-59f5-4fcc-81ac-98d80834992f.png"
   }, {
     number: 2,
     title: "We Refine Your Strategy",
@@ -126,4 +129,5 @@ const HowItWorksSection = () => {
       </div>
     </section>;
 };
+
 export default HowItWorksSection;

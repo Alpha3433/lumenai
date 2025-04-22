@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Sparkles, BarChart3, TrendingUp, Clock, CheckCircle2, Zap, Users } from 'lucide-react';
+import { FileText, Sparkles, BarChart3, Clock, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface StepProps {
@@ -82,7 +82,7 @@ const HowItWorksSection = () => {
   }, {
     number: 2,
     title: "We Refine Your Strategy",
-    description: "Our expert team reviews your plan, optimizes your market positioning, and provides tailored recommendations to enhance your business strategy and maximize your chances of success.",
+    description: "Boost your plan with a free 1:1 30-minute consultation. Our experts refine your AI strategy, uncover blind spots, and offer tailored, data-driven tips—so you start on the most profitable path.",
     icon: <Sparkles className="h-5 w-5" />,
     badges: [{
       text: "Expert Review",
@@ -91,26 +91,15 @@ const HowItWorksSection = () => {
     image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
   }, {
     number: 3,
-    title: "Launch Your Marketing Campaign",
-    description: "Deploy targeted marketing campaigns based on data-driven insights. Our platform helps you identify the most effective channels and messaging for your specific audience and business model.",
+    title: "Done-For-You Launch Services",
+    description: "Skip the tech hassle and launch fast. Our team builds your landing pages, runs optimized ads, automate operations and refine pricing, product-market fit, and revenue strategies —so you're ready to scale immediately.",
     icon: <BarChart3 className="h-5 w-5" />,
     badges: [{
       text: "Multi-channel Strategy"
     }],
     image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
-  }, {
-    number: 4,
-    title: "Monitor Growth & Scale Your Business",
-    description: "Track your performance metrics and grow your business with ongoing support. Use our analytics dashboard and proven strategies to continually refine your approach and scale effectively.",
-    icon: <TrendingUp className="h-5 w-5" />,
-    badges: [{
-      text: "Real-time Analytics"
-    }, {
-      text: "Ongoing Support",
-      icon: <Users className="h-3 w-3" />
-    }],
-    image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
   }];
+
   return <section id="how-it-works" className="py-20 px-4">
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-14">

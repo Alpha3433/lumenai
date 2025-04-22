@@ -23,6 +23,8 @@ import PaymentCanceled from "./pages/PaymentCanceled";
 import Analytics from "./pages/Analytics";
 import ScheduleMeeting from "./pages/ScheduleMeeting";
 import Checkout from "./pages/Checkout";
+import Blog from "./pages/Blog";
+import GenerateReport from "./pages/GenerateReport";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +54,8 @@ const App = () => (
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/schedule-meeting" element={<ScheduleMeeting />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/generate-report" element={<GenerateReport />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>

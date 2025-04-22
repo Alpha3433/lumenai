@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
@@ -104,11 +105,31 @@ const NewHero = () => {
                   <span className="px-2.5 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">Beautiful Templates</span>
                 </div>
               </div>
-              <img 
-                src="/lovable-uploads/058f18ce-81ce-4279-bbbb-e7c4b4755683.png" 
-                alt="Business Plan Dashboard" 
-                className="rounded-lg w-full object-contain max-h-[600px]"
-              />
+              
+              {/* New photo grid layout */}
+              <div className="grid grid-cols-3 gap-4 p-4">
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-48">
+                  <img 
+                    src="/lovable-uploads/058f18ce-81ce-4279-bbbb-e7c4b4755683.png" 
+                    alt="Business Feature 1" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-64">
+                  <img 
+                    src="/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png" 
+                    alt="Business Plan Dashboard" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-48">
+                  <img 
+                    src="/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png" 
+                    alt="Business Feature 3" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

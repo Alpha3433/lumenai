@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { 
@@ -87,8 +86,8 @@ const UserAuthSection: React.FC = () => {
               <DropdownMenuItem onClick={() => navigate('/analytics')} className="cursor-pointer">
                 <ChartBar className="mr-2 h-4 w-4" />
                 <div>
-                  <span className="font-medium">Analytics</span>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Track your business metrics</p>
+                  <span className="font-medium">Create a Report</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Generate a new business report</p>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">

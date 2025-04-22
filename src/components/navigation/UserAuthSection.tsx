@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { 
@@ -83,12 +84,12 @@ const UserAuthSection: React.FC = () => {
                   <p className="text-xs text-gray-500 dark:text-gray-400">View your business overview</p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/generate-report')} className="cursor-pointer">
+              <DropdownMenuItem onClick={() => navigate('/create')} className="cursor-pointer">
                 <ChartBar className="mr-2 h-4 w-4" />
                 <div>
                   <span className="font-medium">Create a Report</span>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Generate a new business report
+                    Generate a new business plan or report
                   </p>
                 </div>
               </DropdownMenuItem>
@@ -304,3 +305,4 @@ const UserAuthSection: React.FC = () => {
 };
 
 export default UserAuthSection;
+

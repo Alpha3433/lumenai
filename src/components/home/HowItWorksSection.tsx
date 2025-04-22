@@ -67,38 +67,42 @@ const Step = ({
 };
 
 const HowItWorksSection = () => {
-  const steps: StepProps[] = [{
-    number: 1,
-    title: "Generate Your Business Plan",
-    description: "Create a comprehensive AI-powered business plan in minutes. Our platform analyzes market trends and compiles essential data to build a strong foundation for your business idea.",
-    icon: <FileText className="h-5 w-5" />,
-    badges: [{
-      text: "1-2 minutes",
-      icon: <Clock className="h-3 w-3" />
-    }, {
-      text: "AI-Powered"
-    }],
-    image: "/lovable-uploads/8206228d-59f5-4fcc-81ac-98d80834992f.png"
-  }, {
-    number: 2,
-    title: "We Refine Your Strategy",
-    description: "Boost your plan with a free 1:1 30-minute consultation. Our experts refine your AI strategy, uncover blind spots, and offer tailored, data-driven tips—so you start on the most profitable path.",
-    icon: <Sparkles className="h-5 w-5" />,
-    badges: [{
-      text: "Expert Review",
-      icon: <CheckCircle2 className="h-3 w-3" />
-    }],
-    image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
-  }, {
-    number: 3,
-    title: "Done-For-You Launch Services",
-    description: "Skip the tech hassle and launch fast. Our team builds your landing pages, runs optimized ads, automate operations and refine pricing, product-market fit, and revenue strategies —so you're ready to scale immediately.",
-    icon: <BarChart3 className="h-5 w-5" />,
-    badges: [{
-      text: "Multi-channel Strategy"
-    }],
-    image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
-  }];
+  const steps: StepProps[] = [
+    {
+      number: 1,
+      title: "Generate Your Business Plan",
+      description: "Create a comprehensive AI-powered business plan in minutes. Our platform analyzes market trends and compiles essential data to build a strong foundation for your business idea.",
+      icon: <FileText className="h-5 w-5" />,
+      badges: [{
+        text: "1-2 minutes",
+        icon: <Clock className="h-3 w-3" />
+      }, {
+        text: "AI-Powered"
+      }],
+      image: "/lovable-uploads/8206228d-59f5-4fcc-81ac-98d80834992f.png"
+    },
+    {
+      number: 2,
+      title: "We Refine Your Strategy",
+      description: "Boost your plan with a free 1:1 30-minute consultation. Our experts refine your AI strategy, uncover blind spots, and offer tailored, data-driven tips—so you start on the most profitable path.",
+      icon: <Sparkles className="h-5 w-5" />,
+      badges: [{
+        text: "Expert Review",
+        icon: <CheckCircle2 className="h-3 w-3" />
+      }],
+      image: "/lovable-uploads/5ec3cdf8-6c90-4876-a74d-d5b8ff853394.png"
+    },
+    {
+      number: 3,
+      title: "Done-For-You Launch Services",
+      description: "Skip the tech hassle and launch fast. Our team builds your landing pages, runs optimized ads, automate operations and refine pricing, product-market fit, and revenue strategies —so you're ready to scale immediately.",
+      icon: <BarChart3 className="h-5 w-5" />,
+      badges: [{
+        text: "Multi-channel Strategy"
+      }],
+      image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
+    }
+  ];
 
   return <section id="how-it-works" className="py-20 px-4">
       <div className="container mx-auto max-w-5xl">

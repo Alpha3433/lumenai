@@ -9,12 +9,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAuth } from '@/components/AuthProvider';
 import { useSubscription } from '@/hooks/useSubscription';
 import PartnerApplicationModal from './PartnerApplicationModal';
+import { useCart } from '@/hooks/useCart';
+import { toast } from "@/hooks/use-toast";
 
 const PricingSection = () => {
   const [comparisonVisible, setComparisonVisible] = useState(false);
   const [partnerModalOpen, setPartnerModalOpen] = useState(false);
   const { user } = useAuth();
   const { handleCheckout, loading } = useSubscription();
+  const { addItem } = useCart();
 
   const pricingPlans = [
     {
@@ -215,6 +218,18 @@ const PricingSection = () => {
     }
   };
 
+  const handleAddOn = (addon: typeof addOns[0]) => {
+    addItem({
+      id: addon.name,
+      name: addon.name,
+      description: addon.description,
+      price: parseFloat(addon.price.replace('$', '').replace('/month', '').replace(' one-time','').replace('.','')) * 100,
+      type: 'addon',
+      quantity: 1
+    });
+    toast.success(`${addon.name} added to cart`);
+  };
+
   return (
     <section id="pricing" className="py-24 px-4">
       <div className="max-w-7xl mx-auto">
@@ -345,6 +360,7 @@ const PricingSection = () => {
                     <Button 
                       variant="outline" 
                       className="w-full bg-white/70 dark:bg-gray-800/70 hover:bg-white dark:hover:bg-gray-800 border-gray-300 dark:border-gray-700"
+                      onClick={() => handleAddOn(addon)}
                     >
                       Add to Plan
                     </Button>

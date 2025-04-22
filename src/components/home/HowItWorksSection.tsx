@@ -20,9 +20,8 @@ const Step = ({
   description,
   icon,
   badges,
-  image,
-  imageClassName
-}: StepProps & { imageClassName?: string }) => {
+  image
+}: StepProps) => {
   return <motion.div initial={{
     opacity: 0,
     y: 20
@@ -60,11 +59,7 @@ const Step = ({
 
         <div className="w-full max-w-xl">
           <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
-            <img 
-              src={image} 
-              alt={`Step ${number} Screenshot`} 
-              className={imageClassName || "w-full h-80 object-cover"}
-            />
+            <img src={image} alt={`Step ${number} Screenshot`} className="w-full h-80 object-cover" />
           </div>
         </div>
       </div>
@@ -105,7 +100,7 @@ const HowItWorksSection = () => {
       badges: [{
         text: "Multi-channel Strategy"
       }],
-      image: "/lovable-uploads/56598e39-68a0-4bc5-b101-c721abfbb457.png"
+      image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
     }
   ];
 
@@ -122,18 +117,7 @@ const HowItWorksSection = () => {
         </div>
 
         <div className="bg-white/70 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/30 rounded-2xl p-6 md:p-10">
-          {steps.map(step => (
-            <Step 
-              key={step.number} 
-              number={step.number} 
-              title={step.title} 
-              description={step.description} 
-              icon={step.icon} 
-              badges={step.badges} 
-              image={step.image}
-              imageClassName="h-64 md:h-80 object-cover" 
-            />
-          ))}
+          {steps.map(step => <Step key={step.number} number={step.number} title={step.title} description={step.description} icon={step.icon} badges={step.badges} image={step.image} />)}
         </div>
       </div>
     </section>;

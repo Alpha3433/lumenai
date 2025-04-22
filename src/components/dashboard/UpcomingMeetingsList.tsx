@@ -34,19 +34,27 @@ const UpcomingMeetingsList = () => {
     if (selectedMeetings.length === 0) return;
 
     try {
+      // Execute the delete operation and wait for it to complete
       const { error } = await supabase
         .from('meeting_requests')
         .delete()
         .in('id', selectedMeetings);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error deleting meetings:', error);
+        toast.error('Failed to delete meetings');
+        return;
+      }
 
+      // Only show success message and reset if the delete was successful
       toast.success(`${selectedMeetings.length} meeting${selectedMeetings.length > 1 ? 's' : ''} deleted`);
+      
+      // Clear selection after successful deletion
       setSelectedMeetings([]);
       
-      // Invalidate both queries to refresh the data
-      queryClient.invalidateQueries({ queryKey: ['upcoming-meetings'] });
-      queryClient.invalidateQueries({ queryKey: ['upcoming-meetings-count'] });
+      // Invalidate and refetch both queries to refresh the data
+      await queryClient.invalidateQueries({ queryKey: ['upcoming-meetings'] });
+      await queryClient.invalidateQueries({ queryKey: ['upcoming-meetings-count'] });
     } catch (error) {
       toast.error('Failed to delete meetings');
       console.error('Error deleting meetings:', error);
@@ -107,6 +115,7 @@ const UpcomingMeetingsList = () => {
                 <Checkbox
                   checked={selectedMeetings.includes(meeting.id)}
                   onCheckedChange={() => toggleMeetingSelection(meeting.id)}
+                  id={`meeting-${meeting.id}`}
                 />
                 <div className="flex-1">
                   <div className="flex justify-between items-start">

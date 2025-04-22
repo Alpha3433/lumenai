@@ -45,10 +45,11 @@ export default function Dashboard() {
       if (error) throw error;
       return {
         count: data.length,
-        nextMeeting: data[0]
+        nextMeeting: data.length > 0 ? data[0] : null
       };
     },
-    enabled: !!user?.id
+    enabled: !!user?.id,
+    staleTime: 30000 // Don't refetch this query for 30 seconds
   });
 
   useEffect(() => {
@@ -121,4 +122,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-};
+}

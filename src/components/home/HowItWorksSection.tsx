@@ -11,13 +11,6 @@ import {
   Users
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 interface StepProps {
   number: number;
@@ -28,10 +21,10 @@ interface StepProps {
     text: string;
     icon?: React.ReactNode;
   }[];
-  images: string[];
+  image: string;
 }
 
-const Step = ({ number, title, description, icon, badges, images }: StepProps) => {
+const Step = ({ number, title, description, icon, badges, image }: StepProps) => {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -71,25 +64,15 @@ const Step = ({ number, title, description, icon, badges, images }: StepProps) =
           ))}
         </div>
 
-        <Carousel className="w-full max-w-xl">
-          <CarouselContent>
-            {images.map((image, index) => (
-              <CarouselItem key={index}>
-                <div className="p-1">
-                  <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
-                    <img 
-                      src={image} 
-                      alt={`Step ${number} Screenshot ${index + 1}`}
-                      className="w-full h-48 object-cover"
-                    />
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <div className="w-full max-w-xl">
+          <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
+            <img 
+              src={image} 
+              alt={`Step ${number} Screenshot`}
+              className="w-full h-48 object-cover"
+            />
+          </div>
+        </div>
       </div>
     </motion.div>
   );
@@ -106,11 +89,7 @@ const HowItWorksSection = () => {
         { text: "5-10 minutes", icon: <Clock className="h-3 w-3" /> },
         { text: "AI-Powered" }
       ],
-      images: [
-        "/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png",
-        "/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png",
-        "/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png"
-      ]
+      image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
     },
     {
       number: 2,
@@ -120,11 +99,7 @@ const HowItWorksSection = () => {
       badges: [
         { text: "Expert Review", icon: <CheckCircle2 className="h-3 w-3" /> }
       ],
-      images: [
-        "/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png",
-        "/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png",
-        "/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png"
-      ]
+      image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
     },
     {
       number: 3,
@@ -134,11 +109,7 @@ const HowItWorksSection = () => {
       badges: [
         { text: "Multi-channel Strategy" }
       ],
-      images: [
-        "/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png",
-        "/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png",
-        "/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png"
-      ]
+      image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
     },
     {
       number: 4,
@@ -149,11 +120,7 @@ const HowItWorksSection = () => {
         { text: "Real-time Analytics" },
         { text: "Ongoing Support", icon: <Users className="h-3 w-3" /> }
       ],
-      images: [
-        "/lovable-uploads/f0aa6a39-c48c-48dc-a70e-479ad31cfb3e.png",
-        "/lovable-uploads/7ba1cf6a-2c1c-45f8-aed6-d8ef4560c984.png",
-        "/lovable-uploads/509ee2b7-efe9-4fad-b69b-410f47de9875.png"
-      ]
+      image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
     }
   ];
 
@@ -179,7 +146,7 @@ const HowItWorksSection = () => {
               description={step.description}
               icon={step.icon}
               badges={step.badges}
-              images={step.images}
+              image={step.image}
             />
           ))}
         </div>
@@ -189,3 +156,4 @@ const HowItWorksSection = () => {
 };
 
 export default HowItWorksSection;
+

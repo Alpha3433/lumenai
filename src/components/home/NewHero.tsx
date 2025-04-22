@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
@@ -11,10 +10,8 @@ const NewHero = () => {
   const [containerTop, setContainerTop] = useState(0);
   const { user } = useAuth();
   
-  // Get the scroll progress for parallax effect
   const { scrollY } = useScroll();
   
-  // Update container position on mount and resize
   useEffect(() => {
     const updateContainerPosition = () => {
       if (containerRef.current) {
@@ -23,15 +20,12 @@ const NewHero = () => {
       }
     };
     
-    // Initial position
     updateContainerPosition();
     
-    // Update on resize
     window.addEventListener('resize', updateContainerPosition);
     return () => window.removeEventListener('resize', updateContainerPosition);
   }, []);
   
-  // Transform the Y position of the screenshot based on scroll
   const mockupY = useTransform(
     scrollY, 
     [containerTop - 500, containerTop + 500], 
@@ -106,7 +100,6 @@ const NewHero = () => {
                 </div>
               </div>
               
-              {/* New photo grid layout */}
               <div className="grid grid-cols-3 gap-4 p-4">
                 <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-48">
                   <img 
@@ -115,11 +108,11 @@ const NewHero = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-64">
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-64 lg:h-80">
                   <img 
                     src="/lovable-uploads/5e06ea28-634a-4eba-bab1-938d96ec42fa.png" 
                     alt="Business Validation Score" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-300"
                   />
                 </div>
                 <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden h-48">
@@ -134,7 +127,6 @@ const NewHero = () => {
           </div>
         </div>
         
-        {/* Decorative elements */}
         <div className="absolute -top-6 -left-6 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg blur-xl"></div>
         <div className="absolute -bottom-8 -right-8 w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full blur-xl"></div>
       </motion.div>

@@ -1,30 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import React, { useState } from 'react';
 import BusinessPlanActionBar from './BusinessPlanActionBar';
-import ExecutiveSummarySection from './ExecutiveSummarySection';
-import SwotAnalysis from './SwotAnalysis';
-import WebBusinessModelsSection from './WebBusinessModelsSection';
-import BusinessPlanDashboard from './BusinessPlanDashboard';
-import PestelAnalysisSection from './pestel/PestelAnalysisSection';
-import PorterFiveForcesSection from './PorterFiveForcesSection';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import VerticalTabs from './VerticalTabs';
-
-// Import remaining section components
-import CustomerPersonasSection from './personas/CustomerPersonasSection';
-import CompetitiveFeatureMatrix from './competitive/CompetitiveFeatureMatrix';
-import GoToMarketStrategy from './strategy/GoToMarketStrategy';
-import MonetizationExperiments from './monetization/MonetizationExperiments';
-import UserRetentionStrategy from './retention/UserRetentionStrategy';
-import TechnologyRoadmap from './roadmap/TechnologyRoadmap';
-import RegulatoryComplianceChecklist from './compliance/RegulatoryComplianceChecklist';
-import PartnershipPipeline from './partnerships/PartnershipPipeline';
-import RiskMitigationPlaybook from './risk/RiskMitigationPlaybook';
+import BusinessInfoDialog from './business-plan/BusinessInfoDialog';
+import PreviewContent from './business-plan/PreviewContent';
 
 interface BusinessPlanData {
   executiveSummary: string;
@@ -53,9 +32,8 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
   isPremium = true,
   onStartOver,
   onDownload,
-  onUpgrade,
-  businessDescription = '',
-  onRefineBusinessInfo
+  onRefineBusinessInfo,
+  businessDescription = ''
 }) => {
   const [isEditingInfo, setIsEditingInfo] = useState(false);
   const [refinedName, setRefinedName] = useState(businessName);
@@ -69,44 +47,6 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
     setIsEditingInfo(false);
   };
 
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '-120px 0px -50% 0px',
-      threshold: 0
-    };
-
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveTab(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
-    
-    const sections = [
-      'dashboard', 'executive-summary', 'customer-personas', 
-      'swot-analysis', 'competitive-matrix', 'pestel-analysis', 
-      'porter-five-forces', 'gtm-strategy', 'monetization',
-      'retention-strategy', 'business-models',
-      'risk-mitigation'
-    ];
-    
-    sections.forEach(id => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
-    });
-
-    return () => {
-      sections.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) observer.unobserve(element);
-      });
-    };
-  }, []);
-
   return (
     <div className="space-y-10 animate-fade-in pb-20">
       <div className="max-w-5xl mx-auto">
@@ -119,37 +59,15 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
       </div>
       
       {onRefineBusinessInfo && (
-        <Dialog open={isEditingInfo} onOpenChange={setIsEditingInfo}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Refine Business Information</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div>
-                <label htmlFor="businessName" className="block text-sm font-medium mb-1">Business Name</label>
-                <Input 
-                  id="businessName" 
-                  value={refinedName} 
-                  onChange={(e) => setRefinedName(e.target.value)}
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label htmlFor="businessDescription" className="block text-sm font-medium mb-1">Business Description</label>
-                <Textarea 
-                  id="businessDescription" 
-                  value={refinedDescription} 
-                  onChange={(e) => setRefinedDescription(e.target.value)}
-                  className="w-full min-h-[120px]"
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditingInfo(false)}>Cancel</Button>
-              <Button onClick={handleSaveRefinements}>Save Changes</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <BusinessInfoDialog
+          open={isEditingInfo}
+          onOpenChange={setIsEditingInfo}
+          refinedName={refinedName}
+          setRefinedName={setRefinedName}
+          refinedDescription={refinedDescription}
+          setRefinedDescription={setRefinedDescription}
+          onSave={handleSaveRefinements}
+        />
       )}
       
       <div className="max-w-[95%] xl:max-w-7xl mx-auto">
@@ -159,114 +77,11 @@ const BusinessPlanPreview: React.FC<BusinessPlanPreviewProps> = ({
           </div>
           
           <div className="flex-1 bg-card/95 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-r-xl overflow-hidden">
-            <div className="p-6 md:p-8">
-              <div id="dashboard" className="pt-4">
-                <BusinessPlanDashboard 
-                  businessName={refinedName}
-                  businessPlan={businessPlan}
-                />
-              </div>
-              
-              <div id="executive-summary" className="pt-16 mt-8">
-                <ExecutiveSummarySection 
-                  summaryText={businessPlan.executiveSummary} 
-                  businessName={refinedName}
-                  marketAnalysis={businessPlan.marketAnalysis}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="customer-personas" className="pt-16 mt-8">
-                <CustomerPersonasSection 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="swot-analysis" className="pt-16 mt-8">
-                <SwotAnalysis 
-                  swotText={businessPlan.swotAnalysis} 
-                  marketAnalysis={businessPlan.marketAnalysis}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="competitive-matrix" className="pt-16 mt-8">
-                <CompetitiveFeatureMatrix 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="pestel-analysis" className="pt-16 mt-8">
-                <PestelAnalysisSection 
-                  analysisText={businessPlan.marketAnalysis}
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="porter-five-forces" className="pt-16 mt-8">
-                <PorterFiveForcesSection 
-                  marketAnalysis={businessPlan.marketAnalysis}
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="gtm-strategy" className="pt-16 mt-8">
-                <GoToMarketStrategy 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="monetization" className="pt-16 mt-8">
-                <MonetizationExperiments 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="retention-strategy" className="pt-16 mt-8">
-                <UserRetentionStrategy 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="business-models" className="pt-16 mt-8">
-                <WebBusinessModelsSection 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-              
-              <Separator className="my-10" />
-              
-              <div id="risk-mitigation" className="pt-16 mt-8">
-                <RiskMitigationPlaybook 
-                  businessName={refinedName}
-                  businessDescription={refinedDescription}
-                />
-              </div>
-            </div>
+            <PreviewContent 
+              businessName={refinedName}
+              businessDescription={refinedDescription}
+              businessPlan={businessPlan}
+            />
           </div>
         </div>
       </div>

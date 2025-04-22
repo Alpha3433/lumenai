@@ -100,7 +100,7 @@ const HowItWorksSection = () => {
       badges: [{
         text: "Multi-channel Strategy"
       }],
-      image: "/lovable-uploads/0d354cb2-5930-4303-8f39-1348724a9490.png"
+      image: "/lovable-uploads/97ff5ee9-49d4-4693-aae5-13ea2becadaa.png"
     }
   ];
 

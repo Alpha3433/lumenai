@@ -1,3 +1,4 @@
+
 // Supabase Edge Function: reddit-insights/index.ts
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -29,11 +30,32 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Define target subreddits
+    const targetSubreddits = [
+      'Entrepreneurship',
+      'SideProject',
+      'SaaS',
+      'smallbusiness',
+      'startups',
+      'indiehackers',
+      'EntrepreneurRideAlong',
+      'business',
+      'startup',
+      'ycombinator',
+      'growmybusiness',
+      'Entrepreneurs',
+      'advancedentrepreneur'
+    ];
+
     // Build the search query - if search is provided use it, otherwise use default query
     let query = search ? search : "startup OR SaaS OR pricing OR founders OR repeat+purchase OR product+market+fit";
     if (search && !search.includes('OR') && !search.includes('AND')) {
       query = `${search} OR "${search}" OR ${search}+tips OR ${search}+strategy`;
     }
+    
+    // Add subreddit restriction to the query
+    const subredditQuery = targetSubreddits.map(sub => `subreddit:${sub}`).join(' OR ');
+    query = `(${query}) AND (${subredditQuery})`;
     
     console.log("Search query:", query);
     
@@ -52,7 +74,7 @@ Deno.serve(async (req) => {
       throw new Error('Failed to obtain Reddit access token');
     }
 
-    // Use Reddit's search API with sensible defaults
+    // Use Reddit's search API
     const encodedQuery = encodeURIComponent(query);
     const url = `https://oauth.reddit.com/search?limit=100&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
 
@@ -228,3 +250,4 @@ Deno.serve(async (req) => {
     });
   }
 });
+

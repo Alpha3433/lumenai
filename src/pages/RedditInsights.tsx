@@ -1,9 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import RedditThemeCard from "@/components/reddit/RedditThemeCard";
 import RedditSearchBar from "@/components/reddit/RedditSearchBar";
 import RedditLoadingGrid from "@/components/reddit/RedditLoadingGrid";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Globe, AlertCircle } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 import { toast } from "sonner";
@@ -63,7 +63,8 @@ export default function RedditInsights() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchAttempted, setSearchAttempted] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const themesPerPage = 6;
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const themesPerPage = 9;
 
   useEffect(() => {
     const loadInitialThemes = async () => {
@@ -103,13 +104,23 @@ export default function RedditInsights() {
     }
   };
 
-  // Pagination
+  const categories = [
+    "All",
+    "Pain Points",
+    "Success Stories",
+    "Aspirations & Goals",
+    "Emerging Trends",
+    "Tool Mentions"
+  ];
+
+  const filteredThemes = themeData.filter(theme => 
+    activeCategory === "All" ? true : theme.category === activeCategory
+  );
+
   const indexOfLastTheme = currentPage * themesPerPage;
   const indexOfFirstTheme = indexOfLastTheme - themesPerPage;
-  const currentThemes = themeData.slice(indexOfFirstTheme, indexOfLastTheme);
-  const totalPages = Math.ceil(themeData.length / themesPerPage);
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const currentThemes = filteredThemes.slice(indexOfFirstTheme, indexOfLastTheme);
+  const totalPages = Math.ceil(filteredThemes.length / themesPerPage);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#fff] to-[#fee6d8] dark:from-gray-900 dark:to-orange-950/40">
@@ -179,20 +190,34 @@ export default function RedditInsights() {
               </div>
             ) : (
               <>
+                <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full mb-8">
+                  <TabsList className="w-full justify-start overflow-x-auto">
+                    {categories.map((category) => (
+                      <TabsTrigger
+                        key={category}
+                        value={category}
+                        className="min-w-[120px]"
+                      >
+                        {category}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {currentThemes.map((theme, i) => (
                     <RedditThemeCard theme={theme} key={`${theme.theme}-${i}`} />
                   ))}
                 </div>
                 
-                {themeData.length > themesPerPage && (
+                {filteredThemes.length > themesPerPage && (
                   <Pagination className="mt-8">
                     <PaginationContent>
                       {Array.from({ length: totalPages }).map((_, i) => (
                         <PaginationItem key={i}>
                           <PaginationLink 
                             isActive={currentPage === i + 1}
-                            onClick={() => paginate(i + 1)}
+                            onClick={() => setCurrentPage(i + 1)}
                           >
                             {i + 1}
                           </PaginationLink>

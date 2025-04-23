@@ -1,4 +1,3 @@
-
 // Supabase Edge Function: reddit-insights/index.ts
 // This function calls the Reddit API securely, using the secret key set in Supabase,
 // and returns grouped themes for the frontend.
@@ -76,55 +75,91 @@ Deno.serve(async (req) => {
     // Collect subreddit names for interest stats
     posts.forEach((post: any) => subredditsSet.add(post.subreddit));
 
-    // Theme extraction (naive approach to group by keywords in title/selftext)
+    // Enhanced theme descriptors with more categories
     const themeDescriptors = [
       {
-        key: "Product Development and Launch Success",
-        keywords: ["launched", "launch", "success", "growth", "product released", "milestone"],
-        description:
-          "Success stories around product development, launches, and achieving significant milestones.",
-        category: "Success Stories",
-        color: "bg-green-100"
-      },
-      {
-        key: "Pricing & Revenue Discussions",
-        keywords: ["pricing", "revenue", "plan", "subscription", "SaaS", "one-time payment", "trial", "ARR"],
-        description:
-          "How founders discuss pricing strategies, SaaS vs. one-time models, and revenue experiments.",
-        category: "Aspirations & Goals",
-        color: "bg-blue-100"
-      },
-      {
-        key: "Customer Pain Points Solved",
-        keywords: ["pain point", "solved", "problem", "customer", "user feedback", "struggle"],
-        description:
-          "Threads that highlight actual customer pain points being solved with real examples.",
+        key: "Common Development Problems",
+        keywords: ["error", "bug", "issue", "problem", "stuck", "help needed", "debugging"],
+        description: "Frequently discussed technical challenges and debugging issues developers face.",
         category: "Pain Points",
         color: "bg-yellow-100"
       },
       {
-        key: "Repeat Purchases & Organic Engagement",
-        keywords: ["repeat", "purchase", "retention", "organic", "engagement", "usage"],
-        description:
-          "Users discussing repeat purchases or organic/viral engagement—signals of product market fit.",
-        category: "Emerging Trends",
-        color: "bg-purple-100"
+        key: "Architecture Decisions",
+        keywords: ["architecture", "microservices", "monolith", "database", "infrastructure", "stack"],
+        description: "Discussions around architectural choices and their implications.",
+        category: "Pain Points",
+        color: "bg-yellow-100"
       },
       {
-        key: "Marketing & Messaging",
-        keywords: ["marketing", "messaging", "branding", "positioning", "campaign"],
-        description:
-          "Strategies for effective marketing, messaging, and branding.",
+        key: "Product Market Fit Success",
+        keywords: ["product market fit", "PMF", "success story", "milestone", "growth"],
+        description: "Stories of achieving product-market fit and significant growth milestones.",
+        category: "Success Stories",
+        color: "bg-green-100"
+      },
+      {
+        key: "Revenue Milestones",
+        keywords: ["revenue", "MRR", "ARR", "milestone", "profitable", "bootstrap"],
+        description: "Success stories about reaching revenue milestones and profitability.",
+        category: "Success Stories",
+        color: "bg-green-100"
+      },
+      {
+        key: "Technical Stack Choices",
+        keywords: ["tech stack", "framework", "language", "database", "infrastructure"],
+        description: "Popular technology stack choices and their implementation outcomes.",
+        category: "Success Stories",
+        color: "bg-green-100"
+      },
+      {
+        key: "Learning Resources",
+        keywords: ["tutorial", "guide", "resource", "learning", "documentation", "course"],
+        description: "Recommended learning resources and educational content.",
         category: "Aspirations & Goals",
         color: "bg-blue-100"
       },
       {
-        key: "Startup Team/Co-founder Journeys",
-        keywords: ["cofounder", "team", "partner", "joined", "hired", "fired", "bootstrapped"],
-        description:
-          "Personal growth, team building, and founder journeys including challenges and wins.",
-        category: "Success Stories",
-        color: "bg-green-100"
+        key: "Scaling Challenges",
+        keywords: ["scale", "scaling", "growth", "performance", "optimization"],
+        description: "Discussions about scaling applications and handling growth.",
+        category: "Aspirations & Goals",
+        color: "bg-blue-100"
+      },
+      {
+        key: "AI Integration Trends",
+        keywords: ["AI", "machine learning", "ML", "artificial intelligence", "GPT", "LLM"],
+        description: "Emerging trends in AI integration and implementation.",
+        category: "Emerging Trends",
+        color: "bg-purple-100"
+      },
+      {
+        key: "Cloud Native Patterns",
+        keywords: ["kubernetes", "docker", "cloud", "serverless", "containers"],
+        description: "Trends in cloud-native development and deployment.",
+        category: "Emerging Trends",
+        color: "bg-purple-100"
+      },
+      {
+        key: "Development Tools",
+        keywords: ["IDE", "editor", "tool", "plugin", "extension", "utility"],
+        description: "Popular development tools and utilities being discussed.",
+        category: "Tool Mentions",
+        color: "bg-orange-100"
+      },
+      {
+        key: "CI/CD Tools",
+        keywords: ["CI", "CD", "pipeline", "automation", "deployment", "github actions", "jenkins"],
+        description: "Tools and practices for continuous integration and deployment.",
+        category: "Tool Mentions",
+        color: "bg-orange-100"
+      },
+      {
+        key: "Testing Tools",
+        keywords: ["testing", "test", "jest", "cypress", "selenium", "playwright"],
+        description: "Tools and frameworks for testing applications.",
+        category: "Tool Mentions",
+        color: "bg-orange-100"
       }
     ];
 
@@ -167,6 +202,9 @@ Deno.serve(async (req) => {
       if (filteredPosts.length === 0) {
         return null;
       }
+
+      const latestPostDate = Math.max(...filteredPosts.map((p: any) => p.created_utc * 1000));
+      const daysAgo = Math.round((Date.now() - latestPostDate) / 86400000);
       
       return {
         theme: theme.key,
@@ -174,14 +212,8 @@ Deno.serve(async (req) => {
         posts: filteredPosts.length,
         insights: filteredPosts.reduce((acc, post) => acc + (post.num_comments || 0), 0),
         subreddits: new Set(filteredPosts.map((p: any) => p.subreddit)).size,
-        daysAgo: filteredPosts.length > 0
-          ? Math.round(
-              (Date.now() - (Math.min(...filteredPosts.map((p: any) => (p.created_utc * 1000)))))/86400000
-            ) : "-",
-        created: filteredPosts.length > 0
-          ? `${Math.round(
-              (Date.now() - Math.max(...filteredPosts.map((p: any) => (p.created_utc * 1000))))/86400000
-            )} days ago` : "-",
+        daysAgo,
+        created: `${daysAgo} days ago`,
         category: theme.category,
         color: theme.color
       };

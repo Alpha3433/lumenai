@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import RedditThemeCard from "@/components/reddit/RedditThemeCard";
@@ -83,6 +84,11 @@ export default function RedditInsights() {
     loadInitialThemes();
   }, []);
 
+  useEffect(() => {
+    // Reset to first page when category changes
+    setCurrentPage(1);
+  }, [activeCategory]);
+
   const runSearch = async () => {
     setSearching(true);
     setSearchAttempted(true);
@@ -110,7 +116,10 @@ export default function RedditInsights() {
     "Success Stories",
     "Aspirations & Goals",
     "Emerging Trends",
-    "Tool Mentions"
+    "Tool Mentions",
+    "Development",
+    "Infrastructure",
+    "Business"
   ];
 
   const filteredThemes = themeData.filter(theme => 

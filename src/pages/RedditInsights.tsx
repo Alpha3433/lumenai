@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Reddit, Search } from "lucide-react";
+import { Globe, Search } from "lucide-react";
 
 const REDDIT_API_KEY = "RC8VS8rybbX7WFL3xBKZFDefn9QMwQ";
 
@@ -75,7 +75,7 @@ export default function RedditInsights() {
       <Navbar />
       <div className="container max-w-3xl mx-auto py-12 pt-24 px-4">
         <div className="flex items-center mb-8">
-          <Reddit className="h-8 w-8 text-[#FF4500] mr-2" />
+          <Globe className="h-8 w-8 text-[#FF4500] mr-2" />
           <h1 className="text-3xl md:text-4xl font-bold">
             Reddit Insights & Trends
           </h1>
@@ -124,7 +124,7 @@ export default function RedditInsights() {
                 <Card key={group.theme + i}>
                   <CardHeader>
                     <CardTitle className="flex items-center text-lg">
-                      <Reddit className="h-5 w-5 text-[#FF4500] mr-2" />
+                      <Globe className="h-5 w-5 text-[#FF4500] mr-2" />
                       {group.theme}
                     </CardTitle>
                   </CardHeader>

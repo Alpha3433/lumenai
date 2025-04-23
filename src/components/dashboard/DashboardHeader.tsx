@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '@/components/AuthProvider';
-import { FileText, Calendar, CheckCircle, Reddit } from 'lucide-react';
+import { FileText, Calendar, CheckCircle, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const DashboardHeader = () => {
@@ -46,7 +46,7 @@ const DashboardHeader = () => {
           className="bg-[#FF4500]/20 hover:bg-[#FF4500]/40 text-[#FF4500] dark:bg-[#FF4500]/20 dark:hover:bg-[#FF4500]/40"
           onClick={handleRedditInsights}
         >
-          <Reddit className="mr-2 h-4 w-4" />
+          <Globe className="mr-2 h-4 w-4" />
           Reddit Insights
         </Button>
       </div>
@@ -55,4 +55,3 @@ const DashboardHeader = () => {
 };
 
 export default DashboardHeader;
-

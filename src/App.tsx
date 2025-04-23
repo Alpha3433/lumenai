@@ -26,6 +26,7 @@ import ScheduleMeeting from "./pages/ScheduleMeeting";
 import Checkout from "./pages/Checkout";
 import Blog from "./pages/Blog";
 import GenerateReport from "./pages/GenerateReport";
+import RedditInsights from "./pages/RedditInsights";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,7 @@ const App = () => (
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/generate-report" element={<GenerateReport />} />
+                <Route path="/reddit-insights" element={<RedditInsights />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>

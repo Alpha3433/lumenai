@@ -1,19 +1,23 @@
 
 import React from 'react';
 import { useAuth } from '@/components/AuthProvider';
-import { FileText, Calendar, CheckCircle } from 'lucide-react';
+import { FileText, Calendar, CheckCircle, Reddit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const DashboardHeader = () => {
   const { user } = useAuth();
   const firstName = user?.user_metadata?.full_name?.split(' ')[0] || 'there';
 
+  const handleRedditInsights = () => {
+    window.location.href = '/reddit-insights';
+  };
+
   return (
     <div className="mb-8 bg-slate-50 dark:bg-slate-900/50 p-8 rounded-xl">
       <h1 className="text-2xl font-bold mb-2">Welcome back, {firstName}</h1>
       <p className="text-muted-foreground mb-6">Here's what's happening with your business today.</p>
       
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         <Button 
           variant="secondary" 
           className="bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/30 dark:hover:bg-purple-900/50"
@@ -37,9 +41,18 @@ const DashboardHeader = () => {
           <CheckCircle className="mr-2 h-4 w-4" />
           New Task
         </Button>
+        <Button
+          variant="secondary"
+          className="bg-[#FF4500]/20 hover:bg-[#FF4500]/40 text-[#FF4500] dark:bg-[#FF4500]/20 dark:hover:bg-[#FF4500]/40"
+          onClick={handleRedditInsights}
+        >
+          <Reddit className="mr-2 h-4 w-4" />
+          Reddit Insights
+        </Button>
       </div>
     </div>
   );
 };
 
 export default DashboardHeader;
+

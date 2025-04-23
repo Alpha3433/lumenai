@@ -1,31 +1,36 @@
-
 export const welcomeEmailTemplate = (username: string) => ({
   subject: "🎉 Welcome to Our Platform!",
   html: `
     <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
       <div style="text-align: center; margin-bottom: 32px;">
-        <h1 style="color: #1a1a1a; font-size: 28px; margin-bottom: 16px;">Welcome aboard, ${username}! 🚀</h1>
+        <h1 style="color: #1a1a1a; font-size: 28px; margin-bottom: 16px;">Welcome aboard! 🚀</h1>
         <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-          We're thrilled to have you join our community! Your journey to success starts here.
+          Thanks for joining our waiting list! We're excited to have you on board.
         </p>
       </div>
 
       <div style="background-color: #f8f9fa; padding: 24px; border-radius: 8px; margin-bottom: 32px;">
-        <h2 style="color: #2c3e50; font-size: 20px; margin-bottom: 16px;">🎯 Quick Start Guide</h2>
-        <ul style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0; padding-left: 20px;">
-          <li style="margin-bottom: 12px;">Complete your profile</li>
-          <li style="margin-bottom: 12px;">Explore our features</li>
-          <li style="margin-bottom: 12px;">Connect with other members</li>
-        </ul>
+        <h2 style="color: #2c3e50; font-size: 20px; margin-bottom: 16px;">📅 Let's Connect!</h2>
+        <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+          We'd love to learn more about your needs and how we can help. Schedule a 30-minute chat with us:
+        </p>
+        <div style="text-align: center;">
+          <a href="https://calendly.com/lumenaihelp/30min" 
+             style="display: inline-block; background-color: #0066cc; color: white; padding: 14px 32px; 
+                    text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;
+                    transition: background-color 0.3s ease;">
+            Schedule a Meeting →
+          </a>
+        </div>
       </div>
 
-      <div style="text-align: center; margin-bottom: 32px;">
-        <a href="https://your-app-url.com/dashboard" 
-           style="display: inline-block; background-color: #0066cc; color: white; padding: 14px 32px; 
-                  text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;
-                  transition: background-color 0.3s ease;">
-          Get Started →
-        </a>
+      <div style="background-color: #f8f9fa; padding: 24px; border-radius: 8px; margin-bottom: 32px;">
+        <h2 style="color: #2c3e50; font-size: 20px; margin-bottom: 16px;">🎯 Next Steps</h2>
+        <ul style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 12px;">Schedule your onboarding call</li>
+          <li style="margin-bottom: 12px;">Prepare any questions you have</li>
+          <li style="margin-bottom: 12px;">Learn about our platform features</li>
+        </ul>
       </div>
 
       <div style="border-top: 1px solid #e5e7eb; padding-top: 24px; text-align: center;">
@@ -91,4 +96,3 @@ export const passwordResetEmailTemplate = (resetLink: string) => ({
     </div>
   `,
 });
-

@@ -7,12 +7,14 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import ConfirmationDialog from './ConfirmationDialog';
+import { useEmailService } from '@/utils/emailService';
 
 const EmailForm = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const { sendWelcomeEmail } = useEmailService();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +28,6 @@ const EmailForm = () => {
     
     try {
       // Insert the email into the waiting_list table
-      // Using 'any' type assertion to bypass type checking for the table name
       const { error } = await (supabase as any)
         .from('waiting_list')
         .insert([{ email }]);
@@ -42,6 +43,9 @@ const EmailForm = () => {
         setIsSubmitting(false);
         return;
       }
+      
+      // Send welcome email
+      await sendWelcomeEmail(email, email.split('@')[0]);
       
       // Success
       setIsSubmitting(false);

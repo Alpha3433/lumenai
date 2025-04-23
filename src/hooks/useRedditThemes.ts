@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ThemeData } from "@/types/reddit";
 import { toast } from "sonner";
@@ -59,6 +58,7 @@ export const useRedditThemes = () => {
     error,
     searching,
     searchAttempted,
+    setSearchAttempted,
     fetchRedditThemes
   };
 };

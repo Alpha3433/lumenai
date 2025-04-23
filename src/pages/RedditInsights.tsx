@@ -31,6 +31,7 @@ export default function RedditInsights() {
     error,
     searching,
     searchAttempted,
+    setSearchAttempted,  // Destructure the setter
     fetchRedditThemes
   } = useRedditThemes();
 
@@ -104,7 +105,7 @@ export default function RedditInsights() {
                   <button 
                     onClick={() => {
                       setSearch("");
-                      setSearchAttempted(false);
+                      setSearchAttempted(false);  // Use the setter from the hook
                       fetchRedditThemes();
                     }}
                     className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition"
@@ -135,4 +136,4 @@ export default function RedditInsights() {
       </div>
     </div>
   );
-}
+};

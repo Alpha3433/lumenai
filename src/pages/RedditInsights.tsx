@@ -1,9 +1,10 @@
+
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import RedditThemeCard from "@/components/reddit/RedditThemeCard";
 import RedditSearchBar from "@/components/reddit/RedditSearchBar";
 import RedditLoadingGrid from "@/components/reddit/RedditLoadingGrid";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Globe, AlertCircle } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 import { toast } from "sonner";
@@ -21,7 +22,7 @@ type ThemeData = {
   color: string;
 };
 
-// -- Fetch via Supabase edge function (backend uses Reddit secret)
+// -- Fetch via Supabase edge function
 const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]> => {
   try {
     const response = await fetch(
@@ -45,8 +46,6 @@ const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]>
     if (data.error) {
       throw new Error(data.error);
     }
-
-    // Added safeguard: Fallback to default if themes is missing
     return Array.isArray(data.themes) ? data.themes : [];
   } catch (error) {
     console.error("Unable to fetch Reddit themes:", error);
@@ -135,6 +134,7 @@ export default function RedditInsights() {
         <p className="mb-8 text-muted-foreground">
           Instantly access and organize insightful suggestions from Reddit discussions &mdash; auto-grouped into actionable themes.
         </p>
+        
         <RedditSearchBar
           search={search}
           setSearch={setSearch}

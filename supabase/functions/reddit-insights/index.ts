@@ -1,4 +1,3 @@
-
 // Supabase Edge Function: reddit-insights/index.ts
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -47,11 +46,22 @@ Deno.serve(async (req) => {
       'advancedentrepreneur'
     ];
 
-    // Build the search query - if search is provided use it, otherwise use default query
-    let query = search ? search : "startup OR SaaS OR pricing OR founders OR repeat+purchase OR product+market+fit";
-    if (search && !search.includes('OR') && !search.includes('AND')) {
-      query = `${search} OR "${search}" OR ${search}+tips OR ${search}+strategy`;
-    }
+    // Define theme-specific searches
+    const themeSearches = {
+      "Technical Challenges": "error OR bug OR debugging OR (technical AND challenge) OR (developer AND problem)",
+      "Development Bottlenecks": "performance OR optimization OR bottleneck OR scaling OR slow",
+      "Revenue Milestones": "revenue OR MRR OR ARR OR (revenue AND milestone) OR (revenue AND growth)",
+      "Product Market Fit": "product market fit OR PMF OR validation OR (product AND validation)",
+      "Scaling Goals": "scaling OR growth strategy OR expansion OR (growth AND goals)",
+      "Market Expansion": "market expansion OR new market OR international expansion",
+      "AI Integration": "AI integration OR machine learning OR GPT OR AI implementation",
+      "Web3 Development": "web3 OR blockchain OR crypto OR NFT OR decentralized",
+      "Development Tools": "development tool OR IDE OR editor OR plugin OR extension",
+      "Testing Tools": "testing framework OR jest OR cypress OR selenium OR (test AND automation)"
+    };
+
+    // Build the search query based on theme searches
+    let query = search || Object.values(themeSearches).join(" OR ");
     
     // Add subreddit restriction to the query
     const subredditQuery = targetSubreddits.map(sub => `subreddit:${sub}`).join(' OR ');
@@ -108,14 +118,14 @@ Deno.serve(async (req) => {
     const themeDescriptors = [
       {
         key: "Technical Challenges",
-        keywords: ["error", "bug", "issue", "problem", "stuck", "help", "debugging"],
+        keywords: ["error", "bug", "debugging", "technical challenge", "developer problem"],
         description: "Common technical challenges and debugging issues developers face.",
         category: "Pain Points",
         color: "bg-red-100"
       },
       {
         key: "Development Bottlenecks",
-        keywords: ["slow", "performance", "optimization", "bottleneck", "scaling"],
+        keywords: ["performance", "optimization", "bottleneck", "scaling", "slow"],
         description: "Performance issues and optimization challenges in development.",
         category: "Pain Points",
         color: "bg-red-100"
@@ -178,19 +188,9 @@ Deno.serve(async (req) => {
       }
     ];
 
-    // Add search-specific themes when user is searching
-    if (search) {
-      themeDescriptors.push({
-        key: `${search.charAt(0).toUpperCase() + search.slice(1)} Insights`,
-        keywords: [search.toLowerCase()],
-        description: `Posts specifically discussing "${search}" related topics.`,
-        category: "Search Results",
-        color: "bg-yellow-100"
-      });
-    }
-
-    // Group posts into themes
+    // Group posts into themes based on enhanced matching
     const themes = themeDescriptors.map(theme => {
+      // Match posts that contain theme keywords in title or content
       const filteredPosts = posts.filter(post =>
         theme.keywords.some(kw =>
           (post.title?.toLowerCase() || "").includes(kw.toLowerCase()) ||
@@ -250,4 +250,3 @@ Deno.serve(async (req) => {
     });
   }
 });
-

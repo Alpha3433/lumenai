@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -6,17 +5,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Globe, Search, MessageSquare, Lightbulb, Users, Calendar } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 
-const REDDIT_API_KEY = "RC8VS8rybbX7WFL3xBKZFDefn9QMwQ";
-
-interface ThemeData {
+type ThemeData = {
   theme: string;
   description: string;
   posts: number;
   insights: number;
   subreddits: number;
-  daysAgo: number;
+  daysAgo: number|string;
   created: string;
-  category: "Success Stories" | "Aspirations & Goals" | "Pain Points" | "Emerging Trends";
+  category: string;
   color: string;
 }
 
@@ -27,107 +24,25 @@ const categoryColors = {
   "Emerging Trends": "bg-purple-100 text-purple-800"
 };
 
-// Mock data based on the image
-const mockThemeData: ThemeData[] = [
-  {
-    theme: "Product Development and Launch Success",
-    description: "Success stories around product development, launches, and achieving significant milestones.",
-    posts: 237,
-    insights: 429,
-    subreddits: 12,
-    daysAgo: 3,
-    created: "18 days ago",
-    category: "Success Stories",
-    color: "bg-green-100"
-  },
-  {
-    theme: "Product Development and Improvement",
-    description: "Goals related to developing, improving, and scaling products",
-    posts: 198,
-    insights: 310,
-    subreddits: 14,
-    daysAgo: 5,
-    created: "18 days ago",
-    category: "Aspirations & Goals",
-    color: "bg-blue-100"
-  },
-  {
-    theme: "Personal and Financial Strain",
-    description: "Personal challenges and financial strains faced by individuals in startups.",
-    posts: 194,
-    insights: 467,
-    subreddits: 13,
-    daysAgo: 6,
-    created: "18 days ago",
-    category: "Pain Points",
-    color: "bg-yellow-100"
-  },
-  {
-    theme: "AI Tools and Platforms",
-    description: "Suggestions about AI tools, platforms, and their applications in various fields.",
-    posts: 156,
-    insights: 238,
-    subreddits: 11,
-    daysAgo: 3,
-    created: "18 days ago",
-    category: "Emerging Trends",
-    color: "bg-purple-100"
-  },
-  {
-    theme: "Personal and Team Development",
-    description: "Personal growth, team building, and finding the right partners or co-founders",
-    posts: 151,
-    insights: 280,
-    subreddits: 13,
-    daysAgo: 4,
-    created: "18 days ago",
-    category: "Aspirations & Goals",
-    color: "bg-blue-100"
-  },
-  {
-    theme: "Marketing and Messaging",
-    description: "Strategies for effective marketing, messaging, and branding",
-    posts: 146,
-    insights: 255,
-    subreddits: 12,
-    daysAgo: 3,
-    created: "18 days ago",
-    category: "Aspirations & Goals",
-    color: "bg-blue-100"
-  }
-];
-
-// Function to fetch real Reddit data and transform it into themed data
 const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]> => {
-  // In a real implementation, you would:
-  // 1. Call the Reddit API
-  // 2. Process the data
-  // 3. Group posts by themes
-  // 4. Return the formatted data
-  
   try {
-    // This would be your actual API call
-    // const response = await fetch(`https://oauth.reddit.com/search?q=${encodeURIComponent(searchQuery)}`, {
-    //   headers: {
-    //     'Authorization': `Bearer ${REDDIT_API_KEY}`, 
-    //     'User-Agent': 'RedditInsights/1.0.0'
-    //   }
-    // });
-    // const data = await response.json();
-    
-    // Process and analyze data to extract themes
-    // For now, we'll use mockThemeData filtered by searchQuery
-    
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-    
-    if (!searchQuery) return mockThemeData;
-    
-    return mockThemeData.filter(
-      theme => theme.theme.toLowerCase().includes(searchQuery.toLowerCase()) || 
-               theme.description.toLowerCase().includes(searchQuery.toLowerCase())
+    const response = await fetch(
+      "https://lxnhpkyviyvoefbgyzgi.functions.supabase.co/reddit-insights",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ search: searchQuery })
+      }
     );
+    const data = await response.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    return data.themes || [];
   } catch (error) {
-    console.error("Error fetching Reddit data:", error);
+    console.error("Unable to fetch Reddit themes:", error);
     return [];
   }
 };
@@ -233,12 +148,6 @@ export default function RedditInsights() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {currentThemes.map((theme, i) => (
                     <Card key={i} className="relative group">
-                      <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                      </button>
-                      
                       <CardHeader>
                         <CardTitle className="text-lg font-bold">{theme.theme}</CardTitle>
                         <p className="text-sm text-muted-foreground mt-1">{theme.description}</p>
@@ -263,7 +172,6 @@ export default function RedditInsights() {
                             <p className="font-bold">{theme.daysAgo} days ago</p>
                           </div>
                         </div>
-                        
                         <div className="flex justify-between items-center">
                           <div className="text-sm text-muted-foreground">
                             Created {theme.created}

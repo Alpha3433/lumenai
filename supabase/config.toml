@@ -1,6 +1,2 @@
 
 project_id = "lxnhpkyviyvoefbgyzgi"
-
-[functions]
-[functions.reddit-insights]
-verify_jwt = false

@@ -1,4 +1,3 @@
-
 // Supabase Edge Function: reddit-insights/index.ts
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -31,7 +30,7 @@ Deno.serve(async (req) => {
     }
 
     // Build the search query - if search is provided use it, otherwise use default query
-    let query = search ? search : "startup OR SaaS OR pricing OR founders OR repeat+purchase OR product+market+fit OR business+advice OR entrepreneurship OR small+business OR marketing+strategy OR customer+acquisition OR revenue+growth OR business+challenges OR startup+success OR business+tools";
+    let query = search ? search : "startup OR SaaS OR pricing OR founders OR repeat+purchase OR product+market+fit";
     if (search && !search.includes('OR') && !search.includes('AND')) {
       query = `${search} OR "${search}" OR ${search}+tips OR ${search}+strategy`;
     }
@@ -53,7 +52,7 @@ Deno.serve(async (req) => {
       throw new Error('Failed to obtain Reddit access token');
     }
 
-    // Use Reddit's search API with a more reliable limit - reduced from 250 to 100
+    // Use Reddit's search API with sensible defaults
     const encodedQuery = encodeURIComponent(query);
     const url = `https://oauth.reddit.com/search?limit=100&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
 
@@ -83,155 +82,77 @@ Deno.serve(async (req) => {
     console.log(`Found ${posts.length} posts for query: "${query}"`);
     posts.forEach((post: any) => subredditsSet.add(post.subreddit));
 
-    // Enhanced theme descriptors with more categories and keywords
+    // Enhanced theme descriptors with more categories
     const themeDescriptors = [
       {
-        key: "Technical Implementation",
-        keywords: ["implementation", "coding", "development", "tech stack", "architecture"],
-        description: "Technical implementation challenges and solutions.",
+        key: "Technical Challenges",
+        keywords: ["error", "bug", "issue", "problem", "stuck", "help", "debugging"],
+        description: "Common technical challenges and debugging issues developers face.",
         category: "Pain Points",
         color: "bg-red-100"
       },
       {
-        key: "Customer Acquisition",
-        keywords: ["customer acquisition", "CAC", "leads", "conversion", "sales funnel"],
-        description: "Strategies and challenges in acquiring customers.",
+        key: "Development Bottlenecks",
+        keywords: ["slow", "performance", "optimization", "bottleneck", "scaling"],
+        description: "Performance issues and optimization challenges in development.",
         category: "Pain Points",
         color: "bg-red-100"
       },
       {
-        key: "User Retention",
-        keywords: ["retention", "churn", "user engagement", "customer loyalty"],
-        description: "Challenges and strategies for retaining users.",
-        category: "Pain Points",
-        color: "bg-red-100"
-      },
-      {
-        key: "Funding Success",
-        keywords: ["funding", "investment", "VC", "seed round", "angel"],
-        description: "Success stories in securing funding and investment.",
+        key: "Revenue Milestones",
+        keywords: ["revenue", "profit", "MRR", "ARR", "growth", "milestone"],
+        description: "Success stories about reaching significant revenue milestones.",
         category: "Success Stories",
         color: "bg-green-100"
       },
       {
-        key: "Market Validation",
-        keywords: ["validation", "product market fit", "customer feedback", "beta testing"],
-        description: "Achieving market validation and product-market fit.",
+        key: "Product Market Fit",
+        keywords: ["product market fit", "PMF", "validation", "success story"],
+        description: "Stories of achieving product-market fit and validation.",
         category: "Success Stories",
         color: "bg-green-100"
       },
       {
-        key: "Team Building",
-        keywords: ["hiring", "team", "recruitment", "talent", "culture"],
-        description: "Building and managing successful teams.",
-        category: "Success Stories",
-        color: "bg-green-100"
-      },
-      {
-        key: "International Expansion",
-        keywords: ["international", "global", "expansion", "new markets"],
-        description: "Plans for expanding into international markets.",
+        key: "Scaling Goals",
+        keywords: ["scale", "growth plan", "expansion", "goals", "target"],
+        description: "Discussions about scaling strategies and growth targets.",
         category: "Aspirations & Goals",
         color: "bg-blue-100"
       },
       {
-        key: "Product Innovation",
-        keywords: ["innovation", "new features", "product development", "R&D"],
-        description: "Goals for product innovation and development.",
+        key: "Market Expansion",
+        keywords: ["market expansion", "new market", "international", "growth strategy"],
+        description: "Plans and strategies for entering new markets.",
         category: "Aspirations & Goals",
         color: "bg-blue-100"
       },
       {
-        key: "Platform Growth",
-        keywords: ["platform", "ecosystem", "marketplace", "network effects"],
-        description: "Building and scaling platform businesses.",
-        category: "Aspirations & Goals",
-        color: "bg-blue-100"
-      },
-      {
-        key: "AI Integration Trends",
-        keywords: ["artificial intelligence", "machine learning", "AI", "automation"],
-        description: "Trends in AI adoption and integration.",
+        key: "AI Integration",
+        keywords: ["AI", "machine learning", "ML", "artificial intelligence", "GPT"],
+        description: "Trends in AI integration and implementation.",
         category: "Emerging Trends",
         color: "bg-purple-100"
       },
       {
-        key: "No-Code Movement",
-        keywords: ["no-code", "low-code", "citizen developer", "visual development"],
-        description: "The rise of no-code and low-code development.",
+        key: "Web3 Development",
+        keywords: ["web3", "blockchain", "crypto", "NFT", "decentralized"],
+        description: "Emerging trends in Web3 and blockchain development.",
         category: "Emerging Trends",
         color: "bg-purple-100"
       },
       {
-        key: "Remote Work Tools",
-        keywords: ["remote work", "collaboration", "virtual teams", "distributed"],
-        description: "Tools and practices for remote work.",
+        key: "Development Tools",
+        keywords: ["IDE", "editor", "tool", "plugin", "extension"],
+        description: "Popular development tools and utilities being discussed.",
         category: "Tool Mentions",
         color: "bg-orange-100"
       },
       {
-        key: "Analytics Tools",
-        keywords: ["analytics", "metrics", "tracking", "data analysis"],
-        description: "Tools for tracking and analyzing business metrics.",
+        key: "Testing Tools",
+        keywords: ["testing", "test", "jest", "cypress", "selenium"],
+        description: "Tools and frameworks for testing applications.",
         category: "Tool Mentions",
         color: "bg-orange-100"
-      },
-      {
-        key: "Marketing Tools",
-        keywords: ["marketing tools", "automation", "CRM", "email marketing"],
-        description: "Popular marketing and automation tools.",
-        category: "Tool Mentions",
-        color: "bg-orange-100"
-      },
-      {
-        key: "Project Management",
-        keywords: ["project management", "task tracking", "workflow", "productivity"],
-        description: "Project management and productivity tools.",
-        category: "Tool Mentions",
-        color: "bg-orange-100"
-      },
-      {
-        key: "Developer Tools",
-        keywords: ["IDE", "git", "deployment", "DevOps", "testing tools"],
-        description: "Popular development and DevOps tools.",
-        category: "Tool Mentions",
-        color: "bg-orange-100"
-      },
-      // Add more themes with varied keywords to increase match chances
-      {
-        key: "Revenue Models",
-        keywords: ["revenue model", "monetization", "pricing strategy", "subscription", "freemium"],
-        description: "Different approaches to monetizing products and services.",
-        category: "Success Stories",
-        color: "bg-green-100"
-      },
-      {
-        key: "Startup Failures",
-        keywords: ["failure", "mistake", "shutdown", "pivot", "lessons learned"],
-        description: "Lessons from startup failures and pivots.",
-        category: "Pain Points",
-        color: "bg-red-100"
-      },
-      {
-        key: "Content Marketing",
-        keywords: ["content marketing", "blog", "SEO", "organic growth", "content strategy"],
-        description: "Strategies for effective content marketing.",
-        category: "Success Stories",
-        color: "bg-green-100"
-      },
-      {
-        key: "Community Building",
-        keywords: ["community", "engagement", "forum", "discord", "slack community"],
-        description: "Building and nurturing user communities.",
-        category: "Aspirations & Goals",
-        color: "bg-blue-100"
-      },
-      {
-        key: "UX Design",
-        keywords: ["user experience", "UX", "design", "usability", "interface"],
-        description: "User experience design principles and practices.",
-        category: "Pain Points",
-        color: "bg-red-100"
       }
     ];
 
@@ -284,21 +205,6 @@ Deno.serve(async (req) => {
     }).filter(t => t !== null);
 
     console.log(`Returning ${themes.length} themes`);
-
-    // If we don't find any themes, return a friendly error
-    if (themes.length === 0) {
-      return new Response(JSON.stringify({
-        error: "No matching themes found",
-        message: "No relevant discussions were found for your search criteria. Try broadening your search terms.",
-        meta: {
-          totalPosts: posts.length,
-          uniqueSubreddits: subredditsSet.size,
-          searchQuery: search || 'default'
-        }
-      }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-      });
-    }
 
     return new Response(JSON.stringify({
       themes,

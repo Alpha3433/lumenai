@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
@@ -28,12 +27,11 @@ const EmailForm = () => {
     
     try {
       // Insert the email into the waiting_list table
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('waiting_list')
         .insert([{ email }]);
       
       if (error) {
-        // Check if it's a duplicate email error
         if (error.code === '23505') {
           toast.error('This email is already on our waiting list');
         } else {

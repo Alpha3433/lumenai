@@ -7,6 +7,7 @@ import RedditLoadingGrid from "@/components/reddit/RedditLoadingGrid";
 import { Globe, AlertCircle } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // -- Types
 type ThemeData = {
@@ -63,7 +64,19 @@ export default function RedditInsights() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchAttempted, setSearchAttempted] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const themesPerPage = 6;
+  const [activeTab, setActiveTab] = useState("all");
+  const themesPerPage = 12; // Increased from 6 to show more cards
+
+  // All available categories
+  const categories = [
+    "All",
+    "Common Advice Given",
+    "Pain Points", 
+    "Success Stories", 
+    "Aspirations & Goals", 
+    "Emerging Trends",
+    "Tool Mentions"
+  ];
 
   useEffect(() => {
     const loadInitialThemes = async () => {
@@ -100,22 +113,36 @@ export default function RedditInsights() {
     } finally {
       setSearching(false);
       setCurrentPage(1);
+      setActiveTab("all"); // Reset to show all results after a search
     }
   };
+
+  // Filter themes by selected category
+  const filteredThemes = themeData.filter(theme => 
+    activeTab === "all" ? true : theme.category.toLowerCase() === activeTab.toLowerCase()
+  );
 
   // Pagination
   const indexOfLastTheme = currentPage * themesPerPage;
   const indexOfFirstTheme = indexOfLastTheme - themesPerPage;
-  const currentThemes = themeData.slice(indexOfFirstTheme, indexOfLastTheme);
-  const totalPages = Math.ceil(themeData.length / themesPerPage);
+  const currentThemes = filteredThemes.slice(indexOfFirstTheme, indexOfLastTheme);
+  const totalPages = Math.ceil(filteredThemes.length / themesPerPage);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  // Get count of themes per category
+  const categoryCount = categories.reduce((acc, category) => {
+    const count = category.toLowerCase() === "all" 
+      ? themeData.length 
+      : themeData.filter(theme => theme.category.toLowerCase() === category.toLowerCase()).length;
+    return { ...acc, [category.toLowerCase()]: count };
+  }, {} as Record<string, number>);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#fff] to-[#fee6d8] dark:from-gray-900 dark:to-orange-950/40">
       <Navbar />
       <div className="container max-w-7xl mx-auto py-12 pt-24 px-4">
-        <div className="flex items-center mb-8">
+        <div className="flex items-center mb-4">
           <Globe className="h-8 w-8 text-[#FF4500] mr-2" />
           <h1 className="text-3xl md:text-4xl font-bold">
             Reddit Insights & Trends
@@ -179,27 +206,53 @@ export default function RedditInsights() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {currentThemes.map((theme, i) => (
-                    <RedditThemeCard theme={theme} key={`${theme.theme}-${i}`} />
-                  ))}
-                </div>
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+                  <TabsList className="w-full bg-white/80 dark:bg-gray-800/80 overflow-auto flex flex-nowrap justify-start p-1 rounded-xl">
+                    {categories.map((category) => (
+                      <TabsTrigger 
+                        key={category.toLowerCase()} 
+                        value={category.toLowerCase()}
+                        className="flex-nowrap whitespace-nowrap"
+                      >
+                        {category} {categoryCount[category.toLowerCase()] > 0 && 
+                          <span className="ml-1 text-xs py-0.5 px-1.5 bg-gray-200/70 dark:bg-gray-700 rounded-full">
+                            {categoryCount[category.toLowerCase()]}
+                          </span>
+                        }
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
                 
-                {themeData.length > themesPerPage && (
-                  <Pagination className="mt-8">
-                    <PaginationContent>
-                      {Array.from({ length: totalPages }).map((_, i) => (
-                        <PaginationItem key={i}>
-                          <PaginationLink 
-                            isActive={currentPage === i + 1}
-                            onClick={() => paginate(i + 1)}
-                          >
-                            {i + 1}
-                          </PaginationLink>
-                        </PaginationItem>
+                {filteredThemes.length > 0 ? (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {currentThemes.map((theme, i) => (
+                        <RedditThemeCard theme={theme} key={`${theme.theme}-${i}`} />
                       ))}
-                    </PaginationContent>
-                  </Pagination>
+                    </div>
+                    
+                    {totalPages > 1 && (
+                      <Pagination className="mt-8">
+                        <PaginationContent>
+                          {Array.from({ length: totalPages }).map((_, i) => (
+                            <PaginationItem key={i}>
+                              <PaginationLink 
+                                isActive={currentPage === i + 1}
+                                onClick={() => paginate(i + 1)}
+                              >
+                                {i + 1}
+                              </PaginationLink>
+                            </PaginationItem>
+                          ))}
+                        </PaginationContent>
+                      </Pagination>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground">No themes found for this category.</p>
+                  </div>
                 )}
               </>
             )}

@@ -8,6 +8,7 @@ import { Globe } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 import { toast } from "sonner";
 
+// -- Types
 type ThemeData = {
   theme: string;
   description: string;
@@ -18,8 +19,9 @@ type ThemeData = {
   created: string;
   category: string;
   color: string;
-}
+};
 
+// -- Fetch via Supabase edge function (backend uses Reddit secret)
 const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]> => {
   try {
     const response = await fetch(
@@ -86,7 +88,7 @@ export default function RedditInsights() {
     }
   };
 
-  // Calculate pagination
+  // Pagination
   const indexOfLastTheme = currentPage * themesPerPage;
   const indexOfFirstTheme = indexOfLastTheme - themesPerPage;
   const currentThemes = themeData.slice(indexOfFirstTheme, indexOfLastTheme);

@@ -1,4 +1,3 @@
-
 export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"
@@ -93,6 +92,61 @@ export const themeDescriptors = [
     description: "Discussions about startup funding and investments.",
     category: "Business",
     color: "bg-emerald-100"
+  },
+  {
+    key: "Code Quality",
+    keywords: ["clean code", "refactoring", "code review", "best practices", "patterns"],
+    description: "Discussions about code quality and best practices.",
+    category: "Development",
+    color: "bg-purple-100"
+  },
+  {
+    key: "Developer Productivity",
+    keywords: ["productivity", "workflow", "efficiency", "development tools", "automation"],
+    description: "Tips and tools for improving developer productivity.",
+    category: "Development",
+    color: "bg-blue-100"
+  },
+  {
+    key: "Hiring & Team Building",
+    keywords: ["hiring", "recruitment", "team building", "developers", "interviews"],
+    description: "Discussions about building and managing development teams.",
+    category: "Business",
+    color: "bg-emerald-100"
+  },
+  {
+    key: "Open Source",
+    keywords: ["open source", "OSS", "github", "contribution", "community"],
+    description: "Open source project discussions and contributions.",
+    category: "Development",
+    color: "bg-orange-100"
+  },
+  {
+    key: "Deployment & DevOps",
+    keywords: ["deployment", "CI/CD", "DevOps", "pipeline", "infrastructure"],
+    description: "DevOps practices and deployment strategies.",
+    category: "Infrastructure",
+    color: "bg-cyan-100"
+  },
+  {
+    key: "Scaling Challenges",
+    keywords: ["scaling", "growth", "architecture", "high load", "distributed"],
+    description: "Discussions about scaling applications and infrastructure.",
+    category: "Pain Points",
+    color: "bg-red-100"
+  },
+  {
+    key: "Frontend Frameworks",
+    keywords: ["React", "Vue", "Angular", "frontend", "framework"],
+    description: "Discussions about frontend frameworks and libraries.",
+    category: "Development",
+    color: "bg-violet-100"
+  },
+  {
+    key: "Database & Storage",
+    keywords: ["database", "SQL", "NoSQL", "storage", "data"],
+    description: "Database and data storage discussions.",
+    category: "Infrastructure",
+    color: "bg-cyan-100"
   }
 ];
-

@@ -2,7 +2,7 @@
 // Import the serve function from a more recent version of Deno standard library
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 // Use a compatible version of Resend for Deno
-import { Resend } from "https://esm.sh/resend@0.6.0";
+import { Resend } from "https://esm.sh/@resend/node@1.2.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 

@@ -27,13 +27,16 @@ Deno.serve(async (req) => {
       });
     }
 
+    console.log("Starting Reddit API request with search:", search);
+
+    // Limited set of subreddits for faster reliable testing
     const targetSubreddits = [
-      'Entrepreneurship', 'SideProject', 'SaaS', 'smallbusiness',
-      'startups', 'indiehackers', 'EntrepreneurRideAlong', 'business',
-      'startup', 'ycombinator', 'growmybusiness', 'Entrepreneurs', 'advancedentrepreneur'
+      'startup', 'startups', 'Entrepreneur', 'Entrepreneurship', 'SideProject', 
+      'webdev', 'programming', 'javascript', 'reactjs'
     ];
 
     // Get token
+    console.log("Fetching Reddit access token...");
     const tokenResponse = await fetch('https://www.reddit.com/api/v1/access_token', {
       method: 'POST',
       headers: {
@@ -45,226 +48,207 @@ Deno.serve(async (req) => {
 
     const tokenData = await tokenResponse.json();
     if (!tokenData.access_token) {
+      console.error("Failed to obtain Reddit access token:", tokenData);
       throw new Error('Failed to obtain Reddit access token');
     }
 
-    // Define theme descriptors with search queries
-    const themeDescriptors = [
+    console.log("Successfully obtained Reddit access token");
+    
+    // Define simpler themes for more focused searches
+    const themes = [
       {
-        key: "Technical Challenges",
-        keywords: ["error", "bug", "debugging", "technical challenge", "developer problem"],
-        searchQuery: "error OR bug OR debugging OR technical challenge OR developer problem",
+        theme: "Technical Challenges",
+        query: "error OR bug OR debugging",
         description: "Common technical challenges and debugging issues developers face.",
         category: "Pain Points",
-        color: "bg-red-100"
+        color: "bg-red-100",
+        posts: [],
       },
       {
-        key: "Development Bottlenecks",
-        keywords: ["performance", "optimization", "bottleneck", "scaling", "slow"],
-        searchQuery: "performance OR optimization OR bottleneck OR scaling OR slow",
-        description: "Performance issues and optimization challenges in development.",
-        category: "Pain Points",
-        color: "bg-red-100"
-      },
-      {
-        key: "Revenue Milestones",
-        keywords: ["revenue", "profit", "MRR", "ARR", "growth", "milestone"],
-        searchQuery: "revenue OR profit OR MRR OR ARR OR milestone",
-        description: "Success stories about reaching significant revenue milestones.",
-        category: "Success Stories",
-        color: "bg-green-100"
-      },
-      {
-        key: "Product Market Fit",
-        keywords: ["product market fit", "PMF", "validation", "success story"],
-        searchQuery: "product market fit OR PMF OR validation",
+        theme: "Product Market Fit",
+        query: "product market fit OR validation",
         description: "Stories of achieving product-market fit and validation.",
         category: "Success Stories",
-        color: "bg-green-100"
+        color: "bg-green-100",
+        posts: [],
       },
       {
-        key: "Scaling Goals",
-        keywords: ["scale", "growth plan", "expansion", "goals", "target"],
-        searchQuery: "scaling OR growth strategy OR expansion OR growth goals",
-        description: "Discussions about scaling strategies and growth targets.",
-        category: "Aspirations & Goals",
-        color: "bg-blue-100"
-      },
-      {
-        key: "Market Expansion",
-        keywords: ["market expansion", "new market", "international", "growth strategy"],
-        searchQuery: "market expansion OR new market OR international expansion",
-        description: "Plans and strategies for entering new markets.",
-        category: "Aspirations & Goals",
-        color: "bg-blue-100"
-      },
-      {
-        key: "AI Integration",
-        keywords: ["AI", "machine learning", "ML", "artificial intelligence", "GPT"],
-        searchQuery: "AI integration OR machine learning OR GPT OR AI implementation",
-        description: "Trends in AI integration and implementation.",
-        category: "Emerging Trends",
-        color: "bg-purple-100"
-      },
-      {
-        key: "Web3 Development",
-        keywords: ["web3", "blockchain", "crypto", "NFT", "decentralized"],
-        searchQuery: "web3 OR blockchain OR crypto OR NFT OR decentralized",
-        description: "Emerging trends in Web3 and blockchain development.",
-        category: "Emerging Trends",
-        color: "bg-purple-100"
-      },
-      {
-        key: "Development Tools",
-        keywords: ["IDE", "editor", "tool", "plugin", "extension"],
-        searchQuery: "development tool OR IDE OR editor OR plugin OR extension",
+        theme: "Development Tools",
+        query: "development tools OR programming tools",
         description: "Popular development tools and utilities being discussed.",
         category: "Tool Mentions",
-        color: "bg-orange-100"
+        color: "bg-orange-100",
+        posts: [],
       },
       {
-        key: "Testing Tools",
-        keywords: ["testing", "test", "jest", "cypress", "selenium"],
-        searchQuery: "testing framework OR jest OR cypress OR selenium OR test automation",
-        description: "Tools and frameworks for testing applications.",
-        category: "Tool Mentions",
-        color: "bg-orange-100"
+        theme: "AI Integration",
+        query: "AI OR artificial intelligence OR ChatGPT",
+        description: "Trends in AI integration and implementation.",
+        category: "Emerging Trends",
+        color: "bg-purple-100",
+        posts: [],
+      },
+      {
+        theme: "Revenue Growth",
+        query: "revenue OR profit OR growth",
+        description: "Success stories about revenue growth and profitability.",
+        category: "Success Stories",
+        color: "bg-green-100",
+        posts: [],
       }
     ];
 
-    // Final results
-    let allPosts = [];
-    let subredditsSet = new Set();
-    const themes = [];
-
-    // Process each theme individually
-    for (const theme of themeDescriptors) {
-      const posts = [];
+    // Define a global set to track all posts
+    const allPosts = new Set();
+    const subredditsSet = new Set();
+    
+    // Loop through each theme and fetch relevant posts
+    for (const theme of themes) {
+      let themeQuery = search || theme.query;
+      console.log(`Fetching posts for theme: ${theme.theme} with query: ${themeQuery}`);
       
-      // Use the search query specific to this theme
-      const baseQuery = search || theme.searchQuery;
-      
-      // Try to get data from each subreddit for this theme
+      // Try with each subreddit
       for (const subreddit of targetSubreddits) {
-        console.log(`Fetching for theme "${theme.key}" in subreddit "r/${subreddit}"`);
-        
-        const subredditQuery = `${baseQuery} subreddit:${subreddit}`;
-        const encodedQuery = encodeURIComponent(subredditQuery);
-        const url = `https://oauth.reddit.com/search?limit=10&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
-        
         try {
-          const resp = await fetch(url, {
+          const searchUrl = `https://oauth.reddit.com/r/${subreddit}/search?q=${encodeURIComponent(themeQuery)}&restrict_sr=on&limit=5&sort=relevance&t=month`;
+          console.log(`Fetching from ${subreddit} with URL: ${searchUrl}`);
+          
+          const response = await fetch(searchUrl, {
             headers: {
-              "Authorization": `Bearer ${tokenData.access_token}`,
-              "User-Agent": "RedditInsights/1.0.0"
+              'Authorization': `Bearer ${tokenData.access_token}`,
+              'User-Agent': 'RedditInsights/1.0.0'
             }
           });
           
-          if (!resp.ok) {
-            console.error(`Error for theme "${theme.key}" in subreddit "${subreddit}": ${resp.status} ${resp.statusText}`);
+          if (!response.ok) {
+            console.error(`Error fetching from r/${subreddit}: ${response.status} ${response.statusText}`);
             continue;
           }
           
-          const data = await resp.json();
-          const subredditPosts = data?.data?.children?.map(x => x.data) || [];
+          const data = await response.json();
+          const posts = data?.data?.children || [];
           
-          if (subredditPosts.length > 0) {
-            posts.push(...subredditPosts);
-            subredditPosts.forEach(post => subredditsSet.add(post.subreddit));
+          if (posts.length > 0) {
+            console.log(`Found ${posts.length} posts in r/${subreddit} for theme "${theme.theme}"`);
+            
+            // Add posts to the theme
+            posts.forEach(post => {
+              const postData = post.data;
+              if (!allPosts.has(postData.id)) {
+                theme.posts.push({
+                  id: postData.id,
+                  title: postData.title,
+                  selftext: postData.selftext?.substring(0, 300) || "",
+                  num_comments: postData.num_comments,
+                  subreddit: postData.subreddit,
+                  created_utc: postData.created_utc,
+                  url: `https://reddit.com${postData.permalink}`
+                });
+                allPosts.add(postData.id);
+                subredditsSet.add(postData.subreddit);
+              }
+            });
+          } else {
+            console.log(`No posts found in r/${subreddit} for theme "${theme.theme}"`);
           }
         } catch (error) {
-          console.error(`Failed fetching for theme "${theme.key}" in subreddit "${subreddit}":`, error.message);
+          console.error(`Error with subreddit ${subreddit} for theme ${theme.theme}:`, error);
         }
-      }
-      
-      // Only add theme if we found posts
-      if (posts.length > 0) {
-        const latestPostDate = Math.max(...posts.map(p => p.created_utc * 1000));
-        const daysAgo = Math.round((Date.now() - latestPostDate) / 86400000);
-        
-        themes.push({
-          theme: theme.key,
-          description: theme.description,
-          posts: posts.length,
-          insights: posts.reduce((acc, post) => acc + (post.num_comments || 0), 0),
-          subreddits: new Set(posts.map(p => p.subreddit)).size,
-          daysAgo,
-          created: `${daysAgo} days ago`,
-          category: theme.category,
-          color: theme.color,
-          relatedPosts: posts.slice(0, 5).map(post => ({
-            title: post.title,
-            selftext: post.selftext,
-            num_comments: post.num_comments,
-            subreddit: post.subreddit,
-            created_utc: post.created_utc,
-            url: `https://reddit.com${post.permalink}`
-          }))
-        });
-        
-        allPosts.push(...posts);
       }
     }
 
-    // If no themes were created, add a fallback theme
-    if (themes.length === 0) {
-      console.log("No themes found with posts, adding fallback theme");
+    // If no theme has any posts, try a more general approach as fallback
+    if (Array.from(allPosts).length === 0) {
+      console.log("No themed posts found, fetching general posts as fallback");
       
-      // Try to get some general posts from the listed subreddits
-      const fallbackPosts = [];
-      for (const subreddit of targetSubreddits.slice(0, 3)) { // Try just a few subreddits
+      // Try to fetch any recent popular posts from these subreddits
+      for (const subreddit of targetSubreddits) {
         try {
-          const url = `https://oauth.reddit.com/r/${subreddit}/hot?limit=5`;
-          const resp = await fetch(url, {
+          const generalUrl = `https://oauth.reddit.com/r/${subreddit}/hot?limit=3`;
+          console.log(`Fetching general posts from ${subreddit}`);
+          
+          const response = await fetch(generalUrl, {
             headers: {
-              "Authorization": `Bearer ${tokenData.access_token}`,
-              "User-Agent": "RedditInsights/1.0.0"
+              'Authorization': `Bearer ${tokenData.access_token}`,
+              'User-Agent': 'RedditInsights/1.0.0'
             }
           });
           
-          if (resp.ok) {
-            const data = await resp.json();
-            const posts = data?.data?.children?.map(x => x.data) || [];
-            fallbackPosts.push(...posts);
-            posts.forEach(post => subredditsSet.add(post.subreddit));
+          if (!response.ok) continue;
+          
+          const data = await response.json();
+          const posts = data?.data?.children || [];
+          
+          if (posts.length > 0) {
+            // Create a general theme
+            if (!themes.find(t => t.theme === "General Discussion")) {
+              themes.push({
+                theme: "General Discussion",
+                query: "general",
+                description: "Recent popular discussions from entrepreneur communities.",
+                category: "General",
+                color: "bg-blue-100",
+                posts: []
+              });
+            }
+            
+            const generalTheme = themes.find(t => t.theme === "General Discussion");
+            
+            // Add posts to the general theme
+            posts.forEach(post => {
+              const postData = post.data;
+              if (!allPosts.has(postData.id)) {
+                generalTheme.posts.push({
+                  id: postData.id,
+                  title: postData.title,
+                  selftext: postData.selftext?.substring(0, 300) || "",
+                  num_comments: postData.num_comments,
+                  subreddit: postData.subreddit,
+                  created_utc: postData.created_utc,
+                  url: `https://reddit.com${postData.permalink}`
+                });
+                allPosts.add(postData.id);
+                subredditsSet.add(postData.subreddit);
+              }
+            });
           }
         } catch (error) {
-          console.error(`Failed fetching fallback posts for subreddit "${subreddit}":`, error.message);
+          console.error(`Error with fallback for subreddit ${subreddit}:`, error);
         }
-      }
-      
-      if (fallbackPosts.length > 0) {
-        const latestPostDate = Math.max(...fallbackPosts.map(p => p.created_utc * 1000));
-        const daysAgo = Math.round((Date.now() - latestPostDate) / 86400000);
-        
-        themes.push({
-          theme: "Entrepreneurship Discussions",
-          description: "General discussions about entrepreneurship and startups.",
-          posts: fallbackPosts.length,
-          insights: fallbackPosts.reduce((acc, post) => acc + (post.num_comments || 0), 0),
-          subreddits: new Set(fallbackPosts.map(p => p.subreddit)).size,
-          daysAgo,
-          created: `${daysAgo} days ago`,
-          category: "General",
-          color: "bg-blue-100",
-          relatedPosts: fallbackPosts.map(post => ({
-            title: post.title,
-            selftext: post.selftext,
-            num_comments: post.num_comments,
-            subreddit: post.subreddit,
-            created_utc: post.created_utc,
-            url: `https://reddit.com${post.permalink}`
-          }))
-        });
-        
-        allPosts.push(...fallbackPosts);
       }
     }
 
+    // Process themes for output
+    const themeResults = themes.map(theme => {
+      if (theme.posts.length === 0) return null;
+      
+      const latestPostDate = Math.max(...theme.posts.map(p => p.created_utc * 1000));
+      const daysAgo = Math.round((Date.now() - latestPostDate) / 86400000);
+      
+      return {
+        theme: theme.theme,
+        description: theme.description,
+        posts: theme.posts.length,
+        insights: theme.posts.reduce((acc, post) => acc + (post.num_comments || 0), 0),
+        subreddits: new Set(theme.posts.map(p => p.subreddit)).size,
+        daysAgo,
+        created: `${daysAgo} days ago`,
+        category: theme.category,
+        color: theme.color,
+        relatedPosts: theme.posts.slice(0, 5) // Limit to 5 posts per theme
+      };
+    }).filter(Boolean);
+
+    console.log(`Returning ${themeResults.length} themes with posts`);
+    
+    if (themeResults.length === 0) {
+      console.log("WARNING: No themes with posts found!");
+    }
+
     return new Response(JSON.stringify({
-      themes,
+      themes: themeResults,
       meta: {
-        totalPosts: allPosts.length,
+        totalPosts: allPosts.size,
         uniqueSubreddits: subredditsSet.size,
         searchQuery: search || 'default'
       }

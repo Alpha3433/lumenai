@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import RedditThemeCard from "@/components/reddit/RedditThemeCard";
@@ -8,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Globe, AlertCircle } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 import { toast } from "sonner";
+import RedditInsightDialog from "@/components/reddit/RedditInsightDialog";
 
 // -- Types
 type ThemeData = {
@@ -63,6 +63,7 @@ export default function RedditInsights() {
   const [searchAttempted, setSearchAttempted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [selectedTheme, setSelectedTheme] = useState<ThemeData | null>(null);
   const themesPerPage = 9;
 
   useEffect(() => {
@@ -206,9 +207,21 @@ export default function RedditInsights() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {currentThemes.map((theme, i) => (
-                    <RedditThemeCard theme={theme} key={`${theme.theme}-${i}`} />
+                    <RedditThemeCard 
+                      theme={theme} 
+                      key={`${theme.theme}-${i}`}
+                      onClick={() => setSelectedTheme(theme)}
+                    />
                   ))}
                 </div>
+                
+                {selectedTheme && (
+                  <RedditInsightDialog
+                    open={!!selectedTheme}
+                    onOpenChange={(open) => !open && setSelectedTheme(null)}
+                    theme={selectedTheme}
+                  />
+                )}
                 
                 {filteredThemes.length > themesPerPage && (
                   <Pagination className="mt-8">

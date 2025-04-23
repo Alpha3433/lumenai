@@ -1,4 +1,3 @@
-
 // Supabase Edge Function: reddit-insights/index.ts
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -193,7 +192,15 @@ Deno.serve(async (req) => {
         daysAgo,
         created: `${daysAgo} days ago`,
         category: theme.category,
-        color: theme.color
+        color: theme.color,
+        relatedPosts: filteredPosts.slice(0, 5).map(post => ({
+          title: post.title,
+          selftext: post.selftext,
+          num_comments: post.num_comments,
+          subreddit: post.subreddit,
+          created_utc: post.created_utc,
+          url: `https://reddit.com${post.permalink}`
+        }))
       };
     }).filter(t => t !== null);
 

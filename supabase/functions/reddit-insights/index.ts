@@ -1,3 +1,4 @@
+
 // Supabase Edge Function: reddit-insights/index.ts
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -13,40 +14,25 @@ Deno.serve(async (req) => {
   try {
     const { search = "" } = req.method === "POST" ? await req.json().catch(() => ({})) : {};
 
-    // Get Reddit client ID and secret from Supabase secrets
     const clientId = Deno.env.get("REDDIT_CLIENT_ID");
     const clientSecret = Deno.env.get("REDDIT_CLIENT_SECRET");
-    
-    console.log("Checking Reddit API credentials:", clientId ? "ID found" : "ID missing", clientSecret ? "Secret found" : "Secret missing");
-    
+
     if (!clientId || !clientSecret) {
-      return new Response(JSON.stringify({ 
-        error: "Reddit API credentials missing.", 
-        message: "Please set the REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET in your Supabase project." 
+      return new Response(JSON.stringify({
+        error: "Reddit API credentials missing.",
+        message: "Please set the REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET in your Supabase project."
       }), {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
       });
     }
 
-    // Define target subreddits
     const targetSubreddits = [
-      'Entrepreneurship',
-      'SideProject',
-      'SaaS',
-      'smallbusiness',
-      'startups',
-      'indiehackers',
-      'EntrepreneurRideAlong',
-      'business',
-      'startup',
-      'ycombinator',
-      'growmybusiness',
-      'Entrepreneurs',
-      'advancedentrepreneur'
+      'Entrepreneurship', 'SideProject', 'SaaS', 'smallbusiness',
+      'startups', 'indiehackers', 'EntrepreneurRideAlong', 'business',
+      'startup', 'ycombinator', 'growmybusiness', 'Entrepreneurs', 'advancedentrepreneur'
     ];
 
-    // Define theme-specific searches
     const themeSearches = {
       "Technical Challenges": "error OR bug OR debugging OR (technical AND challenge) OR (developer AND problem)",
       "Development Bottlenecks": "performance OR optimization OR bottleneck OR scaling OR slow",
@@ -60,16 +46,9 @@ Deno.serve(async (req) => {
       "Testing Tools": "testing framework OR jest OR cypress OR selenium OR (test AND automation)"
     };
 
-    // Build the search query based on theme searches
     let query = search || Object.values(themeSearches).join(" OR ");
-    
-    // Add subreddit restriction to the query
-    const subredditQuery = targetSubreddits.map(sub => `subreddit:${sub}`).join(' OR ');
-    query = `(${query}) AND (${subredditQuery})`;
-    
-    console.log("Search query:", query);
-    
-    // First, get an access token using client credentials
+
+    // Get token
     const tokenResponse = await fetch('https://www.reddit.com/api/v1/access_token', {
       method: 'POST',
       headers: {
@@ -84,37 +63,32 @@ Deno.serve(async (req) => {
       throw new Error('Failed to obtain Reddit access token');
     }
 
-    // Use Reddit's search API
-    const encodedQuery = encodeURIComponent(query);
-    const url = `https://oauth.reddit.com/search?limit=100&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
-
-    console.log("Sending request to Reddit API");
-    
     let posts = [];
-    let subredditsSet = new Set<string>();
+    let subredditsSet = new Set();
 
-    // Fetch data from Reddit API
-    const resp = await fetch(url, {
-      headers: {
-        "Authorization": `Bearer ${tokenData.access_token}`,
-        "User-Agent": "RedditInsights/1.0.0"
+    for (const subreddit of targetSubreddits) {
+      const subredditQuery = `${query} subreddit:${subreddit}`;
+      const encodedQuery = encodeURIComponent(subredditQuery);
+      const url = `https://oauth.reddit.com/search?limit=25&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
+
+      const resp = await fetch(url, {
+        headers: {
+          "Authorization": `Bearer ${tokenData.access_token}`,
+          "User-Agent": "RedditInsights/1.0.0"
+        }
+      });
+
+      if (!resp.ok) {
+        console.error(`Error for subreddit ${subreddit}:`, resp.statusText);
+        continue;
       }
-    });
 
-    if (!resp.ok) {
-      console.error("Reddit API error:", resp.status, resp.statusText);
-      const errorText = await resp.text();
-      console.error("Error details:", errorText);
-      throw new Error(`Reddit API request failed: ${resp.status} ${resp.statusText}`);
+      const data = await resp.json();
+      const subredditPosts = data?.data?.children?.map((x) => x.data) || [];
+      posts.push(...subredditPosts);
+      subredditPosts.forEach(post => subredditsSet.add(post.subreddit));
     }
-    
-    const data = await resp.json();
-    posts = data?.data?.children?.map((x: any) => x.data) || [];
-    
-    console.log(`Found ${posts.length} posts for query: "${query}"`);
-    posts.forEach((post: any) => subredditsSet.add(post.subreddit));
 
-    // Enhanced theme descriptors with more categories
     const themeDescriptors = [
       {
         key: "Technical Challenges",
@@ -188,29 +162,24 @@ Deno.serve(async (req) => {
       }
     ];
 
-    // Group posts into themes based on enhanced matching
     const themes = themeDescriptors.map(theme => {
-      // Match posts that contain theme keywords in title or content
       const filteredPosts = posts.filter(post =>
         theme.keywords.some(kw =>
           (post.title?.toLowerCase() || "").includes(kw.toLowerCase()) ||
           (post.selftext?.toLowerCase() || "").includes(kw.toLowerCase())
         )
       );
-      
-      if (filteredPosts.length === 0) {
-        return null;
-      }
+      if (filteredPosts.length === 0) return null;
 
-      const latestPostDate = Math.max(...filteredPosts.map((p: any) => p.created_utc * 1000));
+      const latestPostDate = Math.max(...filteredPosts.map(p => p.created_utc * 1000));
       const daysAgo = Math.round((Date.now() - latestPostDate) / 86400000);
-      
+
       return {
         theme: theme.key,
         description: theme.description,
         posts: filteredPosts.length,
         insights: filteredPosts.reduce((acc, post) => acc + (post.num_comments || 0), 0),
-        subreddits: new Set(filteredPosts.map((p: any) => p.subreddit)).size,
+        subreddits: new Set(filteredPosts.map(p => p.subreddit)).size,
         daysAgo,
         created: `${daysAgo} days ago`,
         category: theme.category,
@@ -224,9 +193,7 @@ Deno.serve(async (req) => {
           url: `https://reddit.com${post.permalink}`
         }))
       };
-    }).filter(t => t !== null);
-
-    console.log(`Returning ${themes.length} themes`);
+    }).filter(Boolean);
 
     return new Response(JSON.stringify({
       themes,
@@ -236,17 +203,23 @@ Deno.serve(async (req) => {
         searchQuery: search || 'default'
       }
     }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" }
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
     });
 
   } catch (err) {
     console.error("Error processing request:", err);
-    return new Response(JSON.stringify({ 
+    return new Response(JSON.stringify({
       error: "Could not fetch from Reddit.",
-      message: err.message 
+      message: err.message
     }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json"
+      }
     });
   }
 });

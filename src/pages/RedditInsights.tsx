@@ -1,9 +1,11 @@
+
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Globe, Search, MessageSquare, Lightbulb, Users, Calendar } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
+import { toast } from "sonner";
 
 type ThemeData = {
   theme: string;
@@ -36,13 +38,22 @@ const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]>
         body: JSON.stringify({ search: searchQuery })
       }
     );
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    
     const data = await response.json();
     if (data.error) {
       throw new Error(data.error);
     }
+    
+    console.log("API Response:", data); // Debug log to see what data is returned
+    
     return data.themes || [];
   } catch (error) {
     console.error("Unable to fetch Reddit themes:", error);
+    toast.error("Failed to fetch data from Reddit. Please try again later.");
     return [];
   }
 };
@@ -53,6 +64,7 @@ export default function RedditInsights() {
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchAttempted, setSearchAttempted] = useState(false);
   const themesPerPage = 6;
 
   useEffect(() => {
@@ -65,11 +77,20 @@ export default function RedditInsights() {
 
   const runSearch = async () => {
     setSearching(true);
-    setThemeData([]);
-    const result = await fetchRedditThemes(search);
-    setThemeData(result);
-    setSearching(false);
-    setCurrentPage(1);
+    setSearchAttempted(true);
+    try {
+      const result = await fetchRedditThemes(search);
+      setThemeData(result);
+      if (result.length === 0) {
+        toast.info("No themes found for your search. Try different keywords.");
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+      toast.error("Search failed. Please try again.");
+    } finally {
+      setSearching(false);
+      setCurrentPage(1);
+    }
   };
 
   // Calculate pagination
@@ -103,7 +124,7 @@ export default function RedditInsights() {
           />
           <button
             onClick={runSearch}
-            disabled={search.trim() === "" || searching}
+            disabled={searching}
             className="bg-[#FF4500] hover:bg-[#da3c00] text-white font-medium px-4 py-2 rounded-md transition"
           >
             <Search className="inline-block mr-1 h-4 w-4" />
@@ -141,7 +162,23 @@ export default function RedditInsights() {
               <div className="text-muted-foreground text-center py-12">
                 <Globe className="h-16 w-16 mx-auto text-muted-foreground/50 mb-4" />
                 <h3 className="text-xl font-semibold mb-2">No themes found</h3>
-                <p>Try searching with different keywords or browse all themes.</p>
+                <p className="mb-4">
+                  {searchAttempted 
+                    ? "No results for your search. Try using different keywords." 
+                    : "Try searching with specific keywords to find relevant Reddit discussions."}
+                </p>
+                {searchAttempted && (
+                  <button 
+                    onClick={() => {
+                      setSearch("");
+                      setSearchAttempted(false);
+                      fetchRedditThemes().then(data => setThemeData(data));
+                    }}
+                    className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                  >
+                    Reset search
+                  </button>
+                )}
               </div>
             ) : (
               <>

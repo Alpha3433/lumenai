@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Globe, Search, MessageSquare, Lightbulb, Users, Calendar } from "lucide-react";
+import RedditThemeCard from "@/components/reddit/RedditThemeCard";
+import RedditSearchBar from "@/components/reddit/RedditSearchBar";
+import RedditLoadingGrid from "@/components/reddit/RedditLoadingGrid";
+import { Globe } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 import { toast } from "sonner";
 
@@ -18,13 +19,6 @@ type ThemeData = {
   category: string;
   color: string;
 }
-
-const categoryColors = {
-  "Success Stories": "bg-green-100 text-green-800",
-  "Aspirations & Goals": "bg-blue-100 text-blue-800",
-  "Pain Points": "bg-yellow-100 text-yellow-800",
-  "Emerging Trends": "bg-purple-100 text-purple-800"
-};
 
 const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]> => {
   try {
@@ -47,10 +41,9 @@ const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]>
     if (data.error) {
       throw new Error(data.error);
     }
-    
-    console.log("API Response:", data); // Debug log to see what data is returned
-    
-    return data.themes || [];
+
+    // Added safeguard: Fallback to default if themes is missing
+    return Array.isArray(data.themes) ? data.themes : [];
   } catch (error) {
     console.error("Unable to fetch Reddit themes:", error);
     toast.error("Failed to fetch data from Reddit. Please try again later.");
@@ -114,48 +107,14 @@ export default function RedditInsights() {
         <p className="mb-8 text-muted-foreground">
           Instantly access and organize insightful suggestions from Reddit discussions &mdash; auto-grouped into actionable themes.
         </p>
-        <div className="flex gap-2 mb-10">
-          <input
-            className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4500]/50 dark:bg-[#1a1310] bg-white text-base"
-            placeholder="Search for themes (e.g. product, marketing, team development)"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            onKeyDown={e => { if (e.key === "Enter") runSearch(); }}
-          />
-          <button
-            onClick={runSearch}
-            disabled={searching}
-            className="bg-[#FF4500] hover:bg-[#da3c00] text-white font-medium px-4 py-2 rounded-md transition"
-          >
-            <Search className="inline-block mr-1 h-4 w-4" />
-            Search
-          </button>
-        </div>
-        
+        <RedditSearchBar
+          search={search}
+          setSearch={setSearch}
+          runSearch={runSearch}
+          searching={searching}
+        />
         {(isLoading || searching) ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array(6).fill(0).map((_, i) => (
-              <Card key={i} className="animate-pulse">
-                <CardHeader>
-                  <Skeleton className="h-7 w-[80%] mb-2" />
-                  <Skeleton className="h-4 w-[90%] mb-1" />
-                  <Skeleton className="h-4 w-[60%]" />
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Skeleton className="h-16 rounded-md" />
-                    <Skeleton className="h-16 rounded-md" />
-                    <Skeleton className="h-16 rounded-md" />
-                    <Skeleton className="h-16 rounded-md" />
-                  </div>
-                  <div className="flex justify-between mt-4">
-                    <Skeleton className="h-4 w-[40%]" />
-                    <Skeleton className="h-6 w-[30%] rounded-full" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <RedditLoadingGrid />
         ) : (
           <>
             {themeData.length === 0 ? (
@@ -184,41 +143,7 @@ export default function RedditInsights() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {currentThemes.map((theme, i) => (
-                    <Card key={i} className="relative group">
-                      <CardHeader>
-                        <CardTitle className="text-lg font-bold">{theme.theme}</CardTitle>
-                        <p className="text-sm text-muted-foreground mt-1">{theme.description}</p>
-                      </CardHeader>
-                      
-                      <CardContent>
-                        <div className="grid grid-cols-2 gap-4 mb-4">
-                          <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-md flex flex-col items-center justify-center">
-                            <MessageSquare className="h-5 w-5 text-gray-500 mb-1" />
-                            <p className="font-bold">{theme.posts} Posts</p>
-                          </div>
-                          <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-md flex flex-col items-center justify-center">
-                            <Lightbulb className="h-5 w-5 text-gray-500 mb-1" />
-                            <p className="font-bold">{theme.insights} Insights</p>
-                          </div>
-                          <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-md flex flex-col items-center justify-center">
-                            <Users className="h-5 w-5 text-gray-500 mb-1" />
-                            <p className="font-bold">{theme.subreddits} Subreddits</p>
-                          </div>
-                          <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-md flex flex-col items-center justify-center">
-                            <Calendar className="h-5 w-5 text-gray-500 mb-1" />
-                            <p className="font-bold">{theme.daysAgo} days ago</p>
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <div className="text-sm text-muted-foreground">
-                            Created {theme.created}
-                          </div>
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[theme.category]}`}>
-                            {theme.category}
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <RedditThemeCard theme={theme} key={i} />
                   ))}
                 </div>
                 

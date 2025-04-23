@@ -20,8 +20,8 @@ const Index = () => {
       <Navbar />
       <NewHero />
       <ToolsShowcase />
-      <HowItWorksSection />
       <ComparisonSection />
+      <HowItWorksSection />
       <ThreeColumnFeatures />
       <TransformSection />
       <RoadmapSection />

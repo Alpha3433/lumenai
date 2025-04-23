@@ -20,9 +20,7 @@ const categoryColors = {
   "Aspirations & Goals": "bg-blue-100 text-blue-800",
   "Pain Points": "bg-yellow-100 text-yellow-800",
   "Emerging Trends": "bg-purple-100 text-purple-800",
-  "Search Results": "bg-orange-100 text-orange-800",
-  "Common Advice Given": "bg-amber-100 text-amber-800",
-  "Tool Mentions": "bg-indigo-100 text-indigo-800"
+  "Search Results": "bg-orange-100 text-orange-800"
 };
 
 interface RedditThemeCardProps {
@@ -30,14 +28,9 @@ interface RedditThemeCardProps {
 }
 
 const RedditThemeCard: React.FC<RedditThemeCardProps> = ({ theme }) => (
-  <Card className="relative group hover:shadow-md transition-shadow duration-300">
-    <CardHeader className="pb-2">
-      <div className="flex justify-between items-start">
-        <CardTitle className="text-lg font-bold">{theme.theme}</CardTitle>
-        <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${categoryColors[theme.category] || "bg-gray-100 text-gray-800"}`}>
-          {theme.category}
-        </span>
-      </div>
+  <Card className="relative group">
+    <CardHeader>
+      <CardTitle className="text-lg font-bold">{theme.theme}</CardTitle>
       <p className="text-sm text-muted-foreground mt-1">{theme.description}</p>
     </CardHeader>
     <CardContent>
@@ -59,8 +52,13 @@ const RedditThemeCard: React.FC<RedditThemeCardProps> = ({ theme }) => (
           <p className="font-bold">{theme.daysAgo} days ago</p>
         </div>
       </div>
-      <div className="text-xs text-muted-foreground">
-        Created {theme.created}
+      <div className="flex justify-between items-center">
+        <div className="text-sm text-muted-foreground">
+          Created {theme.created}
+        </div>
+        <span className={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[theme.category] || "bg-gray-100 text-gray-800"}`}>
+          {theme.category}
+        </span>
       </div>
     </CardContent>
   </Card>

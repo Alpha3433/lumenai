@@ -45,36 +45,6 @@ export type Database = {
         }
         Relationships: []
       }
-      business_submissions: {
-        Row: {
-          business_description: string
-          business_name: string
-          created_at: string
-          id: string
-          reviewed: boolean | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          business_description: string
-          business_name: string
-          created_at?: string
-          id?: string
-          reviewed?: boolean | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          business_description?: string
-          business_name?: string
-          created_at?: string
-          id?: string
-          reviewed?: boolean | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       meeting_requests: {
         Row: {
           business_plan_url: string | null
@@ -167,10 +137,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_admin: {
-        Args: { user_id: string }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       plan_status: "draft" | "published" | "archived"

@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
     
     // Use Reddit's search API with sensible defaults to get insightful discussions
     const encodedQuery = encodeURIComponent(query);
-    const url = `https://oauth.reddit.com/search?limit=50&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
+    const url = `https://oauth.reddit.com/search?limit=30&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
 
     // Use the Reddit API key as bearer token
     const accessToken = redditApiKey;
@@ -76,7 +76,7 @@ Deno.serve(async (req) => {
     // Collect subreddit names for interest stats
     posts.forEach((post: any) => subredditsSet.add(post.subreddit));
 
-    // Expanded theme extraction with more categories and better descriptions
+    // Theme extraction (naive approach to group by keywords in title/selftext)
     const themeDescriptors = [
       {
         key: "Product Development and Launch Success",
@@ -125,55 +125,6 @@ Deno.serve(async (req) => {
           "Personal growth, team building, and founder journeys including challenges and wins.",
         category: "Success Stories",
         color: "bg-green-100"
-      },
-      // Added new themes
-      {
-        key: "Common Advice Given to Founders",
-        keywords: ["advice", "recommend", "suggestion", "tip", "avoid", "recommend", "start with"],
-        description: 
-          "Common advice and recommendations shared with founders and startup creators.",
-        category: "Common Advice Given",
-        color: "bg-amber-100"
-      },
-      {
-        key: "Customer Acquisition Strategies",
-        keywords: ["acquisition", "CAC", "customer acquisition", "lead gen", "funnel", "conversion", "onboarding"],
-        description: 
-          "Strategies and tactics for acquiring new customers and optimizing acquisition costs.",
-        category: "Pain Points",
-        color: "bg-yellow-100"
-      },
-      {
-        key: "Product Market Fit Stories",
-        keywords: ["PMF", "product market fit", "found traction", "market validation", "breakthrough"],
-        description: 
-          "Stories and indicators of achieving product market fit and market validation.",
-        category: "Success Stories",
-        color: "bg-green-100"
-      },
-      {
-        key: "Funding & Investment Discussions",
-        keywords: ["funding", "investor", "angel", "VC", "pitch", "deck", "valuation", "bootstrap"],
-        description: 
-          "Discussions around funding options, investor relations, and capital raising strategies.",
-        category: "Aspirations & Goals",
-        color: "bg-blue-100"
-      },
-      {
-        key: "Tools & Software Recommendations",
-        keywords: ["tool", "software", "platform", "recommend", "using", "switched to", "tech stack"],
-        description: 
-          "Tools, software platforms, and technology stack recommendations for startups.",
-        category: "Tool Mentions",
-        color: "bg-indigo-100"
-      },
-      {
-        key: "AI & Automation Implementation",
-        keywords: ["AI", "GPT", "automation", "automate", "machine learning", "workflow", "API"],
-        description: 
-          "Implementations and use cases of AI, automation, and emerging technologies.",
-        category: "Emerging Trends",
-        color: "bg-purple-100"
       }
     ];
 

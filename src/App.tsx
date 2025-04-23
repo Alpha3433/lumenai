@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Index from "./pages/Index";
 import Create from "./pages/Create";
+// Removed: import GenerateIdea from "./pages/GenerateIdea";
 import Examples from "./pages/Examples";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
@@ -32,8 +33,8 @@ const queryClient = new QueryClient();
 const App = () => (
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
+      <TooltipProvider>
+        <AuthProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/" element={<WaitingList />} />
                 <Route path="/home" element={<Index />} />
                 <Route path="/create" element={<Create />} />
+                {/* Removed: <Route path="/generate-idea" element={<GenerateIdea />} /> */}
                 <Route path="/examples" element={<Examples />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -61,10 +63,11 @@ const App = () => (
               </Routes>
             </AnimatePresence>
           </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );
 
 export default App;
+

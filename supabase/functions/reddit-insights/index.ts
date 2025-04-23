@@ -1,3 +1,4 @@
+
 // Supabase Edge Function: reddit-insights/index.ts
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -52,9 +53,9 @@ Deno.serve(async (req) => {
       throw new Error('Failed to obtain Reddit access token');
     }
 
-    // Use Reddit's search API with sensible defaults
+    // Use Reddit's search API with a more reliable limit - reduced from 250 to 100
     const encodedQuery = encodeURIComponent(query);
-    const url = `https://oauth.reddit.com/search?limit=250&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
+    const url = `https://oauth.reddit.com/search?limit=100&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
 
     console.log("Sending request to Reddit API");
     
@@ -195,6 +196,42 @@ Deno.serve(async (req) => {
         description: "Popular development and DevOps tools.",
         category: "Tool Mentions",
         color: "bg-orange-100"
+      },
+      // Add more themes with varied keywords to increase match chances
+      {
+        key: "Revenue Models",
+        keywords: ["revenue model", "monetization", "pricing strategy", "subscription", "freemium"],
+        description: "Different approaches to monetizing products and services.",
+        category: "Success Stories",
+        color: "bg-green-100"
+      },
+      {
+        key: "Startup Failures",
+        keywords: ["failure", "mistake", "shutdown", "pivot", "lessons learned"],
+        description: "Lessons from startup failures and pivots.",
+        category: "Pain Points",
+        color: "bg-red-100"
+      },
+      {
+        key: "Content Marketing",
+        keywords: ["content marketing", "blog", "SEO", "organic growth", "content strategy"],
+        description: "Strategies for effective content marketing.",
+        category: "Success Stories",
+        color: "bg-green-100"
+      },
+      {
+        key: "Community Building",
+        keywords: ["community", "engagement", "forum", "discord", "slack community"],
+        description: "Building and nurturing user communities.",
+        category: "Aspirations & Goals",
+        color: "bg-blue-100"
+      },
+      {
+        key: "UX Design",
+        keywords: ["user experience", "UX", "design", "usability", "interface"],
+        description: "User experience design principles and practices.",
+        category: "Pain Points",
+        color: "bg-red-100"
       }
     ];
 
@@ -247,6 +284,21 @@ Deno.serve(async (req) => {
     }).filter(t => t !== null);
 
     console.log(`Returning ${themes.length} themes`);
+
+    // If we don't find any themes, return a friendly error
+    if (themes.length === 0) {
+      return new Response(JSON.stringify({
+        error: "No matching themes found",
+        message: "No relevant discussions were found for your search criteria. Try broadening your search terms.",
+        meta: {
+          totalPosts: posts.length,
+          uniqueSubreddits: subredditsSet.size,
+          searchQuery: search || 'default'
+        }
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
+    }
 
     return new Response(JSON.stringify({
       themes,

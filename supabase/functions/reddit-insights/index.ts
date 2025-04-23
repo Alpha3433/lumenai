@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
     }
 
     // Build the search query - if search is provided use it, otherwise use default query
-    let query = search ? search : "startup OR SaaS OR pricing OR founders OR repeat+purchase OR product+market+fit";
+    let query = search ? search : "startup OR SaaS OR pricing OR founders OR repeat+purchase OR product+market+fit OR business+advice OR entrepreneurship OR small+business OR marketing+strategy OR customer+acquisition OR revenue+growth OR business+challenges OR startup+success OR business+tools";
     if (search && !search.includes('OR') && !search.includes('AND')) {
       query = `${search} OR "${search}" OR ${search}+tips OR ${search}+strategy`;
     }
@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
 
     // Use Reddit's search API with sensible defaults
     const encodedQuery = encodeURIComponent(query);
-    const url = `https://oauth.reddit.com/search?limit=100&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
+    const url = `https://oauth.reddit.com/search?limit=250&q=${encodedQuery}&restrict_sr=false&sort=relevance&t=month`;
 
     console.log("Sending request to Reddit API");
     
@@ -82,75 +82,117 @@ Deno.serve(async (req) => {
     console.log(`Found ${posts.length} posts for query: "${query}"`);
     posts.forEach((post: any) => subredditsSet.add(post.subreddit));
 
-    // Enhanced theme descriptors with more categories
+    // Enhanced theme descriptors with more categories and keywords
     const themeDescriptors = [
       {
-        key: "Technical Challenges",
-        keywords: ["error", "bug", "issue", "problem", "stuck", "help", "debugging"],
-        description: "Common technical challenges and debugging issues developers face.",
+        key: "Technical Implementation",
+        keywords: ["implementation", "coding", "development", "tech stack", "architecture"],
+        description: "Technical implementation challenges and solutions.",
         category: "Pain Points",
         color: "bg-red-100"
       },
       {
-        key: "Development Bottlenecks",
-        keywords: ["slow", "performance", "optimization", "bottleneck", "scaling"],
-        description: "Performance issues and optimization challenges in development.",
+        key: "Customer Acquisition",
+        keywords: ["customer acquisition", "CAC", "leads", "conversion", "sales funnel"],
+        description: "Strategies and challenges in acquiring customers.",
         category: "Pain Points",
         color: "bg-red-100"
       },
       {
-        key: "Revenue Milestones",
-        keywords: ["revenue", "profit", "MRR", "ARR", "growth", "milestone"],
-        description: "Success stories about reaching significant revenue milestones.",
+        key: "User Retention",
+        keywords: ["retention", "churn", "user engagement", "customer loyalty"],
+        description: "Challenges and strategies for retaining users.",
+        category: "Pain Points",
+        color: "bg-red-100"
+      },
+      {
+        key: "Funding Success",
+        keywords: ["funding", "investment", "VC", "seed round", "angel"],
+        description: "Success stories in securing funding and investment.",
         category: "Success Stories",
         color: "bg-green-100"
       },
       {
-        key: "Product Market Fit",
-        keywords: ["product market fit", "PMF", "validation", "success story"],
-        description: "Stories of achieving product-market fit and validation.",
+        key: "Market Validation",
+        keywords: ["validation", "product market fit", "customer feedback", "beta testing"],
+        description: "Achieving market validation and product-market fit.",
         category: "Success Stories",
         color: "bg-green-100"
       },
       {
-        key: "Scaling Goals",
-        keywords: ["scale", "growth plan", "expansion", "goals", "target"],
-        description: "Discussions about scaling strategies and growth targets.",
+        key: "Team Building",
+        keywords: ["hiring", "team", "recruitment", "talent", "culture"],
+        description: "Building and managing successful teams.",
+        category: "Success Stories",
+        color: "bg-green-100"
+      },
+      {
+        key: "International Expansion",
+        keywords: ["international", "global", "expansion", "new markets"],
+        description: "Plans for expanding into international markets.",
         category: "Aspirations & Goals",
         color: "bg-blue-100"
       },
       {
-        key: "Market Expansion",
-        keywords: ["market expansion", "new market", "international", "growth strategy"],
-        description: "Plans and strategies for entering new markets.",
+        key: "Product Innovation",
+        keywords: ["innovation", "new features", "product development", "R&D"],
+        description: "Goals for product innovation and development.",
         category: "Aspirations & Goals",
         color: "bg-blue-100"
       },
       {
-        key: "AI Integration",
-        keywords: ["AI", "machine learning", "ML", "artificial intelligence", "GPT"],
-        description: "Trends in AI integration and implementation.",
+        key: "Platform Growth",
+        keywords: ["platform", "ecosystem", "marketplace", "network effects"],
+        description: "Building and scaling platform businesses.",
+        category: "Aspirations & Goals",
+        color: "bg-blue-100"
+      },
+      {
+        key: "AI Integration Trends",
+        keywords: ["artificial intelligence", "machine learning", "AI", "automation"],
+        description: "Trends in AI adoption and integration.",
         category: "Emerging Trends",
         color: "bg-purple-100"
       },
       {
-        key: "Web3 Development",
-        keywords: ["web3", "blockchain", "crypto", "NFT", "decentralized"],
-        description: "Emerging trends in Web3 and blockchain development.",
+        key: "No-Code Movement",
+        keywords: ["no-code", "low-code", "citizen developer", "visual development"],
+        description: "The rise of no-code and low-code development.",
         category: "Emerging Trends",
         color: "bg-purple-100"
       },
       {
-        key: "Development Tools",
-        keywords: ["IDE", "editor", "tool", "plugin", "extension"],
-        description: "Popular development tools and utilities being discussed.",
+        key: "Remote Work Tools",
+        keywords: ["remote work", "collaboration", "virtual teams", "distributed"],
+        description: "Tools and practices for remote work.",
         category: "Tool Mentions",
         color: "bg-orange-100"
       },
       {
-        key: "Testing Tools",
-        keywords: ["testing", "test", "jest", "cypress", "selenium"],
-        description: "Tools and frameworks for testing applications.",
+        key: "Analytics Tools",
+        keywords: ["analytics", "metrics", "tracking", "data analysis"],
+        description: "Tools for tracking and analyzing business metrics.",
+        category: "Tool Mentions",
+        color: "bg-orange-100"
+      },
+      {
+        key: "Marketing Tools",
+        keywords: ["marketing tools", "automation", "CRM", "email marketing"],
+        description: "Popular marketing and automation tools.",
+        category: "Tool Mentions",
+        color: "bg-orange-100"
+      },
+      {
+        key: "Project Management",
+        keywords: ["project management", "task tracking", "workflow", "productivity"],
+        description: "Project management and productivity tools.",
+        category: "Tool Mentions",
+        color: "bg-orange-100"
+      },
+      {
+        key: "Developer Tools",
+        keywords: ["IDE", "git", "deployment", "DevOps", "testing tools"],
+        description: "Popular development and DevOps tools.",
         category: "Tool Mentions",
         color: "bg-orange-100"
       }

@@ -44,7 +44,7 @@ const TestimonialsSection = () => {
   }];
   return <section style={{
     background: "#0F1A0F"
-  }} className="py-20 px-4 relative overflow-hidden bg-zinc-700">
+  }} className="py-20 px-4 relative overflow-hidden bg-gray-700">
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20"></div>
       </div>

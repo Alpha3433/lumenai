@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import RedditThemeCard from "@/components/reddit/RedditThemeCard";
 import RedditSearchBar from "@/components/reddit/RedditSearchBar";
 import RedditLoadingGrid from "@/components/reddit/RedditLoadingGrid";
-import { Globe } from "lucide-react";
+import { Globe, AlertCircle } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 import { toast } from "sonner";
 
@@ -36,7 +36,9 @@ const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]>
     );
     
     if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      console.error("API error response:", errorData);
+      throw new Error(errorData.message || `API request failed with status ${response.status}`);
     }
     
     const data = await response.json();
@@ -48,7 +50,7 @@ const fetchRedditThemes = async (searchQuery: string = ""): Promise<ThemeData[]>
     return Array.isArray(data.themes) ? data.themes : [];
   } catch (error) {
     console.error("Unable to fetch Reddit themes:", error);
-    toast.error("Failed to fetch data from Reddit. Please try again later.");
+    toast.error(`Failed to fetch data from Reddit: ${error instanceof Error ? error.message : 'Unknown error'}`);
     return [];
   }
 };
@@ -60,19 +62,31 @@ export default function RedditInsights() {
   const [searching, setSearching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchAttempted, setSearchAttempted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const themesPerPage = 6;
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchRedditThemes().then(data => {
-      setThemeData(data);
-      setIsLoading(false);
-    });
+    const loadInitialThemes = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await fetchRedditThemes();
+        setThemeData(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load themes');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadInitialThemes();
   }, []);
 
   const runSearch = async () => {
     setSearching(true);
     setSearchAttempted(true);
+    setError(null);
+    
     try {
       const result = await fetchRedditThemes(search);
       setThemeData(result);
@@ -81,6 +95,7 @@ export default function RedditInsights() {
       }
     } catch (error) {
       console.error("Search error:", error);
+      setError(error instanceof Error ? error.message : 'Search failed');
       toast.error("Search failed. Please try again.");
     } finally {
       setSearching(false);
@@ -115,6 +130,23 @@ export default function RedditInsights() {
           runSearch={runSearch}
           searching={searching}
         />
+        
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-8">
+            <div className="flex items-center">
+              <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
+              <p className="text-red-700 dark:text-red-300 font-medium">Error loading data</p>
+            </div>
+            <p className="mt-2 text-red-600 dark:text-red-400 text-sm">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-3 px-4 py-2 bg-red-100 dark:bg-red-800/50 hover:bg-red-200 dark:hover:bg-red-800 text-red-700 dark:text-red-300 rounded text-sm font-medium transition-colors"
+            >
+              Reload page
+            </button>
+          </div>
+        )}
+
         {(isLoading || searching) ? (
           <RedditLoadingGrid />
         ) : (
@@ -133,7 +165,11 @@ export default function RedditInsights() {
                     onClick={() => {
                       setSearch("");
                       setSearchAttempted(false);
-                      fetchRedditThemes().then(data => setThemeData(data));
+                      setIsLoading(true);
+                      fetchRedditThemes().then(data => {
+                        setThemeData(data);
+                        setIsLoading(false);
+                      });
                     }}
                     className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition"
                   >
@@ -145,7 +181,7 @@ export default function RedditInsights() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {currentThemes.map((theme, i) => (
-                    <RedditThemeCard theme={theme} key={i} />
+                    <RedditThemeCard theme={theme} key={`${theme.theme}-${i}`} />
                   ))}
                 </div>
                 

@@ -18,9 +18,15 @@ Deno.serve(async (req) => {
     const { search = "" } = req.method === "POST" ? await req.json().catch(() => ({})) : {};
 
     // Get API key from Supabase secret
-    const redditApiKey = Deno.env.get("Reddit_Key");
+    const redditApiKey = Deno.env.get("REDDIT_KEY");
+    
+    console.log("Checking for Reddit API key:", redditApiKey ? "Key found" : "Key NOT found");
+    
     if (!redditApiKey) {
-      return new Response(JSON.stringify({ error: "Reddit API Key missing." }), {
+      return new Response(JSON.stringify({ 
+        error: "Reddit API Key missing.", 
+        message: "Please set the REDDIT_KEY secret in your Supabase project." 
+      }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -48,6 +54,8 @@ Deno.serve(async (req) => {
       "User-Agent": "RedditInsights/1.0.0 by LovableApp",
     };
 
+    console.log("Sending request to Reddit API");
+    
     let posts = [];
     let subredditsSet = new Set<string>();
 
@@ -191,6 +199,8 @@ Deno.serve(async (req) => {
       },
       themes
     };
+
+    console.log(`Returning ${themes.length} themes`);
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, "Content-Type": "application/json" }

@@ -1,5 +1,4 @@
 
-import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -11,7 +10,7 @@ interface SendEmailParams {
 }
 
 export const useEmail = () => {
-  const sendEmail = useCallback(async ({ to, subject, html, from }: SendEmailParams) => {
+  const sendEmail = async ({ to, subject, html, from }: SendEmailParams) => {
     try {
       const { error } = await supabase.functions.invoke('send-email', {
         body: { to, subject, html, from },
@@ -26,7 +25,7 @@ export const useEmail = () => {
       toast.error('Failed to send email');
       return false;
     }
-  }, []);
+  };
 
   return { sendEmail };
 };

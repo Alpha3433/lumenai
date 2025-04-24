@@ -1,3 +1,4 @@
+
 export const welcomeEmailTemplate = (username: string) => ({
   subject: "🎉 Welcome to Our Platform!",
   html: `
@@ -5,42 +6,20 @@ export const welcomeEmailTemplate = (username: string) => ({
       <div style="text-align: center; margin-bottom: 32px;">
         <h1 style="color: #1a1a1a; font-size: 28px; margin-bottom: 16px;">Welcome aboard! 🚀</h1>
         <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-          Thanks for joining our waiting list! We're excited to have you on board.
+          Thanks for joining our platform! We're excited to have you on board.
         </p>
       </div>
 
       <div style="background-color: #f8f9fa; padding: 24px; border-radius: 8px; margin-bottom: 32px;">
-        <h2 style="color: #2c3e50; font-size: 20px; margin-bottom: 16px;">📅 Let's Connect!</h2>
-        <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
-          We'd love to learn more about your needs and how we can help. Schedule a 30-minute chat with us:
-        </p>
-        <div style="text-align: center;">
-          <a href="https://calendly.com/lumenaihelp/30min" 
-             style="display: inline-block; background-color: #0066cc; color: white; padding: 14px 32px; 
-                    text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;
-                    transition: background-color 0.3s ease;">
-            Schedule a Meeting →
-          </a>
-        </div>
-      </div>
-
-      <div style="background-color: #f8f9fa; padding: 24px; border-radius: 8px; margin-bottom: 32px;">
-        <h2 style="color: #2c3e50; font-size: 20px; margin-bottom: 16px;">🎯 Next Steps</h2>
+        <h2 style="color: #2c3e50; font-size: 20px; margin-bottom: 16px;">📅 Next Steps</h2>
         <ul style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0; padding-left: 20px;">
-          <li style="margin-bottom: 12px;">Schedule your onboarding call</li>
-          <li style="margin-bottom: 12px;">Prepare any questions you have</li>
-          <li style="margin-bottom: 12px;">Learn about our platform features</li>
+          <li style="margin-bottom: 12px;">Complete your profile</li>
+          <li style="margin-bottom: 12px;">Explore our features</li>
+          <li style="margin-bottom: 12px;">Connect with others</li>
         </ul>
       </div>
 
       <div style="border-top: 1px solid #e5e7eb; padding-top: 24px; text-align: center;">
-        <p style="color: #4a4a4a; font-size: 14px; margin-bottom: 16px;">
-          Need help? Our support team is here for you 24/7.
-        </p>
-        <div style="margin-bottom: 16px;">
-          <a href="https://your-app-url.com/help" style="color: #0066cc; text-decoration: none; margin: 0 12px;">Help Center</a>
-          <a href="https://your-app-url.com/contact" style="color: #0066cc; text-decoration: none; margin: 0 12px;">Contact Us</a>
-        </div>
         <p style="color: #718096; font-size: 14px;">
           Best regards,<br>
           The Team
@@ -57,42 +36,43 @@ export const passwordResetEmailTemplate = (resetLink: string) => ({
       <div style="text-align: center; margin-bottom: 32px;">
         <h1 style="color: #1a1a1a; font-size: 28px; margin-bottom: 16px;">Password Reset Request</h1>
         <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-          We received a request to reset your password. Don't worry, we've got you covered!
-        </p>
-      </div>
-
-      <div style="background-color: #fff8f3; border-left: 4px solid #ff6b35; padding: 24px; border-radius: 4px; margin-bottom: 32px;">
-        <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0;">
-          Click the button below to reset your password. For security reasons, this link will expire in 1 hour.
+          We received a request to reset your password. Click the button below to proceed.
         </p>
       </div>
 
       <div style="text-align: center; margin-bottom: 32px;">
         <a href="${resetLink}" 
            style="display: inline-block; background-color: #0066cc; color: white; padding: 14px 32px; 
-                  text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;
-                  transition: background-color 0.3s ease;">
-          Reset Password →
+                  text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">
+          Reset Password
         </a>
       </div>
 
-      <div style="background-color: #f8f9fa; padding: 24px; border-radius: 8px; margin-bottom: 32px;">
-        <h2 style="color: #2c3e50; font-size: 18px; margin-bottom: 16px;">🔒 Security Tips</h2>
-        <ul style="color: #4a4a4a; font-size: 14px; line-height: 1.6; margin: 0; padding-left: 20px;">
-          <li style="margin-bottom: 8px;">Choose a strong, unique password</li>
-          <li style="margin-bottom: 8px;">Never share your password with others</li>
-          <li style="margin-bottom: 8px;">Enable two-factor authentication for extra security</li>
-        </ul>
-      </div>
-
       <div style="border-top: 1px solid #e5e7eb; padding-top: 24px; text-align: center;">
-        <p style="color: #718096; font-size: 14px; margin-bottom: 16px;">
+        <p style="color: #718096; font-size: 14px;">
           If you didn't request this password reset, you can safely ignore this email.
         </p>
-        <p style="color: #718096; font-size: 14px;">
-          Need help? <a href="https://your-app-url.com/help" style="color: #0066cc; text-decoration: none;">Contact Support</a>
-        </p>
       </div>
+    </div>
+  `,
+});
+
+export const notificationEmailTemplate = (message: string, actionUrl?: string) => ({
+  subject: "📬 New Notification",
+  html: `
+    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+      <div style="margin-bottom: 32px;">
+        <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6;">${message}</p>
+      </div>
+      ${actionUrl ? `
+        <div style="text-align: center; margin-bottom: 32px;">
+          <a href="${actionUrl}" 
+             style="display: inline-block; background-color: #0066cc; color: white; padding: 14px 32px; 
+                    text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">
+            View Details
+          </a>
+        </div>
+      ` : ''}
     </div>
   `,
 });

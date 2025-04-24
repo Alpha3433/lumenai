@@ -30,6 +30,20 @@ const EmailForm = () => {
       // Special handling for testing email
       const isTestEmail = email.toLowerCase() === 'lumenaihelp@gmail.com';
       
+      if (isTestEmail) {
+        // For test email, just attempt to send the welcome email and show success
+        console.log('Test email detected, bypassing duplicate check');
+        await sendWelcomeEmail(email, email.split('@')[0]);
+        
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        setEmail('');
+        setShowDialog(true);
+        toast.success('Test email has been sent!');
+        return;
+      }
+      
+      // Normal flow for non-test emails
       // Insert the email into the waiting_list table
       const { error } = await supabase
         .from('waiting_list')

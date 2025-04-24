@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
@@ -26,10 +27,13 @@ const EmailForm = () => {
     setIsSubmitting(true);
     
     try {
+      // Special handling for testing email
+      const isTestEmail = email.toLowerCase() === 'lumenaihelp@gmail.com';
+      
       // Insert the email into the waiting_list table
       const { error } = await supabase
         .from('waiting_list')
-        .insert([{ email }]);
+        .insert([{ email, is_test: isTestEmail }]);
       
       if (error) {
         if (error.code === '23505') {

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Columns2, Columns3 } from "lucide-react";
 
@@ -35,7 +34,6 @@ const ComparisonSection = () => (
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-        {/* Generic LLM Prompt Side */}
         <div className="relative bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg flex flex-col p-8">
           <div className="flex items-center gap-3 mb-3">
             <div className="rounded-lg bg-gray-100 dark:bg-gray-700 p-2">
@@ -45,18 +43,16 @@ const ComparisonSection = () => (
               Generic AI Language Model
             </span>
           </div>
-          {/* Begin Video Box */}
           <div className="mb-6 w-full rounded-xl overflow-hidden shadow aspect-video bg-black">
             <iframe
-              src="https://player.vimeo.com/video/1077299488?h=52c03e4c37&badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1"
-              title="Untitled video - Made with Clipchamp (4)"
+              src="https://player.vimeo.com/video/1078901052?h=c3f3625153&badge=0&autopause=0&player_id=0&app_id=58479"
+              title="Untitled video - Made with Clipchamp (7)"
               frameBorder="0"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
               className="w-full h-full pointer-events-none"
               allowFullScreen
             />
           </div>
-          {/* End Video Box */}
           <ul className="space-y-4 flex-1 mb-4">
             {GENERIC_PROMPT_POINTS.map((pt, i) => (
               <li key={i} className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
@@ -75,7 +71,6 @@ const ComparisonSection = () => (
             </div>
           </div>
         </div>
-        {/* Lumen AI Platform Side */}
         <div className="relative bg-gradient-to-br from-purple-100 via-blue-50 to-white dark:from-purple-800/50 dark:via-blue-900/30 dark:to-gray-950 rounded-2xl border border-purple-200 dark:border-purple-700 shadow-2xl flex flex-col p-8">
           <div className="flex items-center gap-3 mb-3">
             <div className="rounded-lg bg-purple-200 dark:bg-purple-800/50 p-2">
@@ -85,7 +80,6 @@ const ComparisonSection = () => (
               Lumen AI
             </span>
           </div>
-          {/* Begin Lumen AI Video Box */}
           <div className="mb-6 w-full rounded-xl overflow-hidden shadow aspect-video bg-black">
             <iframe
               src="https://player.vimeo.com/video/1077686359?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1"
@@ -96,7 +90,6 @@ const ComparisonSection = () => (
               allowFullScreen
             />
           </div>
-          {/* End Lumen AI Video Box */}
           <ul className="space-y-4 flex-1 mb-4">
             {LUMEN_PLATFORM_POINTS.map((pt, i) => (
               <li key={i} className="flex items-center gap-2 text-gray-800 dark:text-gray-200">

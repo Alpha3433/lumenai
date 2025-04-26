@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Reddit, Palette } from 'lucide-react';
+import { Share2, Palette } from 'lucide-react';  // Replace Reddit with Share2
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ToolsShowcase = () => {
@@ -8,7 +9,7 @@ const ToolsShowcase = () => {
     {
       title: "Reddit Insights",
       description: "Uncover valuable market insights and trending topics by analyzing Reddit communities relevant to your business niche.",
-      icon: <Reddit className="h-6 w-6 text-orange-500" />
+      icon: <Share2 className="h-6 w-6 text-orange-500" />  // Use Share2 as a substitute for Reddit
     },
     {
       title: "Logo Creation",

@@ -1,5 +1,6 @@
 import React from "react";
 import { Columns2, Columns3 } from "lucide-react";
+import BrandLogo from "@/components/navigation/BrandLogo";
 
 const GENERIC_PROMPT_POINTS = [
   { ok: false, text: "Unstructured, messy output" },
@@ -39,9 +40,7 @@ const ComparisonSection = () => (
             <div className="rounded-lg bg-gray-100 dark:bg-gray-700 p-2">
               <Columns2 className="h-6 w-6 text-gray-400" />
             </div>
-            <span className="font-semibold text-gray-700 dark:text-gray-200 text-lg">
-              Generic AI Language Model
-            </span>
+            <BrandLogo />
           </div>
           <div className="mb-6 w-full rounded-xl overflow-hidden shadow aspect-video bg-black">
             <iframe
@@ -76,9 +75,7 @@ const ComparisonSection = () => (
             <div className="rounded-lg bg-purple-200 dark:bg-purple-800/50 p-2">
               <Columns3 className="h-6 w-6 text-purple-600" />
             </div>
-            <span className="font-semibold text-purple-700 dark:text-purple-100 text-lg">
-              Lumen AI
-            </span>
+            <BrandLogo />
           </div>
           <div className="mb-6 w-full rounded-xl overflow-hidden shadow aspect-video bg-black">
             <iframe

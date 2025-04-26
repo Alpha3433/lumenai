@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { RedditLogoIcon, PaletteIcon } from 'lucide-react';
+import { Reddit, Palette } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ToolsShowcase = () => {
@@ -9,12 +8,12 @@ const ToolsShowcase = () => {
     {
       title: "Reddit Insights",
       description: "Uncover valuable market insights and trending topics by analyzing Reddit communities relevant to your business niche.",
-      icon: <RedditLogoIcon className="h-6 w-6 text-orange-500" />
+      icon: <Reddit className="h-6 w-6 text-orange-500" />
     },
     {
       title: "Logo Creation",
       description: "Generate professional and unique logos for your business using our AI-powered design tools.",
-      icon: <PaletteIcon className="h-6 w-6 text-blue-500" />
+      icon: <Palette className="h-6 w-6 text-blue-500" />
     }
   ];
 

@@ -1,19 +1,17 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
 import { FileText, Calendar, CheckCircle, Globe, Wand } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
-
 const DashboardHeader = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [showLogoModal, setShowLogoModal] = useState(false);
   const firstName = user?.user_metadata?.full_name?.split(' ')[0] || 'there';
-
   const handleRedditInsights = () => {
     window.location.href = '/reddit-insights';
   };
-
   return <div className="mb-8 bg-slate-50 dark:bg-slate-900/50 p-8 rounded-xl">
       <h1 className="text-2xl font-bold mb-2">Welcome back, {firstName}</h1>
       <p className="text-muted-foreground mb-6">Here's what's happening with your business today.</p>
@@ -31,7 +29,7 @@ const DashboardHeader = () => {
           <CheckCircle className="mr-2 h-4 w-4" />
           New Task
         </Button>
-        <Button variant="secondary" onClick={() => setShowLogoModal(true)} className="bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/30 dark:hover:bg-orange-900/50">
+        <Button variant="secondary" onClick={() => setShowLogoModal(true)} className="bg-sky-200 hover:bg-sky-100">
           <Wand className="mr-2 h-4 w-4" />
           Create Logo
         </Button>
@@ -41,11 +39,7 @@ const DashboardHeader = () => {
         </Button>
       </div>
 
-      <LogoGeneratorModal 
-        open={showLogoModal}
-        onClose={() => setShowLogoModal(false)}
-      />
+      <LogoGeneratorModal open={showLogoModal} onClose={() => setShowLogoModal(false)} />
     </div>;
 };
-
 export default DashboardHeader;

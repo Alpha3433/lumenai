@@ -74,7 +74,7 @@ const ContentColumn = () => {
       
       <div className="bg-blue-50 dark:bg-blue-900/20 border-l-2 border-blue-500 rounded p-3 mb-4">
         <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-1">End-to-End Business Solutions:</h3>
-        <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">We don’t just give you insights—we build everything. From AI-driven business validation to fully managed ad campaigns, custom websites, backend infrastructure, and social media execution, we handle the heavy lifting so you can focus on growth. All powered and supported by our expert team.</p>
+        <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">We don’t just give you insights—we build everything. From AI-driven business validation, to professional logo mockups and updated Reddit SEO to fully managed ad campaigns, custom websites, backend infrastructure, and social media execution, we handle the heavy lifting so you can focus on growth. All powered and supported by our expert team.</p>
       </div>
       
       <EmailForm />

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -15,46 +14,27 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
-import { 
-  User, 
-  Bell, 
-  Mail, 
-  CreditCard, 
-  Wallet, 
-  Calendar, 
-  Moon, 
-  Sun, 
-  Globe, 
-  Laptop, 
-  MailWarning,
-  MessageSquare,
-  AlertCircle,
-  Clock,
-  DollarSign,
-  Sparkles,
-  Tag,
-  ArrowUp,
-  ArrowDown,
-  CheckCircle
-} from 'lucide-react';
-
+import { User, Bell, Mail, CreditCard, Wallet, Calendar, Moon, Sun, Globe, Laptop, MailWarning, MessageSquare, AlertCircle, Clock, DollarSign, Sparkles, Tag, ArrowUp, ArrowDown, CheckCircle } from 'lucide-react';
 export default function Settings() {
-  const { user, loading } = useAuth();
+  const {
+    user,
+    loading
+  } = useAuth();
   const navigate = useNavigate();
   const [isUpdating, setIsUpdating] = useState(false);
-  
+
   // Profile state
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [company, setCompany] = useState('');
-  
+
   // Notifications state
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [marketingEmails, setMarketingEmails] = useState(false);
   const [securityAlerts, setSecurityAlerts] = useState(true);
   const [productUpdates, setProductUpdates] = useState(true);
-  
+
   // New notification preferences
   const [milestonesNotifications, setMilestonesNotifications] = useState(true);
   const [coachingNotifications, setCoachingNotifications] = useState(true);
@@ -62,24 +42,23 @@ export default function Settings() {
   const [offerNotifications, setOfferNotifications] = useState(true);
   const [paymentNotifications, setPaymentNotifications] = useState(true);
   const [planNotifications, setPlanNotifications] = useState(true);
-  
+
   // Notification delivery preferences
   const [emailDelivery, setEmailDelivery] = useState(true);
   const [pushDelivery, setPushDelivery] = useState(true);
   const [smsDelivery, setSmsDelivery] = useState(false);
-  
+
   // Preferences state
   const [timezone, setTimezone] = useState('UTC');
   const [theme, setTheme] = useState('system');
   const [language, setLanguage] = useState('en');
-
   useEffect(() => {
     if (!loading && !user) {
       navigate('/login');
     } else if (user) {
       // Initialize form with user data
       setEmail(user.email || '');
-      
+
       // You could fetch additional profile data from your database here
       // const fetchUserProfile = async () => {
       //   const { data, error } = await supabase
@@ -98,10 +77,8 @@ export default function Settings() {
       // fetchUserProfile();
     }
   }, [user, loading, navigate]);
-
   const handleSaveProfile = async () => {
     setIsUpdating(true);
-    
     try {
       // Here you would save the profile data to your database
       // const { error } = await supabase
@@ -113,9 +90,9 @@ export default function Settings() {
       //     company: company,
       //     updated_at: new Date()
       //   });
-      
+
       // if (error) throw error;
-      
+
       toast.success("Profile updated successfully!");
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -124,10 +101,8 @@ export default function Settings() {
       setIsUpdating(false);
     }
   };
-
   const handleSaveNotifications = () => {
     setIsUpdating(true);
-    
     try {
       // Simulate saving notification preferences
       setTimeout(() => {
@@ -140,10 +115,8 @@ export default function Settings() {
       setIsUpdating(false);
     }
   };
-
   const handleSavePreferences = () => {
     setIsUpdating(true);
-    
     try {
       // Simulate saving user preferences
       setTimeout(() => {
@@ -156,22 +129,17 @@ export default function Settings() {
       setIsUpdating(false);
     }
   };
-
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
+    return <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
         <Navbar />
         <div className="container max-w-6xl mx-auto px-4 py-8 pt-24">
           <div className="h-96 flex items-center justify-center">
             <div className="animate-pulse text-blue-600 dark:text-blue-400">Loading...</div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
+  return <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
       <Navbar />
       <div className="container max-w-6xl mx-auto px-4 py-8 pt-24">
         <h1 className="text-3xl font-bold mb-6">Settings</h1>
@@ -203,24 +171,13 @@ export default function Settings() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
-                    <Input 
-                      id="fullName" 
-                      value={fullName} 
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Enter your full name" 
-                    />
+                    <Label htmlFor="fullName">First Name</Label>
+                    <Input id="fullName" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Enter your full name" />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input 
-                      id="email" 
-                      value={email} 
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="your.email@example.com" 
-                      disabled
-                    />
+                    <Input id="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your.email@example.com" disabled />
                     <p className="text-xs text-muted-foreground">
                       To change your email, please contact support.
                     </p>
@@ -238,22 +195,12 @@ export default function Settings() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="username">Username</Label>
-                    <Input 
-                      id="username" 
-                      value={username} 
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder="Choose a username" 
-                    />
+                    <Input id="username" value={username} onChange={e => setUsername(e.target.value)} placeholder="Choose a username" />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="company">Company/Organization</Label>
-                    <Input 
-                      id="company" 
-                      value={company} 
-                      onChange={(e) => setCompany(e.target.value)}
-                      placeholder="Enter company name (optional)" 
-                    />
+                    <Input id="company" value={company} onChange={e => setCompany(e.target.value)} placeholder="Enter company name (optional)" />
                   </div>
                 </div>
                 
@@ -297,11 +244,7 @@ export default function Settings() {
                         Receive all notifications via email
                       </p>
                     </div>
-                    <Switch 
-                      id="email-notifications" 
-                      checked={emailNotifications}
-                      onCheckedChange={setEmailNotifications}
-                    />
+                    <Switch id="email-notifications" checked={emailNotifications} onCheckedChange={setEmailNotifications} />
                   </div>
                   
                   <Separator className="my-4" />
@@ -316,12 +259,7 @@ export default function Settings() {
                         New features, upgrades, and improvements
                       </p>
                     </div>
-                    <Switch 
-                      id="product-updates" 
-                      checked={productUpdates}
-                      onCheckedChange={setProductUpdates}
-                      disabled={!emailNotifications}
-                    />
+                    <Switch id="product-updates" checked={productUpdates} onCheckedChange={setProductUpdates} disabled={!emailNotifications} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -334,12 +272,7 @@ export default function Settings() {
                         Important security notifications and alerts
                       </p>
                     </div>
-                    <Switch 
-                      id="security-alerts" 
-                      checked={securityAlerts}
-                      onCheckedChange={setSecurityAlerts}
-                      disabled={!emailNotifications}
-                    />
+                    <Switch id="security-alerts" checked={securityAlerts} onCheckedChange={setSecurityAlerts} disabled={!emailNotifications} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -352,12 +285,7 @@ export default function Settings() {
                         Promotions, surveys, and marketing communications
                       </p>
                     </div>
-                    <Switch 
-                      id="marketing-emails" 
-                      checked={marketingEmails}
-                      onCheckedChange={setMarketingEmails}
-                      disabled={!emailNotifications}
-                    />
+                    <Switch id="marketing-emails" checked={marketingEmails} onCheckedChange={setMarketingEmails} disabled={!emailNotifications} />
                   </div>
                 </div>
                 
@@ -380,11 +308,7 @@ export default function Settings() {
                         </p>
                       </div>
                     </div>
-                    <Switch 
-                      id="milestones-notifications" 
-                      checked={milestonesNotifications}
-                      onCheckedChange={setMilestonesNotifications}
-                    />
+                    <Switch id="milestones-notifications" checked={milestonesNotifications} onCheckedChange={setMilestonesNotifications} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -397,11 +321,7 @@ export default function Settings() {
                         </p>
                       </div>
                     </div>
-                    <Switch 
-                      id="coaching-notifications" 
-                      checked={coachingNotifications}
-                      onCheckedChange={setCoachingNotifications}
-                    />
+                    <Switch id="coaching-notifications" checked={coachingNotifications} onCheckedChange={setCoachingNotifications} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -414,11 +334,7 @@ export default function Settings() {
                         </p>
                       </div>
                     </div>
-                    <Switch 
-                      id="feature-notifications" 
-                      checked={featureNotifications}
-                      onCheckedChange={setFeatureNotifications}
-                    />
+                    <Switch id="feature-notifications" checked={featureNotifications} onCheckedChange={setFeatureNotifications} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -431,11 +347,7 @@ export default function Settings() {
                         </p>
                       </div>
                     </div>
-                    <Switch 
-                      id="offer-notifications" 
-                      checked={offerNotifications}
-                      onCheckedChange={setOfferNotifications}
-                    />
+                    <Switch id="offer-notifications" checked={offerNotifications} onCheckedChange={setOfferNotifications} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -448,11 +360,7 @@ export default function Settings() {
                         </p>
                       </div>
                     </div>
-                    <Switch 
-                      id="payment-notifications" 
-                      checked={paymentNotifications}
-                      onCheckedChange={setPaymentNotifications}
-                    />
+                    <Switch id="payment-notifications" checked={paymentNotifications} onCheckedChange={setPaymentNotifications} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -465,11 +373,7 @@ export default function Settings() {
                         </p>
                       </div>
                     </div>
-                    <Switch 
-                      id="plan-notifications" 
-                      checked={planNotifications}
-                      onCheckedChange={setPlanNotifications}
-                    />
+                    <Switch id="plan-notifications" checked={planNotifications} onCheckedChange={setPlanNotifications} />
                   </div>
                 </div>
                 
@@ -488,13 +392,7 @@ export default function Settings() {
                     </p>
                     
                     <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="email-delivery" 
-                        checked={emailDelivery}
-                        onCheckedChange={(checked) => 
-                          setEmailDelivery(checked === true)
-                        }
-                      />
+                      <Checkbox id="email-delivery" checked={emailDelivery} onCheckedChange={checked => setEmailDelivery(checked === true)} />
                       <div className="grid gap-1.5">
                         <Label htmlFor="email-delivery">Email</Label>
                         <p className="text-sm text-muted-foreground">
@@ -504,13 +402,7 @@ export default function Settings() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="push-delivery" 
-                        checked={pushDelivery}
-                        onCheckedChange={(checked) => 
-                          setPushDelivery(checked === true)
-                        }
-                      />
+                      <Checkbox id="push-delivery" checked={pushDelivery} onCheckedChange={checked => setPushDelivery(checked === true)} />
                       <div className="grid gap-1.5">
                         <Label htmlFor="push-delivery">Push Notifications</Label>
                         <p className="text-sm text-muted-foreground">
@@ -520,13 +412,7 @@ export default function Settings() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="sms-delivery" 
-                        checked={smsDelivery}
-                        onCheckedChange={(checked) => 
-                          setSmsDelivery(checked === true)
-                        }
-                      />
+                      <Checkbox id="sms-delivery" checked={smsDelivery} onCheckedChange={checked => setSmsDelivery(checked === true)} />
                       <div className="grid gap-1.5">
                         <Label htmlFor="sms-delivery">SMS (Coming Soon)</Label>
                         <p className="text-sm text-muted-foreground">
@@ -779,6 +665,5 @@ export default function Settings() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
-  );
+    </div>;
 }

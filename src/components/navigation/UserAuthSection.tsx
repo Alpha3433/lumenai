@@ -1,52 +1,26 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { 
-  Home, 
-  LayoutDashboard, 
-  Settings, 
-  DollarSign, 
-  MessageCircle, 
-  Users, 
-  LogOut,
-  Calendar,
-  ChartBar,
-  HelpCircle,
-  CreditCard,
-  Mail,
-  CheckCircle
-} from 'lucide-react';
+import { Home, LayoutDashboard, Settings, DollarSign, MessageCircle, Users, LogOut, Calendar, ChartBar, HelpCircle, CreditCard, Mail, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import NotificationCenter from './NotificationCenter';
 import SubscriptionBadge from './SubscriptionBadge';
 import { useUserSubscription } from '@/hooks/useUserSubscription';
-
 const UserAuthSection: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const {
+    user,
+    signOut
+  } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [showSupportDialog, setShowSupportDialog] = useState(false);
   const [showSwitchAccountDialog, setShowSwitchAccountDialog] = useState(false);
-  const { subscriptionTier } = useUserSubscription();
-
+  const {
+    subscriptionTier
+  } = useUserSubscription();
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -55,18 +29,13 @@ const UserAuthSection: React.FC = () => {
       console.error('Error signing out:', error);
     }
   };
-
-  return (
-    <div className="hidden md:flex items-center space-x-4">
-      {user ? (
-        <div className="flex items-center gap-3">
+  return <div className="hidden md:flex items-center space-x-4">
+      {user ? <div className="flex items-center gap-3">
           <NotificationCenter />
           <SubscriptionBadge tier={subscriptionTier} />
           <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
-              <button 
-                className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-              >
+              <button className="rounded-full bg-gray-200 dark:bg-gray-700 w-8 h-8 flex items-center justify-center font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
                 {user.email?.substring(0, 2).toUpperCase() || 'JD'}
               </button>
             </DropdownMenuTrigger>
@@ -75,7 +44,7 @@ const UserAuthSection: React.FC = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate('/home')} className="cursor-pointer">
                 <Home className="mr-2 h-4 w-4" />
-                <span>Home</span>
+                <span className="font-medium">Home</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/dashboard')} className="cursor-pointer">
                 <LayoutDashboard className="mr-2 h-4 w-4" />
@@ -169,16 +138,10 @@ const UserAuthSection: React.FC = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setShowUpgradeDialog(false)}
-                >
+                <Button variant="ghost" onClick={() => setShowUpgradeDialog(false)}>
                   Cancel
                 </Button>
-                <Button 
-                  className="bg-purple-600 hover:bg-purple-700"
-                  onClick={() => navigate('/home#pricing')}
-                >
+                <Button className="bg-purple-600 hover:bg-purple-700" onClick={() => navigate('/home#pricing')}>
                   View All Plans
                 </Button>
               </DialogFooter>
@@ -198,20 +161,14 @@ const UserAuthSection: React.FC = () => {
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="space-y-4">
-                  <a 
-                    href="mailto:support@example.com" 
-                    className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                  >
+                  <a href="mailto:support@example.com" className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     <Mail className="h-5 w-5 text-blue-500" />
                     <div>
                       <h4 className="font-medium">Email Support</h4>
                       <p className="text-sm text-gray-500 dark:text-gray-400">support@example.com</p>
                     </div>
                   </a>
-                  <a 
-                    href="#" 
-                    className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                  >
+                  <a href="#" className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     <MessageCircle className="h-5 w-5 text-blue-500" />
                     <div>
                       <h4 className="font-medium">Live Chat</h4>
@@ -221,10 +178,7 @@ const UserAuthSection: React.FC = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setShowSupportDialog(false)}
-                >
+                <Button variant="ghost" onClick={() => setShowSupportDialog(false)}>
                   Close
                 </Button>
               </DialogFooter>
@@ -256,10 +210,7 @@ const UserAuthSection: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => navigate('/switch-account')}
-                    className="w-full flex items-center gap-3 p-4 rounded-lg border border-dashed border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-                  >
+                  <button onClick={() => navigate('/switch-account')} className="w-full flex items-center gap-3 p-4 rounded-lg border border-dashed border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                     <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-800">
                       <Users className="h-5 w-5 text-gray-500" />
                     </div>
@@ -271,23 +222,16 @@ const UserAuthSection: React.FC = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setShowSwitchAccountDialog(false)}
-                >
+                <Button variant="ghost" onClick={() => setShowSwitchAccountDialog(false)}>
                   Cancel
                 </Button>
-                <Button 
-                  onClick={() => navigate('/switch-account')}
-                >
+                <Button onClick={() => navigate('/switch-account')}>
                   Manage Accounts
                 </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
-        </div>
-      ) : (
-        <>
+        </div> : <>
           <Link to="/login">
             <Button variant="outline" className="border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
               Sign In
@@ -298,11 +242,7 @@ const UserAuthSection: React.FC = () => {
               Get Started
             </Button>
           </Link>
-        </>
-      )}
-    </div>
-  );
+        </>}
+    </div>;
 };
-
 export default UserAuthSection;
-

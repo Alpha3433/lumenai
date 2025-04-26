@@ -87,8 +87,8 @@ const ContentColumn = () => {
       </div>
       
       <div className="mt-3 text-xs text-blue-600 dark:text-blue-400 flex items-center">
-        <ArrowRight className="h-3 w-3 mr-1" />
-        <span>Join now for early access pricing</span>
+        
+        
       </div>
     </motion.div>;
 };

@@ -1,45 +1,50 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 const steps = [
   {
     number: 1,
-    title: "Describe your idea",
-    description: "Tell us about your startup idea in simple terms. No technical jargon required."
+    title: "Define your idea",
+    description: "Clearly articulate your startup concept, target audience, and the problem you're solving."
   },
   {
     number: 2,
-    title: "Let AI analyze competition",
-    description: "Our AI researches competitors, market size, and potential challenges."
+    title: "Get a detailed validation plan",
+    description: "Receive a customized roadmap for validating your specific idea with data-driven methods."
   },
   {
     number: 3,
-    title: "Get a full report",
-    description: "Receive a comprehensive analysis with actionable insights and recommendations."
+    title: "Start a testing phase",
+    description: "Deploy lightweight experiments to test your core assumptions with real users."
   },
   {
     number: 4,
-    title: "See if people actually want it",
-    description: "Test demand with real market validation before investing time in development."
+    title: "Talk to Product Owners & Early Adopters",
+    description: "Connect with potential customers to gather insights and validate demand."
   },
   {
     number: 5,
-    title: "Implementation roadmap",
-    description: "Get a step-by-step plan for bringing your validated idea to market."
+    title: "Collect real feedback from social media",
+    description: "Leverage targeted platforms to gauge interest and gather unbiased opinions."
   },
   {
     number: 6,
-    title: "Ongoing AI-powered insights",
-    description: "Continuously monitor market trends and receive updated recommendations."
+    title: "Analyze detailed feedback from customers",
+    description: "Identify patterns and insights from user feedback to refine your concept."
+  },
+  {
+    number: 7,
+    title: "Revise your idea based on feedback",
+    description: "Iterate on your concept based on validation data to improve product-market fit."
   }
 ];
 
 const SolutionSteps = () => {
   return (
-    <section className="py-16 md:py-24 px-4 md:px-8 bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-20 px-4 bg-white" id="how-it-works">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -47,91 +52,57 @@ const SolutionSteps = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            The Solution — Here's How It Works
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Our AI-powered platform validates your startup idea in minutes, not months
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">The Solution — How It Works</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Our platform guides you through a proven validation process to test your startup idea before you invest
           </p>
         </motion.div>
-        
-        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
           <div className="space-y-12">
-            {steps.slice(0, 3).map((step, index) => (
+            {steps.map((step, index) => (
               <motion.div
-                key={step.number}
+                key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 className="flex gap-4"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
-                  {step.number}
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 font-bold">
+                    {step.number}
+                  </div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
+                  <h3 className="font-semibold text-lg mb-1">{step.title}</h3>
+                  <p className="text-gray-600 text-sm">{step.description}</p>
                 </div>
               </motion.div>
             ))}
           </div>
           
-          <div className="space-y-12">
-            {steps.slice(3).map((step, index) => (
-              <motion.div
-                key={step.number}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: (index + 3) * 0.1 }}
-                viewport={{ once: true }}
-                className="flex gap-4"
-              >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
-                  {step.number}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-        
-        <div className="mt-16 flex justify-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 p-6 max-w-lg w-full"
+            className="bg-gray-900 rounded-xl overflow-hidden shadow-xl"
           >
-            <div className="mb-4">
-              <div className="flex space-x-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              </div>
+            <div className="p-4 bg-gray-800 flex gap-2">
+              <div className="w-3 h-3 rounded-full bg-red-500"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
-            <pre className="bg-gray-900 text-green-400 p-4 rounded-lg text-sm font-mono overflow-x-auto">
-              <code>
-                {`// Validation in progress...
-const marketAnalysis = await AI.analyze({
-  idea: "Food delivery for pets",
-  location: "United States",
-  targetAudience: "Pet owners"
-});
-
-// Results:
-{
-  marketSize: "$24.3 billion",
-  competitorCount: 8,
-  validationScore: 82,
-  recommendation: "PROCEED WITH CAUTION"
-}`}
-              </code>
-            </pre>
+            <div className="p-6 text-emerald-400 font-mono text-sm">
+              <p className="mb-2"><span className="text-pink-400">const</span> <span className="text-blue-400">validateIdea</span> = <span className="text-pink-400">async</span> (idea) =&gt; {'{'}</p>
+              <p className="mb-2 pl-4"><span className="text-blue-400">const</span> targetAudience = <span className="text-pink-400">await</span> identifyAudience(idea);</p>
+              <p className="mb-2 pl-4"><span className="text-blue-400">const</span> marketSize = <span className="text-pink-400">await</span> calculateTAM(idea.industry);</p>
+              <p className="mb-2 pl-4"><span className="text-blue-400">const</span> competitors = <span className="text-pink-400">await</span> findCompetitors(idea.keywords);</p>
+              <p className="mb-2 pl-4"><span className="text-blue-400">const</span> validationScore = analyzeData(targetAudience, marketSize, competitors);</p>
+              <p className="mb-4 pl-4"><span className="text-pink-400">return</span> {'{'} score: validationScore, insights: [...] {'}'};</p>
+              <p>{'}'}</p>
+            </div>
           </motion.div>
         </div>
       </div>

@@ -81,10 +81,15 @@ const EmailForm = () => {
 
   if (isSubmitted) {
     return (
-      <div className="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 rounded-lg p-4 flex items-start gap-3">
+      <div className="bg-emerald-800/50 border border-emerald-300/20 rounded-lg p-4 flex items-center gap-3">
+        <div className="flex-shrink-0 bg-emerald-500 rounded-full p-1">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12L10 17L20 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
         <div>
-          <h3 className="font-medium text-green-800 dark:text-green-400">You're on the list!</h3>
-          <p className="text-sm text-green-700 dark:text-green-500">
+          <h3 className="font-medium text-white">You're on the list!</h3>
+          <p className="text-sm text-emerald-100">
             Thank you for your interest! We'll notify you when we launch.
           </p>
         </div>
@@ -100,12 +105,12 @@ const EmailForm = () => {
           placeholder="Enter your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="h-12 text-base"
+          className="h-12 text-base bg-white text-gray-900 border-gray-200"
           required
         />
         <Button 
           type="submit" 
-          className="h-12 px-6 bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+          className="h-12 px-6 bg-emerald-600 hover:bg-emerald-700 border border-emerald-500 text-white flex items-center gap-2"
           disabled={isSubmitting}
         >
           Get Started

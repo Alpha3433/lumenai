@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 
 const WaitingListHeader = () => {
   return (
-    <header className="w-full py-6 px-4 bg-white border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-[1200px] mx-auto flex justify-between items-center">
+    <header className="w-full py-4 px-4 bg-white sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
         <BrandLogo />
         <nav className="hidden md:flex items-center gap-6">
           <Button variant="ghost" asChild>

@@ -5,7 +5,7 @@ import EmailForm from './EmailForm';
 
 const FooterCTA = () => {
   return (
-    <section className="py-24 bg-emerald-600 text-white">
+    <section className="py-20 bg-emerald-600 text-white">
       <div className="max-w-4xl mx-auto text-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -30,6 +30,22 @@ const FooterCTA = () => {
           className="max-w-md mx-auto"
         >
           <EmailForm />
+          
+          <div className="flex items-center justify-center mt-8 text-sm">
+            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500 mr-2">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span>No credit card required</span>
+            
+            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500 ml-6 mr-2">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span>Cancel anytime</span>
+          </div>
         </motion.div>
       </div>
     </section>

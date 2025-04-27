@@ -5,24 +5,23 @@ import { motion } from 'framer-motion';
 
 const HeroSection = () => {
   return (
-    <section className="py-24 px-4 bg-white">
-      <div className="max-w-[1200px] mx-auto">
+    <section className="py-20 px-4 bg-white">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-2xl mx-auto text-center"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-            Validate Your Startup Idea
-            <span className="text-emerald-600 block">Before You Build It</span>
+            Validate Your<br />Startup Idea
+            <span className="text-emerald-600 block mt-1">Before You Build It</span>
           </h1>
           
-          <p className="text-xl text-gray-600 mb-8 max-w-xl mx-auto">
+          <p className="text-lg text-gray-600 mb-8 max-w-lg">
             Get data-driven insights and market validation before investing time and resources in your startup idea.
           </p>
           
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md">
             <EmailForm />
           </div>
         </motion.div>
@@ -31,12 +30,12 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-16"
+          className="relative"
         >
           <img 
-            src="public/lovable-uploads/acbb9618-df32-466e-b8e1-f8a2132e2171.png"
+            src="public/lovable-uploads/7757e8bc-1c7c-4b6e-b345-1c5b912e5019.png"
             alt="Platform dashboard" 
-            className="w-full h-auto rounded-xl shadow-2xl"
+            className="w-full h-auto"
           />
         </motion.div>
       </div>

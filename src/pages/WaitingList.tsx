@@ -1,20 +1,35 @@
 
 import React from 'react';
 import WaitingListHeader from '@/components/waiting-list/WaitingListHeader';
-import ContentColumn from '@/components/waiting-list/ContentColumn';
-import VideoColumn from '@/components/waiting-list/VideoColumn';
-import ParallaxBackground from '@/components/waiting-list/ParallaxBackground';
+import HeroSection from '@/components/waiting-list/HeroSection';
+import WhyStartupsFail from '@/components/waiting-list/WhyStartupsFail';
+import SolutionSteps from '@/components/waiting-list/SolutionSteps';
+import AutomationSection from '@/components/waiting-list/AutomationSection';
+import FeaturesSection from '@/components/waiting-list/FeaturesSection';
+import ValidationMattersSection from '@/components/waiting-list/ValidationMattersSection';
+import TestimonialsSection from '@/components/waiting-list/TestimonialsSection';
+import FAQSection from '@/components/waiting-list/FAQSection';
+import FooterCTA from '@/components/waiting-list/FooterCTA';
+import Footer from '@/components/Footer';
 
 const WaitingList = () => {
   return (
-    <div className="h-screen overflow-y-auto overflow-x-hidden bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-950 flex flex-col relative">
-      <ParallaxBackground />
+    <div className="bg-white dark:bg-gray-950 min-h-screen">
       <WaitingListHeader />
-
-      <main className="flex-1 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 gap-6 md:gap-12 relative z-10">
-        <ContentColumn />
-        <VideoColumn />
+      
+      <main className="flex flex-col w-full">
+        <HeroSection />
+        <WhyStartupsFail />
+        <SolutionSteps />
+        <AutomationSection />
+        <FeaturesSection />
+        <ValidationMattersSection />
+        <TestimonialsSection />
+        <FAQSection />
+        <FooterCTA />
       </main>
+      
+      <Footer />
     </div>
   );
 };

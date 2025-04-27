@@ -1,13 +1,12 @@
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import ConfirmationDialog from './ConfirmationDialog';
 import { useEmailService } from '@/utils/emailService';
+import { ArrowRight } from 'lucide-react';
 
 const EmailForm = () => {
   const [email, setEmail] = useState('');
@@ -82,47 +81,36 @@ const EmailForm = () => {
 
   if (isSubmitted) {
     return (
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 rounded-lg p-4 flex items-start gap-3"
-      >
-        <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5" />
+      <div className="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 rounded-lg p-4 flex items-start gap-3">
         <div>
-          <h3 className="font-medium text-green-800 dark:text-green-300">You're on the list!</h3>
-          <p className="text-sm text-green-700 dark:text-green-400">
+          <h3 className="font-medium text-green-800 dark:text-green-400">You're on the list!</h3>
+          <p className="text-sm text-green-700 dark:text-green-500">
             Thank you for your interest! We'll notify you when we launch.
           </p>
         </div>
-      </motion.div>
+      </div>
     );
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Input
-            type="email"
-            placeholder="Enter your email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="h-12 text-base"
-            autoFocus
-            required
-          />
-          <Button 
-            type="submit" 
-            className="h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Joining...' : 'Join Waiting List'}
-          </Button>
-        </div>
-        
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          We'll notify you when we launch. No spam, ever.
-        </p>
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+        <Input
+          type="email"
+          placeholder="Enter your email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="h-12 text-base"
+          required
+        />
+        <Button 
+          type="submit" 
+          className="h-12 px-6 bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+          disabled={isSubmitting}
+        >
+          Get Started
+          <ArrowRight className="w-4 h-4" />
+        </Button>
       </form>
 
       <ConfirmationDialog open={showDialog} onClose={closeDialog} />

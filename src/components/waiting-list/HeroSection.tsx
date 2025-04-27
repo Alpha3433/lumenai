@@ -5,41 +5,39 @@ import { motion } from 'framer-motion';
 
 const HeroSection = () => {
   return (
-    <section className="py-24 md:py-32 px-4 md:px-8 bg-white">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <section className="py-24 px-4 bg-white">
+      <div className="max-w-[1200px] mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col gap-8"
+          className="max-w-2xl mx-auto text-center"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
-            Validate Your Startup Idea Fast
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            Validate Your Startup Idea
+            <span className="text-emerald-600 block">Before You Build It</span>
           </h1>
           
-          <p className="text-xl text-gray-600 max-w-lg">
-            Use AI-powered validation to test your idea before building. Save time and resources.
+          <p className="text-xl text-gray-600 mb-8 max-w-xl mx-auto">
+            Get data-driven insights and market validation before investing time and resources in your startup idea.
           </p>
           
-          <div className="max-w-md">
+          <div className="max-w-md mx-auto">
             <EmailForm />
           </div>
         </motion.div>
         
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="relative hidden md:block"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="mt-16"
         >
-          <div className="relative bg-gradient-to-br from-gray-50 to-white rounded-2xl overflow-hidden shadow-2xl">
-            <img 
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f"
-              alt="Platform dashboard" 
-              className="w-full h-auto rounded-2xl"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent"></div>
-          </div>
+          <img 
+            src="public/lovable-uploads/acbb9618-df32-466e-b8e1-f8a2132e2171.png"
+            alt="Platform dashboard" 
+            className="w-full h-auto rounded-xl shadow-2xl"
+          />
         </motion.div>
       </div>
     </section>

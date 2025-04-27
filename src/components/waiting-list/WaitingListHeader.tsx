@@ -6,22 +6,24 @@ import { Button } from '@/components/ui/button';
 
 const WaitingListHeader = () => {
   return (
-    <header className="w-full py-4 px-4 md:px-8 bg-white border-b border-gray-100 sticky top-0 z-50">
+    <header className="w-full py-6 px-4 md:px-8 bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <BrandLogo />
-        <div className="flex items-center gap-8">
-          <nav className="hidden md:flex items-center gap-8">
-            <Link to="#features" className="text-sm text-gray-600 hover:text-emerald-600">
+        <nav className="hidden md:flex items-center gap-8">
+          <Button variant="ghost" asChild>
+            <Link to="#features" className="text-gray-600 hover:text-gray-900">
               Features
             </Link>
-            <Link to="#how-it-works" className="text-sm text-gray-600 hover:text-emerald-600">
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link to="#how-it-works" className="text-gray-600 hover:text-gray-900">
               How it works
             </Link>
-          </nav>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+          </Button>
+          <Button className="bg-black hover:bg-gray-800 text-white">
             Join Waitlist
           </Button>
-        </div>
+        </nav>
       </div>
     </header>
   );

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -8,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Index from "./pages/Index";
 import Create from "./pages/Create";
-// Removed: import GenerateIdea from "./pages/GenerateIdea";
 import Examples from "./pages/Examples";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
@@ -27,6 +25,7 @@ import Checkout from "./pages/Checkout";
 import Blog from "./pages/Blog";
 import GenerateReport from "./pages/GenerateReport";
 import RedditInsights from "./pages/RedditInsights";
+import CommunityOutreach from "./pages/CommunityOutreach";
 
 const queryClient = new QueryClient();
 
@@ -44,7 +43,6 @@ const App = () => (
                 <Route path="/" element={<WaitingList />} />
                 <Route path="/home" element={<Index />} />
                 <Route path="/create" element={<Create />} />
-                {/* Removed: <Route path="/generate-idea" element={<GenerateIdea />} /> */}
                 <Route path="/examples" element={<Examples />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -59,6 +57,7 @@ const App = () => (
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/generate-report" element={<GenerateReport />} />
                 <Route path="/reddit-insights" element={<RedditInsights />} />
+                <Route path="/community-outreach" element={<CommunityOutreach />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>
@@ -70,4 +69,3 @@ const App = () => (
 );
 
 export default App;
-

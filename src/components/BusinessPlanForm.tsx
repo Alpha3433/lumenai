@@ -1,9 +1,28 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Sparkles } from 'lucide-react';
 import BusinessPlanFormFields from './business-plan/BusinessPlanFormFields';
 import GeneratingDialog from './business-plan/GeneratingDialog';
+
+/**
+ * Interface for BusinessPlanForm props
+ */
+interface BusinessPlanFormProps {
+  formData: {
+    businessName: string;
+    businessDescription: string;
+    useAIV2: boolean;
+  };
+  generating: boolean;
+  generatingProgress: number;
+  isPremium: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onToggleChange: (name: string, value: boolean) => void;
+  onSubmit: (e: React.FormEvent) => void;
+  onUpgrade: () => void;
+}
 
 /**
  * BusinessPlanForm Component

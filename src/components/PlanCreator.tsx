@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { usePlanCreator } from '@/hooks/usePlanCreator';
+import usePlanCreator from '@/hooks/usePlanCreator';
 import BusinessPlanForm from './BusinessPlanForm';
 import BusinessPlanPreview from './BusinessPlanPreview';
 import { AnimatePresence } from 'framer-motion';

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { generateBusinessPlan } from '@/utils/planGenerator';
 import { toast } from '@/components/ui/use-toast';
@@ -29,7 +28,29 @@ const defaultBusinessPlan: BusinessPlanData = {
   swotAnalysis: ''
 };
 
-export const usePlanCreator = (initialData?: {
+/**
+ * Custom hook for managing business plan creation workflow
+ * 
+ * @param {Object} initialData - Optional initial business data
+ * @param {string} initialData.businessName - Initial business name
+ * @param {string} initialData.businessDescription - Initial business description
+ * 
+ * @returns {Object} Plan creator state and methods
+ * @returns {number} .step - Current step in the creation process
+ * @returns {Object} .formData - Current form data
+ * @returns {Object} .businessPlan - Generated business plan data
+ * @returns {boolean} .generating - Whether plan is being generated
+ * @returns {number} .generatingProgress - Generation progress percentage
+ * @returns {boolean} .isPremium - Premium status
+ * @returns {Function} .handleInputChange - Input change handler
+ * @returns {Function} .handleToggleChange - Toggle change handler
+ * @returns {Function} .handleSubmit - Form submission handler
+ * @returns {Function} .downloadPlan - Plan download handler
+ * @returns {Function} .upgradeAccount - Account upgrade handler
+ * @returns {Function} .setStep - Step setter
+ * @returns {Function} .updateBusinessInfo - Business info updater
+ */
+const usePlanCreator = (initialData?: {
   businessName?: string;
   businessDescription?: string;
 } | null) => {
@@ -204,3 +225,5 @@ export const usePlanCreator = (initialData?: {
     updateBusinessInfo
   };
 };
+
+export default usePlanCreator;

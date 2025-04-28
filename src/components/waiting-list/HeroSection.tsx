@@ -3,6 +3,18 @@ import React from 'react';
 import EmailForm from './EmailForm';
 import { motion } from 'framer-motion';
 
+/**
+ * HeroSection Component
+ * 
+ * A responsive hero section for the landing page that introduces the main value proposition
+ * and captures email signups through the waiting list form.
+ * 
+ * Features:
+ * - Animated content using Framer Motion
+ * - Responsive layout with tailored text sizes for different screen sizes
+ * - Visual effects including gradient overlays and blur effects
+ * - Optimized image loading with eager loading strategy
+ */
 const HeroSection = () => {
   return (
     <section className="relative py-24 overflow-hidden px-4">

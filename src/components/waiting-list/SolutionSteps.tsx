@@ -1,6 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+
+/**
+ * Steps data defining the validation process
+ * Each step contains a number, title, and detailed description
+ */
 const steps = [{
   number: 1,
   title: "Define your idea",
@@ -30,6 +35,19 @@ const steps = [{
   title: "Revise your idea based on feedback",
   description: "Iterate on your concept based on validation data to improve product-market fit."
 }];
+
+/**
+ * SolutionSteps Component
+ * 
+ * Displays a sequential breakdown of the business validation process with
+ * animated step-by-step instructions and a complementary code visualization.
+ * 
+ * Features:
+ * - Animated content reveal on scroll
+ * - Responsive two-column layout
+ * - Interactive code example demonstrating the validation process
+ * - Visual step progression with numbering
+ */
 const SolutionSteps = () => {
   return <section className="py-20 px-4 bg-white" id="how-it-works">
       <div className="max-w-7xl mx-auto">
@@ -107,4 +125,5 @@ const SolutionSteps = () => {
       </div>
     </section>;
 };
+
 export default SolutionSteps;

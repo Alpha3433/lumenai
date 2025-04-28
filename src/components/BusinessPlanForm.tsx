@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,22 +5,22 @@ import { Loader2, Sparkles } from 'lucide-react';
 import BusinessPlanFormFields from './business-plan/BusinessPlanFormFields';
 import GeneratingDialog from './business-plan/GeneratingDialog';
 
-interface BusinessPlanFormProps {
-  formData: {
-    businessName: string;
-    businessDescription: string;
-    useAIV2: boolean;
-  };
-  generating: boolean;
-  generatingProgress: number;
-  isPremium: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  onToggleChange: (name: string, value: boolean) => void;
-  onSubmit: (e: React.FormEvent) => void;
-  onUpgrade: () => void;
-}
-
-const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
+/**
+ * BusinessPlanForm Component
+ * 
+ * A comprehensive form for creating business plans with AI assistance.
+ * 
+ * @param {Object} props
+ * @param {Object} props.formData - The current form data state
+ * @param {boolean} props.generating - Whether the plan is currently being generated
+ * @param {number} props.generatingProgress - Progress percentage of plan generation
+ * @param {boolean} props.isPremium - User's premium status
+ * @param {Function} props.onChange - Form field change handler
+ * @param {Function} props.onToggleChange - Toggle field change handler
+ * @param {Function} props.onSubmit - Form submission handler
+ * @param {Function} props.onUpgrade - Premium upgrade handler
+ */
+const BusinessPlanForm = ({
   formData,
   generating,
   generatingProgress,
@@ -30,7 +29,7 @@ const BusinessPlanForm: React.FC<BusinessPlanFormProps> = ({
   onToggleChange,
   onSubmit,
   onUpgrade
-}) => {
+}: BusinessPlanFormProps) => {
   const [errors, setErrors] = useState<{
     businessName?: string;
     businessDescription?: string;

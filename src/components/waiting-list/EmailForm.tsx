@@ -8,6 +8,21 @@ import ConfirmationDialog from './ConfirmationDialog';
 import { useEmailService } from '@/utils/emailService';
 import { ArrowRight } from 'lucide-react';
 
+/**
+ * EmailForm Component
+ * 
+ * Handles email collection for the waiting list with form validation,
+ * submission handling, and success/error feedback.
+ * 
+ * Features:
+ * - Email validation
+ * - Supabase integration for storing emails
+ * - Welcome email automation
+ * - Loading states and error handling
+ * - Success confirmation dialog
+ * 
+ * @returns {JSX.Element} A form component for collecting email addresses
+ */
 const EmailForm = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);

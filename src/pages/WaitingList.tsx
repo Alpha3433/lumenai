@@ -14,14 +14,14 @@ import Footer from '@/components/Footer';
 
 const WaitingList = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <WaitingListHeader />
       <main className="flex flex-col w-full">
         <HeroSection />
         <WhyStartupsFail />
         <SolutionSteps />
-        <AutomationSection />
         <FeaturesSection />
+        <AutomationSection />
         <ValidationInsights />
         <TestimonialsSection />
         <FAQSection />

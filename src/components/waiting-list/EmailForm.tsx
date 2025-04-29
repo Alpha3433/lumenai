@@ -6,23 +6,8 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import ConfirmationDialog from './ConfirmationDialog';
 import { useEmailService } from '@/utils/emailService';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 
-/**
- * EmailForm Component
- * 
- * Handles email collection for the waiting list with form validation,
- * submission handling, and success/error feedback.
- * 
- * Features:
- * - Email validation
- * - Supabase integration for storing emails
- * - Welcome email automation
- * - Loading states and error handling
- * - Success confirmation dialog
- * 
- * @returns {JSX.Element} A form component for collecting email addresses
- */
 const EmailForm = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -96,15 +81,15 @@ const EmailForm = () => {
 
   if (isSubmitted) {
     return (
-      <div className="bg-emerald-800/50 border border-emerald-300/20 rounded-lg p-4 flex items-center gap-3">
+      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
         <div className="flex-shrink-0 bg-emerald-500 rounded-full p-1">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 12L10 17L20 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <div>
-          <h3 className="font-medium text-white">You're on the list!</h3>
-          <p className="text-sm text-emerald-100">
+          <h3 className="font-medium text-gray-900">You're on the list!</h3>
+          <p className="text-sm text-gray-600">
             Thank you for your interest! We'll notify you when we launch.
           </p>
         </div>
@@ -114,22 +99,33 @@ const EmailForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-        <Input
-          type="email"
-          placeholder="Enter your email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="h-12 text-base bg-white text-gray-900 border-gray-200"
-          required
-        />
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full">
+        <div className="relative flex-grow">
+          <Input
+            type="email"
+            placeholder="Enter your email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="h-12 text-base bg-white text-gray-900 border-gray-200 pr-4 pl-4 rounded-lg"
+            required
+          />
+        </div>
         <Button 
           type="submit" 
-          className="h-12 px-6 bg-emerald-600 hover:bg-emerald-700 border border-emerald-500 text-white flex items-center gap-2"
+          className="h-12 px-6 bg-emerald-600 hover:bg-emerald-700 border border-emerald-500 text-white flex items-center gap-2 rounded-lg"
           disabled={isSubmitting}
         >
-          Get Started
-          <ArrowRight className="w-4 h-4" />
+          {isSubmitting ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Joining...</span>
+            </>
+          ) : (
+            <>
+              <span>Join Waitlist</span>
+              <ArrowRight className="w-4 h-4" />
+            </>
+          )}
         </Button>
       </form>
 

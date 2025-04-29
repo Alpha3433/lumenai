@@ -34,12 +34,12 @@ const SolutionSteps = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-16 lg:gap-20 items-stretch">
-          <div className="h-full">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+          <div className="h-full flex">
             <ProcessSteps steps={validationSteps} />
           </div>
           
-          <div className="h-full">
+          <div className="h-full flex">
             <CodeAnimation codeLines={codeLines} />
             
             <motion.div

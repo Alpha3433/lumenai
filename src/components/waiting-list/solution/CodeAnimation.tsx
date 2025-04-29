@@ -60,7 +60,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
       viewport={{
         once: true
       }}
-      className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col"
+      className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full"
     >
       <div className="p-4 bg-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -88,7 +88,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         />
       </div>
       
-      <div className="p-8 font-mono text-sm h-full overflow-y-auto flex-grow relative">
+      <div className="p-8 font-mono text-sm flex-grow relative overflow-y-auto">
         <div className="space-y-2">
           {codeLines.map((line, index) => (
             <motion.div

@@ -23,35 +23,98 @@ const HeroSection = () => {
             transition={{ duration: 0.6 }}
             className="max-w-2xl relative z-10"
           >
-            <span className="inline-block px-3 py-1 mb-6 text-sm font-medium rounded-full bg-blue-100 text-blue-800">
-              Coming Soon
-            </span>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6">
-              Validate Your{' '}
-              <span className="relative inline-block">
-                Startup Idea
-                <div className="h-[6px] bg-gradient-to-r from-blue-400 to-purple-400 -mt-2 rounded-full absolute bottom-0 left-0 right-0"></div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="inline-block px-4 py-2 mb-6 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200"
+            >
+              <span className="text-sm md:text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                ✨ Coming Soon
               </span>
+            </motion.div>
+            
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 leading-tight">
+              <motion.span 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="block"
+              >
+                Validate Your
+              </motion.span>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="relative inline-block"
+              >
+                <span className="relative z-10 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Startup Idea
+                </span>
+                <motion.div 
+                  className="h-[8px] bg-gradient-to-r from-blue-400 to-purple-400 -mt-2 rounded-full absolute bottom-1 left-0 right-0 z-0"
+                  initial={{ width: 0 }}
+                  animate={{ width: '100%' }}
+                  transition={{ delay: 1.0, duration: 0.8 }}
+                ></motion.div>
+              </motion.div>
             </h1>
             
-            <h2 className="mt-4 text-xl md:text-2xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+            <motion.h2 
+              className="mt-6 text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+            >
               Before You Invest Time & Money
-            </h2>
+            </motion.h2>
             
-            <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-              Get data-driven insights and market validation before investing time and resources in your startup idea. Join our waitlist to be among the first to access our platform.
-            </p>
+            <motion.p 
+              className="mt-6 text-lg text-gray-700 leading-relaxed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.0, duration: 0.5 }}
+            >
+              <span className="font-semibold">Don't gamble with your future.</span> Our AI platform delivers 
+              <span className="mx-1 py-1 px-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-md font-medium">data-driven insights</span> 
+              and <span className="mx-1 py-1 px-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-md font-medium">market validation</span> so you can 
+              launch with confidence. Join our waitlist for early access to tools that prevent costly startup mistakes.
+            </motion.p>
             
-            <div className="mt-10 max-w-md">
+            <motion.div 
+              className="mt-10 max-w-md"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.5 }}
+            >
               <EmailForm />
-            </div>
+            </motion.div>
             
-            <div className="mt-8">
-              <p className="text-sm text-gray-500">
-                <span className="font-semibold text-gray-900">250+</span> entrepreneurs on the waitlist
-              </p>
-            </div>
+            <motion.div 
+              className="mt-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.4, duration: 0.5 }}
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map((i) => (
+                    <div 
+                      key={i}
+                      className={`w-8 h-8 rounded-full border-2 border-white bg-gradient-to-r ${
+                        i === 1 ? 'from-blue-400 to-blue-500' :
+                        i === 2 ? 'from-purple-400 to-purple-500' :
+                        'from-indigo-400 to-indigo-500'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className="text-sm text-gray-700">
+                  <span className="font-bold text-gray-900">250+</span> entrepreneurs already on the waitlist
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
 
           {/* Right Column - Business Validation Score Preview */}
@@ -131,18 +194,18 @@ const HeroSection = () => {
                   >
                     <h4 className="text-sm font-semibold mb-3 text-emerald-600 uppercase">Key Strengths</h4>
                     <div className="space-y-2">
-                      <div className="flex items-start gap-2 bg-emerald-50 p-2 rounded-lg">
-                        <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5" />
+                      <div className="flex items-start gap-2 bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-400">
+                        <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-sm font-medium">Recurring Revenue</p>
-                          <p className="text-xs text-gray-600">Performing well compared to industry standards</p>
+                          <p className="text-sm font-medium">Recurring Revenue Potential</p>
+                          <p className="text-xs text-gray-600">Subscription model provides stable cash flow</p>
                         </div>
                       </div>
-                      <div className="flex items-start gap-2 bg-emerald-50 p-2 rounded-lg">
-                        <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5" />
+                      <div className="flex items-start gap-2 bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-400">
+                        <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-sm font-medium">Growing Market</p>
-                          <p className="text-xs text-gray-600">Performing well compared to industry standards</p>
+                          <p className="text-sm font-medium">Growing Market Demand</p>
+                          <p className="text-xs text-gray-600">22% YoY growth in target segment</p>
                         </div>
                       </div>
                     </div>
@@ -155,20 +218,25 @@ const HeroSection = () => {
                   >
                     <h4 className="text-sm font-semibold mb-3 text-amber-600 uppercase">Areas for Improvement</h4>
                     <div className="space-y-2">
-                      <div className="flex items-start gap-2 bg-amber-50 p-2 rounded-lg">
-                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                      <div className="flex items-start gap-2 bg-amber-50 p-3 rounded-lg border-l-4 border-amber-400">
+                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-sm font-medium">High Competition</p>
-                          <p className="text-xs text-gray-600">Room for improvement in this area</p>
+                          <p className="text-sm font-medium">High Competitive Landscape</p>
+                          <p className="text-xs text-gray-600">5 established competitors in market</p>
                         </div>
                       </div>
-                      <div className="flex items-start gap-2 bg-amber-50 p-2 rounded-lg">
-                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                      <motion.div 
+                        className="flex items-start gap-2 bg-amber-50 p-3 rounded-lg border-l-4 border-amber-400"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 2.0 }}
+                      >
+                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-sm font-medium">Market Saturation</p>
-                          <p className="text-xs text-gray-600">Room for improvement in this area</p>
+                          <p className="text-sm font-medium">Customer Acquisition Cost</p>
+                          <p className="text-xs text-gray-600">Higher than industry average</p>
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   </motion.div>
                 </div>

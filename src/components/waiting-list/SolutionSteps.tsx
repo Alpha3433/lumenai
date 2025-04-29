@@ -14,14 +14,14 @@ import { validationSteps, codeLines } from './solution/solutionStepsData';
  */
 const SolutionSteps = () => {
   return (
-    <section className="py-24 px-4 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800" id="how-it-works">
+    <section className="py-20 px-4 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800" id="how-it-works">
       <div className="max-w-7xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
           <div className="inline-block mb-4 px-6 py-1.5 bg-blue-100 dark:bg-blue-900/40 rounded-full">
             <h3 className="text-blue-600 dark:text-blue-400 text-sm font-semibold tracking-wide">OUR PROCESS</h3>
@@ -34,7 +34,7 @@ const SolutionSteps = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
           <div className="h-full flex">
             <ProcessSteps steps={validationSteps} />
           </div>

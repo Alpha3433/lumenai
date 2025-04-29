@@ -88,7 +88,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         />
       </div>
       
-      <div className="p-8 font-mono text-sm flex-grow relative overflow-y-auto">
+      <div className="p-8 font-mono text-sm flex-grow relative overflow-hidden">
         <div className="space-y-2">
           {codeLines.map((line, index) => (
             <motion.div

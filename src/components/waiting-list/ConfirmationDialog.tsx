@@ -29,8 +29,23 @@ const ConfirmationDialog = ({ open, onClose }: ConfirmationDialogProps) => {
         <div className="py-4 space-y-4">
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-lg p-4">
             <p className="text-sm text-gray-700">
-              <strong>What's next?</strong> We're currently building our platform and will be launching soon. You'll be among the first to know!
+              <strong>What's next?</strong> We're currently building our platform and will be launching soon. You'll be among the first to get access to our business validation tools!
             </p>
+          </div>
+          
+          <div className="space-y-2">
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold">
+                  85
+                </div>
+                <div className="text-sm">
+                  <p className="font-medium">Business Validation Score</p>
+                  <p className="text-xs text-gray-500">Data-driven insights for your startup</p>
+                </div>
+              </div>
+              <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">Coming Soon</span>
+            </div>
           </div>
           
           <div className="space-y-2">

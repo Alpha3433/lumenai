@@ -2,6 +2,7 @@
 import React from 'react';
 import EmailForm from './EmailForm';
 import { motion } from 'framer-motion';
+import { CheckCircle, AlertTriangle } from 'lucide-react';
 
 const HeroSection = () => {
   return (
@@ -53,39 +54,125 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
-          {/* Right Column - Abstract Design Element */}
+          {/* Right Column - Business Validation Score Preview */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative lg:ml-auto z-10 hidden lg:block"
+            className="relative z-10 hidden lg:block"
           >
             <div className="relative">
-              {/* Abstract Geometric Elements */}
-              <div className="absolute inset-0">
-                <div className="absolute top-10 right-10 w-40 h-40 rounded-3xl bg-gradient-to-tr from-blue-500 to-purple-500 opacity-20 rotate-12"></div>
-                <div className="absolute bottom-20 left-20 w-60 h-60 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 opacity-10"></div>
-                <div className="absolute top-40 left-0 w-20 h-20 rounded-lg bg-blue-400 opacity-20 -rotate-12"></div>
-                <div className="absolute bottom-10 right-20 w-24 h-24 rounded-xl bg-purple-400 opacity-20 rotate-45"></div>
-              </div>
-              
-              {/* Main Content Frame */}
-              <div className="relative h-[400px] w-full max-w-[500px] rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200/50 shadow-xl flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-16 h-16 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-6 flex items-center justify-center">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" strokeWidth="2" />
-                      <path d="M12 8V12L15 15" stroke="white" strokeWidth="2" strokeLinecap="round" />
+              <motion.div 
+                className="p-8 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <h3 className="text-xl font-bold mb-6 text-center">Business Validation Score</h3>
+                
+                <div className="flex justify-center mb-6">
+                  <motion.div 
+                    className="relative w-40 h-40"
+                    initial={{ rotate: -90 }}
+                    animate={{ rotate: 0 }}
+                    transition={{ duration: 1, delay: 0.5, type: "spring" }}
+                  >
+                    <svg className="w-full h-full -rotate-90">
+                      <circle
+                        cx="80"
+                        cy="80"
+                        r="70"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="12"
+                        className="text-gray-100"
+                      />
+                      <motion.circle
+                        cx="80"
+                        cy="80"
+                        r="70"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="12"
+                        strokeDasharray={440}
+                        strokeDashoffset={440}
+                        strokeLinecap="round"
+                        className="text-blue-500"
+                        animate={{ strokeDashoffset: 440 - (440 * 85) / 100 }}
+                        transition={{ duration: 1.5, delay: 0.7, ease: "easeOut" }}
+                      />
                     </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                    Launch Faster
-                  </h3>
-                  <p className="text-gray-600">
-                    Skip the uncertainty and validate your startup idea with confidence using our data-driven platform
-                  </p>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <motion.span 
+                        className="text-4xl font-bold"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 1.2 }}
+                      >
+                        85
+                      </motion.span>
+                      <motion.span 
+                        className="text-sm text-gray-500"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 1.4 }}
+                      >
+                        out of 100
+                      </motion.span>
+                    </div>
+                  </motion.div>
                 </div>
-              </div>
+                
+                <div className="space-y-6">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 1.5 }}
+                  >
+                    <h4 className="text-sm font-semibold mb-3 text-emerald-600 uppercase">Key Strengths</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2 bg-emerald-50 p-2 rounded-lg">
+                        <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium">Recurring Revenue</p>
+                          <p className="text-xs text-gray-600">Performing well compared to industry standards</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2 bg-emerald-50 p-2 rounded-lg">
+                        <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium">Growing Market</p>
+                          <p className="text-xs text-gray-600">Performing well compared to industry standards</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 1.8 }}
+                  >
+                    <h4 className="text-sm font-semibold mb-3 text-amber-600 uppercase">Areas for Improvement</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2 bg-amber-50 p-2 rounded-lg">
+                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium">High Competition</p>
+                          <p className="text-xs text-gray-600">Room for improvement in this area</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2 bg-amber-50 p-2 rounded-lg">
+                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium">Market Saturation</p>
+                          <p className="text-xs text-gray-600">Room for improvement in this area</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>

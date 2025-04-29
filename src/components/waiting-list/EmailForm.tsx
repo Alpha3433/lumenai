@@ -81,15 +81,15 @@ const EmailForm = () => {
 
   if (isSubmitted) {
     return (
-      <div className="bg-white/20 backdrop-blur-sm border border-white/20 rounded-lg p-4 flex items-center gap-3">
+      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
         <div className="flex-shrink-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full p-1">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 12L10 17L20 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <div>
-          <h3 className="font-medium text-white">You're on the list!</h3>
-          <p className="text-sm text-white/80">
+          <h3 className="font-medium text-gray-900">You're on the list!</h3>
+          <p className="text-sm text-gray-700">
             Thank you for your interest! We'll notify you when we launch.
           </p>
         </div>

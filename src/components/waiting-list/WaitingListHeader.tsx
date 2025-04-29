@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import BrandLogo from '@/components/navigation/BrandLogo';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 
@@ -11,7 +10,13 @@ const WaitingListHeader = () => {
   return (
     <header className="w-full py-4 px-4 bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <BrandLogo />
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-1 rounded">
+              <span className="font-semibold">Lumen AI</span>
+            </div>
+          </Link>
+        </div>
         
         {/* Mobile menu button */}
         <button 
@@ -25,12 +30,22 @@ const WaitingListHeader = () => {
         <nav className="hidden md:flex items-center gap-6">
           <Button variant="ghost" asChild>
             <a href="#how-it-works" className="text-gray-600 hover:text-gray-900">
-              How it works
+              Home
             </a>
           </Button>
           <Button variant="ghost" asChild>
             <a href="#features" className="text-gray-600 hover:text-gray-900">
               Features
+            </a>
+          </Button>
+          <Button variant="ghost" asChild>
+            <a href="#examples" className="text-gray-600 hover:text-gray-900">
+              Examples
+            </a>
+          </Button>
+          <Button variant="ghost" asChild>
+            <a href="#pricing" className="text-gray-600 hover:text-gray-900">
+              Pricing
             </a>
           </Button>
           <Button variant="ghost" asChild>
@@ -47,10 +62,16 @@ const WaitingListHeader = () => {
         {mobileMenuOpen && (
           <div className="absolute top-full left-0 right-0 bg-white shadow-md p-4 md:hidden flex flex-col gap-3">
             <a href="#how-it-works" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
-              How it works
+              Home
             </a>
             <a href="#features" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
               Features
+            </a>
+            <a href="#examples" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
+              Examples
+            </a>
+            <a href="#pricing" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
+              Pricing
             </a>
             <a href="#faq" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
               FAQ

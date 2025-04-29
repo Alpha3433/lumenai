@@ -41,7 +41,7 @@ const ProcessSteps: React.FC<ProcessStepsProps> = ({ steps }) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
-      className="space-y-6 h-full flex flex-col w-full"
+      className="space-y-5 h-full flex flex-col w-full"
     >
       {steps.map((step, index) => (
         <motion.div 

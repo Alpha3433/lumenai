@@ -61,6 +61,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         once: true
       }}
       className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full"
+      style={{ maxHeight: "calc(100% - 0px)" }} // Adjust to match the ProcessSteps height
     >
       <div className="p-4 bg-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -88,8 +89,8 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         />
       </div>
       
-      <div className="p-8 font-mono text-sm flex-grow relative overflow-hidden">
-        <div className="space-y-2">
+      <div className="p-6 font-mono text-sm flex-grow relative overflow-hidden">
+        <div className="space-y-1.5">
           {codeLines.map((line, index) => (
             <motion.div
               key={index}
@@ -132,7 +133,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         
         {/* Visual effects */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-900/80 to-transparent pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-900/80 to-transparent pointer-events-none"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 2.0, duration: 0.5 }}
@@ -141,7 +142,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         
         {/* Terminal cursor blink effect */}
         <motion.div
-          className="absolute bottom-8 left-8 h-4 w-2 bg-blue-500"
+          className="absolute bottom-6 left-6 h-4 w-2 bg-blue-500"
           animate={{ opacity: [0, 1, 0] }}
           transition={{ repeat: Infinity, duration: 1 }}
         />

@@ -1,12 +1,12 @@
 
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
-import { Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AnimatedSectionHeader from './automation/AnimatedSectionHeader';
 import TaskAutomationCard from './automation/TaskAutomationCard';
 import DashboardPreview from './automation/DashboardPreview';
 import { automationData } from './automation/AutomationData';
+import { Card, CardContent } from '@/components/ui/card';
 
 const AutomationSection = () => {
   const controls = useAnimation();
@@ -44,16 +44,33 @@ const AutomationSection = () => {
           title="Everything You Need to"
           highlightedText="Save Time"
           subtitle="Our platform automates the tedious parts of validation so you can focus on building your business"
+          badge="TIME EFFICIENCY"
         />
 
-        {/* Modern Dashboard Inspired Section */}
-        <div className="grid md:grid-cols-2 gap-8 items-start">
-          {/* Left Column - Stats and Data */}
-          <TaskAutomationCard tasks={automationData} />
-          
-          {/* Right Column - Dashboard Preview */}
-          <DashboardPreview />
-        </div>
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="grid md:grid-cols-2 gap-8 mt-10"
+        >
+          {/* Left Card - Task Automation */}
+          <motion.div variants={itemVariants} className="h-full">
+            <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+              <CardContent className="p-0">
+                <TaskAutomationCard tasks={automationData} />
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Right Card - Dashboard Preview */}
+          <motion.div variants={itemVariants} className="h-full">
+            <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+              <CardContent className="p-0">
+                <DashboardPreview />
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -61,7 +78,7 @@ const AutomationSection = () => {
           variants={itemVariants}
           className="mt-16 text-center"
         >
-          <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-6 rounded-lg text-lg font-semibold transition-all duration-300 hover:shadow-lg">
             Join the Waitlist
           </Button>
         </motion.div>

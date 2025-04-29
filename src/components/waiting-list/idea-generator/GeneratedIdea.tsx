@@ -15,7 +15,7 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="rounded-lg overflow-hidden border border-blue-200 dark:border-blue-900/60"
+      className="rounded-lg overflow-hidden border border-blue-200 dark:border-blue-900/60 shadow-md"
     >
       <div className="bg-blue-50 dark:bg-blue-900/30 p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -30,12 +30,22 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
       </div>
       
       <div className="bg-white dark:bg-gray-800 p-5 space-y-4">
-        <p className="font-medium text-gray-800 dark:text-gray-200 text-lg">
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="font-medium text-gray-800 dark:text-gray-200 text-lg"
+        >
           Sustainable meal prep subscription service with AI-personalized nutrition
-        </p>
+        </motion.p>
         
         <div className="grid grid-cols-1 gap-4">
-          <div className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md"
+          >
             <div className="flex items-center gap-2 mb-2">
               <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <span className="font-semibold text-sm">Target Audience</span>
@@ -43,9 +53,14 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
             <p className="text-sm text-gray-700 dark:text-gray-300">
               Health-conscious professionals with limited time, aged 25-45, urban areas, mid-to-high income.
             </p>
-          </div>
+          </motion.div>
           
-          <div className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md"
+          >
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <span className="font-semibold text-sm">Market Potential</span>
@@ -53,9 +68,14 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
             <p className="text-sm text-gray-700 dark:text-gray-300">
               Growing demand for convenient, healthy eating options with 18% YoY growth and $4.2B estimated market size.
             </p>
-          </div>
+          </motion.div>
           
-          <div className="grid grid-cols-2 gap-3">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="grid grid-cols-2 gap-3"
+          >
             <div className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md flex flex-col">
               <span className="text-xs text-gray-500 dark:text-gray-400">Revenue Model</span>
               <span className="font-medium text-gray-800 dark:text-gray-200">Weekly subscription + premium add-ons</span>
@@ -64,10 +84,15 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
               <span className="text-xs text-gray-500 dark:text-gray-400">Market Entry</span>
               <span className="font-medium text-gray-800 dark:text-gray-200">Low barriers, differentiated</span>
             </div>
-          </div>
+          </motion.div>
         </div>
         
-        <div className="pt-4">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="pt-4"
+        >
           <Button 
             onClick={onRegenerateClick}
             variant="outline" 
@@ -76,7 +101,7 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
             Generate Another Idea
             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Button>
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );

@@ -39,6 +39,7 @@ const WhyStartupsFail: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
             viewport={{ once: true }}
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-100 dark:border-gray-700 p-6"
           >
             <FailureStatistics failureReasons={failureReasons} />
           </motion.div>
@@ -48,11 +49,12 @@ const WhyStartupsFail: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
             viewport={{ once: true }}
+            className="relative"
           >
             <IdeaGeneratorCard />
             
             {/* Decorative blurred circles */}
-            <div className="relative">
+            <div className="absolute -z-10 inset-0">
               <motion.div
                 className="absolute -top-20 -left-20 w-40 h-40 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl"
                 animate={{ 

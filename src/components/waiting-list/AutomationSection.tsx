@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { Clock, CheckCircle, Zap, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 const AutomationSection = () => {
   const controls = useAnimation();
@@ -53,7 +54,7 @@ const AutomationSection = () => {
             <h3 className="text-blue-600 dark:text-blue-400 text-sm font-semibold tracking-wide">EFFICIENCY</h3>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-5">
-            Automation That <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Saves You Hours</span>
+            Everything You Need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Save Time</span>
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
             Our platform automates the tedious parts of validation so you can focus on building your business

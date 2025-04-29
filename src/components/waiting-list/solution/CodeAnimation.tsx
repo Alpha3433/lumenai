@@ -1,11 +1,13 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Code, ArrowRight } from 'lucide-react';
 
 interface CodeLine {
   code: string;
   delay: number;
+  isComment?: boolean;
+  isOutput?: boolean;
 }
 
 interface CodeAnimationProps {
@@ -13,6 +15,22 @@ interface CodeAnimationProps {
 }
 
 const CodeAnimation: React.FC<CodeAnimationProps> = ({ codeLines }) => {
+  const [executionProgress, setExecutionProgress] = useState(0);
+
+  // Simulate code execution progress bar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Reset the progress when it reaches 100
+      if (executionProgress >= 100) {
+        setExecutionProgress(0);
+      } else {
+        setExecutionProgress(prev => Math.min(prev + 0.5, 100));
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [executionProgress]);
+
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -21,27 +39,55 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({ codeLines }) => {
       viewport={{ once: true }}
       className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10"
     >
-      <div className="p-4 bg-gray-800 flex gap-2 items-center">
-        <div className="flex gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+      <div className="p-4 bg-gray-800 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-2">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          </div>
+          <div className="flex items-center ml-4 text-gray-400 text-xs font-mono">
+            <Code className="h-4 w-4 mr-1.5" /> validation.js
+          </div>
         </div>
-        <div className="flex items-center ml-4 text-gray-400 text-xs font-mono">
-          <Code className="h-4 w-4 mr-1.5" /> validation.js
+        
+        <div className="flex items-center gap-2 text-xs text-gray-400">
+          <span className="animate-pulse text-green-400">• Running</span>
+          <span>{Math.floor(executionProgress)}% complete</span>
         </div>
       </div>
+      
+      {/* Progress bar */}
+      <div className="h-1 w-full bg-gray-800">
+        <motion.div 
+          className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+          style={{ width: `${executionProgress}%` }}
+        />
+      </div>
+      
       <div className="p-8 font-mono text-sm relative overflow-hidden">
         {codeLines.map((line, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: line.delay / 8, duration: 0.5 }}
+            transition={{ delay: line.delay / 4, duration: 0.5 }}
             viewport={{ once: true }}
-            className="mb-3 text-gray-100"
-            dangerouslySetInnerHTML={{ __html: line.code }}
-          />
+            className={`mb-3 ${line.isOutput ? 'pl-4 border-l-2 border-green-500/30 text-green-400 text-opacity-80' : 'text-gray-100'}`}
+          >
+            {/* If it's an output line, add a typing animation effect */}
+            {line.isOutput ? (
+              <motion.div
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ delay: line.delay / 4, duration: 1.5, ease: "easeInOut" }}
+                className="overflow-hidden whitespace-nowrap"
+                dangerouslySetInnerHTML={{ __html: line.code }}
+              />
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: line.code }} />
+            )}
+          </motion.div>
         ))}
         
         <motion.div
@@ -51,6 +97,13 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({ codeLines }) => {
           transition={{ delay: 2.0, duration: 0.5 }}
           viewport={{ once: true }}
         ></motion.div>
+        
+        {/* Terminal cursor blink effect */}
+        <motion.div 
+          className="absolute bottom-8 left-8 h-4 w-2 bg-blue-500"
+          animate={{ opacity: [0, 1, 0] }}
+          transition={{ repeat: Infinity, duration: 1 }}
+        />
         
         <motion.div
           className="absolute -bottom-2 -right-2 w-20 h-20 rounded-full bg-blue-500/20 blur-xl"

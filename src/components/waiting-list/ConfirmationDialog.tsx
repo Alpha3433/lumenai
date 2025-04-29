@@ -27,7 +27,7 @@ const ConfirmationDialog = ({ open, onClose }: ConfirmationDialogProps) => {
         </DialogHeader>
         
         <div className="py-4 space-y-4">
-          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-lg p-4">
             <p className="text-sm text-gray-700">
               <strong>What's next?</strong> We're currently building our platform and will be launching soon. You'll be among the first to know!
             </p>
@@ -50,7 +50,7 @@ const ConfirmationDialog = ({ open, onClose }: ConfirmationDialogProps) => {
         </div>
         
         <DialogFooter>
-          <Button onClick={onClose} className="bg-emerald-600 hover:bg-emerald-700 text-white w-full sm:w-auto">
+          <Button onClick={onClose} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white w-full sm:w-auto border-none">
             Close
           </Button>
         </DialogFooter>

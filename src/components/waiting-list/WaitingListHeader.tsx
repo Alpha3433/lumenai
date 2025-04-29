@@ -38,7 +38,7 @@ const WaitingListHeader = () => {
               FAQ
             </a>
           </Button>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+          <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-none">
             Join Waitlist
           </Button>
         </nav>
@@ -55,7 +55,7 @@ const WaitingListHeader = () => {
             <a href="#faq" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
               FAQ
             </a>
-            <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+            <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-none">
               Join Waitlist
             </Button>
           </div>

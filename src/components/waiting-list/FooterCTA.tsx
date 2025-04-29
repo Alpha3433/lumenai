@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 
 const FooterCTA = () => {
   return (
-    <section className="py-24 bg-gradient-to-br from-emerald-600 to-emerald-700 text-white relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-blue-600 to-purple-700 text-white relative overflow-hidden">
       {/* Background Patterns */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-64 bg-white opacity-10" 
@@ -26,7 +26,7 @@ const FooterCTA = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Be the first to know when we launch
           </h2>
-          <p className="text-xl text-emerald-50 max-w-2xl mx-auto">
+          <p className="text-xl text-blue-50 max-w-2xl mx-auto">
             Join the waitlist to get early access and special pricing for our AI-powered startup validation platform.
           </p>
         </motion.div>
@@ -42,7 +42,7 @@ const FooterCTA = () => {
           
           <div className="flex flex-col md:flex-row items-center justify-center mt-8 gap-6 text-sm">
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/30">
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/30">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -51,7 +51,7 @@ const FooterCTA = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/30">
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/30">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -60,7 +60,7 @@ const FooterCTA = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/30">
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/30">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

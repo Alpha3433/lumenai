@@ -81,15 +81,15 @@ const EmailForm = () => {
 
   if (isSubmitted) {
     return (
-      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
-        <div className="flex-shrink-0 bg-emerald-500 rounded-full p-1">
+      <div className="bg-white/20 backdrop-blur-sm border border-white/20 rounded-lg p-4 flex items-center gap-3">
+        <div className="flex-shrink-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full p-1">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 12L10 17L20 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <div>
-          <h3 className="font-medium text-gray-900">You're on the list!</h3>
-          <p className="text-sm text-gray-600">
+          <h3 className="font-medium text-white">You're on the list!</h3>
+          <p className="text-sm text-white/80">
             Thank you for your interest! We'll notify you when we launch.
           </p>
         </div>
@@ -112,7 +112,7 @@ const EmailForm = () => {
         </div>
         <Button 
           type="submit" 
-          className="h-12 px-6 bg-emerald-600 hover:bg-emerald-700 border border-emerald-500 text-white flex items-center gap-2 rounded-lg"
+          className="h-12 px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-none flex items-center gap-2 rounded-lg"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

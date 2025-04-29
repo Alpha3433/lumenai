@@ -20,18 +20,49 @@ export const validationSteps = [{
 
 // Enhanced code lines for the animated code display with execution simulation
 export const codeLines = [
-  { code: "<span class='text-pink-400'>const</span> <span class='text-blue-400'>validateIdea</span> = <span class='text-pink-400'>async</span> (idea) => {", delay: 0 },
-  { code: "  <span class='text-green-400'>// Running market analysis...</span>", delay: 0.3, isComment: true },
-  { code: "<span class='text-blue-400'>  const</span> targetAudience = <span class='text-pink-400'>await</span> identifyAudience(idea);", delay: 0.5 },
-  { code: "  <span class='text-green-400 typing'>// Audience identified: Early tech adopters, 25-40 age range</span>", delay: 0.8, isOutput: true },
-  { code: "<span class='text-blue-400'>  const</span> marketSize = <span class='text-pink-400'>await</span> calculateTAM(idea.industry);", delay: 1.2 },
-  { code: "  <span class='text-green-400 typing'>// Market size calculated: $3.4B with 18% annual growth</span>", delay: 1.5, isOutput: true },
-  { code: "<span class='text-blue-400'>  const</span> competitors = <span class='text-pink-400'>await</span> findCompetitors(idea.keywords);", delay: 2.0 },
-  { code: "  <span class='text-green-400 typing'>// Found 7 competitors with average rating of 3.2/5</span>", delay: 2.3, isOutput: true },
-  { code: "<span class='text-blue-400'>  const</span> validationScore = analyzeData(targetAudience, marketSize, competitors);", delay: 2.8 },
-  { code: "  <span class='text-blue-400'>if</span> (validationScore > 75) {", delay: 3.2 },
-  { code: "    <span class='text-green-400 typing'>// Idea passes validation threshold! Score: 82/100</span>", delay: 3.4, isOutput: true },
-  { code: "    <span class='text-pink-400'>return</span> { success: <span class='text-orange-400'>true</span>, score: validationScore, insights: [...] };", delay: 3.8 },
-  { code: "  }", delay: 4.0 },
-  { code: "}", delay: 4.2 }
+  { code: "<span class='text-pink-400'>const</span> <span class='text-blue-400'>validateBusinessIdea</span> = <span class='text-pink-400'>async</span> (idea) => {", delay: 0 },
+  { code: "  <span class='text-green-400'>// Starting validation process...</span>", delay: 0.3, isComment: true },
+  { code: "  <span class='text-blue-400'>const</span> marketData = <span class='text-pink-400'>await</span> fetchMarketAnalysis(idea.industry);", delay: 0.6 },
+  { code: "  <span class='text-green-400 typing'>// Market size: $4.2B with 14% YoY growth</span>", delay: 1.0, isOutput: true },
+  { code: "  <span class='text-green-400 typing'>// Trend analysis: Positive market sentiment</span>", delay: 1.2, isOutput: true },
+  
+  { code: "  <span class='text-blue-400'>const</span> targetAudience = <span class='text-pink-400'>await</span> identifyAudience(idea.problem);", delay: 1.5 },
+  { code: "  <span class='text-green-400 typing'>// Primary audience: Tech-savvy professionals, 28-45</span>", delay: 1.8, isOutput: true },
+  { code: "  <span class='text-green-400 typing'>// Willingness to pay: Medium-high</span>", delay: 2.0, isOutput: true },
+  
+  { code: "  <span class='text-blue-400'>const</span> competitors = <span class='text-pink-400'>await</span> analyzeCompetitors(idea.solution);", delay: 2.3 },
+  { code: "  <span class='text-green-400 typing'>// Found 5 direct competitors, 3 indirect</span>", delay: 2.6, isOutput: true },
+  { code: "  <span class='text-green-400 typing'>// Competitive advantage opportunity: 68%</span>", delay: 2.9, isOutput: true },
+  
+  { code: "  <span class='text-blue-400'>const</span> swotAnalysis = runSwotAnalysis({marketData, targetAudience, competitors});", delay: 3.2 },
+  { code: "  <span class='text-green-400 typing'>// Strengths: Innovative approach, Lower cost structure</span>", delay: 3.5, isOutput: true },
+  { code: "  <span class='text-green-400 typing'>// Weaknesses: Market awareness, Scaling challenges</span>", delay: 3.8, isOutput: true },
+  { code: "  <span class='text-green-400 typing'>// Opportunities: Growing demand, Partnership potential</span>", delay: 4.1, isOutput: true },
+  { code: "  <span class='text-green-400 typing'>// Threats: Regulatory changes, New entrants</span>", delay: 4.4, isOutput: true },
+  
+  { code: "  <span class='text-blue-400'>const</span> financialProjection = calculateFinancials(idea, marketData);", delay: 4.7 },
+  { code: "  <span class='text-green-400 typing'>// Estimated break-even: 14 months</span>", delay: 5.0, isOutput: true },
+  { code: "  <span class='text-green-400 typing'>// Projected 3-year ROI: 285%</span>", delay: 5.3, isOutput: true },
+  
+  { code: "  <span class='text-blue-400'>const</span> validationScore = computeValidationScore({", delay: 5.6 },
+  { code: "    marketData,", delay: 5.7 },
+  { code: "    targetAudience,", delay: 5.8 },
+  { code: "    competitors,", delay: 5.9 },
+  { code: "    swotAnalysis,", delay: 6.0 },
+  { code: "    financialProjection", delay: 6.1 },
+  { code: "  });", delay: 6.2 },
+  
+  { code: "  <span class='text-blue-400'>if</span> (validationScore > 70) {", delay: 6.4 },
+  { code: "    <span class='text-green-400 typing'>// Validation successful! Score: 78/100</span>", delay: 6.6, isOutput: true },
+  { code: "    <span class='text-green-400 typing'>// Recommendation: Proceed with development</span>", delay: 6.9, isOutput: true },
+  { code: "    <span class='text-pink-400'>return</span> {", delay: 7.2 },
+  { code: "      status: <span class='text-orange-400'>'VALIDATED'</span>,", delay: 7.3 },
+  { code: "      score: validationScore,", delay: 7.4 },
+  { code: "      insights: { swotAnalysis, financialProjection }", delay: 7.5 },
+  { code: "    };", delay: 7.6 },
+  { code: "  } <span class='text-blue-400'>else</span> {", delay: 7.8 },
+  { code: "    <span class='text-green-400 typing'>// Further validation required</span>", delay: 8.0, isOutput: true },
+  { code: "    <span class='text-pink-400'>return</span> generateValidationPlan(idea, validationScore);", delay: 8.3 },
+  { code: "  }", delay: 8.5 },
+  { code: "};", delay: 8.7 }
 ];

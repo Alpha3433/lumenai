@@ -1,19 +1,24 @@
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Code, ArrowRight } from 'lucide-react';
+
 interface CodeLine {
   code: string;
   delay: number;
   isComment?: boolean;
   isOutput?: boolean;
 }
+
 interface CodeAnimationProps {
   codeLines: CodeLine[];
 }
+
 const CodeAnimation: React.FC<CodeAnimationProps> = ({
   codeLines
 }) => {
   const [executionProgress, setExecutionProgress] = useState(0);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
 
   // Simulate code execution progress bar
   useEffect(() => {
@@ -21,26 +26,42 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
       // Reset the progress when it reaches 100
       if (executionProgress >= 100) {
         setExecutionProgress(0);
+        setCurrentLineIndex(0);
       } else {
-        setExecutionProgress(prev => Math.min(prev + 0.5, 100));
+        setExecutionProgress(prev => {
+          const newValue = Math.min(prev + 0.5, 100);
+          // Update current line index based on progress
+          if (newValue % 10 === 0) {
+            setCurrentLineIndex(prev => Math.min(prev + 1, codeLines.length - 1));
+          }
+          return newValue;
+        });
       }
     }, 100);
     return () => clearTimeout(timer);
-  }, [executionProgress]);
-  return <motion.div initial={{
-    opacity: 0,
-    scale: 0.95,
-    y: 20
-  }} whileInView={{
-    opacity: 1,
-    scale: 1,
-    y: 0
-  }} transition={{
-    duration: 0.7,
-    delay: 0.3
-  }} viewport={{
-    once: true
-  }} className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col">
+  }, [executionProgress, codeLines.length]);
+
+  return (
+    <motion.div
+      initial={{
+        opacity: 0,
+        scale: 0.95,
+        y: 20
+      }}
+      whileInView={{
+        opacity: 1,
+        scale: 1,
+        y: 0
+      }}
+      transition={{
+        duration: 0.7,
+        delay: 0.3
+      }}
+      viewport={{
+        once: true
+      }}
+      className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col"
+    >
       <div className="p-4 bg-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="flex gap-2">
@@ -61,80 +82,101 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
       
       {/* Progress bar */}
       <div className="h-1 w-full bg-gray-800">
-        <motion.div className="h-full bg-gradient-to-r from-blue-500 to-purple-500" style={{
-        width: `${executionProgress}%`
-      }} />
+        <motion.div 
+          className="h-full bg-gradient-to-r from-blue-500 to-purple-500" 
+          style={{ width: `${executionProgress}%` }} 
+        />
       </div>
       
-      <div className="p-8 font-mono text-sm relative overflow-hidden flex-grow">
-        {codeLines.map((line, index) => <motion.div key={index} initial={{
-        opacity: 0,
-        x: -10
-      }} whileInView={{
-        opacity: 1,
-        x: 0
-      }} transition={{
-        delay: line.delay / 4,
-        duration: 0.5
-      }} viewport={{
-        once: true
-      }} className={`mb-3 ${line.isOutput ? 'pl-4 border-l-2 border-green-500/30 text-green-400 text-opacity-80' : 'text-gray-100'}`}>
-            {/* If it's an output line, add a typing animation effect */}
-            {line.isOutput ? <motion.div initial={{
-          width: "0%"
-        }} animate={{
-          width: "100%"
-        }} transition={{
-          delay: line.delay / 4,
-          duration: 1.5,
-          ease: "easeInOut"
-        }} className="overflow-hidden whitespace-nowrap" dangerouslySetInnerHTML={{
-          __html: line.code
-        }} /> : <div dangerouslySetInnerHTML={{
-          __html: line.code
-        }} />}
-          </motion.div>)}
+      <div className="p-8 font-mono text-sm h-full overflow-y-auto flex-grow relative">
+        <div className="space-y-2">
+          {codeLines.map((line, index) => (
+            <motion.div
+              key={index}
+              initial={{
+                opacity: 0,
+                x: -10
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0
+              }}
+              transition={{
+                delay: line.delay / 8,
+                duration: 0.5
+              }}
+              viewport={{
+                once: true
+              }}
+              className={`${line.isOutput ? 'pl-4 border-l-2 border-green-500/30 text-green-400 text-opacity-80' : 'text-gray-100'} ${index > currentLineIndex + 8 ? 'opacity-30' : ''}`}
+            >
+              {/* If it's an output line, add a typing animation effect */}
+              {line.isOutput ? (
+                <motion.div
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{
+                    delay: line.delay / 8,
+                    duration: 1.5,
+                    ease: "easeInOut"
+                  }}
+                  className="overflow-hidden whitespace-nowrap"
+                  dangerouslySetInnerHTML={{ __html: line.code }}
+                />
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: line.code }} />
+              )}
+            </motion.div>
+          ))}
+        </div>
         
-        <motion.div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-900/80 to-transparent pointer-events-none" initial={{
-        opacity: 0
-      }} whileInView={{
-        opacity: 1
-      }} transition={{
-        delay: 2.0,
-        duration: 0.5
-      }} viewport={{
-        once: true
-      }}></motion.div>
+        {/* Visual effects */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-900/80 to-transparent pointer-events-none"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 2.0, duration: 0.5 }}
+          viewport={{ once: true }}
+        />
         
         {/* Terminal cursor blink effect */}
-        <motion.div className="absolute bottom-8 left-8 h-4 w-2 bg-blue-500" animate={{
-        opacity: [0, 1, 0]
-      }} transition={{
-        repeat: Infinity,
-        duration: 1
-      }} />
+        <motion.div
+          className="absolute bottom-8 left-8 h-4 w-2 bg-blue-500"
+          animate={{ opacity: [0, 1, 0] }}
+          transition={{ repeat: Infinity, duration: 1 }}
+        />
         
-        <motion.div className="absolute -bottom-2 -right-2 w-20 h-20 rounded-full bg-blue-500/20 blur-xl" animate={{
-        scale: [1, 1.2, 1],
-        opacity: [0.6, 0.8, 0.6]
-      }} transition={{
-        repeat: Infinity,
-        duration: 4,
-        ease: "easeInOut"
-      }}></motion.div>
+        <motion.div
+          className="absolute -bottom-2 -right-2 w-20 h-20 rounded-full bg-blue-500/20 blur-xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.6, 0.8, 0.6]
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 4,
+            ease: "easeInOut"
+          }}
+        />
       </div>
+      
+      {/* Decorative elements */}
       <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2">
-        <motion.div className="w-32 h-32 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-2xl" animate={{
-        scale: [1, 1.2, 1],
-        opacity: [0.3, 0.5, 0.3]
-      }} transition={{
-        repeat: Infinity,
-        duration: 5,
-        ease: "easeInOut"
-      }}></motion.div>
+        <motion.div
+          className="w-32 h-32 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-2xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 5,
+            ease: "easeInOut"
+          }}
+        />
       </div>
-      
-      
-    </motion.div>;
+    </motion.div>
+  );
 };
+
 export default CodeAnimation;

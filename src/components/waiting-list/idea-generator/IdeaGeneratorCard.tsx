@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Lightbulb, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import GeneratedIdea from './GeneratedIdea';
 
 const IdeaGeneratorCard: React.FC = () => {
   const [ideaGenerated, setIdeaGenerated] = useState(false);

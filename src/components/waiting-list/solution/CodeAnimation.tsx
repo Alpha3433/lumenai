@@ -37,7 +37,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({ codeLines }) => {
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.3 }}
       viewport={{ once: true }}
-      className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10"
+      className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col"
     >
       <div className="p-4 bg-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({ codeLines }) => {
         />
       </div>
       
-      <div className="p-8 font-mono text-sm relative overflow-hidden">
+      <div className="p-8 font-mono text-sm relative overflow-hidden flex-grow">
         {codeLines.map((line, index) => (
           <motion.div
             key={index}

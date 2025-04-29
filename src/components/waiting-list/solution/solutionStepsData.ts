@@ -15,7 +15,7 @@ export const validationSteps = [{
 }, {
   number: 4,
   title: "Launch with Confidence",
-  description: "Use your validated plan and expert feedback to move forward—build your MVP, launch targeted ads, Let us do the heavy lifting — we'll build your MVP, launch targeted ad campaigns, and start driving real traction while you focus on the fun stuff."
+  description: "Use your validated plan and expert feedback to move forward — and let us do the heavy lifting. We'll build your MVP, launch targeted ad campaigns, and start driving real traction while you focus on the fun stuff."
 }];
 
 // Enhanced code lines for the animated code display with execution simulation
@@ -94,3 +94,4 @@ export const codeLines = [
   { code: "", delay: 10.1 },
   { code: "<span class='text-green-400 typing'>// ✅ Validation complete! Implementation plan generated.</span>", delay: 10.2, isOutput: true }
 ];
+

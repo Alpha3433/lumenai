@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Users, TrendingUp, ArrowRight } from 'lucide-react';
+import { Sparkles, Users, TrendingUp, ArrowRight, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -19,14 +19,22 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
     >
       <div className="bg-blue-50 dark:bg-blue-900/30 p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+          <motion.div 
+            whileHover={{ rotate: 15 }}
+            className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"
+          >
             <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-          </div>
+          </motion.div>
           <h4 className="font-semibold text-blue-700 dark:text-blue-400">Your Business Idea</h4>
         </div>
-        <div className="text-xs bg-blue-200/50 dark:bg-blue-800/50 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">
+        <motion.div 
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.5, type: "spring" }}
+          className="text-xs bg-blue-200/50 dark:bg-blue-800/50 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full"
+        >
           AI Generated
-        </div>
+        </motion.div>
       </div>
       
       <div className="bg-white dark:bg-gray-800 p-5 space-y-4">
@@ -76,21 +84,53 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="grid grid-cols-2 gap-3"
           >
-            <div className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md flex flex-col">
+            <motion.div 
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md flex flex-col"
+            >
               <span className="text-xs text-gray-500 dark:text-gray-400">Revenue Model</span>
               <span className="font-medium text-gray-800 dark:text-gray-200">Weekly subscription + premium add-ons</span>
-            </div>
-            <div className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md flex flex-col">
+            </motion.div>
+            <motion.div 
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="p-3 bg-gray-50 dark:bg-gray-700/30 rounded-md flex flex-col"
+            >
               <span className="text-xs text-gray-500 dark:text-gray-400">Market Entry</span>
               <span className="font-medium text-gray-800 dark:text-gray-200">Low barriers, differentiated</span>
+            </motion.div>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="p-3 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-100 dark:border-green-800/30"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+              <span className="font-semibold text-sm">Viability Score</span>
             </div>
+            <div className="flex items-center">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: '78%' }}
+                transition={{ delay: 0.7, duration: 1 }}
+                className="h-2 bg-green-500 rounded-full"
+              />
+              <span className="ml-3 font-medium text-green-700 dark:text-green-400">78/100</span>
+            </div>
+            <p className="text-xs text-green-700 dark:text-green-400 mt-2">
+              High chance of success with proper execution
+            </p>
           </motion.div>
         </div>
         
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
           className="pt-4"
         >
           <Button 
@@ -99,7 +139,12 @@ const GeneratedIdea: React.FC<GeneratedIdeaProps> = ({ onRegenerateClick }) => {
             className="w-full border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 group"
           >
             Generate Another Idea
-            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            <motion.div
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </motion.div>
           </Button>
         </motion.div>
       </div>

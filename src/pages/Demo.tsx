@@ -13,6 +13,7 @@ import StepDisplay from '@/components/demo/StepDisplay';
 import BusinessIdeaStep from '@/components/demo/BusinessIdeaStep';
 import DemoCTA from '@/components/demo/DemoCTA';
 import { DemoStep } from '@/components/demo/types';
+import SwotAnalysisStep from '@/components/demo/SwotAnalysisStep';
 
 const Demo = () => {
   // Demo steps data
@@ -24,6 +25,14 @@ const Demo = () => {
       image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
       icon: Lightbulb,
       color: "from-blue-500 to-blue-600"
+    },
+    {
+      id: "swot",
+      title: "SWOT Analysis Framework",
+      description: "Our AI generates a comprehensive SWOT analysis to identify your business idea's Strengths, Weaknesses, Opportunities, and Threats based on market data and industry trends.",
+      image: "public/lovable-uploads/0a26fcd5-8a34-4ed3-8144-64a599b328fe.png",
+      icon: BarChart3,
+      color: "from-purple-500 to-purple-600"
     },
     {
       id: "explore",
@@ -98,12 +107,15 @@ const Demo = () => {
         {/* Special handling for first step with Business Idea Generator */}
         <BusinessIdeaStep step={steps[0]} />
         
+        {/* Special handling for SWOT Analysis step */}
+        <SwotAnalysisStep step={steps[1]} />
+        
         {/* Render remaining steps */}
-        {steps.slice(1).map((step, index) => (
+        {steps.slice(2).map((step, index) => (
           <StepDisplay 
             key={step.id}
             step={step}
-            index={index + 1}
+            index={index + 2}
             isFirstStep={false}
           />
         ))}

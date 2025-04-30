@@ -1,19 +1,15 @@
-
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Code } from 'lucide-react';
-
 interface CodeLine {
   code: string;
   delay: number;
   isComment?: boolean;
   isOutput?: boolean;
 }
-
 interface CompactCodeAnimationProps {
   codeLines: CodeLine[];
 }
-
 const CompactCodeAnimation: React.FC<CompactCodeAnimationProps> = ({
   codeLines
 }) => {
@@ -31,7 +27,8 @@ const CompactCodeAnimation: React.FC<CompactCodeAnimationProps> = ({
         setExecutionProgress(prev => {
           const newValue = Math.min(prev + 0.7, 100); // Increased speed
           // Update current line index based on progress
-          if (newValue % 8 === 0) {  // Faster line update
+          if (newValue % 8 === 0) {
+            // Faster line update
             setCurrentLineIndex(prev => Math.min(prev + 1, codeLines.length - 1));
           }
           return newValue;
@@ -40,29 +37,23 @@ const CompactCodeAnimation: React.FC<CompactCodeAnimationProps> = ({
     }, 100);
     return () => clearTimeout(timer);
   }, [executionProgress, codeLines.length]);
-
-  return (
-    <motion.div
-      initial={{
-        opacity: 0,
-        scale: 0.95,
-        y: 20
-      }}
-      whileInView={{
-        opacity: 1,
-        scale: 1,
-        y: 0
-      }}
-      transition={{
-        duration: 0.7,
-        delay: 0.3
-      }}
-      viewport={{
-        once: true
-      }}
-      className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full"
-      style={{ minHeight: "200px" }} // 20% reduction from 300px
-    >
+  return <motion.div initial={{
+    opacity: 0,
+    scale: 0.95,
+    y: 20
+  }} whileInView={{
+    opacity: 1,
+    scale: 1,
+    y: 0
+  }} transition={{
+    duration: 0.7,
+    delay: 0.3
+  }} viewport={{
+    once: true
+  }} className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full" style={{
+    minHeight: "200px"
+  }} // 20% reduction from 300px
+  >
       <div className="p-2 bg-gray-800 flex items-center justify-between"> {/* Reduced padding further */}
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5"> {/* Tightened gap */}
@@ -83,101 +74,83 @@ const CompactCodeAnimation: React.FC<CompactCodeAnimationProps> = ({
       
       {/* Progress bar */}
       <div className="h-0.5 w-full bg-gray-800"> {/* Thinner progress bar */}
-        <motion.div 
-          className="h-full bg-gradient-to-r from-blue-500 to-purple-500" 
-          style={{ width: `${executionProgress}%` }} 
-        />
+        <motion.div className="h-full bg-gradient-to-r from-blue-500 to-purple-500" style={{
+        width: `${executionProgress}%`
+      }} />
       </div>
       
-      <div className="p-3 font-mono text-xs flex-grow relative overflow-hidden"> {/* Smaller text & padding */}
+      <div className="p-3 font-mono text-xs flex-grow relative overflow-hidden py-0"> {/* Smaller text & padding */}
         <div className="space-y-1"> {/* Tighter line spacing */}
-          {codeLines.map((line, index) => (
-            <motion.div
-              key={index}
-              initial={{
-                opacity: 0,
-                x: -10
-              }}
-              whileInView={{
-                opacity: 1,
-                x: 0
-              }}
-              transition={{
-                delay: line.delay / 8,
-                duration: 0.5
-              }}
-              viewport={{
-                once: true
-              }}
-              className={`${line.isOutput ? 'pl-3 border-l-2 border-green-500/30 text-green-400 text-opacity-80' : 'text-gray-100'} ${index > currentLineIndex + 6 ? 'opacity-30' : ''}`}
-            >
+          {codeLines.map((line, index) => <motion.div key={index} initial={{
+          opacity: 0,
+          x: -10
+        }} whileInView={{
+          opacity: 1,
+          x: 0
+        }} transition={{
+          delay: line.delay / 8,
+          duration: 0.5
+        }} viewport={{
+          once: true
+        }} className={`${line.isOutput ? 'pl-3 border-l-2 border-green-500/30 text-green-400 text-opacity-80' : 'text-gray-100'} ${index > currentLineIndex + 6 ? 'opacity-30' : ''}`}>
               {/* If it's an output line, add a typing animation effect */}
-              {line.isOutput ? (
-                <motion.div
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{
-                    delay: line.delay / 8,
-                    duration: 1.5,
-                    ease: "easeInOut"
-                  }}
-                  className="overflow-hidden whitespace-nowrap"
-                  dangerouslySetInnerHTML={{ __html: line.code }}
-                />
-              ) : (
-                <div dangerouslySetInnerHTML={{ __html: line.code }} />
-              )}
-            </motion.div>
-          ))}
+              {line.isOutput ? <motion.div initial={{
+            width: "0%"
+          }} animate={{
+            width: "100%"
+          }} transition={{
+            delay: line.delay / 8,
+            duration: 1.5,
+            ease: "easeInOut"
+          }} className="overflow-hidden whitespace-nowrap" dangerouslySetInnerHTML={{
+            __html: line.code
+          }} /> : <div dangerouslySetInnerHTML={{
+            __html: line.code
+          }} />}
+            </motion.div>)}
         </div>
         
         {/* Visual effects */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-900/80 to-transparent pointer-events-none"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 2.0, duration: 0.5 }}
-          viewport={{ once: true }}
-        />
+        <motion.div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-900/80 to-transparent pointer-events-none" initial={{
+        opacity: 0
+      }} whileInView={{
+        opacity: 1
+      }} transition={{
+        delay: 2.0,
+        duration: 0.5
+      }} viewport={{
+        once: true
+      }} />
         
         {/* Terminal cursor blink effect */}
-        <motion.div
-          className="absolute bottom-4 left-4 h-3 w-1.5 bg-blue-500"
-          animate={{ opacity: [0, 1, 0] }}
-          transition={{ repeat: Infinity, duration: 1 }}
-        />
+        <motion.div className="absolute bottom-4 left-4 h-3 w-1.5 bg-blue-500" animate={{
+        opacity: [0, 1, 0]
+      }} transition={{
+        repeat: Infinity,
+        duration: 1
+      }} />
         
-        <motion.div
-          className="absolute -bottom-2 -right-2 w-16 h-16 rounded-full bg-blue-500/20 blur-xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.6, 0.8, 0.6]
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 4,
-            ease: "easeInOut"
-          }}
-        />
+        <motion.div className="absolute -bottom-2 -right-2 w-16 h-16 rounded-full bg-blue-500/20 blur-xl" animate={{
+        scale: [1, 1.2, 1],
+        opacity: [0.6, 0.8, 0.6]
+      }} transition={{
+        repeat: Infinity,
+        duration: 4,
+        ease: "easeInOut"
+      }} />
       </div>
       
       {/* Decorative elements */}
       <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2">
-        <motion.div
-          className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-2xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 5,
-            ease: "easeInOut"
-          }}
-        />
+        <motion.div className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-2xl" animate={{
+        scale: [1, 1.2, 1],
+        opacity: [0.3, 0.5, 0.3]
+      }} transition={{
+        repeat: Infinity,
+        duration: 5,
+        ease: "easeInOut"
+      }} />
       </div>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
 export default CompactCodeAnimation;

@@ -46,27 +46,27 @@ const AutomationSection = () => {
           subtitle="Our platform automates the tedious parts of validation so you can focus on building your business"
           badge="TIME EFFICIENCY"
         />
-
+        
+        {/* Dashboard Preview - Now comes first in a full width container */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate={controls}
-          className="grid md:grid-cols-12 gap-8 mt-10"
+          className="mt-10"
         >
-          {/* Task Automation - Now comes first and takes up 5 columns */}
-          <motion.div variants={itemVariants} className="md:col-span-5 h-full">
-            <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+          <motion.div variants={itemVariants} className="w-full mb-8">
+            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
               <CardContent className="p-0">
-                <TaskAutomationCard tasks={automationData} />
+                <DashboardPreview />
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Dashboard Preview - Now comes second and takes up 7 columns */}
-          <motion.div variants={itemVariants} className="md:col-span-7 h-full">
-            <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+          {/* Task Automation - Now comes second in a full width container */}
+          <motion.div variants={itemVariants} className="w-full">
+            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
               <CardContent className="p-0">
-                <DashboardPreview />
+                <TaskAutomationCard tasks={automationData} />
               </CardContent>
             </Card>
           </motion.div>

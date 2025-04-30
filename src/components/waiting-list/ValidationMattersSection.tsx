@@ -1,100 +1,111 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { PlayCircle } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+
+interface VideoCardProps {
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  youtubeId: string;
+  index: number;
+}
+
+const VideoCard: React.FC<VideoCardProps> = ({ 
+  title, 
+  description, 
+  thumbnailUrl, 
+  youtubeId,
+  index 
+}) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      viewport={{ once: true }}
+    >
+      <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow">
+        <div className="relative">
+          <AspectRatio ratio={16 / 9}>
+            <img 
+              src={thumbnailUrl} 
+              alt={title}
+              className="w-full h-full object-cover"
+            />
+          </AspectRatio>
+          <a 
+            href={`https://www.youtube.com/watch?v=${youtubeId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 hover:opacity-100 transition-opacity"
+          >
+            <PlayCircle className="w-16 h-16 text-white" />
+          </a>
+        </div>
+        <CardContent className="p-5">
+          <h3 className="text-lg font-semibold mb-2">{title}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300">{description}</p>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
 
 const ValidationMattersSection = () => {
+  const videos = [
+    {
+      title: "How to Get and Test Startup Ideas",
+      description: "Michael Seibel (YC) explains why talking to users early is critical to success.",
+      thumbnailUrl: "/lovable-uploads/8593c3fd-9bf5-4cc2-9fb3-26615fd46f96.png", 
+      youtubeId: "vDXkpJw16os"
+    },
+    {
+      title: "Use This PROVEN Formula to Validate Your Next Startup Idea",
+      description: "Rob Walling breaks down a battle-tested validation method used by bootstrapped founders.",
+      thumbnailUrl: "https://img.youtube.com/vi/YZvpGQYLFCE/maxresdefault.jpg",
+      youtubeId: "YZvpGQYLFCE"
+    },
+    {
+      title: "Waze Founder on How to Validate Your Startup Idea",
+      description: "Uri Levine shares real-world insights from building Waze.",
+      thumbnailUrl: "https://img.youtube.com/vi/D6X7OJMKR9g/maxresdefault.jpg",
+      youtubeId: "D6X7OJMKR9g"
+    }
+  ];
+
   return (
-    <section className="py-16 md:py-24 px-4 md:px-8 bg-white dark:bg-gray-950">
+    <section className="py-16 md:py-24 px-4 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Start Validating Your Idea Now — Even If It's 2AM and You're Working Solo
+            Why Idea Validation Matters
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Don't waste time on ideas that won't succeed. Get data-driven validation before investing resources.
+            Before you build, validate. These founders, investors, and creators share 
+            how they save time and money by testing before launching.
           </p>
         </motion.div>
         
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="order-2 md:order-1"
-          >
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">
-              Why Idea Validation Matters
-            </h3>
-            <div className="space-y-6">
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  <img src="/public/placeholder.svg" alt="Icon 1" className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Saves Time & Money</h4>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    Avoid wasting resources on ideas that won't succeed in the market.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  <img src="/public/placeholder.svg" alt="Icon 2" className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Reduces Risk</h4>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    Data-driven insights help you make informed decisions about your business.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  <img src="/public/placeholder.svg" alt="Icon 3" className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Refines Your Concept</h4>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    Get insights to improve your idea before investing in development.
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="mt-8">
-              <Button className="h-12 px-6 bg-green-600 hover:bg-green-700 text-white flex items-center gap-2">
-                Start Validating Now
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </div>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="order-1 md:order-2"
-          >
-            <div className="rounded-xl overflow-hidden shadow-xl">
-              <img 
-                src="/public/lovable-uploads/0c0574b5-8cc0-41a2-8b87-ad8df6b502ca.png"
-                alt="Platform dashboard" 
-                className="w-full h-auto"
-              />
-            </div>
-          </motion.div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {videos.map((video, index) => (
+            <VideoCard
+              key={index}
+              index={index}
+              title={video.title}
+              description={video.description}
+              thumbnailUrl={video.thumbnailUrl}
+              youtubeId={video.youtubeId}
+            />
+          ))}
         </div>
       </div>
     </section>

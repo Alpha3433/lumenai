@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { extractSwotComponents } from '@/utils/swotUtils';
+import { extractSwotData } from '@/utils/swotUtils';
 import SwotTable from './swot/SwotTable';
 import SwotCards from './swot/SwotCards';
 import SwotFallback from './swot/SwotFallback';
@@ -16,7 +16,7 @@ interface SwotAnalysisProps {
 
 const SwotAnalysis = ({ swotText, marketAnalysis = '' }: SwotAnalysisProps) => {
   // Extract SWOT components from the text
-  const swotData = extractSwotComponents(swotText);
+  const swotData = extractSwotData(swotText);
   
   // Function to calculate whether we have enough data for the table view
   const hasEnoughDataForTable = () => {

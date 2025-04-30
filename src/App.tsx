@@ -26,7 +26,7 @@ import Checkout from "./pages/Checkout";
 import Blog from "./pages/Blog";
 import GenerateReport from "./pages/GenerateReport";
 import RedditInsights from "./pages/RedditInsights";
-import CommunityOutreach from "./pages/CommunityOutreach";
+import LandingPageCreator from "./pages/LandingPageCreator";
 import Demo from "./pages/Demo";
 
 const queryClient = new QueryClient();
@@ -59,7 +59,7 @@ const App = () => (
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/generate-report" element={<GenerateReport />} />
                 <Route path="/reddit-insights" element={<RedditInsights />} />
-                <Route path="/community-outreach" element={<CommunityOutreach />} />
+                <Route path="/landing-page-creator" element={<LandingPageCreator />} />
                 <Route path="/demo" element={<Demo />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
-import { FileText, Calendar, CheckCircle, Globe, Wand, MessageSquare } from 'lucide-react';
+import { FileText, Calendar, CheckCircle, Globe, Wand, Layout } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LogoGeneratorModal from '@/components/logo/LogoGeneratorModal';
 
@@ -14,8 +14,8 @@ const DashboardHeader = () => {
     window.location.href = '/reddit-insights';
   };
 
-  const handleCommunityOutreach = () => {
-    window.location.href = '/community-outreach';
+  const handleLandingPageCreator = () => {
+    window.location.href = '/landing-page-creator';
   };
 
   return <div className="mb-8 bg-slate-50 dark:bg-slate-900/50 p-8 rounded-xl">
@@ -43,9 +43,9 @@ const DashboardHeader = () => {
           <Globe className="mr-2 h-4 w-4" />
           Reddit Insights
         </Button>
-        <Button variant="secondary" onClick={handleCommunityOutreach} className="bg-pink-100 hover:bg-pink-200 dark:bg-pink-900/30 dark:hover:bg-pink-900/50">
-          <MessageSquare className="mr-2 h-4 w-4" />
-          Community Outreach
+        <Button variant="secondary" onClick={handleLandingPageCreator} className="bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50">
+          <Layout className="mr-2 h-4 w-4" />
+          Create Landing Page
         </Button>
       </div>
 

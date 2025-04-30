@@ -59,7 +59,7 @@ const SwotAnalysisStep: React.FC<SwotAnalysisStepProps> = ({ step }) => {
                 <step.icon className="h-5 w-5" />
               </div>
               <span className="bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-sm px-3 py-1 rounded-full">
-                Step 2
+                Step 3
               </span>
             </div>
             

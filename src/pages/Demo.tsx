@@ -12,6 +12,7 @@ import DemoNavigation from '@/components/demo/DemoNavigation';
 import StepDisplay from '@/components/demo/StepDisplay';
 import BusinessIdeaStep from '@/components/demo/BusinessIdeaStep';
 import BusinessValidationStep from '@/components/demo/BusinessValidationStep';
+import SwotAnalysisStep from '@/components/demo/SwotAnalysisStep';
 import DemoCTA from '@/components/demo/DemoCTA';
 import { DemoStep } from '@/components/demo/types';
 
@@ -102,12 +103,15 @@ const Demo = () => {
         {/* Special handling for Business Validation/Tailored Plan step */}
         <BusinessValidationStep step={steps[1]} />
         
+        {/* Special handling for Discover Market Needs / SWOT Analysis step */}
+        <SwotAnalysisStep step={steps[2]} />
+        
         {/* Render remaining steps */}
-        {steps.slice(2).map((step, index) => (
+        {steps.slice(3).map((step, index) => (
           <StepDisplay 
             key={step.id}
             step={step}
-            index={index + 2}
+            index={index + 3}
             isFirstStep={false}
           />
         ))}

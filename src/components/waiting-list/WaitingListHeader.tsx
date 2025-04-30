@@ -26,55 +26,53 @@ const WaitingListHeader = () => {
           <Menu className="h-6 w-6" />
         </button>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
-          <Button variant="ghost" asChild>
-            <a href="#how-it-works" className="text-gray-600 hover:text-gray-900">
-              Home
-            </a>
-          </Button>
-          <Button variant="ghost" asChild>
-            <a href="#features" className="text-gray-600 hover:text-gray-900">
-              Features
-            </a>
-          </Button>
-          <Button variant="ghost" asChild>
-            <a href="#examples" className="text-gray-600 hover:text-gray-900">
-              Examples
-            </a>
-          </Button>
-          <Button variant="ghost" asChild>
-            <a href="#pricing" className="text-gray-600 hover:text-gray-900">
-              Pricing
-            </a>
-          </Button>
-          <Button variant="ghost" asChild>
-            <a href="#faq" className="text-gray-600 hover:text-gray-900">
-              FAQ
-            </a>
-          </Button>
+        {/* Desktop Navigation - Centered */}
+        <nav className="hidden md:flex flex-1 justify-center">
+          <div className="flex items-center gap-8">
+            <Button variant="ghost" asChild>
+              <a href="#how-it-works" className="text-gray-600 hover:text-gray-900">
+                Demo and How it Works
+              </a>
+            </Button>
+            <Button variant="ghost" asChild>
+              <a href="#features" className="text-gray-600 hover:text-gray-900">
+                Features
+              </a>
+            </Button>
+            <Button variant="ghost" asChild>
+              <a href="#who-its-for" className="text-gray-600 hover:text-gray-900">
+                Who It's For
+              </a>
+            </Button>
+            <Button variant="ghost" asChild>
+              <a href="#faq" className="text-gray-600 hover:text-gray-900">
+                FAQs
+              </a>
+            </Button>
+          </div>
+        </nav>
+
+        {/* Join Waitlist button moved to the right */}
+        <div className="hidden md:block">
           <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-none">
             Join Waitlist
           </Button>
-        </nav>
+        </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="absolute top-full left-0 right-0 bg-white shadow-md p-4 md:hidden flex flex-col gap-3">
             <a href="#how-it-works" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
-              Home
+              Demo and How it Works
             </a>
             <a href="#features" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
               Features
             </a>
-            <a href="#examples" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
-              Examples
-            </a>
-            <a href="#pricing" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
-              Pricing
+            <a href="#who-its-for" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
+              Who It's For
             </a>
             <a href="#faq" className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
-              FAQ
+              FAQs
             </a>
             <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-none">
               Join Waitlist

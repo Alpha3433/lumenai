@@ -7,8 +7,9 @@ import SolutionSteps from '@/components/waiting-list/SolutionSteps';
 import AutomationSection from '@/components/waiting-list/AutomationSection';
 import FeaturesSection from '@/components/waiting-list/FeaturesSection';
 import WhoItsForSection from '@/components/waiting-list/WhoItsForSection';
-import FAQSection from '@/components/waiting-list/FAQSection';
 import ValidationMattersSection from '@/components/waiting-list/ValidationMattersSection';
+import RoadmapSection from '@/components/waiting-list/RoadmapSection';
+import FAQSection from '@/components/waiting-list/FAQSection';
 import FooterCTA from '@/components/waiting-list/FooterCTA';
 import Footer from '@/components/Footer';
 
@@ -24,6 +25,7 @@ const WaitingList = () => {
         <AutomationSection />
         <WhoItsForSection />
         <ValidationMattersSection />
+        <RoadmapSection />
         <FAQSection />
         <FooterCTA />
       </main>

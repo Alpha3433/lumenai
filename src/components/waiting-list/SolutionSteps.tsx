@@ -1,9 +1,8 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
 import ProcessSteps from './solution/ProcessSteps';
-import CodeAnimation from './solution/CodeAnimation';
+import CompactCodeAnimation from './solution/CompactCodeAnimation';
 import { validationSteps, codeLines } from './solution/solutionStepsData';
 
 /**
@@ -40,7 +39,7 @@ const SolutionSteps = () => {
           </div>
           
           <div className="h-full flex self-stretch">
-            <CodeAnimation codeLines={codeLines} />
+            <CompactCodeAnimation codeLines={codeLines} />
             
             <motion.div
               className="absolute -z-10 w-full h-full rounded-full bg-blue-400/10 dark:bg-blue-400/5 blur-3xl -bottom-1/4 right-1/4"

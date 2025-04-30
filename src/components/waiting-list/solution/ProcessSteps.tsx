@@ -58,7 +58,7 @@ const ProcessSteps: React.FC<ProcessStepsProps> = ({
       }} transition={{
         type: "spring",
         stiffness: 300
-      }} className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 border border-gray-100 dark:border-gray-700 transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 w-full py-[28px]">
+      }} className="rounded-xl shadow-md p-5 border border-gray-100 dark:border-gray-700 transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 w-full py-[28px] bg-slate-50">
             <h3 className="font-bold text-lg mb-2 text-gray-900 dark:text-gray-100 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{step.title}</h3>
             <p className="text-gray-600 dark:text-gray-300 text-sm">{step.description}</p>
             

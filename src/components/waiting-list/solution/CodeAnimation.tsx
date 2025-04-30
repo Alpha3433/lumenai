@@ -61,7 +61,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         once: true
       }}
       className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full"
-      style={{ maxHeight: "380px" }} // Reduced height to match shorter code
+      style={{ minHeight: "480px" }} // Increased the height to match the Launch with Confidence card
     >
       <div className="p-3 bg-gray-800 flex items-center justify-between"> {/* Reduced padding */}
         <div className="flex items-center gap-2">
@@ -90,7 +90,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
       </div>
       
       <div className="p-4 font-mono text-sm flex-grow relative overflow-hidden"> {/* Reduced padding */}
-        <div className="space-y-1"> {/* Reduced spacing */}
+        <div className="space-y-1.5"> {/* Added a bit more spacing between lines */}
           {codeLines.map((line, index) => (
             <motion.div
               key={index}

@@ -1,6 +1,5 @@
 
-
-export { extractValidationData } from './extractors';
-export type { ValidationData } from './types';
-export { formatValidationText, getScoreBadge, getRecommendation } from './formatters';
-
+// Main entry point for business validation utilities
+export * from './types';
+export * from './formatters';
+export * from './extractors';

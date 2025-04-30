@@ -104,9 +104,7 @@ const RoadmapSection = () => {
       }} viewport={{
         once: true
       }} className="text-center mb-16">
-          <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium px-3 py-1 rounded-full inline-block mb-4">
-            Product Roadmap
-          </span>
+          <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium px-3 py-1 rounded-full inline-block mb-4">Product Pipeline</span>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Lumen AI Roadmap</h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             We're constantly innovating to bring you the most powerful startup validation tools. 

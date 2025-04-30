@@ -14,7 +14,6 @@ import FAQAccordion from '@/components/home/FAQAccordion';
 import HowItWorksSection from '@/components/home/HowItWorksSection';
 import ComparisonSection from '@/components/home/ComparisonSection';
 import CoreFeaturesSection from '@/components/home/CoreFeaturesSection';
-import FeaturesSection from '@/components/waiting-list/FeaturesSection';
 import AnalysisToolsSection from '@/components/home/AnalysisToolsSection';
 
 const Index = () => {
@@ -26,7 +25,6 @@ const Index = () => {
       <ComparisonSection />
       <HowItWorksSection />
       <ThreeColumnFeatures />
-      <FeaturesSection />
       <TransformSection />
       <RoadmapSection />
       <TestimonialsSection />

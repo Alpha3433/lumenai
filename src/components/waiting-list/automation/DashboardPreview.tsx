@@ -2,7 +2,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { BarChart3, LineChart, PieChart, TrendingUp, Users, Calendar, CheckSquare } from 'lucide-react';
+import { 
+  BarChart3, 
+  LineChart, 
+  Calendar, 
+  CheckSquare, 
+  FileText, 
+  Clock,
+  Users
+} from 'lucide-react';
 
 const DashboardPreview = () => {
   return (
@@ -34,94 +42,125 @@ const DashboardPreview = () => {
         </div>
         
         <div className="p-4 space-y-4">
-          {/* Dashboard Sections */}
-          <div className="grid grid-cols-2 gap-3 mb-2">
-            <motion.div 
-              initial={{ x: -20, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30 p-3 rounded-lg flex items-center gap-3 group hover:shadow-md transition-all"
-            >
-              <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-800/40 text-blue-600 dark:text-blue-400">
-                <Users className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Total Audience</p>
-                <p className="font-bold text-xl group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">12.4K</p>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ x: 20, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/30 p-3 rounded-lg flex items-center gap-3 group hover:shadow-md transition-all"
-            >
-              <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-800/40 text-purple-600 dark:text-purple-400">
-                <BarChart3 className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Market Growth</p>
-                <p className="font-bold text-xl group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">+24%</p>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Main Chart Area */}
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
+          {/* Welcome section inspired by the reference image */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            className="relative h-[140px] bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="mb-4"
           >
-            {/* Chart Visual Mockup */}
-            <div className="absolute inset-0 flex items-end px-4 pb-4">
-              <div className="h-[40%] w-[10%] bg-blue-400 dark:bg-blue-600 rounded-t-md"></div>
-              <div className="h-[60%] w-[10%] bg-blue-500 dark:bg-blue-500 rounded-t-md ml-3"></div>
-              <div className="h-[45%] w-[10%] bg-blue-400 dark:bg-blue-600 rounded-t-md ml-3"></div>
-              <div className="h-[75%] w-[10%] bg-blue-500 dark:bg-blue-500 rounded-t-md ml-3"></div>
-              <div className="h-[55%] w-[10%] bg-blue-400 dark:bg-blue-600 rounded-t-md ml-3"></div>
-              <div className="h-[85%] w-[10%] bg-blue-500 dark:bg-blue-500 rounded-t-md ml-3"></div>
-              <div className="h-[65%] w-[10%] bg-blue-400 dark:bg-blue-600 rounded-t-md ml-3"></div>
+            <h4 className="text-lg font-semibold">Welcome back, there</h4>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Here's what's happening with your business today</p>
+          </motion.div>
+          
+          {/* Action buttons inspired by the reference image */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="flex flex-wrap gap-2 mb-4"
+          >
+            <button className="flex items-center gap-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-3 py-1.5 rounded-md text-xs font-medium">
+              <FileText className="h-3.5 w-3.5" />
+              Create Plan
+            </button>
+            <button className="flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-3 py-1.5 rounded-md text-xs font-medium">
+              <Calendar className="h-3.5 w-3.5" />
+              Schedule
+            </button>
+            <button className="flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 px-3 py-1.5 rounded-md text-xs font-medium">
+              <CheckSquare className="h-3.5 w-3.5" />
+              New Task
+            </button>
+          </motion.div>
+          
+          {/* Stats cards inspired by the reference image */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4"
+          >
+            <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+              <div className="flex items-center gap-2 mb-1">
+                <FileText className="h-3.5 w-3.5 text-purple-500" />
+                <span className="text-xs font-medium">Business Plans</span>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-bold">0</span>
+                <span className="text-xs text-gray-500">plans created</span>
+              </div>
             </div>
             
-            {/* Chart Overlay */}
-            <div className="absolute top-3 left-3 flex items-center">
-              <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 mr-2">
-                <LineChart className="h-3.5 w-3.5" />
+            <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+              <div className="flex items-center gap-2 mb-1">
+                <Calendar className="h-3.5 w-3.5 text-green-500" />
+                <span className="text-xs font-medium">Upcoming Meetings</span>
               </div>
-              <span className="text-xs font-medium">Validation Progress</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-bold">1</span>
+                <span className="text-xs text-gray-500">Apr 24, 8:30 AM</span>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+              <div className="flex items-center gap-2 mb-1">
+                <CheckSquare className="h-3.5 w-3.5 text-amber-500" />
+                <span className="text-xs font-medium">Tasks</span>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-bold">0</span>
+                <span className="text-xs text-gray-500">tasks due soon</span>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+              <div className="flex items-center gap-2 mb-1">
+                <Users className="h-3.5 w-3.5 text-blue-500" />
+                <span className="text-xs font-medium">Team</span>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-bold">0</span>
+                <span className="text-xs text-gray-500">members</span>
+              </div>
             </div>
           </motion.div>
           
-          {/* Activity Timeline */}
+          {/* First Panel - Business Plans */}
           <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.7, duration: 0.5 }}
-            className="space-y-2"
+            transition={{ delay: 0.7, duration: 0.6 }}
+            className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-lg p-4"
           >
-            <div className="flex justify-between items-center">
-              <h4 className="text-sm font-medium flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                <span>Recent Activity</span>
-              </h4>
-              <span className="text-xs text-blue-600 dark:text-blue-400">View all</span>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <div className="bg-purple-100 dark:bg-purple-900/30 p-1.5 rounded">
+                  <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h5 className="font-medium text-sm">Business Plans</h5>
+              </div>
+              <button className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-2.5 py-1 rounded flex items-center gap-1">
+                Create Plan
+              </button>
             </div>
             
-            <div className="space-y-1.5 max-h-[80px] overflow-y-auto">
-              <div className="flex items-center gap-2 p-1.5 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700/40 text-sm">
-                <CheckSquare className="h-3.5 w-3.5 text-green-500" />
-                <span className="text-xs">Market research completed</span>
+            <div className="flex flex-col items-center justify-center py-6 text-center">
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-full mb-4">
+                <FileText className="h-6 w-6 text-blue-500" />
               </div>
-              <div className="flex items-center gap-2 p-1.5 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700/40 text-sm">
-                <CheckSquare className="h-3.5 w-3.5 text-green-500" />
-                <span className="text-xs">Competitor analysis updated</span>
-              </div>
+              <h6 className="font-medium mb-2">Ready to Create Your First Business Plan</h6>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mb-4 max-w-xs">
+                Start building your entrepreneurial journey with our AI-powered platform. Create your first business plan to validate ideas and develop winning strategies.
+              </p>
+              <button className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded flex items-center gap-1">
+                <FileText className="h-3.5 w-3.5" />
+                Create Business Plan
+              </button>
             </div>
           </motion.div>
         </div>

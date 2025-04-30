@@ -39,7 +39,7 @@ const AutomationSection = () => {
 
   return (
     <section ref={ref} className="py-20 px-4 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto space-y-10">
         <AnimatedSectionHeader 
           title="Everything You Need to"
           highlightedText="Save Time"
@@ -47,24 +47,25 @@ const AutomationSection = () => {
           badge="TIME EFFICIENCY"
         />
         
-        {/* Dashboard Preview - Now comes first in a full width container */}
+        {/* Main Section Content */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate={controls}
-          className="mt-10"
+          className="space-y-8"
         >
-          <motion.div variants={itemVariants} className="w-full mb-8">
-            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+          {/* Interactive Dashboard - Now comes first */}
+          <motion.div variants={itemVariants} className="w-full">
+            <Card className="shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden border border-gray-100 dark:border-gray-800">
               <CardContent className="p-0">
                 <DashboardPreview />
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Task Automation - Now comes second in a full width container */}
+          {/* Task Automation - Now comes second */}
           <motion.div variants={itemVariants} className="w-full">
-            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+            <Card className="shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden border border-gray-100 dark:border-gray-800">
               <CardContent className="p-0">
                 <TaskAutomationCard tasks={automationData} />
               </CardContent>

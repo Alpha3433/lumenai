@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Package, User, Lightbulb, Brain } from 'lucide-react';
+import { Code, UserCog, Users, Palette } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
@@ -72,7 +72,6 @@ const UserGroupCard: React.FC<UserGroupProps> = ({
         <CardContent className="p-6 h-full flex flex-col">
           <motion.div variants={iconVariants} className="mb-4 flex items-center gap-3">
             <Avatar className="h-12 w-12 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-800">
-              <AvatarImage src={imageSrc} alt={title} className="object-cover" />
               <AvatarFallback className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
                 {icon}
               </AvatarFallback>
@@ -157,25 +156,25 @@ const WhoItsForSection = () => {
     }
   };
   const userGroups = [{
-    icon: <Package className="h-6 w-6" />,
+    icon: <Code className="h-6 w-6" />,
     title: "Indie Hackers",
     description: "You're building solo or with a small team. You need to validate quickly without burning cash or time.",
     delay: 0.2,
     imageSrc: "/lovable-uploads/97ff5ee9-49d4-4693-aae5-13ea2becadaa.png"
   }, {
-    icon: <User className="h-6 w-6" />,
+    icon: <UserCog className="h-6 w-6" />,
     title: "Solo Founders",
     description: "Every minute counts when you're wearing all the hats. Automate the validation to focus on building.",
     delay: 0.4,
     imageSrc: "/lovable-uploads/7757e8bc-1c7c-4b6e-b345-1c5b912e5019.png"
   }, {
-    icon: <Lightbulb className="h-6 w-6" />,
+    icon: <Users className="h-6 w-6" />,
     title: "Product Teams",
     description: "Test new feature ideas and products with real market data before committing engineering resources.",
     delay: 0.6,
     imageSrc: "/lovable-uploads/7964ca29-0497-47f8-8ab8-48c35b4bc2a0.png"
   }, {
-    icon: <Brain className="h-6 w-6" />,
+    icon: <Palette className="h-6 w-6" />,
     title: "Creators & Makers",
     description: "Turn your creative concepts into validated business ideas with clear market feedback.",
     delay: 0.8,

@@ -6,7 +6,7 @@ import WhyStartupsFail from '@/components/waiting-list/WhyStartupsFail';
 import SolutionSteps from '@/components/waiting-list/SolutionSteps';
 import AutomationSection from '@/components/waiting-list/AutomationSection';
 import FeaturesSection from '@/components/waiting-list/FeaturesSection';
-import ValidationInsights from '@/components/waiting-list/ValidationInsights';
+import WhoItsForSection from '@/components/waiting-list/WhoItsForSection';
 import FAQSection from '@/components/waiting-list/FAQSection';
 import TestimonialsSection from '@/components/waiting-list/TestimonialsSection';
 import FooterCTA from '@/components/waiting-list/FooterCTA';
@@ -22,7 +22,7 @@ const WaitingList = () => {
         <SolutionSteps />
         <FeaturesSection />
         <AutomationSection />
-        <ValidationInsights />
+        <WhoItsForSection />
         <TestimonialsSection />
         <FAQSection />
         <FooterCTA />

@@ -59,7 +59,7 @@ const ValidationMattersSection = () => {
     {
       title: "How to Get and Test Startup Ideas",
       description: "Michael Seibel (YC) explains why talking to users early is critical to success.",
-      thumbnailUrl: "/lovable-uploads/8593c3fd-9bf5-4cc2-9fb3-26615fd46f96.png", 
+      thumbnailUrl: "/lovable-uploads/40f4a29f-4c1e-4e26-9383-564227ec29d0.png", 
       youtubeId: "vDXkpJw16os"
     },
     {

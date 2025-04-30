@@ -30,9 +30,9 @@ const WaitingListHeader = () => {
         <nav className="hidden md:flex flex-1 justify-center">
           <div className="flex items-center gap-8">
             <Button variant="ghost" asChild>
-              <a href="#demo" className="text-black hover:text-gray-900">
+              <Link to="/demo" className="text-black hover:text-gray-900">
                 Demo
-              </a>
+              </Link>
             </Button>
             <Button variant="ghost" asChild>
               <a href="#how-it-works" className="text-black hover:text-gray-900">
@@ -67,9 +67,9 @@ const WaitingListHeader = () => {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="absolute top-full left-0 right-0 bg-white shadow-md p-4 md:hidden flex flex-col gap-3">
-            <a href="#demo" className="px-4 py-2 text-black hover:text-gray-900 hover:bg-gray-100 rounded-md">
+            <Link to="/demo" className="px-4 py-2 text-black hover:text-gray-900 hover:bg-gray-100 rounded-md">
               Demo
-            </a>
+            </Link>
             <a href="#how-it-works" className="px-4 py-2 text-black hover:text-gray-900 hover:bg-gray-100 rounded-md">
               How it Works
             </a>

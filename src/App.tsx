@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -26,6 +27,7 @@ import Blog from "./pages/Blog";
 import GenerateReport from "./pages/GenerateReport";
 import RedditInsights from "./pages/RedditInsights";
 import CommunityOutreach from "./pages/CommunityOutreach";
+import Demo from "./pages/Demo";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +60,7 @@ const App = () => (
                 <Route path="/generate-report" element={<GenerateReport />} />
                 <Route path="/reddit-insights" element={<RedditInsights />} />
                 <Route path="/community-outreach" element={<CommunityOutreach />} />
+                <Route path="/demo" element={<Demo />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>

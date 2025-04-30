@@ -18,42 +18,34 @@ export const validationSteps = [{
   description: "Use your validated plan and expert feedback to move forward — and let us do the heavy lifting. We'll build your MVP, launch targeted ad campaigns, and start driving real traction while you focus on the fun stuff."
 }];
 
-// Enhanced code lines for the animated code display with execution simulation
+// Significantly shortened code lines for the animated code display
 export const codeLines = [
-  { code: "<span class='text-pink-400'>const</span> <span class='text-blue-400'>validateBusinessIdea</span> = <span class='text-pink-400'>async</span> (idea) => {", delay: 0 },
-  { code: "  <span class='text-green-400'>// Starting validation process...</span>", delay: 0.3, isComment: true },
-  { code: "  <span class='text-blue-400'>const</span> marketData = <span class='text-pink-400'>await</span> fetchMarketAnalysis(idea.industry);", delay: 0.6 },
-  { code: "  <span class='text-green-400 typing'>// Market size: $4.2B with 14% YoY growth</span>", delay: 1.0, isOutput: true },
+  { code: "<span class='text-pink-400'>const</span> <span class='text-blue-400'>validateIdea</span> = <span class='text-pink-400'>async</span> (idea) => {", delay: 0 },
+  { code: "  <span class='text-green-400'>// Analyzing market...</span>", delay: 0.3, isComment: true },
+  { code: "  <span class='text-blue-400'>const</span> market = <span class='text-pink-400'>await</span> getMarketData(idea.industry);", delay: 0.6 },
+  { code: "  <span class='text-green-400 typing'>// $4.2B market, 14% growth</span>", delay: 0.8, isOutput: true },
   
-  { code: "  <span class='text-blue-400'>const</span> targetAudience = <span class='text-pink-400'>await</span> identifyAudience(idea.problem);", delay: 1.6 },
-  { code: "  <span class='text-green-400 typing'>// Primary audience: Tech-savvy professionals, 28-45</span>", delay: 1.8, isOutput: true },
+  { code: "  <span class='text-blue-400'>const</span> audience = <span class='text-pink-400'>await</span> findAudience(idea.problem);", delay: 1.2 },
+  { code: "  <span class='text-green-400 typing'>// Tech professionals, 28-45</span>", delay: 1.4, isOutput: true },
   
-  { code: "  <span class='text-blue-400'>const</span> competitors = <span class='text-pink-400'>await</span> analyzeCompetitors(idea.solution);", delay: 2.6 },
-  { code: "  <span class='text-green-400 typing'>// Found 5 direct competitors, 3 indirect</span>", delay: 2.8, isOutput: true },
+  { code: "  <span class='text-blue-400'>const</span> competitors = analyzeCompetition(idea.solution);", delay: 1.8 },
+  { code: "  <span class='text-green-400 typing'>// 5 competitors identified</span>", delay: 2.0, isOutput: true },
   
-  { code: "  <span class='text-blue-400'>const</span> swotAnalysis = runSwotAnalysis({marketData, targetAudience, competitors});", delay: 3.6 },
-  { code: "  <span class='text-green-400 typing'>// Strengths: Innovative approach, Lower cost structure</span>", delay: 3.8, isOutput: true },
+  { code: "  <span class='text-blue-400'>const</span> score = calculateScore(market, audience, competitors);", delay: 2.4 },
   
-  { code: "  <span class='text-blue-400'>const</span> validationScore = computeValidationScore({", delay: 4.4 },
-  { code: "    marketData, targetAudience, competitors, swotAnalysis,", delay: 4.5 },
-  { code: "    financialProjection: calculateFinancials(idea, marketData),", delay: 4.6 },
-  { code: "    marketingChannels: analyzeMarketingEffectiveness(targetAudience)", delay: 4.7 },
-  { code: "  });", delay: 4.8 },
+  { code: "  <span class='text-blue-400'>if</span> (score > 70) {", delay: 2.8 },
+  { code: "    <span class='text-green-400 typing'>// Score: 78/100 - Validated!</span>", delay: 3.0, isOutput: true },
+  { code: "    <span class='text-pink-400'>return</span> { status: <span class='text-orange-400'>'VALIDATED'</span>, score };", delay: 3.2 },
+  { code: "  } <span class='text-blue-400'>else</span> {", delay: 3.4 },
+  { code: "    <span class='text-pink-400'>return</span> buildValidationPlan(idea, score);", delay: 3.6 },
+  { code: "  }", delay: 3.8 },
+  { code: "};", delay: 4.0 },
   
-  { code: "  <span class='text-blue-400'>if</span> (validationScore > 70) {", delay: 5.0 },
-  { code: "    <span class='text-green-400 typing'>// Validation successful! Score: 78/100</span>", delay: 5.1, isOutput: true },
-  { code: "    <span class='text-pink-400'>return</span> { status: <span class='text-orange-400'>'VALIDATED'</span>, score: validationScore };", delay: 5.3 },
-  { code: "  } <span class='text-blue-400'>else</span> {", delay: 5.5 },
-  { code: "    <span class='text-green-400 typing'>// Further validation required</span>", delay: 5.6, isOutput: true },
-  { code: "    <span class='text-pink-400'>return</span> generateValidationPlan(idea, validationScore);", delay: 5.7 },
-  { code: "  }", delay: 5.8 },
-  { code: "};", delay: 5.9 },
-  { code: "", delay: 6.0 },
-  { code: "<span class='text-pink-400'>const</span> <span class='text-blue-400'>result</span> = <span class='text-pink-400'>await</span> validateBusinessIdea({", delay: 6.1 },
-  { code: "  industry: <span class='text-orange-400'>'Health & Wellness'</span>,", delay: 6.2 },
-  { code: "  problem: <span class='text-orange-400'>'Lack of personalized nutrition'</span>,", delay: 6.3 },
-  { code: "  solution: <span class='text-orange-400'>'AI-driven meal subscription'</span>", delay: 6.4 },
-  { code: "});", delay: 6.5 },
-  { code: "", delay: 6.6 },
-  { code: "<span class='text-green-400 typing'>// ✅ Validation complete! Plan generated.</span>", delay: 6.7, isOutput: true }
+  { code: "<span class='text-pink-400'>const</span> result = <span class='text-pink-400'>await</span> validateIdea({", delay: 4.2 },
+  { code: "  industry: <span class='text-orange-400'>'Health & Wellness'</span>,", delay: 4.3 },
+  { code: "  problem: <span class='text-orange-400'>'Lack of personalized nutrition'</span>,", delay: 4.4 },
+  { code: "  solution: <span class='text-orange-400'>'AI-driven meal subscription'</span>", delay: 4.5 },
+  { code: "});", delay: 4.6 },
+  
+  { code: "<span class='text-green-400 typing'>// ✅ Validation complete!</span>", delay: 4.8, isOutput: true }
 ];

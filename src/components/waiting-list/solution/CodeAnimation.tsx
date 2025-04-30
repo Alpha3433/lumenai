@@ -29,9 +29,9 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         setCurrentLineIndex(0);
       } else {
         setExecutionProgress(prev => {
-          const newValue = Math.min(prev + 0.5, 100);
+          const newValue = Math.min(prev + 0.7, 100); // Increased speed
           // Update current line index based on progress
-          if (newValue % 10 === 0) {
+          if (newValue % 8 === 0) {  // Faster line update
             setCurrentLineIndex(prev => Math.min(prev + 1, codeLines.length - 1));
           }
           return newValue;
@@ -61,9 +61,9 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         once: true
       }}
       className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full"
-      style={{ maxHeight: "calc(100% - 0px)" }} // Adjust to match the ProcessSteps height
+      style={{ maxHeight: "380px" }} // Reduced height to match shorter code
     >
-      <div className="p-4 bg-gray-800 flex items-center justify-between">
+      <div className="p-3 bg-gray-800 flex items-center justify-between"> {/* Reduced padding */}
         <div className="flex items-center gap-2">
           <div className="flex gap-2">
             <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -89,8 +89,8 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         />
       </div>
       
-      <div className="p-6 font-mono text-sm flex-grow relative overflow-hidden">
-        <div className="space-y-1.5">
+      <div className="p-4 font-mono text-sm flex-grow relative overflow-hidden"> {/* Reduced padding */}
+        <div className="space-y-1"> {/* Reduced spacing */}
           {codeLines.map((line, index) => (
             <motion.div
               key={index}
@@ -109,7 +109,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
               viewport={{
                 once: true
               }}
-              className={`${line.isOutput ? 'pl-4 border-l-2 border-green-500/30 text-green-400 text-opacity-80' : 'text-gray-100'} ${index > currentLineIndex + 8 ? 'opacity-30' : ''}`}
+              className={`${line.isOutput ? 'pl-4 border-l-2 border-green-500/30 text-green-400 text-opacity-80' : 'text-gray-100'} ${index > currentLineIndex + 6 ? 'opacity-30' : ''}`}
             >
               {/* If it's an output line, add a typing animation effect */}
               {line.isOutput ? (

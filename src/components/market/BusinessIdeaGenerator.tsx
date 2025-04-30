@@ -11,7 +11,7 @@ import GeneratedIdeaDisplay from './GeneratedIdeaDisplay';
 const BusinessIdeaGenerator: React.FC = () => {
   const navigate = useNavigate();
   const [generating, setGenerating] = useState(false);
-  const [interests, setInterests] = useState("");
+  const [interests, setInterests] = useState("create a fitness app designed to help obese people lose weight using ai");
   const [industry, setIndustry] = useState("");
   const [currentTab, setCurrentTab] = useState("guided");
   const [generatedIdea, setGeneratedIdea] = useState<BusinessIdeaSuggestion | null>(null);

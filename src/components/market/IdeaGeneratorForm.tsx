@@ -67,16 +67,16 @@ const IdeaGeneratorForm: React.FC<IdeaGeneratorFormProps> = ({
           </div>
           
           <div>
-            <Label htmlFor="interests">Your Interests (Optional)</Label>
+            <Label htmlFor="interests">Business Description</Label>
             <Textarea 
               id="interests" 
-              placeholder="Tell us about your skills, passions, or areas of expertise..."
+              placeholder="Describe your business idea or concept..."
               value={interests}
               onChange={(e) => setInterests(e.target.value)}
               className="min-h-[80px]"
             />
             <p className="text-xs text-gray-500 mt-1 italic">
-              Try different combinations of industries and interests to discover unique business ideas!
+              Try different combinations of industries and descriptions to discover unique business ideas!
             </p>
           </div>
         </TabsContent>

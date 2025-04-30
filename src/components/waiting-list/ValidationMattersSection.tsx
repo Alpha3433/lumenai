@@ -63,10 +63,10 @@ const ValidationMattersSection = () => {
       youtubeId: "vDXkpJw16os"
     },
     {
-      title: "Use This PROVEN Formula to Validate Your Next Startup Idea",
-      description: "Rob Walling breaks down a battle-tested validation method used by bootstrapped founders.",
-      thumbnailUrl: "https://img.youtube.com/vi/YZvpGQYLFCE/maxresdefault.jpg",
-      youtubeId: "YZvpGQYLFCE"
+      title: "My Side Hustle Failed - Why Most Ideas Don't Work",
+      description: "Honest breakdown of a failed side project and the importance of validating ideas early.",
+      thumbnailUrl: "/lovable-uploads/e6d65b0a-c618-46b8-b61b-d12835202499.png",
+      youtubeId: "4_MDP6TcHwU"
     },
     {
       title: "Waze Founder on How to Validate Your Startup Idea",

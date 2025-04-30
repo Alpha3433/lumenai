@@ -17,7 +17,7 @@ interface ToolsShowcaseStepProps {
 }
 
 const ToolsShowcaseStep: React.FC<ToolsShowcaseStepProps> = ({ step }) => {
-  // Example tool descriptions for FitnessAI
+  // Tool buttons with FitnessAI examples
   const tools = [
     {
       name: "Create Plan",

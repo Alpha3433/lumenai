@@ -11,6 +11,7 @@ import DemoHero from '@/components/demo/DemoHero';
 import DemoNavigation from '@/components/demo/DemoNavigation';
 import StepDisplay from '@/components/demo/StepDisplay';
 import BusinessIdeaStep from '@/components/demo/BusinessIdeaStep';
+import BusinessValidationStep from '@/components/demo/BusinessValidationStep';
 import DemoCTA from '@/components/demo/DemoCTA';
 import { DemoStep } from '@/components/demo/types';
 
@@ -25,12 +26,11 @@ const Demo = () => {
       icon: Lightbulb,
       color: "from-blue-500 to-blue-600"
     },
-    // SWOT step removed
     {
       id: "explore",
       title: "Get a Tailored Plan",
-      description: "Based on your idea, we generate a comprehensive business plan with market analysis, competitor insights, and financial projections that help clarify your path forward.",
-      image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
+      description: "Based on your idea, we generate a comprehensive validation score with detailed strengths and improvement areas to help you understand your business's viability.",
+      image: "public/lovable-uploads/840decb2-8cc3-44d0-ba0c-a2c75168d6b5.png",
       icon: FileText,
       color: "from-green-500 to-green-600"
     },
@@ -99,14 +99,15 @@ const Demo = () => {
         {/* Special handling for first step with Business Idea Generator */}
         <BusinessIdeaStep step={steps[0]} />
         
-        {/* Removed special handling for SWOT Analysis step */}
+        {/* Special handling for Business Validation/Tailored Plan step */}
+        <BusinessValidationStep step={steps[1]} />
         
         {/* Render remaining steps */}
-        {steps.slice(1).map((step, index) => (
+        {steps.slice(2).map((step, index) => (
           <StepDisplay 
             key={step.id}
             step={step}
-            index={index + 1}
+            index={index + 2}
             isFirstStep={false}
           />
         ))}

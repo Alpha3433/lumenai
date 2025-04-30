@@ -1,12 +1,19 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DemoStep } from './types';
 import BusinessValidationScore from '@/components/BusinessValidationScore';
+import UserRetentionStrategy from '@/components/retention/UserRetentionStrategy';
+import CustomerPersonasSection from '@/components/personas/CustomerPersonasSection';
+import SwotAnalysis from '@/components/SwotAnalysis';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 interface BusinessValidationStepProps {
   step: DemoStep;
 }
+
 const BusinessValidationStep: React.FC<BusinessValidationStepProps> = ({
   step
 }) => {
@@ -17,18 +24,41 @@ const BusinessValidationStep: React.FC<BusinessValidationStepProps> = ({
     It has potential for recurring revenue through subscription models and addresses a growing market need.
     However, it faces high competition in the fitness app space and potential market saturation.
   `;
-  return <section id={step.id} className="py-20 border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-800/20">
+
+  // Carousel content
+  const carouselItems = [
+    { 
+      id: 'business-validation',
+      component: <BusinessValidationScore businessText={businessDescription} businessName="FitnessAI" />,
+      title: "Business Validation Score" 
+    },
+    { 
+      id: 'user-retention',
+      component: <UserRetentionStrategy businessName="FitnessAI" businessDescription={businessDescription} />,
+      title: "User Retention Strategy" 
+    },
+    { 
+      id: 'customer-personas',
+      component: <CustomerPersonasSection businessName="FitnessAI" businessDescription={businessDescription} />,
+      title: "Customer Persona Deep-Dive" 
+    },
+    { 
+      id: 'competitors',
+      component: <SwotAnalysis swotText={businessDescription} marketAnalysis={businessDescription} />,
+      title: "High Threat Competitors" 
+    }
+  ];
+
+  return (
+    <section id={step.id} className="py-20 border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-800/20">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:flex-row items-start gap-12">
-          <motion.div initial={{
-          opacity: 0,
-          x: -30
-        }} whileInView={{
-          opacity: 1,
-          x: 0
-        }} transition={{
-          duration: 0.6
-        }} className="lg:w-1/3">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="lg:w-1/3"
+          >
             <div className="flex items-center gap-2 mb-4">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-r ${step.color} text-white`}>
                 <step.icon className="h-5 w-5" />
@@ -60,24 +90,40 @@ const BusinessValidationStep: React.FC<BusinessValidationStepProps> = ({
             </Button>
           </motion.div>
           
-          <motion.div initial={{
-          opacity: 0,
-          y: 30
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.6,
-          delay: 0.2
-        }} viewport={{
-          once: true
-        }} className="lg:w-2/3">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="lg:w-2/3"
+          >
             <div className="rounded-xl overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
-              <BusinessValidationScore businessText={businessDescription} businessName="FitnessAI" />
+              <Carousel className="w-full relative">
+                <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                  <h3 className="font-semibold text-gray-700 dark:text-gray-300">
+                    {carouselItems[0].title}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <CarouselPrevious className="relative -left-0 h-8 w-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700" />
+                    <CarouselNext className="relative -right-0 h-8 w-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700" />
+                  </div>
+                </div>
+                <CarouselContent>
+                  {carouselItems.map((item, index) => (
+                    <CarouselItem key={item.id}>
+                      <div className="p-1">
+                        {item.component}
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
             </div>
           </motion.div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default BusinessValidationStep;

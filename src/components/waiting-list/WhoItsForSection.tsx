@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { Package, User, Lightbulb, Brain } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -14,7 +14,7 @@ interface UserGroupProps {
 
 const UserGroupCard: React.FC<UserGroupProps> = ({ icon, title, description, delay }) => {
   const controls = useAnimation();
-  const [ref, inView] = useInView({
+  const { ref, inView } = useInView({
     threshold: 0.2,
     triggerOnce: true
   });
@@ -86,7 +86,7 @@ const UserGroupCard: React.FC<UserGroupProps> = ({ icon, title, description, del
 
 const WhoItsForSection = () => {
   const controls = useAnimation();
-  const [ref, inView] = useInView({
+  const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true
   });

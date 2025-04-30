@@ -3,17 +3,22 @@ import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Package, User, Lightbulb, Brain } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+
 interface UserGroupProps {
   icon: React.ReactNode;
   title: string;
   description: string;
   delay: number;
+  imageSrc: string;
 }
+
 const UserGroupCard: React.FC<UserGroupProps> = ({
   icon,
   title,
   description,
-  delay
+  delay,
+  imageSrc
 }) => {
   const controls = useAnimation();
   const {
@@ -65,17 +70,23 @@ const UserGroupCard: React.FC<UserGroupProps> = ({
   return <motion.div ref={ref} initial="hidden" animate={controls} variants={cardVariants} className="h-full">
       <Card className="h-full border border-gray-200 dark:border-gray-800 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white dark:bg-gray-900 overflow-hidden group">
         <CardContent className="p-6 h-full flex flex-col">
-          <motion.div variants={iconVariants} className="mb-4 w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-200 dark:group-hover:bg-blue-800/40 transition-colors">
-            {icon}
+          <motion.div variants={iconVariants} className="mb-4 flex items-center gap-3">
+            <Avatar className="h-12 w-12 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-800">
+              <AvatarImage src={imageSrc} alt={title} className="object-cover" />
+              <AvatarFallback className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                {icon}
+              </AvatarFallback>
+            </Avatar>
+            
+            <h3 className="text-lg font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{title}</h3>
           </motion.div>
-          
-          <h3 className="text-lg font-semibold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{title}</h3>
           
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{description}</p>
         </CardContent>
       </Card>
     </motion.div>;
 };
+
 const WhoItsForSection = () => {
   const controls = useAnimation();
   const {
@@ -149,22 +160,26 @@ const WhoItsForSection = () => {
     icon: <Package className="h-6 w-6" />,
     title: "Indie Hackers",
     description: "You're building solo or with a small team. You need to validate quickly without burning cash or time.",
-    delay: 0.2
+    delay: 0.2,
+    imageSrc: "/lovable-uploads/97ff5ee9-49d4-4693-aae5-13ea2becadaa.png"
   }, {
     icon: <User className="h-6 w-6" />,
     title: "Solo Founders",
     description: "Every minute counts when you're wearing all the hats. Automate the validation to focus on building.",
-    delay: 0.4
+    delay: 0.4,
+    imageSrc: "/lovable-uploads/7757e8bc-1c7c-4b6e-b345-1c5b912e5019.png"
   }, {
     icon: <Lightbulb className="h-6 w-6" />,
     title: "Product Teams",
     description: "Test new feature ideas and products with real market data before committing engineering resources.",
-    delay: 0.6
+    delay: 0.6,
+    imageSrc: "/lovable-uploads/7964ca29-0497-47f8-8ab8-48c35b4bc2a0.png"
   }, {
     icon: <Brain className="h-6 w-6" />,
     title: "Creators & Makers",
     description: "Turn your creative concepts into validated business ideas with clear market feedback.",
-    delay: 0.8
+    delay: 0.8,
+    imageSrc: "/lovable-uploads/bf8f5448-2228-498a-a525-f187d04fa676.png"
   }];
   return <section id="who-its-for" className="py-20 px-4 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-6xl mx-auto" ref={ref}>
@@ -190,7 +205,7 @@ const WhoItsForSection = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {userGroups.map((group, index) => <UserGroupCard key={index} icon={group.icon} title={group.title} description={group.description} delay={group.delay} />)}
+          {userGroups.map((group, index) => <UserGroupCard key={index} icon={group.icon} title={group.title} description={group.description} delay={group.delay} imageSrc={group.imageSrc} />)}
         </div>
 
         <motion.div className="mt-16 text-center" variants={highlightVariants} initial="hidden" animate={controls}>
@@ -201,4 +216,5 @@ const WhoItsForSection = () => {
       </div>
     </section>;
 };
+
 export default WhoItsForSection;

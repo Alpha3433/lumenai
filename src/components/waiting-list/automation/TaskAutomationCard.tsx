@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { LucideIcon } from 'lucide-react';
+import { ArrowRight, CheckCircle, Zap } from 'lucide-react';
 
 export interface AutomationTaskProps {
   task: string;
@@ -30,27 +30,42 @@ const TaskAutomationCard = ({ tasks }: TaskAutomationCardProps) => {
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 + 0.2, duration: 0.5 }}
-            className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all hover:bg-white dark:hover:bg-gray-700/80 group"
+            className="relative bg-gradient-to-r from-gray-50 to-white dark:from-gray-800/80 dark:to-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all p-4"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-200 dark:group-hover:bg-blue-800/40 transition-colors">
-                {item.icon}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-200 dark:group-hover:bg-blue-800/40 transition-colors">
+                  {item.icon}
+                </div>
+                <div className="font-medium">{item.task}</div>
               </div>
-              <span className="font-medium">{item.task}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <div className="text-red-500 text-sm line-through">{item.manual}</div>
-                <div className="text-green-500 font-semibold">{item.automated}</div>
+              
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col items-end">
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm text-red-500 line-through opacity-70">{item.manual}</div>
+                    <ArrowRight className="h-3.5 w-3.5 text-gray-400" />
+                    <div className="text-sm font-semibold text-green-500">{item.automated}</div>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    <span className="text-green-500 font-medium flex items-center">
+                      <Zap className="h-3 w-3 mr-1" /> 
+                      {Math.round((parseInt(item.manual) / parseInt(item.automated.split(" ")[0])) * 100)}x faster
+                    </span>
+                  </div>
+                </div>
               </div>
-              <motion.div 
-                initial={{ width: 0 }}
-                whileInView={{ width: "100%" }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 + 0.7, duration: 0.8, ease: "easeInOut" }}
-                className="h-2 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-              />
             </div>
+            
+            {/* Progress indicator */}
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: "100%" }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 + 0.7, duration: 0.8, ease: "easeInOut" }}
+              className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"
+              style={{ borderRadius: "0 0 0.5rem 0.5rem" }}
+            />
           </motion.div>
         ))}
       </div>
@@ -60,17 +75,20 @@ const TaskAutomationCard = ({ tasks }: TaskAutomationCardProps) => {
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.6, duration: 0.6 }}
-        className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-100 dark:border-blue-800/30"
+        className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/10 dark:to-blue-900/10 rounded-lg border border-green-100 dark:border-green-900/30"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+          <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-500">
+            <CheckCircle className="h-5 w-5" />
           </div>
           <div>
             <p className="font-medium">Average time saved</p>
-            <p className="text-sm text-gray-600 dark:text-gray-300">98% reduction in time spent on validation</p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-gray-600 dark:text-gray-300">98% reduction in validation time</p>
+              <span className="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-500 rounded-full">
+                50x faster
+              </span>
+            </div>
           </div>
         </div>
       </motion.div>

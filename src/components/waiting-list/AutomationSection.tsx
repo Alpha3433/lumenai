@@ -47,26 +47,27 @@ const AutomationSection = () => {
           badge="TIME EFFICIENCY"
         />
 
+        {/* Reversed the grid order - dashboard first, then tasks */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate={controls}
-          className="grid md:grid-cols-2 gap-8 mt-10"
+          className="grid md:grid-cols-12 gap-8 mt-10"
         >
-          {/* Left Card - Task Automation */}
-          <motion.div variants={itemVariants} className="h-full">
+          {/* Dashboard Preview - Now takes up 7 columns on larger screens */}
+          <motion.div variants={itemVariants} className="md:col-span-7 h-full">
             <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
               <CardContent className="p-0">
-                <TaskAutomationCard tasks={automationData} />
+                <DashboardPreview />
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Right Card - Dashboard Preview */}
-          <motion.div variants={itemVariants} className="h-full">
+          {/* Task Automation - Now takes up 5 columns */}
+          <motion.div variants={itemVariants} className="md:col-span-5 h-full">
             <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
               <CardContent className="p-0">
-                <DashboardPreview />
+                <TaskAutomationCard tasks={automationData} />
               </CardContent>
             </Card>
           </motion.div>

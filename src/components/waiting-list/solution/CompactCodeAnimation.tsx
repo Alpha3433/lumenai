@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Code } from 'lucide-react';
@@ -51,7 +52,7 @@ const CompactCodeAnimation: React.FC<CompactCodeAnimationProps> = ({
   }} viewport={{
     once: true
   }} className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full" style={{
-    minHeight: "200px"
+    minHeight: "240px"
   }} // 20% reduction from 300px
   >
       <div className="p-2 bg-gray-800 flex items-center justify-between"> {/* Reduced padding further */}

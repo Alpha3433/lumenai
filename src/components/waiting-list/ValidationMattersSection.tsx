@@ -69,10 +69,10 @@ const ValidationMattersSection = () => {
       youtubeId: "4_MDP6TcHwU"
     },
     {
-      title: "Waze Founder on How to Validate Your Startup Idea",
-      description: "Uri Levine shares real-world insights from building Waze.",
-      thumbnailUrl: "https://img.youtube.com/vi/D6X7OJMKR9g/maxresdefault.jpg",
-      youtubeId: "D6X7OJMKR9g"
+      title: "How To Validate Your SaaS Idea",
+      description: "Practical steps to test and validate your SaaS idea before investing time and resources.",
+      thumbnailUrl: "/lovable-uploads/d259ecaf-29dc-4167-9eca-2605d0c93e7f.png",
+      youtubeId: "31U9X_XD63c"
     }
   ];
 

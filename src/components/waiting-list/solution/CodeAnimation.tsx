@@ -61,7 +61,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({
         once: true
       }}
       className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full"
-      style={{ minHeight: "480px" }} // Increased the height to match the Launch with Confidence card
+      style={{ minHeight: "300px" }} // Changed from 480px to 300px
     >
       <div className="p-3 bg-gray-800 flex items-center justify-between"> {/* Reduced padding */}
         <div className="flex items-center gap-2">

@@ -41,7 +41,7 @@ const DashboardPreview = () => {
           delay: 0.4,
           duration: 0.5
         }} className="mb-4">
-            <h4 className="text-lg font-semibold">Welcome back, there</h4>
+            <h4 className="text-lg font-semibold">Welcome back, Daniel</h4>
             <p className="text-sm text-gray-500 dark:text-gray-400">Here's what's happening with your business today</p>
           </motion.div>
           

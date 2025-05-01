@@ -206,8 +206,13 @@ export default function ScheduleMeeting() {
               <CardContent className="pt-6">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-4">
-                    <Label className="text-base">Date</Label>
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-4 bg-white dark:bg-gray-800/50">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-base font-medium">Available Interview Slots</Label>
+                      <div className="text-sm text-blue-600 font-medium">
+                        {selectedDate ? format(selectedDate, "MMMM yyyy") : "Select a date"}
+                      </div>
+                    </div>
+                    <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800/50 overflow-hidden shadow-sm">
                       <Calendar 
                         mode="single" 
                         selected={selectedDate} 
@@ -217,12 +222,12 @@ export default function ScheduleMeeting() {
                           today.setHours(0, 0, 0, 0);
                           return date < today;
                         }} 
-                        className="mx-auto" 
+                        className="mx-auto rounded-xl" 
                       />
                     </div>
                   </div>
                   <div className="space-y-4">
-                    <Label className="text-base">Time</Label>
+                    <Label className="text-base font-medium">Time</Label>
                     <div className="grid grid-cols-3 gap-2 md:gap-3">
                       {timeSlots.map(time => (
                         <Button
@@ -233,7 +238,9 @@ export default function ScheduleMeeting() {
                           disabled={!selectedDate}
                           className={cn(
                             "h-12 justify-start gap-2",
-                            selectedTime === time ? "border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400" : ""
+                            selectedTime === time 
+                              ? "bg-green-600 hover:bg-green-700 text-white border-0" 
+                              : "hover:bg-gray-100 dark:hover:bg-gray-700"
                           )}
                         >
                           <Clock className="h-4 w-4" />

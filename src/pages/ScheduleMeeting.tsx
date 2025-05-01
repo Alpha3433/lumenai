@@ -268,7 +268,7 @@ export default function ScheduleMeeting() {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="relative">
                     <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl blur-sm"></div>
-                    <div className="relative bg-white dark:bg-gray-800/80 rounded-lg border border-purple-200 dark:border-purple-700/30 p-6 space-y-4 shadow-sm py-[40px]">
+                    <div className="relative rounded-lg border border-purple-200 dark:border-purple-700/30 p-6 space-y-4 shadow-sm py-[40px] bg-zinc-50">
                       <div className="flex items-center gap-3 mb-2">
                         <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/30">
                           <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />

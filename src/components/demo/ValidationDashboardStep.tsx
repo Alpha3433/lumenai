@@ -1,39 +1,31 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  LineChart, 
-  BarChart3, 
-  Users, 
-  Trophy, 
-  TrendingUp, 
-  Facebook, 
-  Instagram,
-  ArrowRight,
-  CheckCircle
-} from 'lucide-react';
+import { LineChart, BarChart3, Users, Trophy, TrendingUp, Facebook, Instagram, ArrowRight, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { DemoStep } from './types';
-
 interface ValidationDashboardStepProps {
   step: DemoStep;
 }
-
-const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({ step }) => {
-  return (
-    <section id={step.id} className="py-20 border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-800/20">
+const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
+  step
+}) => {
+  return <section id={step.id} className="py-20 border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-800/20">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:flex-row items-start gap-12">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="lg:w-1/3"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          x: -30
+        }} whileInView={{
+          opacity: 1,
+          x: 0
+        }} transition={{
+          duration: 0.6
+        }} viewport={{
+          once: true
+        }} className="lg:w-1/3">
             <div className="flex items-center gap-2 mb-4">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-r ${step.color} text-white`}>
                 <step.icon className="h-5 w-5" />
@@ -65,13 +57,18 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({ step 
             </Button>
           </motion.div>
           
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="lg:w-2/3 space-y-6"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.2
+        }} viewport={{
+          once: true
+        }} className="lg:w-2/3 space-y-6">
             {/* Social Media Validation Dashboard */}
             <div className="rounded-xl overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
               <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-5">
@@ -125,11 +122,7 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({ step 
                     
                     <CardContent className="p-4">
                       <div className="aspect-w-4 aspect-h-5 mb-4">
-                        <img 
-                          src="public/lovable-uploads/fac84b36-510c-4aac-99bb-253f322a5c02.png" 
-                          alt="FitnessAI Facebook Ad" 
-                          className="rounded-md object-cover w-full h-full"
-                        />
+                        <img src="public/lovable-uploads/fac84b36-510c-4aac-99bb-253f322a5c02.png" alt="FitnessAI Facebook Ad" className="rounded-md object-cover w-full h-full" />
                       </div>
                       
                       <div className="grid grid-cols-2 gap-3 mb-4">
@@ -157,8 +150,12 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({ step 
                       
                       <div className="text-xs text-gray-500 mb-1">Audience Demographics</div>
                       <div className="h-4 w-full flex rounded-full overflow-hidden mb-1">
-                        <div className="bg-blue-500 h-full" style={{ width: '42%' }}></div>
-                        <div className="bg-pink-500 h-full" style={{ width: '58%' }}></div>
+                        <div className="bg-blue-500 h-full" style={{
+                        width: '42%'
+                      }}></div>
+                        <div className="bg-pink-500 h-full" style={{
+                        width: '58%'
+                      }}></div>
                       </div>
                       <div className="flex justify-between text-xs">
                         <div>Male: 42%</div>
@@ -179,11 +176,7 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({ step 
                     
                     <CardContent className="p-4">
                       <div className="aspect-w-4 aspect-h-5 mb-4">
-                        <img 
-                          src="public/lovable-uploads/118708dd-6a94-487b-864d-510c7508d200.png" 
-                          alt="FitnessAI Instagram Ad" 
-                          className="rounded-md object-cover w-full h-full"
-                        />
+                        <img src="public/lovable-uploads/118708dd-6a94-487b-864d-510c7508d200.png" alt="FitnessAI Instagram Ad" className="rounded-md object-cover w-full h-full" />
                       </div>
                       
                       <div className="grid grid-cols-2 gap-3 mb-4">
@@ -212,16 +205,24 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({ step 
                       <div className="text-xs text-gray-500 mb-1">Age Demographics</div>
                       <div className="grid grid-cols-4 gap-1 mb-1">
                         <div className="bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
-                          <div className="bg-green-500 h-full" style={{ width: '25%' }}></div>
+                          <div className="bg-green-500 h-full" style={{
+                          width: '25%'
+                        }}></div>
                         </div>
                         <div className="bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
-                          <div className="bg-green-500 h-full" style={{ width: '45%' }}></div>
+                          <div className="bg-green-500 h-full" style={{
+                          width: '45%'
+                        }}></div>
                         </div>
                         <div className="bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
-                          <div className="bg-green-500 h-full" style={{ width: '85%' }}></div>
+                          <div className="bg-green-500 h-full" style={{
+                          width: '85%'
+                        }}></div>
                         </div>
                         <div className="bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
-                          <div className="bg-green-500 h-full" style={{ width: '35%' }}></div>
+                          <div className="bg-green-500 h-full" style={{
+                          width: '35%'
+                        }}></div>
                         </div>
                       </div>
                       <div className="flex justify-between text-xs">
@@ -251,77 +252,23 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({ step 
             </div>
             
             {/* Additional Feature Preview - Third App Screen */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="rounded-xl overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800"
-            >
-              <div className="bg-white dark:bg-gray-800 p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-semibold">Personalized User Journey Test</h4>
-                  <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs px-2 py-1 rounded-full">
-                    98% Positive
-                  </span>
-                </div>
-                
-                <div className="flex gap-4">
-                  <div className="w-1/3">
-                    <AspectRatio ratio={9/16} className="bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
-                      <img 
-                        src="public/lovable-uploads/0eeada1d-c71e-41a1-aa80-8340dfe5250a.png" 
-                        alt="FitnessAI Feature Preview" 
-                        className="object-cover w-full h-full"
-                      />
-                    </AspectRatio>
-                  </div>
-                  
-                  <div className="w-2/3 space-y-4">
-                    <div>
-                      <div className="text-sm text-gray-500 mb-1">User Testing Results</div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                          <div className="text-xs text-gray-500 mb-1">Ease of Use</div>
-                          <div className="flex items-center">
-                            <div className="font-semibold mr-2">4.8/5</div>
-                            <div className="flex">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <span key={star} className="text-amber-400 text-xs">★</span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                          <div className="text-xs text-gray-500 mb-1">Relevance</div>
-                          <div className="flex items-center">
-                            <div className="font-semibold mr-2">4.9/5</div>
-                            <div className="flex">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <span key={star} className="text-amber-400 text-xs">★</span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="text-sm text-gray-500 mb-2">User Testimonials</div>
-                      <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                        <p className="text-sm italic">"The personalized plans make a huge difference. I feel like the app really understands my fitness goals."</p>
-                        <p className="text-xs text-gray-500 mt-1">Sarah T., Early Tester</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <motion.div initial={{
+            opacity: 0,
+            y: 20
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.4,
+            delay: 0.4
+          }} viewport={{
+            once: true
+          }} className="rounded-xl overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
+              
             </motion.div>
           </motion.div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ValidationDashboardStep;

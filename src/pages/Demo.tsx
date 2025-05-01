@@ -16,6 +16,7 @@ import SwotAnalysisStep from '@/components/demo/SwotAnalysisStep';
 import ToolsShowcaseStep from '@/components/demo/ToolsShowcaseStep';
 import DemoCTA from '@/components/demo/DemoCTA';
 import { DemoStep } from '@/components/demo/types';
+import ValidationDashboardStep from '@/components/demo/ValidationDashboardStep';
 
 const Demo = () => {
   // Demo steps data
@@ -72,7 +73,7 @@ const Demo = () => {
       id: "dashboard",
       title: "Validation Dashboard",
       description: "Monitor key validation metrics in real-time. Track landing page conversion rates, customer interview sentiments, and market signals all in one intuitive dashboard.",
-      image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
+      image: "public/lovable-uploads/eb3a4d0d-d801-4f56-a1cf-1b6d97c067ff.png",
       icon: LayoutDashboard,
       color: "from-indigo-500 to-indigo-600"
     },
@@ -80,9 +81,9 @@ const Demo = () => {
       id: "score",
       title: "Final Validation Score",
       description: "Receive a comprehensive validation score that indicates your idea's readiness for investment. Get specific recommendations for improving weak areas of your business model.",
-      image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
+      image: "public/lovable-uploads/eb3a4d0d-d801-4f56-a1cf-1b6d97c067ff.png",
       icon: Award,
-      color: "from-amber-500 to-amber-600"
+      color: "from-green-500 to-green-600"
     }
   ];
 
@@ -110,12 +111,15 @@ const Demo = () => {
         {/* Special handling for Tools Showcase / Auto-Build Landing Page step */}
         <ToolsShowcaseStep step={steps[3]} />
         
-        {/* Render remaining steps */}
-        {steps.slice(4).map((step, index) => (
+        {/* Special handling for Validation Dashboard step */}
+        <ValidationDashboardStep step={steps[6]} />
+        
+        {/* Render remaining steps, except the dashboard one that now has special handling */}
+        {steps.filter(step => ![0, 1, 2, 3, 6].includes(steps.indexOf(step))).map((step, index) => (
           <StepDisplay 
             key={step.id}
             step={step}
-            index={index + 4}
+            index={steps.indexOf(step)}
             isFirstStep={false}
           />
         ))}

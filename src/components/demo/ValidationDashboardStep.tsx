@@ -52,9 +52,7 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
               </div>
             </div>
             
-            <Button className="bg-amber-600 hover:bg-amber-700">
-              Test My Validation
-            </Button>
+            <Button className="bg-amber-600 hover:bg-amber-700">Create My Advertisement</Button>
           </motion.div>
           
           <motion.div initial={{

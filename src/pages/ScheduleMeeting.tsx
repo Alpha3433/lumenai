@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { supabase } from '@/integrations/supabase/client';
 import { motion } from "framer-motion";
+
 const timeSlots = ["8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM"];
 export default function ScheduleMeeting() {
   const {
@@ -30,19 +31,23 @@ export default function ScheduleMeeting() {
   const [businessPlanFile, setBusinessPlanFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
   useEffect(() => {
     if (!loading && !user) {
       navigate('/login');
     }
   }, [user, loading, navigate]);
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
   };
+
   const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
   };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
@@ -51,6 +56,7 @@ export default function ScheduleMeeting() {
       handleFileSelected(file);
     }
   };
+
   const handleFileSelected = async (file: File) => {
     if (file.size > 10 * 1024 * 1024) {
       // 10MB limit
@@ -59,12 +65,14 @@ export default function ScheduleMeeting() {
     }
     setBusinessPlanFile(file);
   };
+
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       handleFileSelected(file);
     }
   };
+
   const handleScheduleMeeting = async () => {
     if (!selectedDate || !selectedTime || !topic) {
       toast.error("Please complete all required fields");
@@ -120,6 +128,7 @@ export default function ScheduleMeeting() {
       setSubmitting(false);
     }
   };
+
   if (loading) {
     return <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
         <Navbar />
@@ -174,7 +183,7 @@ export default function ScheduleMeeting() {
             </div>
           </motion.div>
           
-          {/* Date & Time */}
+          {/* Date & Time - Redesigned */}
           <motion.div initial={{
           opacity: 0,
           y: 20
@@ -185,38 +194,78 @@ export default function ScheduleMeeting() {
           duration: 0.5,
           delay: 0.2
         }}>
-            <Card className="border-0 shadow-lg bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm">
-              <CardHeader className="border-b border-gray-100 dark:border-gray-700 pb-6">
-                <CardTitle className="text-2xl flex items-center gap-2">
-                  <CalendarIconFull className="w-5 h-5 text-blue-500" />
+            <Card className="overflow-hidden border-0 shadow-xl bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+              <CardHeader className="border-b border-gray-100 dark:border-gray-700 pb-6 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 dark:from-blue-900/30 dark:to-indigo-900/30">
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-2 rounded-lg shadow-md">
+                    <CalendarIconFull className="w-5 h-5 text-white" />
+                  </div>
                   Select Date & Time
                 </CardTitle>
-                <CardDescription>Choose when you'd like to meet with our team</CardDescription>
+                <CardDescription className="text-base">Choose when you'd like to meet with our team</CardDescription>
               </CardHeader>
-              <CardContent className="pt-6">
+              <CardContent className="pt-8 pb-4">
                 <div className="grid md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <Label className="text-base font-medium">Available Interview Slots</Label>
-                      <div className="text-sm text-blue-600 font-medium">
-                        {selectedDate ? format(selectedDate, "MMMM yyyy") : "Select a date"}
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center mb-3">
+                      <Label className="text-lg font-medium text-gray-700 dark:text-gray-200">Select a Date</Label>
+                      <span className="text-sm px-3 py-1 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-300 font-medium">
+                        {selectedDate ? format(selectedDate, "MMMM yyyy") : "No date selected"}
+                      </span>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-xl transform rotate-1"></div>
+                      <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-pink-500/5 rounded-xl transform -rotate-1"></div>
+                      <div className="relative border-2 border-blue-200/50 dark:border-blue-700/30 rounded-xl bg-white dark:bg-gray-800/70 overflow-hidden shadow-lg p-1">
+                        <Calendar 
+                          mode="single" 
+                          selected={selectedDate} 
+                          onSelect={setSelectedDate} 
+                          disabled={date => {
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            return date < today;
+                          }}
+                          className="mx-auto rounded-xl"
+                        />
                       </div>
                     </div>
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800/50 overflow-hidden shadow-sm">
-                      <Calendar mode="single" selected={selectedDate} onSelect={setSelectedDate} disabled={date => {
-                      const today = new Date();
-                      today.setHours(0, 0, 0, 0);
-                      return date < today;
-                    }} className="mx-auto rounded-xl px-[83px]" />
-                    </div>
                   </div>
-                  <div className="space-y-4">
-                    <Label className="text-base font-medium">Time</Label>
-                    <div className="grid grid-cols-3 gap-2 md:gap-3">
-                      {timeSlots.map(time => <Button key={time} type="button" variant={selectedTime === time ? "default" : "outline"} onClick={() => setSelectedTime(time)} disabled={!selectedDate} className={cn("h-12 justify-start gap-2", selectedTime === time ? "bg-green-600 hover:bg-green-700 text-white border-0" : "hover:bg-gray-100 dark:hover:bg-gray-700")}>
-                          <Clock className="h-4 w-4" />
-                          {time}
-                        </Button>)}
+                  <div className="space-y-6">
+                    <Label className="text-lg font-medium text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                      <Clock className="h-5 w-5 text-blue-500" /> 
+                      Available Time Slots
+                    </Label>
+                    <div className="relative p-1">
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-xl transform rotate-1"></div>
+                      <div className="relative max-h-[320px] overflow-y-auto rounded-xl scrollbar-thin scrollbar-thumb-blue-300 dark:scrollbar-thumb-blue-700 p-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {timeSlots.map(time => (
+                            <button
+                              key={time}
+                              type="button"
+                              onClick={() => setSelectedTime(time)}
+                              disabled={!selectedDate}
+                              className={cn(
+                                "relative h-14 rounded-lg font-medium transition-all overflow-hidden",
+                                !selectedDate && "opacity-50 cursor-not-allowed",
+                                selectedTime === time
+                                  ? "shadow-md shadow-blue-600/10 border-0 text-white"
+                                  : "border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 bg-white/80 dark:bg-gray-800/50 text-gray-700 dark:text-gray-200"
+                              )}
+                            >
+                              {selectedTime === time && (
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 animate-gradient"></div>
+                              )}
+                              <span className="relative flex items-center justify-center gap-2 h-full">
+                                <Clock className="h-3.5 w-3.5" />
+                                {time}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -224,7 +273,7 @@ export default function ScheduleMeeting() {
             </Card>
           </motion.div>
           
-          {/* Meeting Details */}
+          {/* Meeting Details - Redesigned */}
           <motion.div initial={{
           opacity: 0,
           y: 20
@@ -235,50 +284,109 @@ export default function ScheduleMeeting() {
           duration: 0.5,
           delay: 0.3
         }}>
-            <Card className="border-0 shadow-lg bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm">
-              <CardHeader className="border-b border-gray-100 dark:border-gray-700 pb-6">
-                <CardTitle className="text-2xl flex items-center gap-2">
-                  <ClipboardList className="w-5 h-5 text-blue-500" />
+            <Card className="overflow-hidden border-0 shadow-xl bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500"></div>
+              <CardHeader className="border-b border-gray-100 dark:border-gray-700 pb-6 bg-gradient-to-r from-purple-50/80 to-pink-50/80 dark:from-purple-900/30 dark:to-pink-900/30">
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-2 rounded-lg shadow-md">
+                    <ClipboardList className="w-5 h-5 text-white" />
+                  </div>
                   Meeting Details
                 </CardTitle>
-                <CardDescription>Tell us what you'd like to discuss</CardDescription>
+                <CardDescription className="text-base">Tell us what you'd like to discuss</CardDescription>
               </CardHeader>
-              <CardContent className="pt-6 space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <Label htmlFor="topic" className="text-base">Topic <span className="text-red-500">*</span></Label>
-                    <Input id="topic" placeholder="e.g., Business Strategy Discussion" value={topic} onChange={e => setTopic(e.target.value)} className="h-12 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/30" />
+              <CardContent className="pt-8 space-y-8">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl blur-sm"></div>
+                    <div className="relative bg-white dark:bg-gray-800/80 rounded-lg border border-purple-200 dark:border-purple-700/30 p-6 space-y-4 shadow-sm">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/30">
+                          <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                        </div>
+                        <Label htmlFor="topic" className="text-lg font-medium">Topic <span className="text-red-500">*</span></Label>
+                      </div>
+                      <Input 
+                        id="topic" 
+                        placeholder="e.g., Business Strategy Discussion" 
+                        value={topic} 
+                        onChange={e => setTopic(e.target.value)} 
+                        className="h-12 border-purple-200 dark:border-purple-700/50 bg-white/80 dark:bg-gray-800/30 focus:border-purple-400 focus:ring-purple-400/20 shadow-sm" 
+                      />
+                    </div>
                   </div>
                   
-                  <div className="space-y-3">
-                    <Label htmlFor="notes" className="text-base">Additional Notes</Label>
-                    <Textarea id="notes" placeholder="Any specific points you'd like to discuss..." rows={4} value={notes} onChange={e => setNotes(e.target.value)} className="resize-none border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/30" />
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-pink-500/10 to-orange-500/10 rounded-xl blur-sm"></div>
+                    <div className="relative bg-white dark:bg-gray-800/80 rounded-lg border border-pink-200 dark:border-pink-700/30 p-6 space-y-4 shadow-sm">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-2 rounded-full bg-pink-100 dark:bg-pink-900/30">
+                          <FileText className="h-4 w-4 text-pink-600 dark:text-pink-400" />
+                        </div>
+                        <Label htmlFor="notes" className="text-lg font-medium">Additional Notes</Label>
+                      </div>
+                      <Textarea 
+                        id="notes" 
+                        placeholder="Any specific points you'd like to discuss..." 
+                        rows={4} 
+                        value={notes} 
+                        onChange={e => setNotes(e.target.value)} 
+                        className="resize-none border-pink-200 dark:border-pink-700/50 bg-white/80 dark:bg-gray-800/30 focus:border-pink-400 focus:ring-pink-400/20 shadow-sm" 
+                      />
+                    </div>
                   </div>
                 </div>
                 
-                <div className="space-y-3">
-                  <Label className="text-base">Upload Business Plan Document</Label>
-                  <div className={cn("border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors", isDragging ? "border-blue-500 bg-blue-50/50 dark:bg-blue-900/20" : "border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600")} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
-                    <Input type="file" className="hidden" id="file-upload" onChange={handleFileInputChange} accept=".pdf,.doc,.docx" />
-                    <Label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center gap-4">
-                      <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                        <Upload className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                <div className="space-y-3 mt-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 rounded-full bg-orange-100 dark:bg-orange-900/30">
+                      <Upload className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <Label className="text-lg font-medium">Upload Business Plan Document</Label>
+                  </div>
+                  <div 
+                    className={cn(
+                      "relative border-2 border-dashed rounded-xl p-8 text-center transition-colors overflow-hidden",
+                      isDragging 
+                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-900/20" 
+                        : "border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600"
+                    )} 
+                    onDragOver={handleDragOver} 
+                    onDragLeave={handleDragLeave} 
+                    onDrop={handleDrop}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-pink-500/5 to-purple-500/5 opacity-70"></div>
+                    
+                    <Input 
+                      type="file" 
+                      className="hidden" 
+                      id="file-upload" 
+                      onChange={handleFileInputChange} 
+                      accept=".pdf,.doc,.docx" 
+                    />
+                    <Label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center gap-6 relative z-10">
+                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/30 dark:to-orange-800/30 flex items-center justify-center shadow-inner">
+                        <Upload className="h-8 w-8 text-orange-600 dark:text-orange-400" />
                       </div>
-                      {businessPlanFile ? <div className="space-y-1">
+                      {businessPlanFile ? (
+                        <div className="space-y-2">
                           <p className="text-base font-medium text-blue-600 dark:text-blue-400">
                             Selected: {businessPlanFile.name}
                           </p>
                           <p className="text-sm text-gray-500">
                             Click or drag and drop to replace
                           </p>
-                        </div> : <div className="space-y-1">
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
                           <p className="text-base font-medium text-gray-700 dark:text-gray-300">
                             Drag and drop your business plan here
                           </p>
                           <p className="text-sm text-gray-500">
                             Supports PDF, DOC, DOCX (max 10MB)
                           </p>
-                        </div>}
+                        </div>
+                      )}
                     </Label>
                   </div>
                 </div>
@@ -286,7 +394,7 @@ export default function ScheduleMeeting() {
             </Card>
           </motion.div>
           
-          {/* Summary & Confirmation */}
+          {/* Summary & Confirmation - Keep unchanged */}
           <motion.div initial={{
           opacity: 0,
           y: 20
@@ -321,7 +429,8 @@ export default function ScheduleMeeting() {
                     </div>
                   </div>
 
-                  {businessPlanFile && <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                  {businessPlanFile && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                       <div className="space-y-2">
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Business Plan</p>
                         <p className="text-base font-medium flex gap-2 items-center text-blue-600 break-all">
@@ -329,14 +438,23 @@ export default function ScheduleMeeting() {
                           {businessPlanFile.name}
                         </p>
                       </div>
-                    </div>}
+                    </div>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col sm:flex-row justify-between gap-4 pt-0">
-                <Button variant="outline" onClick={() => navigate('/dashboard')} className="w-full sm:w-auto order-2 sm:order-1">
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/dashboard')} 
+                  className="w-full sm:w-auto order-2 sm:order-1"
+                >
                   Cancel
                 </Button>
-                <Button onClick={handleScheduleMeeting} disabled={!selectedDate || !selectedTime || !topic || submitting} className="w-full sm:w-auto order-1 sm:order-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Button 
+                  onClick={handleScheduleMeeting} 
+                  disabled={!selectedDate || !selectedTime || !topic || submitting} 
+                  className="w-full sm:w-auto order-1 sm:order-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                >
                   {submitting ? "Scheduling..." : "Schedule Meeting"}
                 </Button>
               </CardFooter>

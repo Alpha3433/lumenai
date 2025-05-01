@@ -14,6 +14,7 @@ import BusinessIdeaStep from '@/components/demo/BusinessIdeaStep';
 import BusinessValidationStep from '@/components/demo/BusinessValidationStep';
 import SwotAnalysisStep from '@/components/demo/SwotAnalysisStep';
 import ToolsShowcaseStep from '@/components/demo/ToolsShowcaseStep';
+import ValidationDashboardStep from '@/components/demo/ValidationDashboardStep';
 import DemoCTA from '@/components/demo/DemoCTA';
 import { DemoStep } from '@/components/demo/types';
 
@@ -110,8 +111,8 @@ const Demo = () => {
         {/* Special handling for Tools Showcase / Auto-Build Landing Page step */}
         <ToolsShowcaseStep step={steps[3]} />
         
-        {/* Render remaining steps */}
-        {steps.slice(4).map((step, index) => (
+        {/* Render steps 4-6 using the standard StepDisplay component */}
+        {steps.slice(4, 7).map((step, index) => (
           <StepDisplay 
             key={step.id}
             step={step}
@@ -119,6 +120,9 @@ const Demo = () => {
             isFirstStep={false}
           />
         ))}
+        
+        {/* Special handling for Final Validation Score with social media campaigns */}
+        <ValidationDashboardStep step={steps[7]} />
       </div>
 
       {/* CTA Section */}

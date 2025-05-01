@@ -79,8 +79,8 @@ const Demo = () => {
     },
     {
       id: "score",
-      title: "Final Validation Score",
-      description: "Receive a comprehensive validation score that indicates your idea's readiness for investment. Get specific recommendations for improving weak areas of your business model.",
+      title: "Advert Hub",
+      description: "Lumen AI takes the guesswork out of marketing by automatically generating high-converting ad creatives tailored to your audience and niche. From visuals to headlines, you'll get multiple variations designed for platforms like Facebook, Instagram, TikTok, and LinkedIn — all optimized for engagement.",
       image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
       icon: Award,
       color: "from-amber-500 to-amber-600"

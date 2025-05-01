@@ -1,14 +1,17 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
-import { LineChart, BarChart3, Users, Trophy, TrendingUp, Facebook, Instagram, ArrowRight, CheckCircle } from 'lucide-react';
+import { LineChart, BarChart3, Users, Trophy, TrendingUp, Facebook, Instagram, ArrowRight, CheckCircle, Zap, Target, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { DemoStep } from './types';
+
 interface ValidationDashboardStepProps {
   step: DemoStep;
 }
+
 const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
   step
 }) => {
@@ -202,6 +205,7 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
                         </div>
                       </div>
                       
+                      {/* Expanded Age Demographics section */}
                       <div className="text-xs text-gray-500 mb-1">Age Demographics</div>
                       <div className="grid grid-cols-4 gap-1 mb-1">
                         <div className="bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
@@ -225,11 +229,60 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
                         }}></div>
                         </div>
                       </div>
-                      <div className="flex justify-between text-xs">
+                      <div className="flex justify-between text-xs mb-4">
                         <div>18-24</div>
                         <div>25-34</div>
                         <div>35-44</div>
                         <div>45+</div>
+                      </div>
+                      
+                      {/* Additional Instagram metrics */}
+                      <div className="border-t border-gray-100 dark:border-gray-700 pt-4 mt-2">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Zap className="h-3.5 w-3.5 text-amber-500" />
+                              <div className="text-xs font-medium">Engagement Rate</div>
+                            </div>
+                            <div className="text-lg font-semibold">6.8%</div>
+                            <div className="text-xs text-green-500 flex items-center">
+                              <TrendingUp className="h-3 w-3 mr-1" /> +1.2% from last week
+                            </div>
+                          </div>
+                          
+                          <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Globe className="h-3.5 w-3.5 text-blue-500" />
+                              <div className="text-xs font-medium">Reach</div>
+                            </div>
+                            <div className="text-lg font-semibold">28,450</div>
+                            <div className="text-xs text-green-500 flex items-center">
+                              <TrendingUp className="h-3 w-3 mr-1" /> +4.5% from last week
+                            </div>
+                          </div>
+                          
+                          <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Target className="h-3.5 w-3.5 text-purple-500" />
+                              <div className="text-xs font-medium">Cost per Acquisition</div>
+                            </div>
+                            <div className="text-lg font-semibold">$4.28</div>
+                            <div className="text-xs text-green-500 flex items-center">
+                              <TrendingUp className="h-3 w-3 mr-1" /> -0.75$ from last week
+                            </div>
+                          </div>
+                          
+                          <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Users className="h-3.5 w-3.5 text-teal-500" />
+                              <div className="text-xs font-medium">New Followers</div>
+                            </div>
+                            <div className="text-lg font-semibold">247</div>
+                            <div className="text-xs text-green-500 flex items-center">
+                              <TrendingUp className="h-3 w-3 mr-1" /> +18% from last week
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -271,4 +324,5 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
       </div>
     </section>;
 };
+
 export default ValidationDashboardStep;

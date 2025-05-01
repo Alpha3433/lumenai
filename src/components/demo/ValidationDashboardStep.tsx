@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, BarChart3, Users, Trophy, TrendingUp, Facebook, Instagram, ArrowRight, CheckCircle, Zap, Target, Globe } from 'lucide-react';
@@ -7,11 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { DemoStep } from './types';
-
 interface ValidationDashboardStepProps {
   step: DemoStep;
 }
-
 const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
   step
 }) => {
@@ -125,7 +122,7 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
                     
                     <CardContent className="p-4">
                       <div className="aspect-w-4 aspect-h-5 mb-4">
-                        <img src="public/lovable-uploads/fac84b36-510c-4aac-99bb-253f322a5c02.png" alt="FitnessAI Facebook Ad" className="rounded-md object-cover w-full h-full" />
+                        <img alt="FitnessAI Facebook Ad" className="rounded-md object-cover w-full h-full" src="/lovable-uploads/a9d38708-e3d0-4ea5-b3d9-47b115dce012.png" />
                       </div>
                       
                       <div className="grid grid-cols-2 gap-3 mb-4">
@@ -324,5 +321,4 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
       </div>
     </section>;
 };
-
 export default ValidationDashboardStep;

@@ -13,6 +13,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import UpcomingMeetingsList from '@/components/dashboard/UpcomingMeetingsList';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
+import SavedLogoDesigns from '@/components/logo/SavedLogoDesigns';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -49,6 +50,25 @@ export default function Dashboard() {
     },
     enabled: !!user?.id,
     staleTime: 30000 // Don't refetch this query for 30 seconds
+  });
+
+  // Add query for logo designs count
+  const { data: logoDesigns } = useQuery({
+    queryKey: ['logo-designs-count', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return { count: 0 };
+      const { data, error } = await supabase
+        .from('logo_designs')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+      
+      if (error) throw error;
+      return {
+        count: data?.length || 0
+      };
+    },
+    enabled: !!user?.id,
+    staleTime: 30000
   });
 
   useEffect(() => {
@@ -94,18 +114,18 @@ export default function Dashboard() {
             iconClassName="bg-emerald-100 dark:bg-emerald-900/30"
           />
           <StatsCard
+            title="Logo Designs"
+            value={logoDesigns?.count || 0}
+            subtext={logoDesigns?.count === 1 ? "1 logo created" : `${logoDesigns?.count || 0} logos created`}
+            icon={MessageSquare}
+            iconClassName="bg-pink-100 dark:bg-pink-900/30"
+          />
+          <StatsCard
             title="Tasks"
             value={0}
             subtext="No tasks due soon"
             icon={CheckCircle}
             iconClassName="bg-orange-100 dark:bg-orange-900/30"
-          />
-          <StatsCard
-            title="Messages"
-            value={0}
-            subtext="No unread messages"
-            icon={MessageSquare}
-            iconClassName="bg-pink-100 dark:bg-pink-900/30"
           />
         </div>
 
@@ -114,8 +134,11 @@ export default function Dashboard() {
             <EmptyReportsSection plans={plans} />
             <ExpertTaskList />
           </div>
-          <div className="flex h-full">
+          <div className="flex flex-col h-full">
             <UpcomingMeetingsList />
+            <div className="mt-8">
+              <SavedLogoDesigns />
+            </div>
           </div>
         </div>
       </div>

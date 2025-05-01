@@ -75,6 +75,39 @@ export type Database = {
         }
         Relationships: []
       }
+      logo_designs: {
+        Row: {
+          brand_name: string
+          created_at: string
+          form_data: Json
+          id: string
+          image_url: string | null
+          prompt_text: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          brand_name: string
+          created_at?: string
+          form_data: Json
+          id?: string
+          image_url?: string | null
+          prompt_text?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          brand_name?: string
+          created_at?: string
+          form_data?: Json
+          id?: string
+          image_url?: string | null
+          prompt_text?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       meeting_requests: {
         Row: {
           business_plan_url: string | null

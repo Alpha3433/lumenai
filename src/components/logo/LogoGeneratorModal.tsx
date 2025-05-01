@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Palette } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/components/AuthProvider';
 
-// Import our newly created components
+// Import our components
 import StepOne from './steps/StepOne';
 import StepTwo from './steps/StepTwo';
 import StepThree from './steps/StepThree';
@@ -19,6 +20,7 @@ interface LogoGeneratorModalProps {
 }
 
 const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }) => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     brandName: '',
     adjectives: '',
@@ -34,6 +36,18 @@ const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [promptText, setPromptText] = useState<string>('');
   const [activeStep, setActiveStep] = useState(1);
+  
+  useEffect(() => {
+    // Load saved preferences if available
+    const savedPreferences = localStorage.getItem('logoPreferences');
+    if (savedPreferences) {
+      try {
+        setFormData(JSON.parse(savedPreferences));
+      } catch (error) {
+        console.error("Error parsing saved preferences:", error);
+      }
+    }
+  }, []);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -62,6 +76,29 @@ const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }
     }
   };
 
+  const saveLogoToDatabase = async (imageUrl: string, prompt: string) => {
+    if (!user) {
+      toast.error("You must be logged in to save logos");
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('logo_designs').insert({
+        user_id: user.id,
+        brand_name: formData.brandName,
+        form_data: formData,
+        image_url: imageUrl,
+        prompt_text: prompt
+      });
+
+      if (error) throw error;
+      toast.success("Logo saved to your account");
+    } catch (error) {
+      console.error("Error saving logo to database:", error);
+      toast.error("Failed to save logo to your account");
+    }
+  };
+
   const handleGenerateLogo = async () => {
     if (!formData.brandName.trim()) {
       toast.error("Please enter a brand name");
@@ -80,6 +117,12 @@ const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }
       
       setGeneratedImage(data.imageUrl);
       setPromptText(data.prompt);
+      
+      // Save the logo to the database once generated
+      if (user) {
+        await saveLogoToDatabase(data.imageUrl, data.prompt);
+      }
+      
       toast.success("Logo generated successfully!");
     } catch (error) {
       console.error("Error generating logo:", error);

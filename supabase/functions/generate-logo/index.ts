@@ -39,7 +39,7 @@ serve(async (req) => {
         prompt: enhancedPrompt,
         n: 1,
         size: "1024x1024",
-        quality: "hd"
+        quality: "standard" // Changed from "hd" to "standard" which is a valid value
       }),
     });
 

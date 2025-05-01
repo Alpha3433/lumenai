@@ -9,11 +9,14 @@ import Footer from '@/components/Footer';
 import DemoHeader from '@/components/demo/DemoHeader';
 import DemoHero from '@/components/demo/DemoHero';
 import DemoNavigation from '@/components/demo/DemoNavigation';
-import StepDisplay from '@/components/demo/StepDisplay';
 import BusinessIdeaStep from '@/components/demo/BusinessIdeaStep';
 import BusinessValidationStep from '@/components/demo/BusinessValidationStep';
 import SwotAnalysisStep from '@/components/demo/SwotAnalysisStep';
 import ToolsShowcaseStep from '@/components/demo/ToolsShowcaseStep';
+import LandingPageStep from '@/components/demo/LandingPageStep';
+import UserInterviewsStep from '@/components/demo/UserInterviewsStep';
+import SocialInsightsStep from '@/components/demo/SocialInsightsStep';
+import DashboardStep from '@/components/demo/DashboardStep';
 import ValidationDashboardStep from '@/components/demo/ValidationDashboardStep';
 import DemoCTA from '@/components/demo/DemoCTA';
 import { DemoStep } from '@/components/demo/types';
@@ -99,29 +102,28 @@ const Demo = () => {
 
       {/* Steps Sections */}
       <div className="max-w-7xl mx-auto px-4 pb-20">
-        {/* Special handling for first step with Business Idea Generator */}
+        {/* Business Idea Generator - Step 1 */}
         <BusinessIdeaStep step={steps[0]} />
         
-        {/* Special handling for Business Validation/Tailored Plan step */}
+        {/* Business Validation - Step 2 */}
         <BusinessValidationStep step={steps[1]} />
         
-        {/* Special handling for Discover Market Needs / SWOT Analysis step */}
+        {/* SWOT Analysis - Step 3 */}
         <SwotAnalysisStep step={steps[2]} />
         
-        {/* Special handling for Tools Showcase / Auto-Build Landing Page step */}
+        {/* Landing Page Builder - Step 4 */}
         <ToolsShowcaseStep step={steps[3]} />
         
-        {/* Render steps 4-6 using the standard StepDisplay component */}
-        {steps.slice(4, 7).map((step, index) => (
-          <StepDisplay 
-            key={step.id}
-            step={step}
-            index={index + 4}
-            isFirstStep={false}
-          />
-        ))}
+        {/* User Interviews - Step 5 */}
+        <UserInterviewsStep step={steps[4]} />
         
-        {/* Special handling for Final Validation Score with social media campaigns */}
+        {/* Social Insights - Step 6 */}
+        <SocialInsightsStep step={steps[5]} />
+        
+        {/* Dashboard - Step 7 */}
+        <DashboardStep step={steps[6]} />
+        
+        {/* Validation Dashboard with Social Media - Step 8 */}
         <ValidationDashboardStep step={steps[7]} />
       </div>
 

@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -98,10 +97,6 @@ export default {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.8' },
 				},
-				'gradient': {
-					'0%, 100%': { backgroundPosition: '0% 50%' },
-					'50%': { backgroundPosition: '100% 50%' },
-				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -110,36 +105,11 @@ export default {
 				'fade-up': 'fade-up 0.5s ease-out',
 				'float': 'float 3s ease-in-out infinite',
 				'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
-				'gradient': 'gradient 3s ease infinite',
 			},
 			backdropBlur: {
 				xs: '2px',
 			},
 		}
 	},
-	plugins: [
-		require("tailwindcss-animate"),
-		function({ addUtilities }) {
-			const newUtilities = {
-				'.customized-scroll': {
-					'&::-webkit-scrollbar': {
-						width: '6px',
-					},
-					'&::-webkit-scrollbar-track': {
-						background: 'transparent',
-					},
-					'&::-webkit-scrollbar-thumb': {
-						background: '#CBD5E0',
-						borderRadius: '3px',
-					},
-					'&::-webkit-scrollbar-thumb:hover': {
-						background: '#A0AEC0',
-					},
-					'scrollbarWidth': 'thin',
-					'scrollbarColor': '#CBD5E0 transparent',
-				},
-			}
-			addUtilities(newUtilities, ['responsive', 'hover'])
-		}
-	],
+	plugins: [require("tailwindcss-animate")],
 } satisfies Config;

@@ -16,17 +16,41 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt } = await req.json();
+    const { 
+      brandName, 
+      adjectives, 
+      audience, 
+      industry, 
+      emotions, 
+      logoStyle, 
+      colorPreference, 
+      usageContext, 
+      inspiration 
+    } = await req.json();
     
-    if (!prompt) {
+    if (!brandName) {
       return new Response(
-        JSON.stringify({ error: 'Prompt is required' }), 
+        JSON.stringify({ error: 'Brand name is required' }), 
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Enhance the prompt for better logo generation
-    const enhancedPrompt = `Professional business logo design for: ${prompt}. Clean, modern, minimal style with good contrast. Suitable for a business card or website header.`;
+    // Build dynamic prompt using provided information
+    const enhancedPrompt = `Create a high-quality logo for a brand called ${brandName}. The brand's core identity can be described as ${adjectives || 'modern, professional'}.
+
+The target audience is ${audience || 'general consumers'}, and the brand operates in the ${industry || 'business'} space.
+
+The logo should evoke ${emotions || 'trust and reliability'}.
+
+The preferred style is ${logoStyle || 'a balanced combination of symbol and text'}, and the visual direction should take inspiration from ${inspiration || 'contemporary design trends'}.
+
+Please use a ${colorPreference || 'professional color palette that conveys trust'}.
+
+The logo should work well on both light and dark backgrounds, and be versatile enough for ${usageContext || 'website headers, social media, and business materials'}.
+
+Create a clean, professional, high-quality logo design with good contrast that looks great at different sizes.`;
+    
+    console.log('Prompt:', enhancedPrompt);
     
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -46,13 +70,15 @@ serve(async (req) => {
     const data = await response.json();
     
     if (data.error) {
+      console.error('OpenAI API error:', data.error);
       throw new Error(data.error.message || 'Error generating image');
     }
 
     return new Response(
       JSON.stringify({ 
         imageUrl: data.data[0].url,
-        prompt: prompt 
+        prompt: enhancedPrompt,
+        brandName: brandName 
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

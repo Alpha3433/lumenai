@@ -176,7 +176,7 @@ const ValidationDashboardStep: React.FC<ValidationDashboardStepProps> = ({
                     
                     <CardContent className="p-4">
                       <div className="aspect-w-4 aspect-h-5 mb-4">
-                        <img src="public/lovable-uploads/118708dd-6a94-487b-864d-510c7508d200.png" alt="FitnessAI Instagram Ad" className="rounded-md object-cover w-full h-full" />
+                        <img alt="FitnessAI Instagram Ad" className="rounded-md object-cover w-full h-full" src="/lovable-uploads/c8feccf9-8000-42b0-a048-d3fc9dd226e9.png" />
                       </div>
                       
                       <div className="grid grid-cols-2 gap-3 mb-4">

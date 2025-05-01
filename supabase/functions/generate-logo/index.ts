@@ -63,7 +63,7 @@ Create a clean, professional, high-quality logo design with good contrast that l
         prompt: enhancedPrompt,
         n: 1,
         size: "1024x1024",
-        quality: "standard" // Changed from "hd" to "standard" which is a valid value
+        quality: "hd" // Using "hd" for high-quality images
       }),
     });
 

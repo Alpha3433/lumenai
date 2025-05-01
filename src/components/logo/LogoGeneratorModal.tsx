@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Loader2, Download, Wand, Palette, Award, Users, Building, Heart, Image } from "lucide-react";
+import { Loader2, Download, Wand, Palette, Award, Users, Building, Heart, Image, Save } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -47,6 +47,16 @@ const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }
   
   const goToPreviousStep = () => {
     setActiveStep(prev => prev - 1);
+  };
+
+  const savePreferences = () => {
+    try {
+      localStorage.setItem('logoPreferences', JSON.stringify(formData));
+      toast.success("Logo preferences saved successfully!");
+    } catch (error) {
+      console.error("Error saving preferences:", error);
+      toast.error("Failed to save preferences");
+    }
   };
 
   const handleGenerateLogo = async () => {
@@ -226,13 +236,23 @@ const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }
   const navigationButtons = () => {
     return (
       <div className="flex justify-between mt-6">
-        {activeStep > 1 ? (
-          <Button variant="outline" onClick={goToPreviousStep}>
-            Back
+        <div className="flex gap-2">
+          {activeStep > 1 ? (
+            <Button variant="outline" onClick={goToPreviousStep}>
+              Back
+            </Button>
+          ) : (
+            <div></div>
+          )}
+          <Button 
+            variant="outline" 
+            onClick={savePreferences}
+            className="flex items-center gap-1"
+          >
+            <Save className="h-4 w-4" />
+            Save Preferences
           </Button>
-        ) : (
-          <div></div>
-        )}
+        </div>
         {activeStep < 3 ? (
           <Button onClick={goToNextStep}>
             Continue
@@ -261,7 +281,7 @@ const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold flex items-center">
             <Palette className="mr-2 h-5 w-5 text-blue-500" />
@@ -285,7 +305,7 @@ const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }
               <p className="text-sm text-muted-foreground">Your custom logo is ready!</p>
             </div>
             
-            <Card className="overflow-hidden border-2 border-blue-100 dark:border-blue-900/40">
+            <Card className="overflow-hidden border-2 border-blue-100 dark:border-blue-900/40 animate-fade-in">
               <CardContent className="p-0">
                 <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
                   <img 

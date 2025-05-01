@@ -121,11 +121,11 @@ const DashboardPreview = () => {
             <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
               <div className="flex items-center gap-2 mb-1">
                 <Users className="h-3.5 w-3.5 text-blue-500" />
-                <span className="text-xs font-medium">Team</span>
+                <span className="text-xs font-medium">Messages</span>
               </div>
               <div className="flex items-baseline gap-1">
                 <span className="text-xl font-bold">0</span>
-                <span className="text-xs text-gray-500">members</span>
+                <span className="text-xs text-gray-500">messages</span>
               </div>
             </div>
           </motion.div>

@@ -35,7 +35,7 @@ const DashboardHeader = () => {
           <CheckCircle className="mr-2 h-4 w-4" />
           New Task
         </Button>
-        <Button variant="secondary" onClick={() => setShowLogoModal(true)} className="bg-blue-200 hover:bg-blue-100">
+        <Button variant="secondary" onClick={() => setShowLogoModal(true)} className="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50">
           <Wand className="mr-2 h-4 w-4" />
           Create Logo
         </Button>

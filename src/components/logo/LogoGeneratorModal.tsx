@@ -30,7 +30,7 @@ const LogoGeneratorModal: React.FC<LogoGeneratorModalProps> = ({ open, onClose }
     
     try {
       setIsGenerating(true);
-      toast.info("Generating your logo...", { duration: 10000 });
+      toast.info("Generating your logo with AI...", { duration: 10000 });
       
       const { data, error } = await supabase.functions.invoke('generate-logo', {
         body: { prompt: prompt.trim() }

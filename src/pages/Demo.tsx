@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   CheckCircle, Sparkles, Lightbulb, BarChart3, Search, 
   Users, MessageSquare, FileText, PencilRuler, LineChart, 
@@ -90,6 +90,11 @@ const Demo = () => {
     }
   ];
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       <DemoHeader />
@@ -97,7 +102,7 @@ const Demo = () => {
       {/* Hero Section */}
       <DemoHero />
 
-      {/* Navigation Dots */}
+      {/* Modern Navigation */}
       <DemoNavigation steps={steps} />
 
       {/* Steps Sections */}

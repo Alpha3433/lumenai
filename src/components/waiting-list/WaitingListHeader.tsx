@@ -30,8 +30,12 @@ const WaitingListHeader = () => {
         {/* Desktop Navigation - Centered */}
         <nav className="hidden md:flex flex-1 justify-center">
           <div className="flex items-center gap-8">
-            <Button variant="ghost" asChild>
-              <Link to="/demo" className="text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100">
+            {/* Modified Demo button to stand out */}
+            <Button 
+              className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-md hover:shadow-lg transition-all duration-300 border-0 font-medium"
+              asChild
+            >
+              <Link to="/demo">
                 Demo
               </Link>
             </Button>
@@ -69,7 +73,8 @@ const WaitingListHeader = () => {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="absolute top-full left-0 right-0 bg-white dark:bg-gray-900 shadow-md p-4 md:hidden flex flex-col gap-3">
-            <Link to="/demo" className="px-4 py-2 text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
+            {/* Modified Mobile Demo button to match desktop */}
+            <Link to="/demo" className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-md font-medium">
               Demo
             </Link>
             <a href="#how-it-works" className="px-4 py-2 text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">

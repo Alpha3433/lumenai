@@ -74,8 +74,8 @@ const Demo = () => {
     },
     {
       id: "dashboard",
-      title: "Validation Dashboard",
-      description: "Monitor key validation metrics in real-time. Track landing page conversion rates, customer interview sentiments, and market signals all in one intuitive dashboard.",
+      title: "Launch Strategy Session",
+      description: "Book a 1:1 deep-dive with our lead strategist. We'll walk you through validation results, key risks, and help you define a 30-day execution roadmap post-launch.",
       image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
       icon: LayoutDashboard,
       color: "from-indigo-500 to-indigo-600"

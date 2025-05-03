@@ -74,15 +74,15 @@ const DashboardStep: React.FC<DashboardStepProps> = ({ step }) => {
             <div className="flex flex-wrap gap-3">
               <div className="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
                 <CheckCircle className="h-4 w-4" />
-                Real-time scheduling
+                Expert validation calls
               </div>
               <div className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
                 <CheckCircle className="h-4 w-4" />
-                Automatic notifications
+                30-day roadmapping
               </div>
               <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm mt-2">
                 <CheckCircle className="h-4 w-4" />
-                Expert validation calls
+                Real-time scheduling
               </div>
             </div>
           </motion.div>
@@ -101,7 +101,7 @@ const DashboardStep: React.FC<DashboardStepProps> = ({ step }) => {
                 <div className="absolute left-10 bottom-0 w-16 h-16 bg-white/10 rounded-full -mb-8"></div>
                 <h3 className="text-xl font-semibold flex items-center gap-2 relative z-10">
                   <Calendar className="h-5 w-5 text-white" />
-                  Schedule Your Validation Meeting
+                  Schedule Your Strategy Session
                 </h3>
                 <p className="text-indigo-100 text-sm relative z-10">
                   Book a time with our startup validation experts

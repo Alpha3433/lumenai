@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { DemoStep } from './types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface DemoNavigationProps {
   steps: DemoStep[];
@@ -11,9 +12,14 @@ interface DemoNavigationProps {
 const DemoNavigation: React.FC<DemoNavigationProps> = ({ steps }) => {
   const [activeStep, setActiveStep] = useState('describe');
   const [visitedSteps, setVisitedSteps] = useState<string[]>(['describe']);
+  const [previousScrollPosition, setPreviousScrollPosition] = useState(0);
   
   useEffect(() => {
     const handleScroll = () => {
+      const currentScrollPosition = window.scrollY;
+      const scrollingDown = currentScrollPosition > previousScrollPosition;
+      setPreviousScrollPosition(currentScrollPosition);
+      
       // Get all step sections
       const sections = steps.map(step => {
         const element = document.getElementById(step.id);
@@ -47,10 +53,24 @@ const DemoNavigation: React.FC<DemoNavigationProps> = ({ steps }) => {
       
       setActiveStep(maxVisibleSection);
       
-      // Add to visited steps if not already included
-      setVisitedSteps(prev => 
-        prev.includes(maxVisibleSection) ? prev : [...prev, maxVisibleSection]
-      );
+      // Update visited steps based on scroll direction
+      if (scrollingDown) {
+        // When scrolling down, add to visited steps if not already included
+        setVisitedSteps(prev => 
+          prev.includes(maxVisibleSection) ? prev : [...prev, maxVisibleSection]
+        );
+      } else {
+        // When scrolling up, remove steps after the current active step
+        const activeIndex = steps.findIndex(step => step.id === maxVisibleSection);
+        if (activeIndex >= 0) {
+          setVisitedSteps(prev => 
+            prev.filter((_, index) => {
+              const stepIndex = steps.findIndex(step => step.id === prev[index]);
+              return stepIndex <= activeIndex;
+            })
+          );
+        }
+      }
     };
     
     window.addEventListener('scroll', handleScroll);
@@ -60,7 +80,7 @@ const DemoNavigation: React.FC<DemoNavigationProps> = ({ steps }) => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [steps]);
+  }, [steps, previousScrollPosition]);
   
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -82,35 +102,43 @@ const DemoNavigation: React.FC<DemoNavigationProps> = ({ steps }) => {
             
             return (
               <div key={step.id} className="relative">
-                <button 
-                  onClick={() => scrollToSection(step.id)}
-                  className="group flex items-center justify-center"
-                  aria-label={`Navigate to ${step.title} section`}
-                  title={step.title}
-                >
-                  <motion.div 
-                    initial={false}
-                    animate={{ 
-                      scale: isActive ? 1.2 : 1,
-                      backgroundColor: isActive 
-                        ? 'rgb(99, 102, 241)' 
-                        : isCompleted 
-                        ? 'rgb(34, 197, 94)' 
-                        : 'rgb(209, 213, 219)'
-                    }}
-                    className={`w-3 h-3 rounded-full flex items-center justify-center transition-all duration-300 ${
-                      isActive 
-                        ? 'ring-4 ring-indigo-300 dark:ring-indigo-500/30' 
-                        : isCompleted 
-                        ? 'bg-green-500' 
-                        : 'bg-gray-300 dark:bg-gray-600'
-                    }`}
-                  >
-                    {isCompleted && (
-                      <CheckCircle className="text-white w-2 h-2" />
-                    )}
-                  </motion.div>
-                </button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button 
+                        onClick={() => scrollToSection(step.id)}
+                        className="group flex items-center justify-center"
+                        aria-label={`Navigate to ${step.title} section`}
+                      >
+                        <motion.div 
+                          initial={false}
+                          animate={{ 
+                            scale: isActive ? 1.2 : 1,
+                            backgroundColor: isActive 
+                              ? 'rgb(99, 102, 241)' 
+                              : isCompleted 
+                              ? 'rgb(34, 197, 94)' 
+                              : 'rgb(209, 213, 219)'
+                          }}
+                          className={`w-3 h-3 rounded-full flex items-center justify-center transition-all duration-300 ${
+                            isActive 
+                              ? 'ring-4 ring-indigo-300 dark:ring-indigo-500/30' 
+                              : isCompleted 
+                              ? 'bg-green-500' 
+                              : 'bg-gray-300 dark:bg-gray-600'
+                          }`}
+                        >
+                          {isCompleted && (
+                            <CheckCircle className="text-white w-2 h-2" />
+                          )}
+                        </motion.div>
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="left" className="font-medium">
+                      {step.title}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 
                 {/* Connection line between dots */}
                 {index < steps.length - 1 && (

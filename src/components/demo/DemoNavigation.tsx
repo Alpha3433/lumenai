@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { DemoStep } from './types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle } from 'lucide-react';
 
 interface DemoNavigationProps {
   steps: DemoStep[];
@@ -9,6 +10,7 @@ interface DemoNavigationProps {
 
 const DemoNavigation: React.FC<DemoNavigationProps> = ({ steps }) => {
   const [activeStep, setActiveStep] = useState('describe');
+  const [visitedSteps, setVisitedSteps] = useState<string[]>(['describe']);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +46,11 @@ const DemoNavigation: React.FC<DemoNavigationProps> = ({ steps }) => {
       });
       
       setActiveStep(maxVisibleSection);
+      
+      // Add to visited steps if not already included
+      setVisitedSteps(prev => 
+        prev.includes(maxVisibleSection) ? prev : [...prev, maxVisibleSection]
+      );
     };
     
     window.addEventListener('scroll', handleScroll);
@@ -64,57 +71,60 @@ const DemoNavigation: React.FC<DemoNavigationProps> = ({ steps }) => {
   
   return (
     <div className="hidden lg:block fixed right-8 top-1/2 transform -translate-y-1/2 z-40">
-      <div className="glass-nav relative rounded-2xl backdrop-blur-xl bg-white/10 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800/50 shadow-lg px-2 py-3">
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-blue-500/5 to-purple-500/5 dark:from-blue-500/10 dark:to-purple-500/10"></div>
+      <div className="glass-nav relative rounded-full backdrop-blur-xl bg-white/20 dark:bg-gray-900/40 border border-gray-200/50 dark:border-gray-800/50 shadow-lg p-2">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-blue-500/5 to-purple-500/5 dark:from-blue-500/10 dark:to-purple-500/10"></div>
         
-        <div className="relative flex flex-col items-start gap-3">
+        <div className="relative flex flex-col items-center gap-2">
           {steps.map((step, index) => {
             const isActive = activeStep === step.id;
+            const isCompleted = visitedSteps.includes(step.id) && activeStep !== step.id;
+            const isNextActive = index > 0 && activeStep === steps[index - 1].id;
             
             return (
-              <button 
-                key={step.id}
-                onClick={() => scrollToSection(step.id)}
-                className={`group flex items-center gap-2 transition-all duration-300 ease-in-out w-full rounded-lg px-3 py-1.5 ${
-                  isActive ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-400/30 dark:to-purple-400/30' : 'hover:bg-gray-100/30 dark:hover:bg-gray-800/30'
-                }`}
-                aria-label={`Navigate to ${step.title} section`}
-              >
-                <div className="relative">
-                  <div 
-                    className={`flex items-center justify-center w-6 h-6 rounded-full transition-colors ${
+              <div key={step.id} className="relative">
+                <button 
+                  onClick={() => scrollToSection(step.id)}
+                  className="group flex items-center justify-center"
+                  aria-label={`Navigate to ${step.title} section`}
+                  title={step.title}
+                >
+                  <motion.div 
+                    initial={false}
+                    animate={{ 
+                      scale: isActive ? 1.2 : 1,
+                      backgroundColor: isActive 
+                        ? 'rgb(99, 102, 241)' 
+                        : isCompleted 
+                        ? 'rgb(34, 197, 94)' 
+                        : 'rgb(209, 213, 219)'
+                    }}
+                    className={`w-3 h-3 rounded-full flex items-center justify-center transition-all duration-300 ${
                       isActive 
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white' 
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                        ? 'ring-4 ring-indigo-300 dark:ring-indigo-500/30' 
+                        : isCompleted 
+                        ? 'bg-green-500' 
+                        : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                   >
-                    <span className="text-xs font-medium">{index + 1}</span>
-                  </div>
-                  {index < steps.length - 1 && (
-                    <div className={`absolute left-1/2 top-6 -ml-px h-3 w-0.5 ${
-                      isActive && activeStep !== steps[index + 1].id
-                        ? 'bg-gradient-to-b from-purple-500 to-blue-200/30 dark:to-blue-500/10'
-                        : 'bg-gray-200 dark:bg-gray-700'
-                    }`}></div>
-                  )}
-                </div>
+                    {isCompleted && (
+                      <CheckCircle className="text-white w-2 h-2" />
+                    )}
+                  </motion.div>
+                </button>
                 
-                <AnimatePresence>
-                  {isActive && (
-                    <motion.div
-                      initial={{ width: 0, opacity: 0 }}
-                      animate={{ width: 'auto', opacity: 1 }}
-                      exit={{ width: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden whitespace-nowrap"
-                    >
-                      <span className="text-sm font-medium text-gray-800 dark:text-gray-100">
-                        {step.title}
-                      </span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </button>
+                {/* Connection line between dots */}
+                {index < steps.length - 1 && (
+                  <div 
+                    className={`absolute left-1/2 top-full -ml-px w-0.5 h-4 ${
+                      (isActive || isCompleted) && visitedSteps.includes(steps[index + 1].id)
+                        ? 'bg-green-500'
+                        : isActive || isNextActive
+                        ? 'bg-gradient-to-b from-indigo-500 to-gray-300 dark:to-gray-600' 
+                        : 'bg-gray-200 dark:bg-gray-700'
+                    }`}
+                  ></div>
+                )}
+              </div>
             );
           })}
         </div>

@@ -45,7 +45,7 @@ const FAQSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-gray-700 dark:text-gray-200 max-w-2xl mx-auto">
             Everything you need to know about our startup validation platform
           </p>
         </motion.div>
@@ -63,7 +63,7 @@ const FAQSection = () => {
                 <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-900 dark:text-white text-left font-medium">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="px-6 py-4 text-gray-600 dark:text-gray-300">
+                <AccordionContent className="px-6 py-4 text-gray-700 dark:text-gray-200">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

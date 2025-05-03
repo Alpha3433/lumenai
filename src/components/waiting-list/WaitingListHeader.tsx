@@ -24,7 +24,7 @@ const WaitingListHeader = () => {
           className="md:hidden p-2 rounded-md focus:outline-none"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          <Menu className="h-6 w-6" />
+          <Menu className="h-6 w-6 text-gray-900 dark:text-white" />
         </button>
 
         {/* Desktop Navigation - Centered */}
@@ -40,22 +40,22 @@ const WaitingListHeader = () => {
               </Link>
             </Button>
             <Button variant="ghost" asChild>
-              <a href="#how-it-works" className="text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100">
+              <a href="#how-it-works" className="text-gray-900 dark:text-white hover:text-black dark:hover:text-white">
                 How it Works
               </a>
             </Button>
             <Button variant="ghost" asChild>
-              <a href="#features" className="text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100">
+              <a href="#features" className="text-gray-900 dark:text-white hover:text-black dark:hover:text-white">
                 Features
               </a>
             </Button>
             <Button variant="ghost" asChild>
-              <a href="#who-its-for" className="text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100">
+              <a href="#who-its-for" className="text-gray-900 dark:text-white hover:text-black dark:hover:text-white">
                 Who It's For
               </a>
             </Button>
             <Button variant="ghost" asChild>
-              <a href="#faq" className="text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100">
+              <a href="#faq" className="text-gray-900 dark:text-white hover:text-black dark:hover:text-white">
                 FAQs
               </a>
             </Button>
@@ -77,16 +77,16 @@ const WaitingListHeader = () => {
             <Link to="/demo" className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-md font-medium">
               Demo
             </Link>
-            <a href="#how-it-works" className="px-4 py-2 text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
+            <a href="#how-it-works" className="px-4 py-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
               How it Works
             </a>
-            <a href="#features" className="px-4 py-2 text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
+            <a href="#features" className="px-4 py-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
               Features
             </a>
-            <a href="#who-its-for" className="px-4 py-2 text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
+            <a href="#who-its-for" className="px-4 py-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
               Who It's For
             </a>
-            <a href="#faq" className="px-4 py-2 text-black dark:text-white hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
+            <a href="#faq" className="px-4 py-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
               FAQs
             </a>
             <div className="flex items-center justify-between py-2">

@@ -15,7 +15,7 @@ import Footer from '@/components/Footer';
 
 const WaitingList = () => {
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white dark:bg-gray-900 min-h-screen">
       <WaitingListHeader />
       <main className="flex flex-col w-full">
         <HeroSection />

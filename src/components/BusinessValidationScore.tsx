@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -138,27 +137,7 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
             </div>
             
             {/* Draggable and editable business name with Muscle icon */}
-            <div 
-              ref={textRef}
-              style={{ 
-                position: 'relative',
-                left: position.x, 
-                top: position.y,
-                cursor: isDragging ? 'grabbing' : 'grab'
-              }}
-              className="mt-4 flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800 shadow-sm transition-all"
-              onMouseDown={handleMouseDown}
-            >
-              <Dumbbell className="h-6 w-6 text-blue-500 dark:text-blue-400" />
-              <div 
-                contentEditable 
-                suppressContentEditableWarning 
-                className="font-semibold focus:outline-none text-lg text-blue-700 dark:text-blue-300 min-w-[80px]"
-                onBlur={(e) => setEditableText(e.currentTarget.textContent || businessName)}
-              >
-                {editableText}
-              </div>
-            </div>
+            
           </div>
           
           <div className="md:w-2/3 space-y-6">

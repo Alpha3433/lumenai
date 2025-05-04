@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -24,19 +25,23 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
   const metrics = [{
     name: "Market Potential",
     score: 89,
-    description: "Large addressable market with growing demand for weight loss solutions."
+    description: "Large addressable market with growing demand for weight loss solutions.",
+    color: "bg-green-500" // Changed to green
   }, {
     name: "Revenue Model",
     score: 92,
-    description: "Subscription-based approach offers strong recurring revenue potential."
+    description: "Subscription-based approach offers strong recurring revenue potential.",
+    color: "bg-green-500" // Changed to green
   }, {
     name: "Competitive Landscape",
     score: 72,
-    description: "Competitive market but clear differentiation with AI personalization."
+    description: "Competitive market but clear differentiation with AI personalization.",
+    color: "bg-orange-500" // Changed to orange
   }, {
     name: "Technical Feasibility",
     score: 88,
-    description: "AI implementation is achievable with current technology stack."
+    description: "AI implementation is achievable with current technology stack.",
+    color: "bg-green-500" // Changed to green
   }];
 
   // Add state for the editable text and its position
@@ -146,7 +151,7 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
                   <p className="text-sm font-medium">{metric.name}</p>
                   <p className="text-sm font-semibold">{metric.score}%</p>
                 </div>
-                <Progress value={metric.score} className="h-2" />
+                <Progress value={metric.score} className="h-2" indicatorClassName={metric.color} />
                 <p className="text-xs text-gray-500 dark:text-gray-400">{metric.description}</p>
               </div>)}
           </div>

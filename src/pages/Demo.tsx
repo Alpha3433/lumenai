@@ -66,10 +66,10 @@ const Demo = () => {
     },
     {
       id: "analyze",
-      title: "Social & AI Insights",
-      description: "Leverage AI-powered social listening to understand conversations around your product category. Get actionable insights about trends, pain points, and competitive landscape.",
+      title: "Investor-Ready Pitch Assets",
+      description: "Get a complete pitch deck, business one-pager, and traction summary — all based on your real data. Perfect for demo days, grant applications, or early investor conversations.",
       image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
-      icon: MessageSquare,
+      icon: FileText,
       color: "from-red-500 to-red-600"
     },
     {

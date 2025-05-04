@@ -25,7 +25,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({ codeLines }) => {
     codeLines.forEach((_, index) => {
       const timer = setTimeout(() => {
         setVisibleLines(prev => [...prev, index]);
-      }, 500 + (codeLines[index].delay * 1000)); // Base delay plus line-specific delay
+      }, 200 + (codeLines[index].delay * 800)); // Reduced delay for faster animation
       
       return () => clearTimeout(timer);
     });
@@ -56,8 +56,8 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({ codeLines }) => {
         
         return (
           <div key={index} className="relative">
-            {/* Line number */}
-            <span className="inline-block w-7 text-right mr-3 text-gray-500 select-none">
+            {/* Line number - reduced spacing for compactness */}
+            <span className="inline-block w-5 text-right mr-2 text-gray-500 select-none text-xs">
               {index + 1}
             </span>
             
@@ -86,7 +86,7 @@ const CodeAnimation: React.FC<CodeAnimationProps> = ({ codeLines }) => {
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 0 }}
                 transition={{ repeat: 7, duration: 0.5, repeatType: "reverse" }}
-                className="animate-pulse ml-0.5 inline-block w-2 h-4 bg-gray-400 align-middle"
+                className="animate-pulse ml-0.5 inline-block w-1.5 h-3 bg-gray-400 align-middle"
               />
             )}
           </div>

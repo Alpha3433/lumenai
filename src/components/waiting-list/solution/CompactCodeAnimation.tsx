@@ -41,9 +41,9 @@ const CompactCodeAnimation: React.FC<CompactCodeAnimationProps> = ({ codeLines }
         </motion.div>
       </div>
 
-      {/* Code content */}
-      <div className="h-[350px] md:h-[450px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 pr-2">
-        <div className="font-mono text-sm text-gray-300 leading-relaxed">
+      {/* Code content - Modified to ensure code fits without scrolling */}
+      <div className="h-auto max-h-[550px] overflow-hidden">
+        <div className="font-mono text-xs text-gray-300 leading-tight">
           <CodeAnimation codeLines={codeLines} />
         </div>
       </div>

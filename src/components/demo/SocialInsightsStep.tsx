@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Dumbbell, Weight, Running } from 'lucide-react';
+import { CheckCircle, Dumbbell, Weight, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Card, CardContent } from '@/components/ui/card';
@@ -87,7 +87,7 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
                       <div className="w-14 h-14 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mb-3">
-                        <Running className="h-6 w-6 text-green-600 dark:text-green-400" />
+                        <Activity className="h-6 w-6 text-green-600 dark:text-green-400" />
                       </div>
                       <h4 className="font-medium mb-1">Cardio Workouts</h4>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Improve endurance and heart health</p>

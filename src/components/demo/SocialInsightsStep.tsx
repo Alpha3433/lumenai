@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, FileText, PresentationIcon, FileSearch } from 'lucide-react';
+import { CheckCircle, FileText, PresentationIcon, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Card, CardContent } from '@/components/ui/card';
@@ -77,36 +77,57 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
                       <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
-                        <FileText className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                      </div>
-                      <h4 className="font-medium mb-1">Pitch Deck</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">12-slide presentation with key metrics</p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
-                    <CardContent className="p-4 flex flex-col items-center text-center">
-                      <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
                         <PresentationIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <h4 className="font-medium mb-1">One-Pager</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Concise business overview document</p>
+                      <h4 className="font-medium mb-1">Pitch Deck</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">12-slide presentation with key metrics</p>
+                      <div className="w-full bg-gray-50 dark:bg-gray-700 rounded-lg p-2 text-xs text-left">
+                        <ul className="list-disc pl-4 space-y-1 text-gray-600 dark:text-gray-300">
+                          <li>FitnessAI market size: $4.8B</li>
+                          <li>67% MoM user growth rate</li>
+                          <li>$1.2M ARR projection (Y1)</li>
+                        </ul>
+                      </div>
                     </CardContent>
                   </Card>
                   
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
                       <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
-                        <FileSearch className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                        <FileText className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <h4 className="font-medium mb-1">One-Pager</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Concise business overview document</p>
+                      <div className="w-full bg-gray-50 dark:bg-gray-700 rounded-lg p-2 text-xs text-left">
+                        <ul className="list-disc pl-4 space-y-1 text-gray-600 dark:text-gray-300">
+                          <li>AI-driven workout personalization</li>
+                          <li>3 revenue streams identified</li>
+                          <li>$250K initial investment needs</li>
+                        </ul>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 flex flex-col items-center text-center">
+                      <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
+                        <TrendingUp className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                       </div>
                       <h4 className="font-medium mb-1">Traction Summary</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Growth & user acquisition metrics</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Growth & user acquisition metrics</p>
+                      <div className="w-full bg-gray-50 dark:bg-gray-700 rounded-lg p-2 text-xs text-left">
+                        <ul className="list-disc pl-4 space-y-1 text-gray-600 dark:text-gray-300">
+                          <li>5,800+ beta users in 60 days</li>
+                          <li>32% conversion from free to paid</li>
+                          <li>$21 average CAC, $48 LTV</li>
+                        </ul>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
                 
                 <div className="mt-6">
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700">Generate Pitch Materials</Button>
+                  <Button className="w-full bg-purple-600 hover:bg-purple-700">Generate FitnessAI Pitch Materials</Button>
                 </div>
                 
                 <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
@@ -114,7 +135,7 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
                     "The generated pitch deck helped us secure our first $250K in pre-seed funding. The metrics and market analysis were exactly what investors wanted to see."
                   </blockquote>
                   <div className="flex items-center gap-2 mt-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-medium">SC</div>
                     <div>
                       <p className="text-sm font-medium">Sarah Chen</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">FitnessAI Co-founder</p>

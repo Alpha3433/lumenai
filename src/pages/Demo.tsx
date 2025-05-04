@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { 
   CheckCircle, Sparkles, Lightbulb, BarChart3, Search, 
@@ -18,6 +19,7 @@ import SocialInsightsStep from '@/components/demo/SocialInsightsStep';
 import DashboardStep from '@/components/demo/DashboardStep';
 import ValidationDashboardStep from '@/components/demo/ValidationDashboardStep';
 import DemoCTA from '@/components/demo/DemoCTA';
+import WhyFoundersChooseSection from '@/components/demo/WhyFoundersChooseSection';
 import { DemoStep } from '@/components/demo/types';
 
 const Demo = () => {
@@ -130,6 +132,9 @@ const Demo = () => {
         {/* Validation Dashboard with Social Media - Step 8 */}
         <ValidationDashboardStep step={steps[7]} />
       </div>
+
+      {/* Why Founders Choose Section - Added before CTA */}
+      <WhyFoundersChooseSection />
 
       {/* CTA Section */}
       <DemoCTA />

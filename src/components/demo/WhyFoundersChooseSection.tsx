@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Zap, Brush, Clock, Users, Rocket } from 'lucide-react';
+import { CheckCircle, Zap, Brush, Clock, Users, Rocket, LineChart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const WhyFoundersChooseSection: React.FC = () => {
@@ -41,6 +41,13 @@ const WhyFoundersChooseSection: React.FC = () => {
       text: "Trusted by founders, solo creators & coaches",
       color: "text-rose-500",
       bgColor: "bg-rose-100/80 dark:bg-rose-900/20"
+    },
+    {
+      icon: LineChart,
+      title: "Data-Driven Success",
+      text: "Custom analytics to measure & optimize KPIs",
+      color: "text-blue-500",
+      bgColor: "bg-blue-100/80 dark:bg-blue-900/20"
     }
   ];
 
@@ -92,6 +99,7 @@ const WhyFoundersChooseSection: React.FC = () => {
                       {index === 2 && "Complete done-for-you launch package"}
                       {index === 3 && "Rapid prototyping with no technical debt"}
                       {index === 4 && "Join a community of successful entrepreneurs"}
+                      {index === 5 && "Real-time performance tracking and optimization"}
                     </div>
                   </div>
                 </CardContent>

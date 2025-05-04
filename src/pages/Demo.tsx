@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { 
   CheckCircle, Sparkles, Lightbulb, BarChart3, Search, 
   Users, MessageSquare, FileText, PencilRuler, LineChart, 
-  LayoutDashboard, Award, ArrowLeft
+  LayoutDashboard, Award, ArrowLeft, Dumbbell
 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import DemoHeader from '@/components/demo/DemoHeader';
@@ -66,11 +66,11 @@ const Demo = () => {
     },
     {
       id: "analyze",
-      title: "Investor-Ready Pitch Assets",
-      description: "Get a complete pitch deck, business one-pager, and traction summary — all based on your real data. Perfect for demo days, grant applications, or early investor conversations.",
+      title: "Fitness Programs",
+      description: "Get personalized workout plans, nutrition advice, and coaching to achieve your fitness goals. Whether you're a beginner or advanced, our AI tailors programs to your specific needs and preferences.",
       image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
-      icon: FileText,
-      color: "from-red-500 to-red-600"
+      icon: Dumbbell,
+      color: "from-green-500 to-green-600"
     },
     {
       id: "dashboard",

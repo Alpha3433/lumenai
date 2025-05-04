@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Dumbbell, Weight, Activity } from 'lucide-react';
+import { CheckCircle, FileText, PresentationIcon, FileSearch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Card, CardContent } from '@/components/ui/card';
@@ -36,25 +36,25 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
             </div>
             
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-              {step.title}
+              Investor-Ready Pitch Assets
             </h2>
             
             <p className="text-gray-600 dark:text-gray-300 text-lg mb-8">
-              {step.description}
+              Get a complete pitch deck, business one-pager, and traction summary — all based on your real data. Perfect for demo days, grant applications, or early investor conversations.
             </p>
             
             <div className="flex flex-wrap gap-3">
               <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
                 <CheckCircle className="h-4 w-4" />
-                Personalized workouts
+                Investor-ready deck
               </div>
               <div className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
                 <CheckCircle className="h-4 w-4" />
-                Progress tracking
+                Business one-pager
               </div>
               <div className="bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm mt-2">
                 <CheckCircle className="h-4 w-4" />
-                Expert coaching
+                Traction summary
               </div>
             </div>
           </motion.div>
@@ -67,57 +67,57 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
             className="lg:w-1/2"
           >
             <div className="rounded-xl overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800">
-              <div className="bg-gradient-to-r from-green-600 to-green-500 p-6 text-white">
-                <h3 className="text-xl font-semibold mb-2">Fitness Programs</h3>
-                <p className="text-green-100">Tailored workout plans for your goals and experience</p>
+              <div className="bg-gradient-to-r from-purple-600 to-purple-500 p-6 text-white">
+                <h3 className="text-xl font-semibold mb-2">Investor-Ready Pitch Assets</h3>
+                <p className="text-purple-100">Customized pitch materials for FitnessAI</p>
               </div>
               
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
-                      <div className="w-14 h-14 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mb-3">
-                        <Dumbbell className="h-6 w-6 text-green-600 dark:text-green-400" />
+                      <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
+                        <FileText className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <h4 className="font-medium mb-1">Strength Training</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Build muscle and improve overall fitness</p>
+                      <h4 className="font-medium mb-1">Pitch Deck</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">12-slide presentation with key metrics</p>
                     </CardContent>
                   </Card>
                   
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
-                      <div className="w-14 h-14 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mb-3">
-                        <Activity className="h-6 w-6 text-green-600 dark:text-green-400" />
+                      <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
+                        <PresentationIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <h4 className="font-medium mb-1">Cardio Workouts</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Improve endurance and heart health</p>
+                      <h4 className="font-medium mb-1">One-Pager</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Concise business overview document</p>
                     </CardContent>
                   </Card>
                   
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
-                      <div className="w-14 h-14 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mb-3">
-                        <Weight className="h-6 w-6 text-green-600 dark:text-green-400" />
+                      <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
+                        <FileSearch className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <h4 className="font-medium mb-1">Weight Management</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Balanced nutrition and exercise plans</p>
+                      <h4 className="font-medium mb-1">Traction Summary</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Growth & user acquisition metrics</p>
                     </CardContent>
                   </Card>
                 </div>
                 
                 <div className="mt-6">
-                  <Button className="w-full bg-green-600 hover:bg-green-700">Browse Fitness Programs</Button>
+                  <Button className="w-full bg-purple-600 hover:bg-purple-700">Generate Pitch Materials</Button>
                 </div>
                 
                 <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <blockquote className="text-sm text-gray-500 dark:text-gray-400 italic">
-                    "The personalized workout program helped me lose 15 pounds in just 8 weeks. The trainers are supportive and the app is easy to use."
+                    "The generated pitch deck helped us secure our first $250K in pre-seed funding. The metrics and market analysis were exactly what investors wanted to see."
                   </blockquote>
                   <div className="flex items-center gap-2 mt-2">
                     <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700"></div>
                     <div>
-                      <p className="text-sm font-medium">Alex Rodriguez</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Fitness Enthusiast</p>
+                      <p className="text-sm font-medium">Sarah Chen</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">FitnessAI Co-founder</p>
                     </div>
                   </div>
                 </div>

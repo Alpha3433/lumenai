@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -138,23 +137,13 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
             </div>
             
             {/* Simple editable text without formatting */}
-            <div 
-              ref={textRef}
-              style={{ 
-                position: 'relative',
-                left: position.x, 
-                top: position.y,
-                cursor: isDragging ? 'grabbing' : 'grab'
-              }}
-              className="mt-4"
-              onMouseDown={handleMouseDown}
-            >
-              <div 
-                contentEditable 
-                suppressContentEditableWarning 
-                className="focus:outline-none"
-                onBlur={(e) => setEditableText(e.currentTarget.textContent || businessName)}
-              >
+            <div ref={textRef} style={{
+            position: 'relative',
+            left: position.x,
+            top: position.y,
+            cursor: isDragging ? 'grabbing' : 'grab'
+          }} className="mt-4" onMouseDown={handleMouseDown}>
+              <div contentEditable suppressContentEditableWarning onBlur={e => setEditableText(e.currentTarget.textContent || businessName)} className="focus:outline-none rounded-md">
                 {editableText}
               </div>
             </div>

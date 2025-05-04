@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { 
   CheckCircle, Sparkles, Lightbulb, BarChart3, Search, 
   Users, MessageSquare, FileText, PencilRuler, LineChart, 
-  LayoutDashboard, Award, ArrowLeft, Dumbbell, Rocket
+  LayoutDashboard, Award, ArrowLeft, Dumbbell, Rocket, CircleDollarSign
 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import DemoHeader from '@/components/demo/DemoHeader';
@@ -13,8 +13,7 @@ import BusinessIdeaStep from '@/components/demo/BusinessIdeaStep';
 import BusinessValidationStep from '@/components/demo/BusinessValidationStep';
 import SwotAnalysisStep from '@/components/demo/SwotAnalysisStep';
 import ToolsShowcaseStep from '@/components/demo/ToolsShowcaseStep';
-import LandingPageStep from '@/components/demo/LandingPageStep';
-import UserInterviewsStep from '@/components/demo/UserInterviewsStep';
+import MonetizationStrategyStep from '@/components/demo/MonetizationStrategyStep';
 import SocialInsightsStep from '@/components/demo/SocialInsightsStep';
 import DashboardStep from '@/components/demo/DashboardStep';
 import ValidationDashboardStep from '@/components/demo/ValidationDashboardStep';
@@ -58,11 +57,11 @@ const Demo = () => {
       color: "from-orange-500 to-orange-600"
     },
     {
-      id: "community",
-      title: "Community & User Interviews",
-      description: "Connect with potential customers through our built-in tools. Schedule interviews, gather feedback, and identify your early adopters who can become brand advocates.",
+      id: "monetization",
+      title: "Monetization Strategy & Pricing",
+      description: "Our team works with you to define the right pricing model: freemium, subscription, usage-based, or pay-per-result — based on benchmarks in your category.",
       image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
-      icon: Users,
+      icon: CircleDollarSign,
       color: "from-pink-500 to-pink-600"
     },
     {
@@ -120,8 +119,8 @@ const Demo = () => {
         {/* Landing Page Builder - Step 4 */}
         <ToolsShowcaseStep step={steps[3]} />
         
-        {/* User Interviews - Step 5 */}
-        <UserInterviewsStep step={steps[4]} />
+        {/* Monetization Strategy - Step 5 (replacing User Interviews) */}
+        <MonetizationStrategyStep step={steps[4]} />
         
         {/* Social Insights - Step 6 */}
         <SocialInsightsStep step={steps[5]} />

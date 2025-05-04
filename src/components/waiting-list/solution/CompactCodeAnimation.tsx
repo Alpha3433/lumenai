@@ -1,157 +1,58 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Code } from 'lucide-react';
+import CodeAnimation from './CodeAnimation';
+
 interface CodeLine {
   code: string;
   delay: number;
-  isComment?: boolean;
   isOutput?: boolean;
+  isComment?: boolean;
 }
+
 interface CompactCodeAnimationProps {
   codeLines: CodeLine[];
 }
-const CompactCodeAnimation: React.FC<CompactCodeAnimationProps> = ({
-  codeLines
-}) => {
-  const [executionProgress, setExecutionProgress] = useState(0);
-  const [currentLineIndex, setCurrentLineIndex] = useState(0);
 
-  // Simulate code execution progress bar
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // Reset the progress when it reaches 100
-      if (executionProgress >= 100) {
-        setExecutionProgress(0);
-        setCurrentLineIndex(0);
-      } else {
-        setExecutionProgress(prev => {
-          const newValue = Math.min(prev + 0.7, 100); // Increased speed
-          // Update current line index based on progress
-          if (newValue % 8 === 0) {
-            // Faster line update
-            setCurrentLineIndex(prev => Math.min(prev + 1, codeLines.length - 1));
-          }
-          return newValue;
-        });
-      }
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [executionProgress, codeLines.length]);
-  return <motion.div initial={{
-    opacity: 0,
-    scale: 0.95,
-    y: 20
-  }} whileInView={{
-    opacity: 1,
-    scale: 1,
-    y: 0
-  }} transition={{
-    duration: 0.7,
-    delay: 0.3
-  }} viewport={{
-    once: true
-  }} className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative z-10 h-full flex flex-col w-full" style={{
-    minHeight: "240px"
-  }} // 20% reduction from 300px
-  >
-      <div className="p-2 bg-gray-800 flex items-center justify-between"> {/* Reduced padding further */}
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1.5"> {/* Tightened gap */}
-            <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div> {/* Slightly smaller dots */}
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
-          </div>
-          <div className="flex items-center ml-3 text-gray-400 text-xs font-mono"> {/* Tighter margin */}
-            <Code className="h-3.5 w-3.5 mr-1" /> validation.js
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-2 text-xs text-gray-400">
-          <span className="animate-pulse text-green-400">• Running</span>
-          <span>{Math.floor(executionProgress)}% complete</span>
+const CompactCodeAnimation: React.FC<CompactCodeAnimationProps> = ({ codeLines }) => {
+  return (
+    <div className="relative w-full p-6 md:p-8 overflow-hidden rounded-xl shadow-xl bg-[#1E1E1E] dark:bg-[#1A1A1A] border border-gray-800">
+      {/* Terminal header */}
+      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-700">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex gap-1.5"
+        >
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          viewport={{ once: true }}
+          className="ml-2 text-xs text-gray-400"
+        >
+          business-validation.js
+        </motion.div>
+      </div>
+
+      {/* Code content */}
+      <div className="h-[350px] md:h-[450px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 pr-2">
+        <div className="font-mono text-sm text-gray-300 leading-relaxed">
+          <CodeAnimation codeLines={codeLines} />
         </div>
       </div>
-      
-      {/* Progress bar */}
-      <div className="h-0.5 w-full bg-gray-800"> {/* Thinner progress bar */}
-        <motion.div className="h-full bg-gradient-to-r from-blue-500 to-purple-500" style={{
-        width: `${executionProgress}%`
-      }} />
-      </div>
-      
-      <div className="p-3 font-mono text-xs flex-grow relative overflow-hidden py-0"> {/* Smaller text & padding */}
-        <div className="space-y-1"> {/* Tighter line spacing */}
-          {codeLines.map((line, index) => <motion.div key={index} initial={{
-          opacity: 0,
-          x: -10
-        }} whileInView={{
-          opacity: 1,
-          x: 0
-        }} transition={{
-          delay: line.delay / 8,
-          duration: 0.5
-        }} viewport={{
-          once: true
-        }} className={`${line.isOutput ? 'pl-3 border-l-2 border-green-500/30 text-green-400 text-opacity-80' : 'text-gray-100'} ${index > currentLineIndex + 6 ? 'opacity-30' : ''}`}>
-              {/* If it's an output line, add a typing animation effect */}
-              {line.isOutput ? <motion.div initial={{
-            width: "0%"
-          }} animate={{
-            width: "100%"
-          }} transition={{
-            delay: line.delay / 8,
-            duration: 1.5,
-            ease: "easeInOut"
-          }} className="overflow-hidden whitespace-nowrap" dangerouslySetInnerHTML={{
-            __html: line.code
-          }} /> : <div dangerouslySetInnerHTML={{
-            __html: line.code
-          }} />}
-            </motion.div>)}
-        </div>
-        
-        {/* Visual effects */}
-        <motion.div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-900/80 to-transparent pointer-events-none" initial={{
-        opacity: 0
-      }} whileInView={{
-        opacity: 1
-      }} transition={{
-        delay: 2.0,
-        duration: 0.5
-      }} viewport={{
-        once: true
-      }} />
-        
-        {/* Terminal cursor blink effect */}
-        <motion.div className="absolute bottom-4 left-4 h-3 w-1.5 bg-blue-500" animate={{
-        opacity: [0, 1, 0]
-      }} transition={{
-        repeat: Infinity,
-        duration: 1
-      }} />
-        
-        <motion.div className="absolute -bottom-2 -right-2 w-16 h-16 rounded-full bg-blue-500/20 blur-xl" animate={{
-        scale: [1, 1.2, 1],
-        opacity: [0.6, 0.8, 0.6]
-      }} transition={{
-        repeat: Infinity,
-        duration: 4,
-        ease: "easeInOut"
-      }} />
-      </div>
-      
-      {/* Decorative elements */}
-      <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2">
-        <motion.div className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-2xl" animate={{
-        scale: [1, 1.2, 1],
-        opacity: [0.3, 0.5, 0.3]
-      }} transition={{
-        repeat: Infinity,
-        duration: 5,
-        ease: "easeInOut"
-      }} />
-      </div>
-    </motion.div>;
+
+      {/* Lighting effects */}
+      <div className="absolute -top-20 -left-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
+    </div>
+  );
 };
+
 export default CompactCodeAnimation;

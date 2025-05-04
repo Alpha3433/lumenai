@@ -13,7 +13,7 @@ import { validationSteps, codeLines } from './solution/solutionStepsData';
  */
 const SolutionSteps = () => {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800" id="how-it-works">
+    <section className="py-20 px-4 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800/80" id="how-it-works">
       <div className="max-w-7xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -25,8 +25,8 @@ const SolutionSteps = () => {
           <div className="inline-block mb-4 px-6 py-1.5 bg-blue-100 dark:bg-blue-900/40 rounded-full">
             <h3 className="text-blue-600 dark:text-blue-400 text-sm font-semibold tracking-wide">OUR PROCESS</h3>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-5">
-            The Solution — <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">How It Works</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-5 text-gray-900 dark:text-white">
+            The Solution — <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">How It Works</span>
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-lg max-w-3xl mx-auto">
             Our platform guides you through a proven validation process to test your startup idea before you invest

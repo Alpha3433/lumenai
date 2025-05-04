@@ -55,7 +55,7 @@ const WhyStartupsFail: React.FC = () => {
             {/* Decorative blurred circles */}
             <div className="absolute -z-10 inset-0">
               <motion.div
-                className="absolute -top-20 -left-20 w-40 h-40 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl"
+                className="absolute -top-20 -left-20 w-40 h-40 bg-red-500/10 dark:bg-red-500/5 rounded-full blur-3xl"
                 animate={{ 
                   scale: [1, 1.2, 1],
                   opacity: [0.5, 0.7, 0.5]
@@ -67,7 +67,7 @@ const WhyStartupsFail: React.FC = () => {
                 }}
               />
               <motion.div
-                className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-3xl"
+                className="absolute -bottom-10 -right-10 w-32 h-32 bg-orange-500/10 dark:bg-orange-500/5 rounded-full blur-3xl"
                 animate={{ 
                   scale: [1, 1.3, 1],
                   opacity: [0.3, 0.6, 0.3]

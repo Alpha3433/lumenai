@@ -1,9 +1,8 @@
-
 import React, { useEffect } from 'react';
 import { 
   CheckCircle, Sparkles, Lightbulb, BarChart3, Search, 
   Users, MessageSquare, FileText, PencilRuler, LineChart, 
-  LayoutDashboard, Award, ArrowLeft, Dumbbell
+  LayoutDashboard, Award, ArrowLeft, Dumbbell, Rocket
 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import DemoHeader from '@/components/demo/DemoHeader';
@@ -66,11 +65,11 @@ const Demo = () => {
     },
     {
       id: "analyze",
-      title: "Investor-Ready Pitch Assets",
-      description: "Get a complete pitch deck, business one-pager, and traction summary — all based on your real data. Perfect for demo days, grant applications, or early investor conversations.",
+      title: "Go-to-Market Execution Support",
+      description: "Get comprehensive launch support with customized go-to-market strategies, market entry planning, and execution guidance — all tailored to your product and target audience.",
       image: "public/lovable-uploads/b6443082-5a1e-4901-8a11-84ab51d1db54.png",
-      icon: FileText,
-      color: "from-purple-500 to-purple-600"
+      icon: Rocket,
+      color: "from-blue-500 to-blue-600"
     },
     {
       id: "dashboard",

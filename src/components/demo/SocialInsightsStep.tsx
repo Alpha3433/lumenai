@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, FileText, PresentationIcon, TrendingUp } from 'lucide-react';
+import { CheckCircle, Target, Megaphone, Users, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Card, CardContent } from '@/components/ui/card';
@@ -36,25 +36,25 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
             </div>
             
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-              Investor-Ready Pitch Assets
+              Go-to-Market Execution Support
             </h2>
             
             <p className="text-gray-600 dark:text-gray-300 text-lg mb-8">
-              Get a complete pitch deck, business one-pager, and traction summary — all based on your real data. Perfect for demo days, grant applications, or early investor conversations.
+              Get comprehensive launch support with customized go-to-market strategies, market entry planning, and execution guidance — all tailored to your product and target audience.
             </p>
             
             <div className="flex flex-wrap gap-3">
-              <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
-                <CheckCircle className="h-4 w-4" />
-                Investor-ready deck
-              </div>
               <div className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
                 <CheckCircle className="h-4 w-4" />
-                Business one-pager
+                Market entry strategy
+              </div>
+              <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
+                <CheckCircle className="h-4 w-4" />
+                Launch playbook
               </div>
               <div className="bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 px-4 py-2 rounded-lg flex items-center gap-2 text-sm mt-2">
                 <CheckCircle className="h-4 w-4" />
-                Traction summary
+                Growth hacking tactics
               </div>
             </div>
           </motion.div>
@@ -67,25 +67,25 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
             className="lg:w-1/2"
           >
             <div className="rounded-xl overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800">
-              <div className="bg-gradient-to-r from-purple-600 to-purple-500 p-6 text-white">
-                <h3 className="text-xl font-semibold mb-2">Investor-Ready Pitch Assets</h3>
-                <p className="text-purple-100">Customized pitch materials for FitnessAI</p>
+              <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-6 text-white">
+                <h3 className="text-xl font-semibold mb-2">Go-to-Market Strategy for FitnessAI</h3>
+                <p className="text-blue-100">Launch execution plan with timeline</p>
               </div>
               
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
-                      <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
-                        <PresentationIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                      <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-3">
+                        <Target className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <h4 className="font-medium mb-1">Pitch Deck</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">12-slide presentation with key metrics</p>
+                      <h4 className="font-medium mb-1">Market Entry</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Targeted audience acquisition</p>
                       <div className="w-full bg-gray-50 dark:bg-gray-700 rounded-lg p-2 text-xs text-left">
                         <ul className="list-disc pl-4 space-y-1 text-gray-600 dark:text-gray-300">
-                          <li>FitnessAI market size: $4.8B</li>
-                          <li>67% MoM user growth rate</li>
-                          <li>$1.2M ARR projection (Y1)</li>
+                          <li>Fitness enthusiast segmentation</li>
+                          <li>Gym partnerships (24 locations)</li>
+                          <li>3 fitness influencer campaigns</li>
                         </ul>
                       </div>
                     </CardContent>
@@ -93,16 +93,16 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
                   
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
-                      <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
-                        <FileText className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                      <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-3">
+                        <Megaphone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <h4 className="font-medium mb-1">One-Pager</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Concise business overview document</p>
+                      <h4 className="font-medium mb-1">Launch Campaign</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Multi-channel promotion</p>
                       <div className="w-full bg-gray-50 dark:bg-gray-700 rounded-lg p-2 text-xs text-left">
                         <ul className="list-disc pl-4 space-y-1 text-gray-600 dark:text-gray-300">
-                          <li>AI-driven workout personalization</li>
-                          <li>3 revenue streams identified</li>
-                          <li>$250K initial investment needs</li>
+                          <li>60-day social media rollout</li>
+                          <li>Fitness podcast sponsorships</li>
+                          <li>Early access discount program</li>
                         </ul>
                       </div>
                     </CardContent>
@@ -110,16 +110,16 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
                   
                   <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-4 flex flex-col items-center text-center">
-                      <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3">
-                        <TrendingUp className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                      <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-3">
+                        <Rocket className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <h4 className="font-medium mb-1">Traction Summary</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Growth & user acquisition metrics</p>
+                      <h4 className="font-medium mb-1">Growth Tactics</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">User acquisition & retention</p>
                       <div className="w-full bg-gray-50 dark:bg-gray-700 rounded-lg p-2 text-xs text-left">
                         <ul className="list-disc pl-4 space-y-1 text-gray-600 dark:text-gray-300">
-                          <li>5,800+ beta users in 60 days</li>
-                          <li>32% conversion from free to paid</li>
-                          <li>$21 average CAC, $48 LTV</li>
+                          <li>Referral reward system (+15% conversion)</li>
+                          <li>Community challenges</li>
+                          <li>Results-sharing incentives</li>
                         </ul>
                       </div>
                     </CardContent>
@@ -127,18 +127,54 @@ const SocialInsightsStep: React.FC<SocialInsightsStepProps> = ({ step }) => {
                 </div>
                 
                 <div className="mt-6">
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700">Generate FitnessAI Pitch Materials</Button>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700">Generate FitnessAI GTM Strategy</Button>
                 </div>
                 
-                <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <blockquote className="text-sm text-gray-500 dark:text-gray-400 italic">
-                    "The generated pitch deck helped us secure our first $250K in pre-seed funding. The metrics and market analysis were exactly what investors wanted to see."
-                  </blockquote>
-                  <div className="flex items-center gap-2 mt-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-medium">SC</div>
-                    <div>
-                      <p className="text-sm font-medium">Sarah Chen</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">FitnessAI Co-founder</p>
+                <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+                  <h4 className="font-medium mb-3">90-Day Launch Timeline</h4>
+                  <div className="relative pb-2">
+                    <div className="absolute left-8 top-0 bottom-0 w-px bg-gray-300 dark:bg-gray-700"></div>
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-4">
+                        <div className="w-16 h-16 flex-shrink-0 bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center rounded-lg">
+                          <span className="text-blue-600 dark:text-blue-400 font-bold">1-30</span>
+                        </div>
+                        <div className="pt-1">
+                          <h5 className="font-medium">Pre-launch Phase</h5>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Beta testing with 200 fitness enthusiasts, collecting testimonials, refining AI algorithm accuracy</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4">
+                        <div className="w-16 h-16 flex-shrink-0 bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center rounded-lg">
+                          <span className="text-blue-600 dark:text-blue-400 font-bold">31-60</span>
+                        </div>
+                        <div className="pt-1">
+                          <h5 className="font-medium">Launch Phase</h5>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Official release, influencer program activation, limited-time founding member pricing</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4">
+                        <div className="w-16 h-16 flex-shrink-0 bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center rounded-lg">
+                          <span className="text-blue-600 dark:text-blue-400 font-bold">61-90</span>
+                        </div>
+                        <div className="pt-1">
+                          <h5 className="font-medium">Growth Phase</h5>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Feature enhancement based on user data, referral program activation, fitness community partnerships</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <blockquote className="text-sm text-gray-500 dark:text-gray-400 italic">
+                      "The Go-to-Market strategy completely transformed our launch. We gained 12,000+ users in the first 90 days, and our retention rate is nearly double the industry average."
+                    </blockquote>
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium">MJ</div>
+                      <div>
+                        <p className="text-sm font-medium">Mike Johnson</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">FitnessAI Co-founder</p>
+                      </div>
                     </div>
                   </div>
                 </div>

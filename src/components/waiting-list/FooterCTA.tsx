@@ -23,7 +23,7 @@ const FooterCTA = () => {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             Be the first to know when we launch
           </h2>
           <p className="text-xl text-blue-50 max-w-2xl mx-auto">
@@ -40,7 +40,7 @@ const FooterCTA = () => {
         >
           <EmailForm />
           
-          <div className="flex flex-col md:flex-row items-center justify-center mt-8 gap-6 text-sm">
+          <div className="flex flex-col md:flex-row items-center justify-center mt-8 gap-6 text-sm text-white">
             <div className="flex items-center gap-2">
               <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/30">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +70,7 @@ const FooterCTA = () => {
           </div>
           
           <div className="mt-12 flex justify-center">
-            <a href="#how-it-works" className="flex items-center gap-2 text-sm font-medium border-b border-white/30 pb-1 hover:border-white transition-all">
+            <a href="#how-it-works" className="flex items-center gap-2 text-sm font-medium border-b border-white/30 pb-1 hover:border-white transition-all text-white">
               Learn more about our platform
               <ArrowRight className="w-4 h-4" />
             </a>

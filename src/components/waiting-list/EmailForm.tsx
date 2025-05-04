@@ -83,7 +83,7 @@ const EmailForm = () => {
   if (isSubmitted) {
     return (
       <motion.div 
-        className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4 flex items-center gap-3"
+        className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4 flex items-center gap-3"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -94,8 +94,8 @@ const EmailForm = () => {
           </svg>
         </div>
         <div>
-          <h3 className="font-medium text-gray-900">You're on the list!</h3>
-          <p className="text-sm text-gray-700">
+          <h3 className="font-medium text-gray-900 dark:text-white">You're on the list!</h3>
+          <p className="text-sm text-gray-700 dark:text-gray-300">
             Thank you for your interest! We'll notify you when we launch.
           </p>
         </div>
@@ -112,7 +112,7 @@ const EmailForm = () => {
             placeholder="Enter your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="h-12 text-base bg-white text-gray-900 border-gray-200 pr-4 pl-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+            className="h-12 text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 pr-4 pl-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             required
           />
         </div>
@@ -147,7 +147,7 @@ const EmailForm = () => {
       </form>
 
       <div className="mt-3 flex">
-        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+        <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
           <Sparkles className="h-3 w-3 text-blue-500" />
           <span>Exclusive early access to premium features</span>
         </div>

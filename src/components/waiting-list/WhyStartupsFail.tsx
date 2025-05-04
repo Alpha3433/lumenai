@@ -25,8 +25,8 @@ const WhyStartupsFail: React.FC = () => {
           <div className="inline-block mb-4 px-4 py-1 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 text-sm font-medium">
             The Problem
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            Why Most Ideas <span className="text-red-500">Fail</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
+            Why Most Ideas <span className="text-red-500 dark:text-red-400">Fail</span>
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
             42% of startups fail due to no market need. Our platform ensures your idea doesn't become another statistic.
@@ -39,7 +39,6 @@ const WhyStartupsFail: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
             viewport={{ once: true }}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-100 dark:border-gray-700 p-6"
           >
             <FailureStatistics failureReasons={failureReasons} />
           </motion.div>

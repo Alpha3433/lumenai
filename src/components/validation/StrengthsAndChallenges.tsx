@@ -37,7 +37,6 @@ const StrengthsAndChallenges = ({ positives, negatives }: StrengthsAndChallenges
                     {i === 0 && "Strong potential for stable recurring revenue streams"}
                     {i === 1 && "Significant consumer base seeking fitness solutions"}
                     {i === 2 && "AI-driven features create unique value proposition"}
-                    {i === 3 && "Post-pandemic trends show increased digital health adoption"}
                   </p>
                 </div>
               </div>
@@ -79,7 +78,6 @@ const StrengthsAndChallenges = ({ positives, negatives }: StrengthsAndChallenges
                     {i === 0 && "Market saturation requires strong differentiation strategy"}
                     {i === 1 && "Current average CAC in fitness tech is $60-80 per user"}
                     {i === 2 && "Industry average retention rate is only 29% after 90 days"}
-                    {i === 3 && "Requires ongoing investment in AI model improvements"}
                   </p>
                 </div>
               </div>

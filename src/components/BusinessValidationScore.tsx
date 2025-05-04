@@ -6,10 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, AlertTriangle, CheckCircle, Award, Dumbbell } from 'lucide-react';
 import ValidationMetrics from './validation/ValidationMetrics';
 import StrengthsAndChallenges from './validation/StrengthsAndChallenges';
+
 interface BusinessValidationScoreProps {
   businessText: string;
   businessName: string;
 }
+
 const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
   businessText,
   businessName
@@ -18,8 +20,8 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
   const score = 85;
 
   // Sample validation points (in a real app, these would be generated from the analysis)
-  const positives = ["Recurring revenue model potential", "Large target market (obese individuals)", "Personalization through AI creates defensibility", "Growing demand for digital health solutions"];
-  const negatives = ["High competition in fitness app space", "Customer acquisition costs may be high", "User retention challenges in fitness apps", "Requires continuous AI training and updates"];
+  const positives = ["Recurring revenue model potential", "Large target market (obese individuals)", "Personalization through AI creates defensibility"];
+  const negatives = ["High competition in fitness app space", "Customer acquisition costs may be high", "User retention challenges in fitness apps"];
 
   // Sample metrics for different aspects of the business
   const metrics = [{
@@ -110,6 +112,7 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
       document.removeEventListener('mouseup', handleGlobalMouseUp);
     };
   }, [isDragging, dragOffset]);
+
   return <div className="bg-white dark:bg-gray-800 p-6 rounded-xl" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
       <div className="border-b border-gray-200 dark:border-gray-700 pb-6 mb-6">
         <div className="flex justify-between items-center mb-6">
@@ -164,4 +167,5 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
       </div>
     </div>;
 };
+
 export default BusinessValidationScore;

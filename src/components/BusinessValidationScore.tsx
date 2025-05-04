@@ -1,14 +1,17 @@
-import React from 'react';
+
+import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, AlertTriangle, CheckCircle, Award } from 'lucide-react';
+import { TrendingUp, AlertTriangle, CheckCircle, Award, Dumbbell } from 'lucide-react';
 import ValidationMetrics from './validation/ValidationMetrics';
 import StrengthsAndChallenges from './validation/StrengthsAndChallenges';
+
 interface BusinessValidationScoreProps {
   businessText: string;
   businessName: string;
 }
+
 const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
   businessText,
   businessName
@@ -38,7 +41,69 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
     score: 88,
     description: "AI implementation is achievable with current technology stack."
   }];
-  return <div className="bg-white dark:bg-gray-800 p-6 rounded-xl">
+  
+  // Add state for the editable text and its position
+  const [editableText, setEditableText] = useState(businessName);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const textRef = useRef<HTMLDivElement>(null);
+  
+  // Handlers for dragging functionality
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (textRef.current) {
+      const rect = textRef.current.getBoundingClientRect();
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+      setIsDragging(true);
+    }
+  };
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      const parentRect = textRef.current?.parentElement?.getBoundingClientRect();
+      if (parentRect) {
+        const newX = e.clientX - parentRect.left - dragOffset.x;
+        const newY = e.clientY - parentRect.top - dragOffset.y;
+        setPosition({ x: newX, y: newY });
+      }
+    }
+  };
+  
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+  
+  // Add event listeners for mouse events outside the component
+  React.useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        const parentRect = textRef.current?.parentElement?.getBoundingClientRect();
+        if (parentRect) {
+          const newX = e.clientX - parentRect.left - dragOffset.x;
+          const newY = e.clientY - parentRect.top - dragOffset.y;
+          setPosition({ x: newX, y: newY });
+        }
+      }
+    };
+    
+    const handleGlobalMouseUp = () => {
+      setIsDragging(false);
+    };
+    
+    document.addEventListener('mousemove', handleGlobalMouseMove);
+    document.addEventListener('mouseup', handleGlobalMouseUp);
+    
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, [isDragging, dragOffset]);
+
+  return (
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
       <div className="border-b border-gray-200 dark:border-gray-700 pb-6 mb-6">
         <div className="flex justify-between items-center mb-6">
           <div>
@@ -56,10 +121,6 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
 
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-1/3 flex flex-col items-center">
-            <div className="font-medium text-center mb-2 flex items-center gap-2">
-              
-              <span className="text-lg">{businessName}</span>
-            </div>
             <div className="relative w-48 h-48">
               <svg className="w-full h-full -rotate-90">
                 <circle cx="96" cy="96" r="88" fill="none" stroke="currentColor" strokeWidth="16" className="text-gray-100 dark:text-gray-800" />
@@ -71,6 +132,36 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
                   <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Overall Score</div>
                 </div>
               </div>
+            </div>
+            
+            {/* Draggable and editable business name with Muscle icon */}
+            <div 
+              ref={textRef}
+              className="cursor-move font-medium text-center mt-4 flex items-center gap-2"
+              style={{
+                position: 'relative',
+                left: `${position.x}px`,
+                top: `${position.y}px`,
+                cursor: isDragging ? 'grabbing' : 'grab',
+                userSelect: 'none',
+                background: 'rgba(255, 255, 255, 0.7)',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                border: '1px solid rgba(0,0,0,0.1)',
+                zIndex: 10
+              }}
+              onMouseDown={handleMouseDown}
+            >
+              <Dumbbell className="h-5 w-5 text-purple-500" />
+              <input
+                type="text"
+                value={editableText}
+                onChange={(e) => setEditableText(e.target.value)}
+                className="text-lg font-medium bg-transparent border-none outline-none focus:ring-0 text-center"
+                placeholder="Business Name"
+                onClick={(e) => e.stopPropagation()}
+              />
             </div>
           </div>
           
@@ -91,6 +182,8 @@ const BusinessValidationScore: React.FC<BusinessValidationScoreProps> = ({
       <div className="space-y-8">
         <StrengthsAndChallenges positives={positives} negatives={negatives} />
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default BusinessValidationScore;
